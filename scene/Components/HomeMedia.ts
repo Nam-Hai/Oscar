@@ -74,6 +74,8 @@ export class HomeMedia extends CanvasNode {
         const program = new Program(this.gl, {
             vertex: basicVer,
             fragment,
+            depthTest: false,
+            depthWrite: false,
             uniforms: {
                 tMap: { value: useManifest().textures.home[1] },
                 uScaleOffset: this.uScaleOffset,

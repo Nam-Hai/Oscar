@@ -36,6 +36,12 @@ usePageFlow({
     enableCrossfade: 'BOTTOM'
 })
 
+const { onHold } = useCursorStore()
+
+onHold(mainRef, ()=>{
+
+})
+
 </script>
 
 <style lang="scss" scoped>
@@ -58,7 +64,7 @@ main {
 
     .flavor-main {
         margin-bottom: 3.6rem;
-        width: 42rem;
+        width: 35rem;
     }
 
     .flavor-sub {

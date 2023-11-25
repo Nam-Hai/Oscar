@@ -6,6 +6,7 @@ import { providerPicker } from "~/composables/useCanvas";
 import { CanvasPage } from "../utils/types";
 import type { Camera, OGLRenderingContext, Renderer, Transform } from "ogl";
 import { HomeMedia } from "../Components/HomeMedia";
+import { BorderImage } from "../Components/BorderImage";
 
 export class IndexCanvas extends CanvasPage {
 
@@ -34,8 +35,8 @@ export class IndexCanvas extends CanvasPage {
         N.BM(this, ["render", "resize", "init", "destroy"]);
 
         this.ro = useROR(this.resize)
-        this.onDestroy(() => this.ro.off())
         this.raf = useRafR(this.render)
+        this.onDestroy(() => this.ro.off())
         this.onDestroy(() => this.raf.kill())
 
         this.mount()
@@ -46,6 +47,10 @@ export class IndexCanvas extends CanvasPage {
     }
 
     mount() {
+        this.add(new BorderImage(this.gl, { lerp: 0.09, renderOrder: 0 }))
+        this.add(new BorderImage(this.gl, { lerp: 0.11, renderOrder: 1 }))
+        this.add(new BorderImage(this.gl, { lerp: 0.15, renderOrder: 2 }))
+        this.add(new BorderImage(this.gl, { lerp: 0.25, renderOrder: 3 }))
         this.add(new HomeMedia(this.gl))
 
     }

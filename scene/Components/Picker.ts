@@ -139,8 +139,8 @@ export class Picker extends CanvasNode {
 
         const data = new Uint8Array(4);
         this.gl.readPixels(
-            mouse.x * this.dpr / this.renderTargetRatio,
-            (vh.value - mouse.y) * this.dpr / this.renderTargetRatio,
+            mouse.value.x * this.dpr / this.renderTargetRatio,
+            (vh.value - mouse.value.y) * this.dpr / this.renderTargetRatio,
             1,
             1,
             this.gl.RGBA,           // format

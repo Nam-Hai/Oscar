@@ -5,11 +5,9 @@ export function useEventListeneer<K extends keyof WindowEventMap>(target: Ref<El
     else t = target as Ref<Element>
 
     onMounted(() => {
-        console.log('onmount', t);
         t.value.addEventListener(event, callback)
     })
     onBeforeUnmount(() => {
-        console.log('onUnmount', t);
         t.value.removeEventListener(event, callback)
     })
 }

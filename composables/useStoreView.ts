@@ -1,7 +1,7 @@
 import Lenis from "@studio-freight/lenis";
 
 export const useStoreView = createStore(() => {
-  const mouse = reactive({ x: 0, y: 0 });
+  const mouse = ref({ x: 0, y: 0 });
 
   const vh = ref(0);
   const vw = ref(0);
@@ -25,8 +25,7 @@ export const useStoreView = createStore(() => {
     ro.trigger();
 
     const updateMouse = (evt: MouseEvent) => {
-      mouse.x = evt.clientX;
-      mouse.y = evt.clientY;
+      mouse.value = { x: evt.clientX, y: evt.clientY };
     };
     document.addEventListener("mousemove", updateMouse);
   }

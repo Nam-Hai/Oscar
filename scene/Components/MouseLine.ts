@@ -22,10 +22,10 @@ export default class MouseLine {
     vh: globalThis.Ref<number>
     camera: any
     // post: PostProcessor
-    mouse: { x: number; y: number }
     uMouse: { value: number[] }
     post: PostProcessor
     callstack: Callstack
+    mouse: globalThis.Ref<{ x: number; y: number }>
     constructor(gl: any, { color }: { color: [number, number, number, number] } = { color: [1, 1, 1, 1] }) {
         const { mouse, vh, vw } = useStoreView()
         this.vw = vw
@@ -42,7 +42,7 @@ export default class MouseLine {
         const { size: canvasSize } = useCanvas()
         this.canvasSize = canvasSize.value
         this.mouse = mouse
-        this.uMouse = { value: [this.mouse.x, this.mouse.y] }
+        this.uMouse = { value: [this.mouse.value.x, this.mouse.value.y] }
         const unWatchMouse = watch(mouse, (m) => {
             this.computeNextLine(m.x, m.y)
             this.uMouse.value[0] = m.x
@@ -123,7 +123,7 @@ export default class MouseLine {
     }
 
     update() {
-        this.computeNextLine(this.mouse.x, this.mouse.y)
+        this.computeNextLine(this.mouse.value.x, this.mouse.value.y)
     }
 
     destroy() {

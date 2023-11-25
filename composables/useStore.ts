@@ -15,15 +15,41 @@ const useStore = createStore(() => {
 })
 export default useStore
 
-export type CursorState = "hover" | "default"
+export type CursorState = "hover" | "hold" | "default"
 const useCursorStore = createStore(() => {
-  const cursorState : Ref<CursorState> = ref("default")
+  const cursorState: Ref<CursorState> = ref("default")
+  const isHolding = ref(false)
+  const isHold = ref(false)
 
 
   function toggleHover(hover: boolean) {
     cursorState.value = hover ? "hover" : "default"
   }
-  return { cursorState, toggleHover }
+
+  function onHold(el: Ref<HTMLElement>, callback: () => void) {
+
+    const { $Delay } = useNuxtApp()
+    const delay = new $Delay(() => {
+      console.log('hold delay');
+      isHold.value = true
+      callback()
+    }, 1000)
+
+    function onMouseDown() {
+      isHolding.value = true
+      delay.run()
+    }
+    function onMouseUp() {
+      isHolding.value = false
+      isHold.value = false
+      delay.stop()
+    }
+
+    useEventListeneer(el, 'mousedown', onMouseDown)
+    useEventListeneer(el, 'mouseup', onMouseUp)
+  }
+
+  return { cursorState, toggleHover, onHold, isHolding, isHold }
 })
 
 export { useCursorStore }
@@ -38,7 +64,9 @@ export const useHomeStore = createStore(() => {
   function previousPage() {
     currentPageIndex.value = N.mod(currentPageIndex.value - 1, pagesStore.length)
   }
-  return { currentPageIndex, nextPage, previousPage}
+
+
+  return { currentPageIndex, nextPage, previousPage }
 })
 
 
