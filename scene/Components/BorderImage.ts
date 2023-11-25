@@ -33,7 +33,7 @@ export class BorderImage extends CanvasNode {
         this.positionTarget = new Vec3(0, 0, 0)
         this.renderOrder = props.renderOrder
 
-        const texture = useManifest().textures.home[1]
+        const texture = useManifest().textures.home[0]
         this.uIntrinsecRatio = texture.image
             ? (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height
             : 1;
@@ -96,7 +96,7 @@ export class BorderImage extends CanvasNode {
         const geometry = new Plane(this.gl, {
         })
 
-        const texture = useManifest().textures.home[0]
+        const texture = useManifest().textures.home[2 - this.renderOrder]
         const program = new Program(this.gl, {
             fragment,
             vertex: basicVer,
@@ -137,7 +137,7 @@ export class BorderImage extends CanvasNode {
         const p = this.positionTarget.clone()
         const { size } = useCanvas()
 
-        const o = (imageBounds.w + 8) * this.renderOrder * size.value.width / vw.value 
+        const o = (imageBounds.w + 8) * (2 - this.renderOrder) * size.value.width / vw.value
         const offset = h ? o : - o
         this.positionTarget.set(
             p.x + offset,

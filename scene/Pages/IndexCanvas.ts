@@ -50,7 +50,7 @@ export class IndexCanvas extends CanvasPage {
         this.add(new BorderImage(this.gl, { lerp: 0.09, renderOrder: 0 }))
         this.add(new BorderImage(this.gl, { lerp: 0.11, renderOrder: 1 }))
         this.add(new BorderImage(this.gl, { lerp: 0.15, renderOrder: 2 }))
-        this.add(new BorderImage(this.gl, { lerp: 0.25, renderOrder: 3 }))
+        // this.add(new BorderImage(this.gl, { lerp: 0.25, renderOrder: 3 }))
         this.add(new HomeMedia(this.gl))
 
     }

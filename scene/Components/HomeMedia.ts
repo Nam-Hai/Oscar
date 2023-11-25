@@ -77,7 +77,7 @@ export class HomeMedia extends CanvasNode {
             depthTest: false,
             depthWrite: false,
             uniforms: {
-                tMap: { value: useManifest().textures.home[1] },
+                tMap: { value: useManifest().textures.home[0] },
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset
             }
