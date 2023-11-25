@@ -1,8 +1,8 @@
 <template>
   <div class="menu__wrapper">
     <div class="menu-grid">
-      <div class="oscarpico">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 9" fill="none">
+      <NuxtLink to="#" class="oscarpico">
+        <svg v-cursor-hover xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 9" fill="none">
           <path
             d="M4.08958 9C1.48958 9 0 7.37714 0 4.49735C0 1.61756 1.48958 0 4.08958 0C6.68958 0 8.17917 1.62286 8.17917 4.49735C8.17917 7.37714 6.695 9 4.08958 9ZM1.70625 4.49735C1.70625 6.69299 2.58375 7.70065 4.08958 7.70065C5.60083 7.70065 6.47833 6.68768 6.47833 4.49735C6.47833 2.30701 5.60083 1.29935 4.08958 1.29935C2.58375 1.29935 1.70625 2.30701 1.70625 4.49735Z"
             fill="currentColor" />
@@ -32,21 +32,26 @@
             d="M76.4081 5.89279C74.7516 5.89279 73.4042 4.58301 73.4042 2.95548C73.4042 1.34344 74.7516 0.018167 76.4081 0.018167C78.0647 0.018167 79.4042 1.34344 79.4042 2.95548C79.4042 4.58301 78.0647 5.89279 76.4081 5.89279ZM74.1334 2.95548C74.1334 4.1955 75.1479 5.17977 76.4081 5.17977C77.6684 5.17977 78.6829 4.1955 78.6829 2.95548C78.6829 1.7232 77.6684 0.731182 76.4081 0.731182C75.1479 0.731182 74.1334 1.7232 74.1334 2.95548ZM75.2985 4.40476V1.45195H76.638C77.3513 1.45195 77.6763 1.7852 77.6763 2.38197C77.6763 2.78497 77.5098 3.07948 77.1928 3.24223L77.7952 4.40476H76.9709L76.4557 3.37399H76.0515V4.40476H75.2985ZM76.0515 2.78497H76.5429C76.8044 2.78497 76.9154 2.67647 76.9154 2.38972C76.9154 2.11846 76.7965 2.02546 76.5508 2.02546H76.0515V2.78497Z"
             fill="currentColor" />
         </svg>
-      </div>
+      </NuxtLink>
 
-      <div class="info">
-        info
-      </div>
+      <NuxtLink to="#" class="info">
+        <span v-cursor-hover>
+          info
+        </span>
+      </NuxtLink>
 
-      <div class="archive">
-        archive
-      </div>
+      <NuxtLink to="#" class="archive">
+        <span v-cursor-hover>
+          archive
+        </span>
+      </NuxtLink>
     </div>
 
   </div>
 </template>
 
 <script lang="ts" setup>
+import { vCursorHover } from '~/directives/cursorActive';
 const store = useStore();
 
 const wrapperRef = ref() as Ref<HTMLElement>;
@@ -70,7 +75,7 @@ const wrapperRef = ref() as Ref<HTMLElement>;
     color: $white;
     @include mainGrid();
 
-    >div {
+    >a {
       text-transform: capitalize;
       // color: $white;
       font-size: 1.3rem;
@@ -80,6 +85,7 @@ const wrapperRef = ref() as Ref<HTMLElement>;
 
       &:first-child {
         position: relative;
+
         svg {
           position: absolute;
           left: 0;

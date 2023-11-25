@@ -67,6 +67,7 @@ html {
 body,
 #__nuxt {
   overflow: hidden;
+  cursor: none!important;
 }
 
 *,
@@ -124,7 +125,7 @@ img,
 video,
 svg {
   user-select: none;
-  pointer-events: none;
+  // pointer-events: none;
   -webkit-user-drag: none;
   -webkit-touch-callout: none;
 }

@@ -39,14 +39,10 @@ let waitBeforeMount = ref(false)
 onBeforeMount(() => {
   useStoreView().init()
 
-  const { vh } = useStoreView()
-
   waitBeforeMount.value = true
 })
 
 onMounted(() => {
-  const { count } = useCounterStore()
-  console.log({ count });
 })
 
 

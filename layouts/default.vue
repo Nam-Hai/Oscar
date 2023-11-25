@@ -2,6 +2,7 @@
   <div class="app__wrapper">
     <WebGLScene />
     <Menu />
+    <Cursor />
     <div class="page__wrapper">
       <Preloader>
         <BufferPage />

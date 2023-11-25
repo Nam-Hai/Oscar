@@ -1,14 +1,11 @@
-const toggleMouse = (active: boolean) => {
-    useCursorStore().toggleMouse(active)
-}
-
-export const vCursorActive = {
+const { toggleHover } = useCursorStore()
+export const vCursorHover = {
     mounted: (el: HTMLElement) => {
-        el.addEventListener("mouseenter", () => toggleMouse(true))
-        el.addEventListener("mouseleave", ()=> toggleMouse(false))
+        el.addEventListener("mouseenter", () => toggleHover(true))
+        el.addEventListener("mouseleave", () => toggleHover(false))
     },
-    unmounted: (el: HTMLElement)=>{
-        el.removeEventListener("mouseenter", () => toggleMouse(true))
-        el.removeEventListener("mouseleave", ()=> toggleMouse(false))
+    beforeUnmount: (el: HTMLElement) => {
+        el.removeEventListener("mouseenter", () => toggleHover(true))
+        el.removeEventListener("mouseleave", () => toggleHover(false))
     }
 }

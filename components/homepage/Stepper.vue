@@ -1,21 +1,24 @@
 <template>
     <div ref="wrapperRef" class="stepper__wrapper">
-        <div class="left d">
+        <div v-cursor-hover class="left d" @click="previousPage()">
             01
         </div>
         <div class="step__wrapper">
-            <div class="step" v-for="i in 4"></div>
+            <div class="step" :class="{ active: i - 1 == currentPageIndex }" :key="i" v-for="i in 4"></div>
         </div>
-        <div class="right d">
+        <div v-cursor-hover class="right d" @click="nextPage()">
             04
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { vCursorHover } from '~/directives/cursorActive';
 // const {propName = fallbackValue} = defineProps<{propName: type}>()
 // const emits = defineEmits([])
 
+const { currentPageIndex, nextPage, previousPage } = useHomeStore()
+console.log(currentPageIndex);
 const store = useStore()
 
 const wrapperRef = ref() as Ref<HTMLElement>
@@ -32,28 +35,31 @@ const wrapperRef = ref() as Ref<HTMLElement>
     transform: translateX(-50%);
 
     display: flex;
-    column-gap: 1.6rem;
+    column-gap: 16px;
     align-items: baseline;
+    @include user-select(none);
 
     .d {
-        font-size: 1.1rem;
+        font-size: 11px;
         font-weight: 400;
         line-height: 0;
-        /* 136.364% */
     }
 
     .step__wrapper {
         display: flex;
-        column-gap: 0.4rem;
+        column-gap: 4px;
 
         .step {
-            height: 0.8rem;
+            height: 8px;
             width: 1px;
             background-color: $white;
+            transform-origin: bottom;
+            transition: transform 300ms $easeInOutSine;
 
             &.active {
-                transform: scaleY(1.2);
+                transform: scaleY(1.3);
             }
         }
     }
-}</style>
+}
+</style>

@@ -147,14 +147,16 @@ const Svg = {
 }
 
 const Class = {
-    add: (el: Element, name: string)=>{
+    add: (el: Element, name: string) => {
         el.classList.add(name)
     },
-    remove: (el: Element, name: string) =>{
+    remove: (el: Element, name: string) => {
         el.classList.remove(name)
     },
-    toggle: (el: Element, name: string)=>{
+    toggle: (el: Element, name: string) => {
         el.classList.toggle(name)
     }
 }
-export { Is, Lerp, iLerp, map, Clamp, get, getAll, Select, Cr, Round, random, Rand, Arr, Has, O, PE, Snif, T, BM, Ga, PD, ZL, Svg, Class }
+
+const mod = (n: number, m: number) => (n % m + m) % m;
+export { Is, Lerp, iLerp, map, mod, Clamp, get, getAll, Select, Cr, Round, random, Rand, Arr, Has, O, PE, Snif, T, BM, Ga, PD, ZL, Svg, Class }
