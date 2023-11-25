@@ -2,8 +2,11 @@
 import { Texture } from "ogl";
 
 const MANIFEST = {
-  background: [
+  home: [
     // "Asset"
+    "/Assets/Home1.png",
+    "/Assets/Home_2.jpg",
+    "/Assets/Home3.png",
   ],
 };
 

@@ -1,6 +1,7 @@
 <template>
   <div class="app__wrapper">
     <WebGLScene />
+    <Menu />
     <div class="page__wrapper">
       <Preloader>
         <BufferPage />

@@ -8,8 +8,8 @@
   // ie: 0 should be 0px 
 
   --grid-columns: 12;
-  --grid-column-gap: 2.4rem;
-  --grid-side-margin: 0;
+  --grid-column-gap: 1.2rem;
+  --grid-side-margin: 2.4rem;
   --scrollbar-width: 0px;
 
   --grid-max-width: #{$desktopGridWidth * $desktopMaxScale * 1px};

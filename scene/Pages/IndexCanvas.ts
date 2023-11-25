@@ -3,11 +3,9 @@ import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 
 import { Picker } from "../Components/Picker";
 import { providerPicker } from "~/composables/useCanvas";
-import { CanvasNode, CanvasPage } from "../utils/types";
-import { TransformNode } from "../Components/TransformNode";
+import { CanvasPage } from "../utils/types";
 import type { Camera, OGLRenderingContext, Renderer, Transform } from "ogl";
-import { EventHandler } from "../utils/WebGL.utils";
-import { WelcomeGL } from "../Components/Welcome";
+import { HomeMedia } from "../Components/HomeMedia";
 
 export class IndexCanvas extends CanvasPage {
 
@@ -43,24 +41,12 @@ export class IndexCanvas extends CanvasPage {
         this.mount()
     }
     init() {
-        // this.raf.run()
+        this.raf.run()
         this.ro.on()
     }
 
     mount() {
-        // const picker = new Picker(this.gl, {
-        //     node: this.node,
-        //     camera: this.camera,
-        //     renderTargetRatio: 20
-        // })
-
-        // this.onDestroy(() => {
-        // picker.destroy()
-        // })
-
-        // this.add([
-        //     new WelcomeGL(this.gl)
-        // ])
+        this.add(new HomeMedia(this.gl))
 
     }
 
@@ -69,10 +55,10 @@ export class IndexCanvas extends CanvasPage {
 
 
     render(e: rafEvent) {
-        // this.renderer.render({
-        //     scene: this.node,
-        //     camera: this.camera,
-        // })
+        this.renderer.render({
+            scene: this.node,
+            camera: this.camera,
+        })
     }
 
     destroy() {

@@ -75,7 +75,8 @@ function binarySearch(arr: { id: number }[], n: number): number {
         }
     }
 
-    return left
+    return -1
+    // return left
 }
 
 const Raf = new class {
@@ -118,6 +119,7 @@ const Raf = new class {
     // take advantage to the fact we sorted the rafscallbacks
     remove(id: number, priority: RafPriority): void {
         const i = binarySearch(this.arr[priority], id)
+        // if (this.arr[priority][i].id !== id) return
         this.arr[priority].splice(i, 1)
     }
 
@@ -169,6 +171,8 @@ class RafR {
     run() {
         if (this.on || this.killed) return
         this.on = true
+        this.id = RafId
+        RafId++
         Raf.add({ id: this.id, cb: this.cb }, this.priority)
     }
     stop() {
