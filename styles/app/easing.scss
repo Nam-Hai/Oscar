@@ -1,0 +1,14 @@
+:root {
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  --ease-in-cubic: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  --ease-in-quart: cubic-bezier(0.895, 0.030, 0.685, 0.220);
+  --ease-out-quart: cubic-bezier(0.165, 0.840, 0.440, 1.000);
+
+
+  --ease-in-out-sine: cubic-bezier(0.445, 0.050, 0.550, 0.950);
+  --easeInOutCustom: cubic-bezier(0.8, 0, 0.2, 1);
+}
