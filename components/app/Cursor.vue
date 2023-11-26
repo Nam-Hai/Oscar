@@ -1,5 +1,6 @@
 <template>
-    <div :class="{ hover: cursorState == 'hover', hold: isHolding }" class="cursor__wrapper" ref="wrapperRef">
+    <div :style="{ transform: translate }" :class="{ hover: cursorState == 'hover', hold: isHolding }"
+        class="cursor__wrapper" ref="wrapperRef">
 
         <div class="hold-border">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.1 -1.1 2.2 2.2">
@@ -10,15 +11,13 @@
 </template>
 
 <script lang="ts" setup>
-import { Vec2 } from 'ogl';
-
 
 const { mouse } = useStoreView()
 const { cursorState, isHolding } = useCursorStore()
 
-// const translate = computed(() => {
-//     return `translate(${mouse.value.x}px, ${mouse.value.y}px)`
-// })
+const translate = computed(() => {
+    return `translate(${mouse.value.x}px, ${mouse.value.y}px)`
+})
 
 const wrapperRef = ref() as Ref<HTMLElement>
 onMounted(() => {
@@ -29,11 +28,6 @@ onMounted(() => {
     p.style.strokeDashoffset = l + "px"
 })
 
-const position = new Vec2(0)
-useRaf(({ elapsed }) => {
-    position.lerp(new Vec2(mouse.value.x, mouse.value.y), 0.2)
-    wrapperRef.value.style.transform = `translate(${position.x}px, ${position.y}px)`
-})
 
 
 </script>
