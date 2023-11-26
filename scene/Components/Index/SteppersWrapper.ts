@@ -31,7 +31,7 @@ export class SteppersWrapper extends CanvasNode {
 
         const { watch } = useCanvasReactivity(this)
         watch(mouse, this.onMouseMove)
-        watch(isHold, this.onHold)
+        // watch(isHold, this.onHold)
         watch(stepperIsHovered, this.onStepperHover)
         this.mount()
         this.init()
@@ -80,7 +80,7 @@ export class SteppersWrapper extends CanvasNode {
             const { hover } = useHover(el.id)
             const { watch } = useCanvasReactivity(this)
             watch(hover, h => {
-                toggleHover(h && (stepperIsHovered.value || isHold.value))
+                toggleHover(h && (stepperIsHovered.value))
             })
         }
     }

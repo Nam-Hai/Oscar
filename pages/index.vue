@@ -55,9 +55,9 @@ usePageFlow({
     enableCrossfade: 'BOTTOM'
 })
 
-const { onHold } = useCursorStore()
+// const { onHold } = useCursorStore()
 
-onHold(mainRef, () => { })
+// onHold(mainRef, () => { })
 
 </script>
 
