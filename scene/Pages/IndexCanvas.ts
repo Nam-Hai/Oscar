@@ -1,12 +1,10 @@
 import type { RafR, rafEvent } from "~/plugins/core/raf";
 import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 
-import { Picker } from "../Components/Picker";
-import { providerPicker } from "~/composables/useCanvas";
 import { CanvasPage } from "../utils/types";
 import type { Camera, OGLRenderingContext, Renderer, Transform } from "ogl";
 import { HomeMedia } from "../Components/HomeMedia";
-import { BorderImage } from "../Components/BorderImage";
+import { SteppersWrapper } from "../Components/Index/SteppersWrapper";
 
 export class IndexCanvas extends CanvasPage {
 
@@ -47,13 +45,9 @@ export class IndexCanvas extends CanvasPage {
     }
 
     mount() {
-        this.add(new BorderImage(this.gl, { lerp: 0.09, renderOrder: 0 }))
-        this.add(new BorderImage(this.gl, { lerp: 0.11, renderOrder: 1 }))
-        this.add(new BorderImage(this.gl, { lerp: 0.15, renderOrder: 2 }))
-        // this.add(new BorderImage(this.gl, { lerp: 0.2, renderOrder: 0 }))
-        // this.add(new BorderImage(this.gl, { lerp: 0.3, renderOrder: 1 }))
-        // this.add(new BorderImage(this.gl, { lerp: 0.8, renderOrder: 2 }))
-        // this.add(new BorderImage(this.gl, { lerp: 0.25, renderOrder: 3 }))
+        // last is on Top
+        this.add(new SteppersWrapper(this.gl))
+
         this.add(new HomeMedia(this.gl))
 
     }

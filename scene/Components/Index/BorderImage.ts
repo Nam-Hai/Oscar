@@ -1,11 +1,9 @@
-import Callstack from "../utils/Callstack";
-
 import { Vec2, Program, Mesh, Texture, Plane, Vec3 } from 'ogl'
-import { basicVer } from "../shaders/BasicVer";
+import { basicVer } from "../../shaders/BasicVer";
 import type { RafR, rafEvent } from "~/plugins/core/raf";
 import type { ROR } from "~/plugins/core/resize";
-import { CanvasNode } from "../utils/types";
-import { useCanvasReactivity } from "../utils/WebGL.utils";
+import { CanvasNode } from "../../utils/types";
+import { useCanvasReactivity } from "../../utils/WebGL.utils";
 import type { Timeline } from "~/plugins/core/motion";
 
 const { vh, vw, mouse } = useStoreView()
@@ -24,21 +22,23 @@ export class BorderImage extends CanvasNode {
     positionTarget: Vec3;
     lerp: number;
     renderOrder: number;
-    uBorder: { value: number; };
     tl: Timeline;
+    uTransparency: { value: number; };
+    texture: Texture;
 
-    constructor(gl: any, props: { borderRadius?: number, lerp: number, renderOrder: number }) {
+    constructor(gl: any, props: { borderRadius?: number, lerp: number, renderOrder: number, texture: Texture }) {
         super(gl)
         N.BM(this, ['update', 'onResize', 'destroy', 'onMouseMove', 'onHold'])
 
         this.lerp = props.lerp
+        console.log(this.lerp);
 
         this.positionTarget = new Vec3(0, 0, 0)
         this.renderOrder = props.renderOrder
 
-        const texture = useManifest().textures.home[0]
-        this.uIntrinsecRatio = texture.image
-            ? (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height
+        this.texture = props.texture
+        this.uIntrinsecRatio = this.texture.image
+            ? (this.texture.image as HTMLImageElement).width / (this.texture.image as HTMLImageElement).height
             : 1;
         this.uSizePixel = { value: new Vec2(imageBounds.w, imageBounds.h) }
         this.uScaleOffset = {
@@ -73,7 +73,7 @@ export class BorderImage extends CanvasNode {
         this.tl = useTL()
 
         this.uBorderRadius = { value: props?.borderRadius || 5 }
-        this.uBorder = { value: 0 }
+        this.uTransparency = { value: 0 }
 
         this.raf = useRafR(this.update)
         this.uResolution = { value: [innerWidth, innerHeight] }
@@ -101,7 +101,6 @@ export class BorderImage extends CanvasNode {
         const geometry = new Plane(this.gl, {
         })
 
-        const texture = useManifest().textures.home[2 - this.renderOrder]
         const program = new Program(this.gl, {
             fragment,
             vertex: basicVer,
@@ -109,12 +108,12 @@ export class BorderImage extends CanvasNode {
             depthTest: false,
             depthWrite: false,
             uniforms: {
-                tMap: { value: texture },
+                tMap: { value: this.texture },
                 uSizePixel: this.uSizePixel,
                 uBorderRadius: this.uBorderRadius,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
-                uBorder: this.uBorder
+                uTransparency: this.uTransparency
             }
         })
 
@@ -153,7 +152,7 @@ export class BorderImage extends CanvasNode {
                 d: 500,
                 e: 'o5',
                 update: ({ progE }) => {
-                    this.uBorder.value = progE
+                    this.uTransparency.value = progE
 
                     this.node.position.set(
                         N.Lerp(posI.x, p.x + offset.x, progE),
@@ -166,7 +165,7 @@ export class BorderImage extends CanvasNode {
             this.raf.stop()
         } else {
             this.tl.reset()
-            this.uBorder.value = 0
+            this.uTransparency.value = 0
             this.raf.run()
         }
 
@@ -218,7 +217,7 @@ uniform vec2 uSizePixel;
 uniform vec2 uScaleOffset;
 uniform vec2 uTranslateOffset;
 uniform float uBorderRadius;
-uniform float uBorder;
+uniform float uTransparency;
 
 in vec2 vUv;
 out vec4 FragColor;
@@ -228,8 +227,8 @@ void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
     color.a = 1.;
-    vec4 borderColor = mix(color, vec4(1.), uBorder);
-    float borderWidth = 2.;
+    vec4 borderColor = mix(color, vec4(1.), uTransparency);
+    float borderWidth = 1.;
 
     float xPixel = vUv.x * uSizePixel.x;
     float yPixel = vUv.y * uSizePixel.y;

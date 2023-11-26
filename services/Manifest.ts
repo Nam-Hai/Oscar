@@ -1,7 +1,7 @@
 
 import { Texture } from "ogl";
 
-const MANIFEST = {
+export const MANIFEST = {
   home: [
     // "Asset"
     "/Assets/Home1.png",
