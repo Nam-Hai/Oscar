@@ -42,13 +42,11 @@ export class Picker extends CanvasNode {
             this.needUpdate.on = true
         }
         document.addEventListener('click', click)
-        // document.addEventListener('mousemove', hover)
 
         this.onDestroy(() => {
             document.removeEventListener('click', click)
-            // document.removeEventListener('mousemove', hover)
         })
-        // this.eventHandler = new EventHandler()
+
         this.clickHandler = new EventHandler()
         this.hoverHandler = new EventHandler()
 
@@ -115,11 +113,6 @@ export class Picker extends CanvasNode {
             sort: false
         })
 
-        for (let index = 0; index < renderList.length; index++) {
-            const program = renderList[index].program
-            program.uniforms.uPicking = { value: true }
-        }
-
         this.gl.renderer.render({
             scene: this.node,
             camera: this.camera,
@@ -151,11 +144,6 @@ export class Picker extends CanvasNode {
         // Removed the alpha chanel, was messing up thing because of transparency whatever
         const index = data[0] + (data[1] << 8) + (data[2] << 16);
 
-        for (let index = 0; index < renderList.length; index++) {
-            const program = renderList[index].program
-            program.uniforms.uPicking.value = false
-        }
-
         this.eventHandling(index)
     }
 
@@ -165,7 +153,6 @@ export class Picker extends CanvasNode {
         }
 
         if (this.needUpdate.hover != this.indexPicked) {
-            this.hoverHandler.emit(this.needUpdate.hover, { state: false })
             this.hoverHandler.emit(this.needUpdate.hover, { state: false })
             this.hoverHandler.emit(index, { state: true })
             this.needUpdate.hover = this.indexPicked

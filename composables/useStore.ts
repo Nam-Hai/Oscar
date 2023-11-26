@@ -58,21 +58,6 @@ const useCursorStore = createStore(() => {
 
 export { useCursorStore }
 
-export const useHomeStore = createStore(() => {
-  const currentPageIndex = ref(0)
-  const pagesStore = [{}, {}, {}, {}]
-
-  function nextPage() {
-    currentPageIndex.value = N.mod(currentPageIndex.value + 1, pagesStore.length)
-  }
-  function previousPage() {
-    currentPageIndex.value = N.mod(currentPageIndex.value - 1, pagesStore.length)
-  }
-
-
-  return { currentPageIndex, nextPage, previousPage }
-})
-
 
 // export const useCounterStore = defineStore('counter', () => {
 //   const count = ref(0)

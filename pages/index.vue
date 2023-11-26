@@ -1,15 +1,13 @@
 <template>
     <main ref="mainRef">
-        <h1>Viadomo©DECO</h1>
+        <h1>{{ homeStore[currentIndex].title }}</h1>
 
         <div class="flavor">
             <div class="flavor-main">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, exercitationem
+                {{ homeStore[currentIndex].flavorMain }}
             </div>
             <div class="flavor-sub">
-                <div>Type</div>
-                <div>Field</div>
-                <div>Date</div>
+                <div v-for="text in homeStore[currentIndex].flavorSub">{{ text }}</div>
             </div>
         </div>
 
@@ -22,6 +20,7 @@ import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { defaultFlowIn, defaultFlowOut } from './default.transition';
 
 const mainRef = ref()
+const { homeStore, currentIndex } = useStoreStepper()
 
 useResetLenis({
     infinite: false,

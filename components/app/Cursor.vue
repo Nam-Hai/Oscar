@@ -46,16 +46,17 @@ onMounted(() => {
 
     &.hover {
         &::after {
-            width: .4rem;
-            height: .4rem;
-            min-width: 4px;
-            min-height: 4px;
+            transform: translate(-50%, -50%) scale(0);
             opacity: 0.1;
         }
 
         &::before {
             min-width: 4px;
             min-height: 4px;
+        }
+
+        .hold-border svg {
+            transform: scale(0);
         }
 
         // .hold-border {
@@ -80,6 +81,10 @@ onMounted(() => {
         svg {
             height: 100%;
             width: 100%;
+
+            transform: scale(1);
+            transition: transform 350ms;
+            transition-timing-function: $easeOutQuad;
 
             path {
                 transition: stroke-dashoffset 150ms;
@@ -106,7 +111,7 @@ onMounted(() => {
         background-color: currentColor;
         opacity: 0.1;
 
-        transition-property: min-width, min-height;
+        transition-property: transform;
         transition-duration: 350ms;
         transition-timing-function: $easeOutQuad;
     }
@@ -123,6 +128,7 @@ onMounted(() => {
         background-color: currentColor;
 
         transition-property: min-width, min-height;
+        // transition-property: transform;
         transition-duration: 350ms;
         transition-timing-function: $easeOutQuad;
     }

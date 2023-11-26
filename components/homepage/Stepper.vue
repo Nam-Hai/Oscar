@@ -1,14 +1,15 @@
 <template>
     <div ref="wrapperRef" class="stepper__wrapper" @mouseenter="stepperIsHovered = true"
-        @mouseleave="stepperIsHovered = false" :style="{ width: stepperIsHovered ? (imageBounds.w + 8) * (length) + 'px' : 'unset'}">
-        <div v-cursor-hover class="left d" @click="previousPage()">
-            01
+        @mouseleave="stepperIsHovered = false"
+        :style="{ width: stepperIsHovered ? (imageBounds.w + 8) * (length) + 'px' : 'unset' }">
+        <div class="left d">
+            {{ N.ZL(currentIndex + 1) }}
         </div>
         <div class="step__wrapper">
-            <div class="step" :class="{ active: i - 1 == currentPageIndex }" :key="i" v-for="i in 4"></div>
+            <div class="step" :class="{ active: i - 1 == currentIndex }" :key="i" v-for="i in length"></div>
         </div>
-        <div v-cursor-hover class="right d" @click="nextPage()">
-            04
+        <div class="right d">
+            {{ N.ZL(length) }}
         </div>
 
     </div>
@@ -19,8 +20,7 @@ import { vCursorHover } from '~/directives/cursorActive';
 // const {propName = fallbackValue} = defineProps<{propName: type}>()
 // const emits = defineEmits([])
 
-const { currentPageIndex, nextPage, previousPage } = useHomeStore()
-const { stepperIsHovered, imageBounds, length } = useStoreStepper()
+const { stepperIsHovered, imageBounds, currentIndex, length } = useStoreStepper()
 
 const wrapperRef = ref() as Ref<HTMLElement>
 
