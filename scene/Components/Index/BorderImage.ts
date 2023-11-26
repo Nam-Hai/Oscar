@@ -117,9 +117,11 @@ export class BorderImage extends CanvasNode {
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
                 uTransparency: this.uTransparency,
-                uFake: { value: this.fake ? 1 : 0 }
+                uFake: { value: this.fake ? 1 : 0 },
+                uId: {value: this.uId}
             }
         })
+        console.log(this.uId);
 
         this.node = new Mesh(this.gl, {
             geometry,
@@ -127,6 +129,7 @@ export class BorderImage extends CanvasNode {
             renderOrder: this.renderOrder
         })
     }
+
 
     update(e: rafEvent) {
         this.node.position.lerp(this.positionTarget, this.lerp)
@@ -191,8 +194,10 @@ uniform float uBorderRadius;
 uniform float uTransparency;
 uniform float uFake;
 
+uniform vec4 uId;
+
 in vec2 vUv;
-out vec4 FragColor;
+out vec4 FragColor[2];
 
 
 void main() {
@@ -215,30 +220,31 @@ void main() {
     cornerTopRight += uBorderRadius;
     if(cornerTopRight.x > 0.  && cornerTopRight.y > 0.){
         if(sqrt(cornerTopRight.y * cornerTopRight.y + cornerTopRight.x * cornerTopRight.x)> uBorderRadius - borderWidth) color = borderColor;
-        if(sqrt(cornerTopRight.y * cornerTopRight.y + cornerTopRight.x * cornerTopRight.x)> uBorderRadius ) color.a = 0.;
+        if(sqrt(cornerTopRight.y * cornerTopRight.y + cornerTopRight.x * cornerTopRight.x)> uBorderRadius ) discard;
     }
 
     vec2 cornerTopLeft = vec2(vUv.x * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
     cornerTopLeft += vec2(-uBorderRadius, uBorderRadius);
     if(cornerTopLeft.x < 0.  && cornerTopLeft.y > 0.){
         if(sqrt(cornerTopLeft.y * cornerTopLeft.y + cornerTopLeft.x * cornerTopLeft.x) > uBorderRadius - borderWidth) color = borderColor;
-        if(sqrt(cornerTopLeft.y * cornerTopLeft.y + cornerTopLeft.x * cornerTopLeft.x) > uBorderRadius ) color.a = 0.;
+        if(sqrt(cornerTopLeft.y * cornerTopLeft.y + cornerTopLeft.x * cornerTopLeft.x) > uBorderRadius ) discard;
     }
 
     vec2 cBL = vec2(vUv.x * uSizePixel.x, vUv.y * uSizePixel.y);
     cBL += vec2(-uBorderRadius, -uBorderRadius);
     if(cBL.x < 0.  && cBL.y < 0.){
         if(sqrt(cBL.y * cBL.y + cBL.x * cBL.x) > uBorderRadius - borderWidth ) color = borderColor;
-        if(sqrt(cBL.y * cBL.y + cBL.x * cBL.x) > uBorderRadius ) color.a = 0.;
+        if(sqrt(cBL.y * cBL.y + cBL.x * cBL.x) > uBorderRadius ) discard;
     }
 
     vec2 cBR = vec2((vUv.x - 1.) * uSizePixel.x, vUv.y * uSizePixel.y);
     cBR += vec2(uBorderRadius, -uBorderRadius);
     if(cBR.x > 0.  && cBR.y < 0.){
         if(sqrt(cBR.y * cBR.y + cBR.x * cBR.x) > uBorderRadius - borderWidth ) color = borderColor;
-        if(sqrt(cBR.y * cBR.y + cBR.x * cBR.x) > uBorderRadius ) color.a = 0.;
+        if(sqrt(cBR.y * cBR.y + cBR.x * cBR.x) > uBorderRadius ) discard;
     }
 
-    FragColor = color;
+    FragColor[0] = color;
+    FragColor[1] = uId;
 }
 `

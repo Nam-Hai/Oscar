@@ -15,7 +15,9 @@ export function getUId() {
         ((id >> 0) & 0xFF) / 0xFF,
         ((id >> 8) & 0xFF) / 0xFF,
         ((id >> 16) & 0xFF) / 0xFF,
-        ((id >> 24) & 0xFF) / 0xFF,
+        // ((id >> 24) & 0xFF) / 0xFF,
+        // because of transparency whatever
+        1
     ]
     return { id, uId }
 }

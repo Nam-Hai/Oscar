@@ -13,19 +13,17 @@ export class Picker extends CanvasNode {
 
     indexPicked: number;
 
-    // private clickCallstack: Callstack;
-    pickerProgam: any;
-    target: any;
     needUpdate: { click: boolean; hover: number; on: boolean; };
     renderTargetRatio: number;
     hoverHandler: EventHandler;
     clickHandler: EventHandler;
-    constructor(gl: OGLRenderingContext, options: { node: Transform, camera: Camera, renderTargetRatio?: number }) {
+    target: any;
+    constructor(gl: OGLRenderingContext, options?: { camera?: Camera, renderTargetRatio?: number }) {
         super(gl)
-        this.camera = options.camera
+        this.camera = options?.camera || useCanvas().camera
 
         this.dpr = devicePixelRatio
-        this.renderTargetRatio = options.renderTargetRatio || 4
+        this.renderTargetRatio = options?.renderTargetRatio || 4
 
         this.needUpdate = {
             click: false,
@@ -148,7 +146,9 @@ export class Picker extends CanvasNode {
             data);             // typed array to hold result
 
         // const index = data[0] + data[1] * 256 + data[2] * 256 * 256 + data[3] * 256 * 256 * 256
-        const index = data[0] + (data[1] << 8) + (data[2] << 16) + (data[3] << 24);
+
+        // Removed the alpha chanel, was messing up thing because of transparency whatever
+        const index = data[0] + (data[1] << 8) + (data[2] << 16) ;
 
         for (let index = 0; index < renderList.length; index++) {
             const program = renderList[index].program

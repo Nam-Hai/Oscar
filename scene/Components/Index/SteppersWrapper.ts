@@ -6,6 +6,7 @@ import { useCanvasReactivity } from "../../utils/WebGL.utils";
 import type { Timeline } from "~/plugins/core/motion";
 import { BorderImage } from './BorderImage';
 import { TransformNode } from '../TransformNode';
+import { Picker } from '../Picker';
 
 const { vh, vw, mouse } = useStoreView()
 const { isHold } = useCursorStore()
@@ -44,6 +45,9 @@ export class SteppersWrapper extends CanvasNode {
 
     mount() {
         this.node = new Transform()
+
+        const picker = new Picker(this.gl, {renderTargetRatio: 5})
+        picker.add(this)
 
         this.child = stack.map((el, index) => new BorderImage(this.gl, { lerp: el.lerp, index: index, renderOrder: el.renderOrder, texture: getTexture(index) }))
         this.add(this.child)
@@ -90,7 +94,7 @@ export class SteppersWrapper extends CanvasNode {
                             0
                         )
                     },
-                    delay: 20 * (2 - el.renderOrder),
+                    delay: 50 * (el.index),
                 }).play()
                 el.raf.stop()
             } else {
@@ -114,13 +118,25 @@ export class SteppersWrapper extends CanvasNode {
             if (currentIndex.value == el.index && !el.fake) continue
             if (h) {
                 const { size } = useCanvas()
-                const posI = el.node.position.clone()
+                const posI = new Vec3()
 
                 const posF = {
                     x: ((imageBounds.w + 8) * (el.index - (length - 1) / 2)) * size.value.width / vw.value,
                     y: -size.value.height / 2 + (imageBounds.h / 2 + 30) * size.value.height / vh.value
                 }
                 el.tl.reset()
+                const delay = 50 * (el.index)
+                el.tl.from({
+                    d: delay,
+                    update: () => {
+
+                        posI.copy(el.node.position)
+                    },
+                    cb: () => {
+                        el.raf.stop()
+                        posI.copy(el.node.position)
+                    },
+                })
                 el.tl.from({
                     d: 500,
                     e: 'o5',
@@ -132,9 +148,8 @@ export class SteppersWrapper extends CanvasNode {
                             0
                         )
                     },
-                    delay: 20 * (2 - el.renderOrder),
+                    delay,
                 }).play()
-                el.raf.stop()
             } else {
                 el.tl.reset()
                 if (el.fake) {
