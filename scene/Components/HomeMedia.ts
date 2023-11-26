@@ -6,6 +6,7 @@ import { basicVer } from "../shaders/BasicVer";
 import { useCanvasReactivity } from "../utils/WebGL.utils";
 
 const { vh, vw } = useStoreView()
+const { currentIndex } = useStoreStepper()
 
 export class HomeMedia extends CanvasNode {
 
@@ -15,16 +16,18 @@ export class HomeMedia extends CanvasNode {
     uSizePixel: { value: number[]; };
     uScaleOffset: { value: number[]; };
     uTranslateOffset: { value: number[]; };
+    tMap: any;
     constructor(gl: any, options?: {}) {
         super(gl)
 
-        const texture = useManifest().textures.home[1]
         N.BM(this, ["update", "resize"])
+
+        this.tMap = { value: useManifest().textures.home[currentIndex.value] }
 
 
         this.uSizePixel = { value: [1, 1] }
-        this.uIntrinsecRatio = texture.image
-            ? (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height
+        this.uIntrinsecRatio = this.tMap.value.image
+            ? (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
             : 1;
         this.uScaleOffset = {
             value: [
@@ -65,6 +68,11 @@ export class HomeMedia extends CanvasNode {
         this.mount()
         this.init()
 
+        const { watch } = useCanvasReactivity(this)
+        watch(currentIndex, i=>{
+            this.tMap.value = useManifest().textures.home[i]
+        })
+
         const { unWatch: resizeWatcher } = useCanvasSize(this.resize)
 
         this.onDestroy(() => resizeWatcher())
@@ -77,7 +85,7 @@ export class HomeMedia extends CanvasNode {
             depthTest: false,
             depthWrite: false,
             uniforms: {
-                tMap: { value: useManifest().textures.home[0] },
+                tMap: this.tMap,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset
             }
