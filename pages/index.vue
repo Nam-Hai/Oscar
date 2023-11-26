@@ -1,13 +1,13 @@
 <template>
     <main ref="mainRef">
-        <h1>{{ homeStore[currentIndex].title }}</h1>
+        <h1 :class="{ leave }" class="text-anime__wrapper" v-html="data.titleHTML"></h1>
 
         <div class="flavor">
             <div class="flavor-main">
-                {{ homeStore[currentIndex].flavorMain }}
+                {{ data.flavorMain }}
             </div>
             <div class="flavor-sub">
-                <div v-for="text in homeStore[currentIndex].flavorSub">{{ text }}</div>
+                <div v-for="text in data.flavorSub">{{ text }}</div>
             </div>
         </div>
 
@@ -21,6 +21,26 @@ import { defaultFlowIn, defaultFlowOut } from './default.transition';
 
 const mainRef = ref()
 const { homeStore, currentIndex } = useStoreStepper()
+
+let index = -1
+const timer = useTimer(async () => {
+    leave.value = false
+    if (index == currentIndex.value) {
+        data.value = homeStore[(currentIndex.value + 1) % 2]
+        await nextTick()
+    }
+    data.value = homeStore[currentIndex.value]
+}, 500)
+
+const leave = ref(false)
+
+watch(currentIndex, (i) => {
+    index = i
+
+    leave.value = true
+    timer.tick()
+})
+const data = ref(homeStore[currentIndex.value])
 
 useResetLenis({
     infinite: false,
@@ -37,9 +57,7 @@ usePageFlow({
 
 const { onHold } = useCursorStore()
 
-onHold(mainRef, () => {
-
-})
+onHold(mainRef, () => { })
 
 </script>
 
@@ -86,7 +104,7 @@ h1 {
     text-align: center;
     font-size: 8.8rem;
     font-weight: 500;
-    line-height: 0;
+    // line-height: 6rem;
     letter-spacing: -0.088rem;
     position: absolute;
     left: 50%;

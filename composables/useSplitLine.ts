@@ -9,6 +9,19 @@ function lineSpaning(spans: HTMLElement[]) {
   return node1;
 }
 
+export const useSplitChar = (ref: Ref<HTMLElement>) => {
+  onMounted(() => {
+    const arr = ref.value.innerText.split('')
+
+    ref.value.innerHTML = ""
+    for (const char of arr) {
+      const span = N.Cr('span')
+      span.innerText = char
+      ref.value.appendChild(span)
+    }
+  })
+}
+
 export const useSplitLine = {
   ref: (wrapper: Ref<HTMLElement>) => {
     let text = "";

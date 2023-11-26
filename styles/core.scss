@@ -67,7 +67,7 @@ html {
 body,
 #__nuxt {
   overflow: hidden;
-  cursor: none!important;
+  cursor: none !important;
 }
 
 *,
@@ -230,4 +230,79 @@ h1 {
   font-style: normal;
   font-weight: 400;
   line-height: 100%;
+}
+
+@keyframes text-anime {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0%);
+  }
+}
+
+$easeText: cubic-bezier(0.48, -0.11, 0.25, 0.99);
+
+.text-anime__wrapper {
+  overflow: hidden;
+
+  &.leave {
+    color: #FAFF00;
+    transition: color 200ms;
+
+    >span {
+      transform: translateY(100%);
+      // transition: transform 500ms $easeText 0ms;
+    }
+  }
+
+  span {
+    position: relative;
+    display: inline-block;
+    transform: translateY(0%);
+  }
+
+  >span {
+
+    &:nth-child(1) {
+      transition: transform 500ms $easeText 0ms;
+    }
+
+    &:nth-child(2) {
+      transition: transform 500ms $easeText 40ms;
+    }
+
+    &:nth-child(3) {
+      transition: transform 500ms $easeText 80ms;
+    }
+
+    transition: transform 500ms $easeText 120ms;
+
+
+    &:nth-child(1) {
+      >span {
+        animation: text-anime 500ms $easeText 0ms forwards;
+      }
+    }
+
+    &:nth-child(2) {
+      >span {
+
+        animation: text-anime 500ms $easeText 40ms forwards;
+      }
+    }
+
+    &:nth-child(3) {
+      >span {
+        animation: text-anime 500ms $easeText 80ms forwards;
+      }
+    }
+
+    >span {
+      animation: text-anime 500ms $easeText 120ms forwards;
+
+      transform: translateY(-100%);
+    }
+  }
 }
