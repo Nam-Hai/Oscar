@@ -38,7 +38,7 @@ usePageFlow({
 
 const { onHold } = useCursorStore()
 
-onHold(mainRef, ()=>{
+onHold(mainRef, () => {
 
 })
 
@@ -60,17 +60,25 @@ main {
     top: calc(50% + 3rem + 2.4rem);
     left: calc(50% + 2rem);
     font-size: 1.3rem;
-    line-height: 100%;
 
     .flavor-main {
         margin-bottom: 3.6rem;
         width: 35rem;
+        line-height: 1.6rem;
     }
 
     .flavor-sub {
         display: flex;
         flex-direction: column;
         row-gap: 0.8rem;
+        position: relative;
+        top: 0.45rem;
+
+        >div {
+            line-height: 0;
+            height: 0.9rem;
+            top: 0;
+        }
     }
 }
 

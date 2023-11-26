@@ -6,6 +6,7 @@ import type { RafR, rafEvent } from "~/plugins/core/raf";
 import type { ROR } from "~/plugins/core/resize";
 import { CanvasNode } from "../utils/types";
 import { useCanvasReactivity } from "../utils/WebGL.utils";
+import type { Timeline } from "~/plugins/core/motion";
 
 const { vh, vw, mouse } = useStoreView()
 const { isHold } = useCursorStore()
@@ -23,6 +24,8 @@ export class BorderImage extends CanvasNode {
     positionTarget: Vec3;
     lerp: number;
     renderOrder: number;
+    uBorder: { value: number; };
+    tl: Timeline;
 
     constructor(gl: any, props: { borderRadius?: number, lerp: number, renderOrder: number }) {
         super(gl)
@@ -67,8 +70,10 @@ export class BorderImage extends CanvasNode {
                     0.5,
             ]
         };
+        this.tl = useTL()
 
-        this.uBorderRadius = { value: props?.borderRadius || 2 }
+        this.uBorderRadius = { value: props?.borderRadius || 5 }
+        this.uBorder = { value: 0 }
 
         this.raf = useRafR(this.update)
         this.uResolution = { value: [innerWidth, innerHeight] }
@@ -108,7 +113,8 @@ export class BorderImage extends CanvasNode {
                 uSizePixel: this.uSizePixel,
                 uBorderRadius: this.uBorderRadius,
                 uScaleOffset: this.uScaleOffset,
-                uTranslateOffset: this.uTranslateOffset
+                uTranslateOffset: this.uTranslateOffset,
+                uBorder: this.uBorder
             }
         })
 
@@ -134,16 +140,36 @@ export class BorderImage extends CanvasNode {
     }
 
     onHold(h: boolean) {
-        const p = this.positionTarget.clone()
-        const { size } = useCanvas()
+        if (h) {
+            const p = this.positionTarget.clone()
+            const { size } = useCanvas()
+            const posI = this.node.position.clone()
+            const offset = {
+                x: (imageBounds.w + 8) * (2 - this.renderOrder) * size.value.width / vw.value,
+                // y: (imageBounds.h + 8) * size.value.height / vh.value
+                y: 0
+            }
+            this.tl.from({
+                d: 500,
+                e: 'o5',
+                update: ({ progE }) => {
+                    this.uBorder.value = progE
 
-        const o = (imageBounds.w + 8) * (2 - this.renderOrder) * size.value.width / vw.value
-        const offset = h ? o : - o
-        this.positionTarget.set(
-            p.x + offset,
-            p.y,
-            p.z
-        )
+                    this.node.position.set(
+                        N.Lerp(posI.x, p.x + offset.x, progE),
+                        N.Lerp(posI.y, p.y + offset.y, progE),
+                        0
+                    )
+                },
+                delay: 20 * (2 - this.renderOrder),
+            }).play()
+            this.raf.stop()
+        } else {
+            this.tl.reset()
+            this.uBorder.value = 0
+            this.raf.run()
+        }
+
     }
 
     onResize(canvasSize: { width: number, height: number }) {
@@ -192,6 +218,7 @@ uniform vec2 uSizePixel;
 uniform vec2 uScaleOffset;
 uniform vec2 uTranslateOffset;
 uniform float uBorderRadius;
+uniform float uBorder;
 
 in vec2 vUv;
 out vec4 FragColor;
@@ -201,34 +228,43 @@ void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
     color.a = 1.;
+    vec4 borderColor = mix(color, vec4(1.), uBorder);
+    float borderWidth = 2.;
+
+    float xPixel = vUv.x * uSizePixel.x;
+    float yPixel = vUv.y * uSizePixel.y;
+
+    if(xPixel < borderWidth) color = borderColor;
+    if(xPixel > uSizePixel.x - borderWidth) color = borderColor;
+    if(yPixel > uSizePixel.y - borderWidth) color = borderColor;
+    if(yPixel < borderWidth) color = borderColor;
 
     vec2 cornerTopRight = vec2((vUv.x - 1.) * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
     cornerTopRight += uBorderRadius;
-
     if(cornerTopRight.x > 0.  && cornerTopRight.y > 0.){
-        cornerTopRight/= uBorderRadius;
-        if(cornerTopRight.y * cornerTopRight.y + cornerTopRight.x * cornerTopRight.x > 1. ) color.a = 0.;
+        if(sqrt(cornerTopRight.y * cornerTopRight.y + cornerTopRight.x * cornerTopRight.x)> uBorderRadius - borderWidth) color = borderColor;
+        if(sqrt(cornerTopRight.y * cornerTopRight.y + cornerTopRight.x * cornerTopRight.x)> uBorderRadius ) color.a = 0.;
     }
 
     vec2 cornerTopLeft = vec2(vUv.x * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
     cornerTopLeft += vec2(-uBorderRadius, uBorderRadius);
     if(cornerTopLeft.x < 0.  && cornerTopLeft.y > 0.){
-        cornerTopLeft/= uBorderRadius;
-        if(cornerTopLeft.y * cornerTopLeft.y + cornerTopLeft.x * cornerTopLeft.x > 1. ) color.a = 0.;
+        if(sqrt(cornerTopLeft.y * cornerTopLeft.y + cornerTopLeft.x * cornerTopLeft.x) > uBorderRadius - borderWidth) color = borderColor;
+        if(sqrt(cornerTopLeft.y * cornerTopLeft.y + cornerTopLeft.x * cornerTopLeft.x) > uBorderRadius ) color.a = 0.;
     }
 
     vec2 cBL = vec2(vUv.x * uSizePixel.x, vUv.y * uSizePixel.y);
     cBL += vec2(-uBorderRadius, -uBorderRadius);
     if(cBL.x < 0.  && cBL.y < 0.){
-        cBL/= uBorderRadius;
-        if(cBL.y * cBL.y + cBL.x * cBL.x > 1. ) color.a = 0.;
+        if(sqrt(cBL.y * cBL.y + cBL.x * cBL.x) > uBorderRadius - borderWidth ) color = borderColor;
+        if(sqrt(cBL.y * cBL.y + cBL.x * cBL.x) > uBorderRadius ) color.a = 0.;
     }
 
     vec2 cBR = vec2((vUv.x - 1.) * uSizePixel.x, vUv.y * uSizePixel.y);
     cBR += vec2(uBorderRadius, -uBorderRadius);
     if(cBR.x > 0.  && cBR.y < 0.){
-        cBR/= uBorderRadius;
-        if(cBR.y * cBR.y + cBR.x * cBR.x > 1. ) color.a = 0.;
+        if(sqrt(cBR.y * cBR.y + cBR.x * cBR.x) > uBorderRadius - borderWidth ) color = borderColor;
+        if(sqrt(cBR.y * cBR.y + cBR.x * cBR.x) > uBorderRadius ) color.a = 0.;
     }
 
     FragColor = color;
