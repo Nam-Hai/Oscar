@@ -19,5 +19,7 @@ export const useStoreStepper = createStore(() => {
         return homeTextures[id]
     }
 
-    return { stack, LERP, imageBounds, getTexture, currentIndex}
+    const stepperIsHovered = ref(false)
+
+    return { stack, LERP, imageBounds, getTexture, currentIndex, stepperIsHovered, length}
 })

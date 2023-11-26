@@ -10,16 +10,17 @@ import { TransformNode } from '../TransformNode';
 const { vh, vw, mouse } = useStoreView()
 const { isHold } = useCursorStore()
 // const m = toRefs(mouse)
-const { getTexture, stack, imageBounds, currentIndex } = useStoreStepper()
+const { getTexture, stack, imageBounds, currentIndex, stepperIsHovered, length } = useStoreStepper()
 
 export class SteppersWrapper extends CanvasNode {
     raf: RafR;
     positionTarget: Vec3;
     child!: BorderImage[];
+    fakeImage!: BorderImage;
 
     constructor(gl: any) {
         super(gl)
-        N.BM(this, ['update', 'destroy', 'onMouseMove', 'onHold'])
+        N.BM(this, ['update', 'destroy', 'onMouseMove', 'onHold', 'onStepperHover'])
 
         this.positionTarget = new Vec3(0, 0, 0)
 
@@ -29,6 +30,7 @@ export class SteppersWrapper extends CanvasNode {
         const { watch } = useCanvasReactivity(this)
         watch(mouse, this.onMouseMove)
         watch(isHold, this.onHold)
+        watch(stepperIsHovered, this.onStepperHover)
         this.mount()
         this.init()
 
@@ -48,6 +50,7 @@ export class SteppersWrapper extends CanvasNode {
         const curr = currentIndex.value
         const fakeImage = new BorderImage(this.gl, { lerp: stack[curr].lerp, index: curr, renderOrder: stack[curr].renderOrder - 1, texture: getTexture(curr), fake: true })
         this.add(fakeImage)
+        this.fakeImage = fakeImage
 
     }
 
@@ -57,7 +60,6 @@ export class SteppersWrapper extends CanvasNode {
 
     onMouseMove(mouse: { x: number, y: number }) {
         const { size } = useCanvas()
-        // console.log(size.value, vh.value, vw.value, mouse.x - vw.value / 2, vh.value / 2 - mouse.y);
         this.positionTarget.set(
             (mouse.x - vw.value / 2 + imageBounds.w * 0.5 + 18) * size.value.width / vw.value,
             (vh.value / 2 - mouse.y + imageBounds.h * 0.5 + 18) * size.value.height / vh.value,
@@ -66,6 +68,86 @@ export class SteppersWrapper extends CanvasNode {
     }
 
     onHold(h: boolean) {
+        for (const el of [...this.child, this.fakeImage]) {
+            if (currentIndex.value == el.index && !el.fake) continue
+            if (h) {
+                const p = el.positionTarget.clone()
+                const { size } = useCanvas()
+                const posI = el.node.position.clone()
+                const offset = {
+                    x: ((imageBounds.w + 8) * (el.index) - 120) * size.value.width / vw.value,
+                    y: (-imageBounds.h - 40) * size.value.height / vh.value
+                }
+                el.tl.reset()
+                el.tl.from({
+                    d: 500,
+                    e: 'o5',
+                    update: ({ progE }) => {
+                        el.fake && (el.uTransparency.value = progE)
+                        el.node.position.set(
+                            N.Lerp(posI.x, p.x + offset.x, progE),
+                            N.Lerp(posI.y, p.y + offset.y, progE),
+                            0
+                        )
+                    },
+                    delay: 20 * (2 - el.renderOrder),
+                }).play()
+                el.raf.stop()
+            } else {
+                el.tl.reset()
+                if (el.fake) {
+                    el.tl.from({
+                        d: 500,
+                        e: 'o4',
+                        update: ({ progE }) => {
+                            el.uTransparency.value = 1 - progE
+                        }
+                    }).play()
+                }
+                el.raf.run()
+            }
+        }
+    }
 
+    onStepperHover(h: boolean) {
+        for (const el of [...this.child, this.fakeImage]) {
+            if (currentIndex.value == el.index && !el.fake) continue
+            if (h) {
+                const { size } = useCanvas()
+                const posI = el.node.position.clone()
+
+                const posF = {
+                    x: ((imageBounds.w + 8) * (el.index - (length - 1) / 2)) * size.value.width / vw.value,
+                    y: -size.value.height / 2 + (imageBounds.h / 2 + 30) * size.value.height / vh.value
+                }
+                el.tl.reset()
+                el.tl.from({
+                    d: 500,
+                    e: 'o5',
+                    update: ({ progE }) => {
+                        el.fake && (el.uTransparency.value = progE)
+                        el.node.position.set(
+                            N.Lerp(posI.x, posF.x, progE),
+                            N.Lerp(posI.y, posF.y, progE),
+                            0
+                        )
+                    },
+                    delay: 20 * (2 - el.renderOrder),
+                }).play()
+                el.raf.stop()
+            } else {
+                el.tl.reset()
+                if (el.fake) {
+                    el.tl.from({
+                        d: 500,
+                        e: 'o4',
+                        update: ({ progE }) => {
+                            el.uTransparency.value = 1 - progE
+                        }
+                    }).play()
+                }
+                el.raf.run()
+            }
+        }
     }
 }

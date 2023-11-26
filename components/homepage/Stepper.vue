@@ -1,5 +1,6 @@
 <template>
-    <div ref="wrapperRef" class="stepper__wrapper">
+    <div ref="wrapperRef" class="stepper__wrapper" @mouseenter="stepperIsHovered = true"
+        @mouseleave="stepperIsHovered = false" :style="{ width: stepperIsHovered ? (imageBounds.w + 8) * (length ) + 'px' : 'unset'}">
         <div v-cursor-hover class="left d" @click="previousPage()">
             01
         </div>
@@ -9,6 +10,7 @@
         <div v-cursor-hover class="right d" @click="nextPage()">
             04
         </div>
+
     </div>
 </template>
 
@@ -18,8 +20,7 @@ import { vCursorHover } from '~/directives/cursorActive';
 // const emits = defineEmits([])
 
 const { currentPageIndex, nextPage, previousPage } = useHomeStore()
-console.log(currentPageIndex);
-const store = useStore()
+const { stepperIsHovered, imageBounds, length } = useStoreStepper()
 
 const wrapperRef = ref() as Ref<HTMLElement>
 
@@ -30,14 +31,23 @@ const wrapperRef = ref() as Ref<HTMLElement>
 
 .stepper__wrapper {
     position: absolute;
-    bottom: 2.4rem;
+    bottom: 5.2rem;
     left: 50%;
     transform: translateX(-50%);
 
     display: flex;
     column-gap: 16px;
     align-items: baseline;
+    justify-content: center;
     @include user-select(none);
+
+    padding: 5rem 5rem 3rem;
+    margin: -5rem -0rem -3rem;
+    transition: opacity 300ms;
+
+    &:hover {
+        opacity: 0;
+    }
 
     .d {
         font-size: 11px;

@@ -30,7 +30,7 @@ export class BorderImage extends CanvasNode {
 
     constructor(gl: any, props: { borderRadius?: number, lerp: number, renderOrder: number, texture: Texture, index: number, fake?: boolean }) {
         super(gl)
-        N.BM(this, ['update', 'onResize', 'destroy', 'onMouseMove', 'onHold'])
+        N.BM(this, ['update', 'onResize', 'destroy', 'onMouseMove'])
 
         this.lerp = props.lerp
         this.index = props.index
@@ -85,7 +85,6 @@ export class BorderImage extends CanvasNode {
 
         const { watch } = useCanvasReactivity(this)
         watch(mouse, this.onMouseMove)
-        watch(isHold, this.onHold)
         this.mount()
         this.init()
 
@@ -141,47 +140,6 @@ export class BorderImage extends CanvasNode {
             (vh.value / 2 - mouse.y + imageBounds.h * 0.5 + 18) * size.value.height / vh.value,
             0
         )
-    }
-
-    onHold(h: boolean) {
-        if (currentIndex.value == this.index && !this.fake) return
-        if (h) {
-            const p = this.positionTarget.clone()
-            const { size } = useCanvas()
-            const posI = this.node.position.clone()
-            const offset = {
-                x: ((imageBounds.w + 8) * (this.index) - 120) * size.value.width / vw.value,
-                y: (-imageBounds.h - 40) * size.value.height / vh.value
-            }
-            this.tl.reset()
-            this.tl.from({
-                d: 500,
-                e: 'o5',
-                update: ({ progE }) => {
-                    this.fake && (this.uTransparency.value = progE)
-                    this.node.position.set(
-                        N.Lerp(posI.x, p.x + offset.x, progE),
-                        N.Lerp(posI.y, p.y + offset.y, progE),
-                        0
-                    )
-                },
-                delay: 20 * (2 - this.renderOrder),
-            }).play()
-            this.raf.stop()
-        } else {
-            this.tl.reset()
-            if (this.fake) {
-                this.tl.from({
-                    d: 500,
-                    e: 'o4',
-                    update: ({ progE }) => {
-                        this.uTransparency.value = 1 - progE
-                    }
-                }).play()
-            }
-            this.raf.run()
-        }
-
     }
 
     onResize(canvasSize: { width: number, height: number }) {
