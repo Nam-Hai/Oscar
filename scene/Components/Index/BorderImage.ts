@@ -9,7 +9,7 @@ import type { Timeline } from "~/plugins/core/motion";
 const { vh, vw, mouse } = useStoreView()
 const { isHold } = useCursorStore()
 // const m = toRefs(mouse)
-const imageBounds = { w: 100, h: 60 }
+const { getTexture, stack, imageBounds, currentIndex } = useStoreStepper()
 
 export class BorderImage extends CanvasNode {
     raf: RafR;
@@ -25,17 +25,21 @@ export class BorderImage extends CanvasNode {
     tl: Timeline;
     uTransparency: { value: number; };
     texture: Texture;
+    index: number;
+    fake: boolean;
 
-    constructor(gl: any, props: { borderRadius?: number, lerp: number, renderOrder: number, texture: Texture }) {
+    constructor(gl: any, props: { borderRadius?: number, lerp: number, renderOrder: number, texture: Texture, index: number, fake?: boolean }) {
         super(gl)
         N.BM(this, ['update', 'onResize', 'destroy', 'onMouseMove', 'onHold'])
 
         this.lerp = props.lerp
-        console.log(this.lerp);
+        this.index = props.index
+        this.fake = props.fake || false
 
         this.positionTarget = new Vec3(0, 0, 0)
         this.renderOrder = props.renderOrder
 
+        // this.texture = this.fake ? new Texture(this.gl) : props.texture
         this.texture = props.texture
         this.uIntrinsecRatio = this.texture.image
             ? (this.texture.image as HTMLImageElement).width / (this.texture.image as HTMLImageElement).height
@@ -73,7 +77,7 @@ export class BorderImage extends CanvasNode {
         this.tl = useTL()
 
         this.uBorderRadius = { value: props?.borderRadius || 5 }
-        this.uTransparency = { value: 0 }
+        this.uTransparency = { value: this.fake ? 1 : 0 }
 
         this.raf = useRafR(this.update)
         this.uResolution = { value: [innerWidth, innerHeight] }
@@ -113,7 +117,8 @@ export class BorderImage extends CanvasNode {
                 uBorderRadius: this.uBorderRadius,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
-                uTransparency: this.uTransparency
+                uTransparency: this.uTransparency,
+                uFake: { value: this.fake ? 1 : 0 }
             }
         })
 
@@ -139,21 +144,21 @@ export class BorderImage extends CanvasNode {
     }
 
     onHold(h: boolean) {
+        if (currentIndex.value == this.index && !this.fake) return
         if (h) {
             const p = this.positionTarget.clone()
             const { size } = useCanvas()
             const posI = this.node.position.clone()
             const offset = {
-                x: (imageBounds.w + 8) * (2 - this.renderOrder) * size.value.width / vw.value,
-                // y: (imageBounds.h + 8) * size.value.height / vh.value
-                y: 0
+                x: ((imageBounds.w + 8) * (this.index) - 120) * size.value.width / vw.value,
+                y: (-imageBounds.h - 40) * size.value.height / vh.value
             }
+            this.tl.reset()
             this.tl.from({
                 d: 500,
                 e: 'o5',
                 update: ({ progE }) => {
-                    this.uTransparency.value = progE
-
+                    this.fake && (this.uTransparency.value = progE)
                     this.node.position.set(
                         N.Lerp(posI.x, p.x + offset.x, progE),
                         N.Lerp(posI.y, p.y + offset.y, progE),
@@ -165,7 +170,15 @@ export class BorderImage extends CanvasNode {
             this.raf.stop()
         } else {
             this.tl.reset()
-            this.uTransparency.value = 0
+            if (this.fake) {
+                this.tl.from({
+                    d: 500,
+                    e: 'o4',
+                    update: ({ progE }) => {
+                        this.uTransparency.value = 1 - progE
+                    }
+                }).play()
+            }
             this.raf.run()
         }
 
@@ -218,6 +231,7 @@ uniform vec2 uScaleOffset;
 uniform vec2 uTranslateOffset;
 uniform float uBorderRadius;
 uniform float uTransparency;
+uniform float uFake;
 
 in vec2 vUv;
 out vec4 FragColor;
@@ -226,7 +240,8 @@ out vec4 FragColor;
 void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
-    color.a = 1.;
+    // color.a = 1.;
+    color = mix(color, vec4(0.), uFake);
     vec4 borderColor = mix(color, vec4(1.), uTransparency);
     float borderWidth = 1.;
 

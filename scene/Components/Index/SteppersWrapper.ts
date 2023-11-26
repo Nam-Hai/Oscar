@@ -10,7 +10,7 @@ import { TransformNode } from '../TransformNode';
 const { vh, vw, mouse } = useStoreView()
 const { isHold } = useCursorStore()
 // const m = toRefs(mouse)
-const { getTexture, stack, imageBounds } = useStoreStepper()
+const { getTexture, stack, imageBounds, currentIndex } = useStoreStepper()
 
 export class SteppersWrapper extends CanvasNode {
     raf: RafR;
@@ -43,8 +43,11 @@ export class SteppersWrapper extends CanvasNode {
     mount() {
         this.node = new Transform()
 
-        this.child = stack.map((el, index) => new BorderImage(this.gl, { lerp: el.lerp, renderOrder: el.renderOrder, texture: getTexture(index) }))
+        this.child = stack.map((el, index) => new BorderImage(this.gl, { lerp: el.lerp, index: index, renderOrder: el.renderOrder, texture: getTexture(index) }))
         this.add(this.child)
+        const curr = currentIndex.value
+        const fakeImage = new BorderImage(this.gl, { lerp: stack[curr].lerp, index: curr, renderOrder: stack[curr].renderOrder - 1, texture: getTexture(curr), fake: true })
+        this.add(fakeImage)
 
     }
 

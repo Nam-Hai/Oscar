@@ -30,19 +30,23 @@ const useCursorStore = createStore(() => {
 
     const { $Delay } = useNuxtApp()
     const delay = new $Delay(() => {
-      console.log('hold delay');
       isHold.value = true
       callback()
     }, 1000)
+    const delayQuick = new $Delay(() => {
+      isHolding.value = true
+      callback()
+    }, 200)
 
     function onMouseDown() {
-      isHolding.value = true
+      delayQuick.run()
       delay.run()
     }
     function onMouseUp() {
       isHolding.value = false
       isHold.value = false
       delay.stop()
+      delayQuick.stop()
     }
 
     useEventListeneer(el, 'mousedown', onMouseDown)
