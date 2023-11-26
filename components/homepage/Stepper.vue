@@ -1,6 +1,6 @@
 <template>
     <div ref="wrapperRef" class="stepper__wrapper" @mouseenter="stepperIsHovered = true"
-        @mouseleave="stepperIsHovered = false" :style="{ width: stepperIsHovered ? (imageBounds.w + 8) * (length ) + 'px' : 'unset'}">
+        @mouseleave="stepperIsHovered = false" :style="{ width: stepperIsHovered ? (imageBounds.w + 8) * (length) + 'px' : 'unset'}">
         <div v-cursor-hover class="left d" @click="previousPage()">
             01
         </div>

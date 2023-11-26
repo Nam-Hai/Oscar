@@ -11,7 +11,7 @@ import { Picker } from '../Picker';
 const { vh, vw, mouse } = useStoreView()
 const { isHold } = useCursorStore()
 // const m = toRefs(mouse)
-const { getTexture, stack, imageBounds, currentIndex, stepperIsHovered, length } = useStoreStepper()
+const { getTexture, stack, imageBounds, currentIndex, stepperIsHovered, length, idToIndex } = useStoreStepper()
 
 export class SteppersWrapper extends CanvasNode {
     raf: RafR;
@@ -34,6 +34,7 @@ export class SteppersWrapper extends CanvasNode {
         watch(stepperIsHovered, this.onStepperHover)
         this.mount()
         this.init()
+        this.addEventListener()
 
         this.onDestroy(() => this.raf.stop())
     }
@@ -43,16 +44,52 @@ export class SteppersWrapper extends CanvasNode {
         this.raf.run()
     }
 
+    addEventListener() {
+        const { onClick } = usePick(this)
+
+
+        for (const el of [...this.child]) {
+            onClick(el.id, () => {
+                const index = idToIndex.get(el.id)!;
+
+                const curr = currentIndex.value
+                if (curr == index) return
+
+                if (index - curr > 0) {
+                    for (let i = 0; i < index - curr; i++) {
+                        const a = this.child.shift()!
+                        this.child.push(a)
+                    }
+                } else if (index - curr < 0) {
+                    for (let i = 0; i < -index + curr; i++) {
+                        const a = this.child.pop()!
+                        this.child.unshift(a)
+                    }
+                }
+                this.fakeImage.index = index
+                this.fakeImage.uId.value = el.uId.value
+
+                for (const [i, e] of this.child.entries()) {
+                    e.setRenderOrder(stack[i].renderOrder)
+                    e.lerp = stack[i].lerp
+                }
+                currentIndex.value = index
+                this.onStepperHover(stepperIsHovered.value, true)
+            })
+        }
+    }
     mount() {
         this.node = new Transform()
 
-        const picker = new Picker(this.gl, {renderTargetRatio: 5})
+        const picker = new Picker(this.gl, { renderTargetRatio: 5 })
         picker.add(this)
 
         this.child = stack.map((el, index) => new BorderImage(this.gl, { lerp: el.lerp, index: index, renderOrder: el.renderOrder, texture: getTexture(index) }))
         this.add(this.child)
         const curr = currentIndex.value
         const fakeImage = new BorderImage(this.gl, { lerp: stack[curr].lerp, index: curr, renderOrder: stack[curr].renderOrder - 1, texture: getTexture(curr), fake: true })
+        fakeImage.id = this.child[0].id
+        fakeImage.uId.value = this.child[0].uId.value
         this.add(fakeImage)
         this.fakeImage = fakeImage
 
@@ -83,6 +120,19 @@ export class SteppersWrapper extends CanvasNode {
                     y: (-imageBounds.h - 40) * size.value.height / vh.value
                 }
                 el.tl.reset()
+
+                const delay = 50 * (el.index)
+                el.tl.from({
+                    d: delay,
+                    update: () => {
+
+                        posI.copy(el.node.position)
+                    },
+                    cb: () => {
+                        el.raf.stop()
+                        posI.copy(el.node.position)
+                    },
+                })
                 el.tl.from({
                     d: 500,
                     e: 'o5',
@@ -96,7 +146,6 @@ export class SteppersWrapper extends CanvasNode {
                     },
                     delay: 50 * (el.index),
                 }).play()
-                el.raf.stop()
             } else {
                 el.tl.reset()
                 if (el.fake) {
@@ -113,9 +162,12 @@ export class SteppersWrapper extends CanvasNode {
         }
     }
 
-    onStepperHover(h: boolean) {
+    onStepperHover(h: boolean, immediate = false) {
         for (const el of [...this.child, this.fakeImage]) {
-            if (currentIndex.value == el.index && !el.fake) continue
+            if (currentIndex.value == el.index && !el.fake) {
+                el.raf.run()
+                continue
+            }
             if (h) {
                 const { size } = useCanvas()
                 const posI = new Vec3()
@@ -125,7 +177,8 @@ export class SteppersWrapper extends CanvasNode {
                     y: -size.value.height / 2 + (imageBounds.h / 2 + 30) * size.value.height / vh.value
                 }
                 el.tl.reset()
-                const delay = 50 * (el.index)
+                const delay = immediate ? 0 : 150 * (el.index)
+                if (immediate) posI.copy(el.node.position)
                 el.tl.from({
                     d: delay,
                     update: () => {

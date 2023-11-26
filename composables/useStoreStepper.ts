@@ -6,6 +6,8 @@ export const useStoreStepper = createStore(() => {
     const length = MANIFEST.home.length
     const currentIndex = ref(0)
 
+    const idToIndex = new Map<number, number>()
+
     const stack = N.Arr.create(length).map((el, index) => {
         return {
             lerp: LERP[index],
@@ -21,5 +23,5 @@ export const useStoreStepper = createStore(() => {
 
     const stepperIsHovered = ref(false)
 
-    return { stack, LERP, imageBounds, getTexture, currentIndex, stepperIsHovered, length}
+    return { stack, LERP, imageBounds, getTexture, currentIndex, stepperIsHovered, length, idToIndex}
 })

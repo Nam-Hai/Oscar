@@ -9,13 +9,13 @@ export class CanvasNode {
 
   declare node: Transform;
   id: number;
-  uId: [number, number, number, number];
+  uId: { value: [number, number, number, number]; };
 
   constructor(gl: any) {
     this.gl = gl
     const { id, uId } = getUId()
     this.id = id
-    this.uId = uId
+    this.uId = { value: uId }
 
     N.BM(this, ["mount"])
     this.destroyStack = new Callstack()

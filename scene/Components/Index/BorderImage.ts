@@ -9,7 +9,7 @@ import type { Timeline } from "~/plugins/core/motion";
 const { vh, vw, mouse } = useStoreView()
 const { isHold } = useCursorStore()
 // const m = toRefs(mouse)
-const { getTexture, stack, imageBounds, currentIndex } = useStoreStepper()
+const { idToIndex, stack, imageBounds, currentIndex } = useStoreStepper()
 
 export class BorderImage extends CanvasNode {
     raf: RafR;
@@ -24,9 +24,9 @@ export class BorderImage extends CanvasNode {
     renderOrder: number;
     tl: Timeline;
     uTransparency: { value: number; };
-    texture: Texture;
     index: number;
     fake: boolean;
+    tMap: { value: Texture; };
 
     constructor(gl: any, props: { borderRadius?: number, lerp: number, renderOrder: number, texture: Texture, index: number, fake?: boolean }) {
         super(gl)
@@ -34,15 +34,22 @@ export class BorderImage extends CanvasNode {
 
         this.lerp = props.lerp
         this.index = props.index
+
         this.fake = props.fake || false
+        if (!this.fake) {
+            idToIndex.set(this.id, this.index)
+            console.log("MAP ==> ", this.id, this.index);
+        }
+
+        // this.fake && (this.uId = [1, 1, 1, 1])
 
         this.positionTarget = new Vec3(0, 0, 0)
         this.renderOrder = props.renderOrder
 
         // this.texture = this.fake ? new Texture(this.gl) : props.texture
-        this.texture = props.texture
-        this.uIntrinsecRatio = this.texture.image
-            ? (this.texture.image as HTMLImageElement).width / (this.texture.image as HTMLImageElement).height
+        this.tMap = { value: props.texture }
+        this.uIntrinsecRatio = this.tMap.value.image
+            ? (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
             : 1;
         this.uSizePixel = { value: new Vec2(imageBounds.w, imageBounds.h) }
         this.uScaleOffset = {
@@ -90,9 +97,18 @@ export class BorderImage extends CanvasNode {
 
         const { unWatch: resizeUnWatch } = useCanvasSize(this.onResize)
 
+        this.addEventListener()
 
         this.onDestroy(() => this.raf.stop())
         this.onDestroy(() => resizeUnWatch())
+    }
+
+    setRenderOrder(i: number) {
+        this.renderOrder = i;
+        (this.node as Mesh).renderOrder = i
+    }
+
+    addEventListener() {
     }
 
 
@@ -111,14 +127,14 @@ export class BorderImage extends CanvasNode {
             depthTest: false,
             depthWrite: false,
             uniforms: {
-                tMap: { value: this.texture },
+                tMap: this.tMap,
                 uSizePixel: this.uSizePixel,
                 uBorderRadius: this.uBorderRadius,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
                 uTransparency: this.uTransparency,
                 uFake: { value: this.fake ? 1 : 0 },
-                uId: {value: this.uId}
+                uId: this.uId
             }
         })
         console.log(this.uId);

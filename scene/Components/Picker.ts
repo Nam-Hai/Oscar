@@ -51,6 +51,7 @@ export class Picker extends CanvasNode {
         // this.eventHandler = new EventHandler()
         this.clickHandler = new EventHandler()
         this.hoverHandler = new EventHandler()
+
         this.onDestroy(providerPicker(this))
     }
 
@@ -148,7 +149,7 @@ export class Picker extends CanvasNode {
         // const index = data[0] + data[1] * 256 + data[2] * 256 * 256 + data[3] * 256 * 256 * 256
 
         // Removed the alpha chanel, was messing up thing because of transparency whatever
-        const index = data[0] + (data[1] << 8) + (data[2] << 16) ;
+        const index = data[0] + (data[1] << 8) + (data[2] << 16);
 
         for (let index = 0; index < renderList.length; index++) {
             const program = renderList[index].program
@@ -159,7 +160,9 @@ export class Picker extends CanvasNode {
     }
 
     eventHandling(index: number) {
-        if (this.needUpdate.click) this.clickHandler.emit(index, index)
+        if (this.needUpdate.click) {
+            this.clickHandler.emit(index, index)
+        }
 
         if (this.needUpdate.hover != this.indexPicked) {
             this.hoverHandler.emit(this.needUpdate.hover, { state: false })
