@@ -5,7 +5,6 @@ import { CanvasPage } from "../utils/types";
 import type { Camera, OGLRenderingContext, Renderer, Transform } from "ogl";
 import { HomeMedia } from "../Components/HomeMedia";
 import { SteppersWrapper } from "../Components/Index/SteppersWrapper";
-import { Picker } from "../Components/Picker";
 
 export class IndexCanvas extends CanvasPage {
 

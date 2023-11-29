@@ -6,7 +6,11 @@
             {{ N.ZL(currentIndex + 1) }}
         </div>
         <div class="step__wrapper">
-            <div class="step" :class="{ active: i - 1 == currentIndex }" :key="i" v-for="i in length"></div>
+            <div class="step" :class="{ active: i - 1 == currentIndex }" :key="i" v-for="i in length">
+                <div class="left"></div>
+                <div class="bot"></div>
+                <div class="right"></div>
+            </div>
         </div>
         <div class="right d">
             {{ N.ZL(length) }}
@@ -61,14 +65,19 @@ const wrapperRef = ref() as Ref<HTMLElement>
 
         .step {
             height: 8px;
-            width: 1px;
-            background-color: $white;
+            border: 1px solid $white;
+            border-left-width: 0px;
+            width: 0px;
+            // background-color: $white;
             transform-origin: bottom;
-            transition: transform 300ms $easeInOutSine;
+            // transition: transform 300ms $easeInOutSine;
 
             &.active {
-                transform: scaleY(1.3);
+                // transform: scaleY(1.3);
+                width: 12px;
+                border: 1px solid $yellow;
             }
+
         }
     }
 }

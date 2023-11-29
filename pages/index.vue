@@ -52,12 +52,13 @@ function titleAnimations(i: number, old: number) {
     const tl = titleTls[i]
     tl.reset()
     const title = titleRefs.value[i]
+    N.Class.remove(title, "leave")
     const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
     const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value[i], ...subs]
     for (const [index, char] of spans.entries()) {
         tl.from({
             el: char,
-            d: 700,
+            d: 1000,
             delay: 30 * index,
             e: 'o4',
             p: {
@@ -68,13 +69,25 @@ function titleAnimations(i: number, old: number) {
     tl.play()
 
     const oldTL = titleTls[old]
+    const oldTitle = titleRefs.value[old]
+    // if (!oldTL.arr[0]) return
+    N.Class.add(oldTitle, "leave")
+    // if (oldTL.arr[oldTL.arr.length - 1].v.prog == 1) {
+    //     oldTL.play({
+    //         d: 700,
+    //         p: {
+    //             y: { newEnd: 100 }
+    //         },
+    //     })
+    // } else {
     oldTL.play({
-        d: 700,
+        d: 1000,
         p: {
             y: { newEnd: 100 }
         },
         delay: 0
     })
+    // }
 
 }
 
@@ -138,5 +151,9 @@ h1 {
     transform: translate(-50%, -50%);
     letter-spacing: -0.088rem;
 
+    &.leave {
+        transition: color 200ms;
+        color: $yellow;
+    }
 }
 </style>
