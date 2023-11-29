@@ -53,7 +53,6 @@ function titleAnimations(i: number, old: number) {
     tl.reset()
     const title = titleRefs.value[i]
     const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
-    console.log(flavorSubRef.value, subs);
     const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value[i], ...subs]
     for (const [index, char] of spans.entries()) {
         tl.from({
