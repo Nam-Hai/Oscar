@@ -247,7 +247,7 @@ $easeText: cubic-bezier(0.48, -0.11, 0.25, 0.99);
 .text-anime__wrapper {
   overflow: hidden;
 
-  >span>span {
+  >span {
     transform: translateY(-100%);
   }
 

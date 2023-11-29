@@ -20,36 +20,28 @@
 <script lang="ts" setup>
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { defaultFlowIn, defaultFlowOut } from './default.transition';
+import { onFlow } from '~/waterflow/composables/onFlow';
 
 const mainRef = ref()
 const { homeStore, currentIndex } = useStoreStepper()
 
-const tls = homeStore.map(() => {
+const titleTls = homeStore.map(() => {
     return useTL()
 })
 
-onMounted(() => {
-    const i = currentIndex.value
-    const tl = tls[i]
-    tl.reset()
-    const title = titleRefs.value[i]
-    const spans = N.getAll(".overflow-content", title)!
-    for (const [index, char] of spans.entries()) {
-        tl.from({
-            el: char,
-            d: 700,
-            delay: 30 * index,
-            e: 'o4',
-            p: {
-                y: [-100, 0]
-            }
-        })
-    }
-    tl.play()
+onFlow(() => {
+    titleAnimations(currentIndex.value, currentIndex.value + 1)
 })
 
 watch(currentIndex, (i, old) => {
-    const tl = tls[i]
+    titleAnimations(i, old)
+})
+
+
+const titleRefs = ref()
+
+function titleAnimations(i: number, old: number) {
+    const tl = titleTls[i]
     tl.reset()
     const title = titleRefs.value[i]
     const spans = N.getAll(".overflow-content", title)!
@@ -66,7 +58,7 @@ watch(currentIndex, (i, old) => {
     }
     tl.play()
 
-    const oldTL = tls[old]
+    const oldTL = titleTls[old]
     oldTL.play({
         d: 700,
         p: {
@@ -74,10 +66,8 @@ watch(currentIndex, (i, old) => {
         },
         delay: 0
     })
-})
 
-
-const titleRefs = ref()
+}
 
 usePageFlow({
     props: {},
