@@ -1,13 +1,15 @@
 <template>
     <main ref="mainRef">
-        <h1 :class="{ leave }" class="text-anime__wrapper" v-html="data.titleHTML"></h1>
+        <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index">
+            <h1 class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs"></h1>
 
-        <div class="flavor">
-            <div class="flavor-main">
-                {{ data.flavorMain }}
-            </div>
-            <div class="flavor-sub">
-                <div v-for="text in data.flavorSub">{{ text }}</div>
+            <div class="flavor">
+                <div class="flavor-main">
+                    {{ data.flavorMain }}
+                </div>
+                <div class="flavor-sub">
+                    <div v-for="text in data.flavorSub">{{ text }}</div>
+                </div>
             </div>
         </div>
 
@@ -22,31 +24,60 @@ import { defaultFlowIn, defaultFlowOut } from './default.transition';
 const mainRef = ref()
 const { homeStore, currentIndex } = useStoreStepper()
 
-let index = -1
-const timer = useTimer(async () => {
-    leave.value = false
-    if (index == currentIndex.value) {
-        data.value = homeStore[(currentIndex.value + 1) % 2]
-        await nextTick()
+const tls = homeStore.map(() => {
+    return useTL()
+})
+
+onMounted(() => {
+    const i = currentIndex.value
+    const tl = tls[i]
+    tl.reset()
+    const title = titleRefs.value[i]
+    const spans = N.getAll(".overflow-content", title)!
+    for (const [index, char] of spans.entries()) {
+        tl.from({
+            el: char,
+            d: 700,
+            delay: 30 * index,
+            e: 'o4',
+            p: {
+                y: [-100, 0]
+            }
+        })
     }
-    data.value = homeStore[currentIndex.value]
-}, 500)
-
-const leave = ref(false)
-
-watch(currentIndex, (i) => {
-    index = i
-
-    leave.value = true
-    timer.tick()
-})
-const data = ref(homeStore[currentIndex.value])
-
-useResetLenis({
-    infinite: false,
-    direction: "vertical"
+    tl.play()
 })
 
+watch(currentIndex, (i, old) => {
+    const tl = tls[i]
+    tl.reset()
+    const title = titleRefs.value[i]
+    const spans = N.getAll(".overflow-content", title)!
+    for (const [index, char] of spans.entries()) {
+        tl.from({
+            el: char,
+            d: 700,
+            delay: 30 * index,
+            e: 'o4',
+            p: {
+                y: [-100, 0]
+            }
+        })
+    }
+    tl.play()
+
+    const oldTL = tls[old]
+    oldTL.play({
+        d: 700,
+        p: {
+            y: { newEnd: 100 }
+        },
+        delay: 0
+    })
+})
+
+
+const titleRefs = ref()
 
 usePageFlow({
     props: {},
@@ -54,10 +85,6 @@ usePageFlow({
     flowInCrossfade: defaultFlowIn,
     enableCrossfade: 'BOTTOM'
 })
-
-// const { onHold } = useCursorStore()
-
-// onHold(mainRef, () => { })
 
 </script>
 
@@ -105,10 +132,12 @@ h1 {
     font-size: 8.8rem;
     font-weight: 500;
     // line-height: 6rem;
-    letter-spacing: -0.088rem;
+    width: max-content;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    letter-spacing: -0.088rem;
+
 }
 </style>

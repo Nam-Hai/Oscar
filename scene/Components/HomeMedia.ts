@@ -109,7 +109,7 @@ export class HomeMedia extends CanvasNode {
                 tMap: this.tMap,
                 tNext: this.tNext,
                 uScaleOffset: this.uScaleOffset,
-                uTranslateOffset: this.uTranslateOffset.value,
+                uTranslateOffset: this.uTranslateOffset,
                 uProgress: this.uProgress
             }
         })

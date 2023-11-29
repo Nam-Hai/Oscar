@@ -380,9 +380,9 @@ export class Timeline {
         this.arr.push(m)
         return this
     }
-    play() {
+    play(arg?: MotionArg) {
         for (const motion of this.arr) {
-            motion.play()
+            motion.play(arg)
         }
     }
     pause() {
