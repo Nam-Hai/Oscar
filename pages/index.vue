@@ -4,11 +4,17 @@
             <h1 class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs"></h1>
 
             <div class="flavor">
-                <div class="flavor-main">
-                    {{ data.flavorMain }}
+                <div class="flavor-main overflow">
+                    <span class="overflow-content" ref="flavorMainRef">
+                        {{ data.flavorMain }}
+                    </span>
                 </div>
-                <div class="flavor-sub">
-                    <div v-for="text in data.flavorSub">{{ text }}</div>
+                <div class="flavor-sub" ref="flavorSubRef">
+                    <div v-for="text in data.flavorSub" class="overflow">
+                        <span class="overflow-content">
+                            {{ text }}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -23,7 +29,9 @@ import { defaultFlowIn, defaultFlowOut } from './default.transition';
 import { onFlow } from '~/waterflow/composables/onFlow';
 
 const mainRef = ref()
+const flavorMainRef = ref()
 const { homeStore, currentIndex } = useStoreStepper()
+const flavorSubRef = ref()
 
 const titleTls = homeStore.map(() => {
     return useTL()
@@ -44,7 +52,9 @@ function titleAnimations(i: number, old: number) {
     const tl = titleTls[i]
     tl.reset()
     const title = titleRefs.value[i]
-    const spans = N.getAll(".overflow-content", title)!
+    const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
+    console.log(flavorSubRef.value, subs);
+    const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value[i], ...subs]
     for (const [index, char] of spans.entries()) {
         tl.from({
             el: char,
@@ -109,8 +119,8 @@ main {
         top: 0.45rem;
 
         >div {
-            line-height: 0;
-            height: 0.9rem;
+            line-height: 100%;
+            // height: 0.9rem;
             top: 0;
         }
     }
