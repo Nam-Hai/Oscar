@@ -1,7 +1,7 @@
 <template>
     <main ref="mainRef">
-        <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index">
-            <h1 class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs"></h1>
+        <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index" :class="{current: currentIndex == index}">
+            <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs"></h1>
 
             <div class="flavor">
                 <div class="flavor-main overflow">
@@ -27,6 +27,7 @@
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { defaultFlowIn, defaultFlowOut } from './default.transition';
 import { onFlow } from '~/waterflow/composables/onFlow';
+import { vCursorHover } from '~/directives/cursorActive';
 
 const mainRef = ref()
 const flavorMainRef = ref()
@@ -70,16 +71,8 @@ function titleAnimations(i: number, old: number) {
 
     const oldTL = titleTls[old]
     const oldTitle = titleRefs.value[old]
-    // if (!oldTL.arr[0]) return
+
     N.Class.add(oldTitle, "leave")
-    // if (oldTL.arr[oldTL.arr.length - 1].v.prog == 1) {
-    //     oldTL.play({
-    //         d: 700,
-    //         p: {
-    //             y: { newEnd: 100 }
-    //         },
-    //     })
-    // } else {
     oldTL.play({
         d: 1000,
         p: {
@@ -87,8 +80,6 @@ function titleAnimations(i: number, old: number) {
         },
         delay: 0
     })
-    // }
-
 }
 
 usePageFlow({
@@ -111,6 +102,12 @@ main {
     color: $white;
 }
 
+.index-container {
+    pointer-events: none;
+    &.current {
+        pointer-events: auto;
+    }
+}
 .flavor {
     position: absolute;
     top: calc(50% + 3rem + 2.4rem);
@@ -150,6 +147,12 @@ h1 {
     top: 50%;
     transform: translate(-50%, -50%);
     letter-spacing: -0.088rem;
+
+    transition: color 500ms;
+
+    &:hover {
+        color: $yellow;
+    }
 
     &.leave {
         transition: color 200ms;
