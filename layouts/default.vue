@@ -3,6 +3,7 @@
     <WebGLScene />
     <Menu />
     <Cursor />
+    <Stat />
     <div class="page__wrapper">
       <Preloader>
         <BufferPage />

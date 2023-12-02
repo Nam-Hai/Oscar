@@ -1,7 +1,11 @@
 <template>
     <main ref="mainRef">
-        <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index" :class="{current: currentIndex == index}">
-            <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs" @mouseenter="hideTrail = true" @mouseleave="hideTrail = false"></h1>
+        <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index"
+            :class="{ current: currentIndex == index }">
+            <NuxtLink to="/project-page/test">
+                <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs"
+                    @mouseenter="hideTrail = true" @mouseleave="hideTrail = false"></h1>
+            </NuxtLink>
 
             <div class="flavor">
                 <div class="flavor-main overflow">
@@ -108,10 +112,12 @@ main {
     pointer-events: none;
     top: -3rem;
     position: absolute;
+
     &.current {
         pointer-events: auto;
     }
 }
+
 .flavor {
     position: absolute;
     top: calc(50% + 3rem + 2.4rem);
@@ -152,9 +158,9 @@ h1 {
     transform: translate(-50%, -50%);
     letter-spacing: -0.088rem;
 
-    transition: color 500ms;
 
     &:hover {
+        transition: color 500ms;
         color: $yellow;
     }
 

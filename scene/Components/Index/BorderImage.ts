@@ -85,7 +85,7 @@ export class BorderImage extends CanvasNode {
         this.tl = useTL()
 
         this.uBorderRadius = { value: props?.borderRadius || 5 }
-        this.uTransparency = { value: this.fake ? 1 : 0 }
+        this.uTransparency = { value: 0 }
         this.uHide = { value: 0 }
 
         this.raf = useRafR(this.update)
@@ -237,7 +237,7 @@ void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
     // color.a = 1.;
-    color.a = 1. - uHide;
+    color = mix(color, vec4(0.98,1.,0.,0.), uHide);
 
     color = mix(color, vec4(0.), uFake);
     vec4 borderColor = mix(color, vec4(1.), uTransparency);
