@@ -3,7 +3,6 @@ import { Mesh, Plane, Program, Texture, Transform } from "ogl";
 import { CanvasNode } from "../utils/types";
 import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { useCanvasReactivity } from "../utils/WebGL.utils";
-import { MANIFEST } from "~/services/Manifest";
 
 const { vh, vw } = useStoreView()
 const { currentIndex } = useStoreStepper()
@@ -17,15 +16,15 @@ export class HomeMedia extends CanvasNode {
     uScaleOffset: { value: number[]; };
     uTranslateOffset: { value: number[]; };
     uProgress: { value: number; };
-    textures: Texture[];
     currentMesh!: Mesh;
+    textures: Texture[];
     constructor(gl: any, options?: {}) {
         super(gl)
 
         N.BM(this, ["update", "resize"])
 
         const manifest = useManifest()
-        this.textures = manifest.textures.home
+        this.textures = Object.values(manifest.textures.home)
 
         this.uProgress = { value: 0 }
 

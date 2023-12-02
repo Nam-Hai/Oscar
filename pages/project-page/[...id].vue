@@ -2,7 +2,7 @@
     <div class="project__wrapper" ref="wrapperRef">
         <Landing />
 
-        <div style="height: 140rem; width: 20rem; background-color: red;"></div>
+        <div style="height: 140rem; width: 20rem;"></div>
     </div>
 </template>
 

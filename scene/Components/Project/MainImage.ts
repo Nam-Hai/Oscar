@@ -143,10 +143,18 @@ export class MainImage extends CanvasNode {
 
 
         const manifest = useManifest()
-        this.tMap.value = manifest.manifestTextures.home[src]
-        this.tMap2.value = manifest.textures.home[1]
+        this.tMap.value = manifest.textures.home[src]
+
+        const a = manifest.lazyTextures.VIADOMO["/Assets/Viadomo/1.jpg"]
+        const t = a.texture
+        this.tMap2.value = t
         this.uniformFromTo[0].intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
-        this.uniformFromTo[1].intrinsecRatio = (this.tMap2.value.image as HTMLImageElement).width / (this.tMap2.value.image as HTMLImageElement).height
+
+        const { watch } = useCanvasReactivity(this)
+        watch(a.loaded, b => {
+            console.log("lazy loaded load", b);
+            if (b) this.uniformFromTo[1].intrinsecRatio = (this.tMap2.value.image as HTMLImageElement).width / (this.tMap2.value.image as HTMLImageElement).height
+        }, { immediate: true })
 
         this.onResize(useCanvas().size.value)
 

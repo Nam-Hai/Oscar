@@ -60,8 +60,8 @@ export class EventHandler {
 
 
 export function useCanvasReactivity(ctx: CanvasNode) {
-    function canvasWatch(ref: MultiWatchSources | WatchSource | WatchCallback, callback: WatchCallback) {
-        const unWatch = watch(ref, callback)
+    function canvasWatch(ref: MultiWatchSources | WatchSource | WatchCallback, callback: WatchCallback, options?: {immediate: boolean}) {
+        const unWatch = watch(ref, callback, options)
         ctx.onDestroy(() => unWatch())
     }
 
