@@ -44,5 +44,7 @@ export const useStoreStepper = createStore(() => {
 
     const stepperIsHovered = ref(false)
 
-    return { stack, LERP, imageBounds, getTexture, currentIndex, stepperIsHovered, length, idToIndex, homeStore }
+    const hideTrail = ref(false)
+
+    return { stack, LERP, imageBounds, getTexture, currentIndex, stepperIsHovered, length, idToIndex, homeStore, hideTrail}
 })

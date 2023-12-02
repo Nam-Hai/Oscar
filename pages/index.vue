@@ -1,7 +1,7 @@
 <template>
     <main ref="mainRef">
         <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index" :class="{current: currentIndex == index}">
-            <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs"></h1>
+            <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs" @mouseenter="hideTrail = true" @mouseleave="hideTrail = false"></h1>
 
             <div class="flavor">
                 <div class="flavor-main overflow">
@@ -31,7 +31,7 @@ import { vCursorHover } from '~/directives/cursorActive';
 
 const mainRef = ref()
 const flavorMainRef = ref()
-const { homeStore, currentIndex } = useStoreStepper()
+const { homeStore, currentIndex, hideTrail } = useStoreStepper()
 const flavorSubRef = ref()
 
 const titleTls = homeStore.map(() => {

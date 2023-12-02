@@ -9,7 +9,7 @@ import type { Timeline } from "~/plugins/core/motion";
 const { vh, vw, mouse } = useStoreView()
 const { isHold } = useCursorStore()
 // const m = toRefs(mouse)
-const { idToIndex, stack, imageBounds, currentIndex } = useStoreStepper()
+const { idToIndex, stack, imageBounds, currentIndex, hideTrail } = useStoreStepper()
 
 export class BorderImage extends CanvasNode {
     raf: RafR;
@@ -27,6 +27,7 @@ export class BorderImage extends CanvasNode {
     index: number;
     fake: boolean;
     tMap: { value: Texture; };
+    uHide: { value: number; };
 
     constructor(gl: any, props: { borderRadius?: number, lerp: number, renderOrder: number, texture: Texture, index: number, fake?: boolean }) {
         super(gl)
@@ -85,6 +86,7 @@ export class BorderImage extends CanvasNode {
 
         this.uBorderRadius = { value: props?.borderRadius || 5 }
         this.uTransparency = { value: this.fake ? 1 : 0 }
+        this.uHide = { value: 0 }
 
         this.raf = useRafR(this.update)
         this.uResolution = { value: [innerWidth, innerHeight] }
@@ -92,6 +94,18 @@ export class BorderImage extends CanvasNode {
 
         const { watch } = useCanvasReactivity(this)
         watch(mouse, this.onMouseMove)
+        const tl = useTL()
+        watch(hideTrail, (b) => {
+            const from = this.uHide.value
+            const to = 1 - b
+            tl.reset()
+            tl.from({
+                d: 200,
+                update: (e) => {
+                    this.uHide.value = N.Lerp(from, to, e.progE)
+                }
+            }).play()
+        })
         this.mount()
         this.init()
 
@@ -134,6 +148,7 @@ export class BorderImage extends CanvasNode {
                 uTranslateOffset: this.uTranslateOffset,
                 uTransparency: this.uTransparency,
                 uFake: { value: this.fake ? 1 : 0 },
+                uHide: this.uHide,
                 uId: this.uId
             }
         })
@@ -208,6 +223,7 @@ uniform vec2 uScaleOffset;
 uniform vec2 uTranslateOffset;
 uniform float uBorderRadius;
 uniform float uTransparency;
+uniform float uHide;
 uniform float uFake;
 
 uniform vec4 uId;
@@ -220,6 +236,8 @@ void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
     // color.a = 1.;
+    color.a = uHide;
+
     color = mix(color, vec4(0.), uFake);
     vec4 borderColor = mix(color, vec4(1.), uTransparency);
     float borderWidth = 1.;

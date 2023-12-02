@@ -20,7 +20,6 @@
 </template>
 
 <script lang="ts" setup>
-import { vCursorHover } from '~/directives/cursorActive';
 // const {propName = fallbackValue} = defineProps<{propName: type}>()
 // const emits = defineEmits([])
 
