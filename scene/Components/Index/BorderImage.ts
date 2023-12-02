@@ -96,8 +96,9 @@ export class BorderImage extends CanvasNode {
         watch(mouse, this.onMouseMove)
         const tl = useTL()
         watch(hideTrail, (b) => {
+            console.log('hide', b);
             const from = this.uHide.value
-            const to = 1 - b
+            const to = b;
             tl.reset()
             tl.from({
                 d: 200,
@@ -236,7 +237,7 @@ void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
     // color.a = 1.;
-    color.a = uHide;
+    color.a = 1. - uHide;
 
     color = mix(color, vec4(0.), uFake);
     vec4 borderColor = mix(color, vec4(1.), uTransparency);
