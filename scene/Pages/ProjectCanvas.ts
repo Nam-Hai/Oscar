@@ -1,4 +1,4 @@
-import type { RafR, rafEvent } from "~/plugins/core/raf";
+import { RafPriority, type RafR, type rafEvent } from "~/plugins/core/raf";
 import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 
 import { CanvasPage } from "../utils/types";
@@ -32,7 +32,7 @@ export class ProjectCanvas extends CanvasPage {
         N.BM(this, ["render", "resize", "init", "destroy"]);
 
         this.ro = useROR(this.resize)
-        this.raf = useRafR(this.render)
+        this.raf = useRafR(this.render, RafPriority.LAST)
         this.onDestroy(() => this.ro.off())
         this.onDestroy(() => this.raf.kill())
 

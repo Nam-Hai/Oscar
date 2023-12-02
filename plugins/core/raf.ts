@@ -113,7 +113,7 @@ const Raf = new class {
 
     add(rafItem: rafItem, priority: RafPriority) {
         this.arr[priority].push(rafItem)
-        if (this.arr[1].length > 10000) console.warn("Raf congested", this.arr.length)
+        if (this.arr[1].length > 10000) console.warn("Main Raf congested", this.arr.length)
     }
 
     // take advantage to the fact we sorted the rafscallbacks
@@ -129,10 +129,11 @@ const Raf = new class {
         const _arr = this.arr
 
         if (Math.floor(1 / d * 1000) < 20) {
-            console.warn("frame droped")
+            console.debug("frame droped")
         }
         if (this.on) {
-            for (const arr of _arr) {
+            for (let i = 0; i < _arr.length; i++) {
+                const arr = _arr[i]
                 for (const el of arr) {
                     if (!el.startTime) {
                         el.startTime = t
@@ -165,14 +166,13 @@ class RafR {
         this.killed = false
         this.id = RafId
         this.priority = priority
-        RafId++
     }
 
     run() {
         if (this.on || this.killed) return
         this.on = true
-        this.id = RafId
         RafId++
+        this.id = RafId
         Raf.add({ id: this.id, cb: this.cb }, this.priority)
     }
     stop() {

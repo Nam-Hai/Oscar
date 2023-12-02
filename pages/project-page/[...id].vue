@@ -1,7 +1,8 @@
 <template>
     <div class="project__wrapper" ref="wrapperRef">
         <Landing />
-        <div style="height: 20rem; width: 20rem; background-color: red;"></div>
+
+        <div style="height: 140rem; width: 20rem; background-color: red;"></div>
     </div>
 </template>
 
@@ -16,8 +17,12 @@ import { defaultFlowOut, defaultFlowIn } from '../default.transition';
 const route = useFlowProvider().getRouteTo()
 const id = route.params.id ? route.params.id[0] : 'viadomo-deco'
 
+
 const { firstScroll } = useStoreProject()
 const wrapperRef = ref() as Ref<HTMLElement>
+
+const hTestRef = ref()
+
 useResetLenis()
 
 firstScroll.value = false
@@ -33,15 +38,9 @@ useLenisScroll((e) => {
         })
     }
     if (e.direction < 0 && e.animatedScroll <= 0) {
-        // lenis.stop();
-
         firstScroll.value = false
-        // useDelay(1000, () => {
-        //     lenis.start();
-        // })
     }
 })
-
 
 usePageFlow({
     props: {},

@@ -34,7 +34,6 @@ const { copy, firstScroll } = useStoreProject()
 const COPY = copy[id]
 
 const wrapperRef = ref()
-const mainImage = useCanvasMainImageProject()
 
 onMounted(() => {
     const el = N.get('.project__main-image', wrapperRef.value) as HTMLElement
@@ -151,7 +150,7 @@ onMounted(() => {
         .project__main-image__next-placeholder {
             height: 100%;
             width: 54.6rem;
-            background-color: rgba(255, 0, 0, 0.189);
+            // background-color: rgba(255, 0, 0, 0.189);
             border-radius: 4px;
 
         }
