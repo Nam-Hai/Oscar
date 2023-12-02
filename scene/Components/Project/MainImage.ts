@@ -1,4 +1,4 @@
-import { Vec2, Program, Mesh, Texture, Plane, Vec3 } from 'ogl'
+import { Vec2, Program, Mesh, Texture, Plane, Vec3, Transform } from 'ogl'
 import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
@@ -14,7 +14,6 @@ export class MainImage extends CanvasNode {
     raf: RafR;
     uBorderRadius: { value: number; };
     uSizePixel: { value: Vec2; };
-    uIntrinsecRatio: number;
     uScaleOffset: { value: Vec2; };
     uTranslateOffset: { value: Vec2; };
 
@@ -33,6 +32,7 @@ export class MainImage extends CanvasNode {
     pixelScroll: number;
     canvasSize!: { width: number; height: number; };
     on: boolean = false;
+    tMap2: { value: Texture; };
 
     constructor(gl: any, props: { borderRadius?: number, el?: HTMLElement }) {
         super(gl)
@@ -41,39 +41,36 @@ export class MainImage extends CanvasNode {
         this.pixelPosition = new Vec2(0, 0)
         this.pixelScroll = 0
         const manifest = useManifest()
-        // this.tMap = { value: manifest.manifestTextures.home[src] || manifest.emptyTexture }
         this.tMap = { value: manifest.emptyTexture }
-        this.uIntrinsecRatio = this.tMap.value.image
-            ? (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
-            : 1;
-
+        this.tMap2 = { value: manifest.emptyTexture }
         this.uSizePixel = { value: new Vec2(1, 1) }
 
+        const uIntrinsecRatio = 1
         this.uScaleOffset = {
             value: new Vec2(
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
+                this.uSizePixel.value[0] / this.uSizePixel.value[1] < uIntrinsecRatio
                     ? this.uSizePixel.value[0] /
-                    (this.uSizePixel.value[1] * this.uIntrinsecRatio)
+                    (this.uSizePixel.value[1] * uIntrinsecRatio)
                     : 1,
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
+                this.uSizePixel.value[0] / this.uSizePixel.value[1] < uIntrinsecRatio
                     ? 1
-                    : (this.uSizePixel.value[1] * this.uIntrinsecRatio) /
+                    : (this.uSizePixel.value[1] * uIntrinsecRatio) /
                     this.uSizePixel.value[0],
             )
         };
         this.uTranslateOffset = {
             value: new Vec2(
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
+                this.uSizePixel.value[0] / this.uSizePixel.value[1] < uIntrinsecRatio
                     ? 0.5 *
                     (1 -
                         this.uSizePixel.value[0] /
-                        (this.uSizePixel.value[1] * this.uIntrinsecRatio))
+                        (this.uSizePixel.value[1] * uIntrinsecRatio))
                     : 0,
                 this.uSizePixel.value[0] / this.uSizePixel.value[1] <=
-                    this.uIntrinsecRatio
+                    uIntrinsecRatio
                     ? 0
                     : (1 -
-                        (this.uSizePixel.value[1] * this.uIntrinsecRatio) /
+                        (this.uSizePixel.value[1] * uIntrinsecRatio) /
                         this.uSizePixel.value[0]) *
                     0.5,
             )
@@ -110,7 +107,7 @@ export class MainImage extends CanvasNode {
             const to = +b
             tl.from({
                 d: 1000,
-                e: 'o2',
+                e: 'io1',
                 update: ({ progE }) => {
                     this.uProgress.value = N.Lerp(from, to, progE)
                     this.computeUniform()
@@ -147,10 +144,9 @@ export class MainImage extends CanvasNode {
 
         const manifest = useManifest()
         this.tMap.value = manifest.manifestTextures.home[src]
-        console.log(this.tMap.value.image);
+        this.tMap2.value = manifest.textures.home[1]
         this.uniformFromTo[0].intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
-        this.uniformFromTo[1].intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
-        this.uIntrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
+        this.uniformFromTo[1].intrinsecRatio = (this.tMap2.value.image as HTMLImageElement).width / (this.tMap2.value.image as HTMLImageElement).height
 
         this.onResize(useCanvas().size.value)
 
@@ -161,9 +157,10 @@ export class MainImage extends CanvasNode {
     }
 
     mount() {
+        this.node = new Transform()
         const geometry = new Plane(this.gl, {
-            widthSegments: 20,
-            heightSegments: 20
+            widthSegments: 40,
+            heightSegments: 40
         })
 
         const program = new Program(this.gl, {
@@ -179,14 +176,40 @@ export class MainImage extends CanvasNode {
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
                 uProgress: this.uProgress,
+                uSwap: { value: false },
                 uId: this.uId
             }
         })
 
-        this.node = new Mesh(this.gl, {
+        const a = new Mesh(this.gl, {
             geometry,
             program,
         })
+        a.setParent(this.node)
+
+        const program2 = new Program(this.gl, {
+            fragment,
+            vertex,
+            transparent: true,
+            depthTest: false,
+            depthWrite: false,
+            uniforms: {
+                tMap: this.tMap2,
+                uSizePixel: this.uSizePixel,
+                uBorderRadius: this.uBorderRadius,
+                uScaleOffset: this.uScaleOffset,
+                uTranslateOffset: this.uTranslateOffset,
+                uProgress: this.uProgress,
+                uSwap: { value: true },
+                uId: this.uId
+            }
+        })
+
+        const b = new Mesh(this.gl, {
+            program: program2,
+            geometry
+        })
+        b.setParent(this.node)
     }
 
 
@@ -321,6 +344,8 @@ in vec2 vUv;
 in vec3 vP;
 out vec4 FragColor[2];
 
+uniform bool uSwap;
+
 uniform float uProgress;
 
 float io2(float t) {
@@ -334,6 +359,18 @@ void main() {
 
     vec4 borderColor = color;
     float borderWidth = 1.;
+
+    vec4 c = vec4(0.);
+
+    float t = uProgress;
+    vec2 coord = vec2(vP.x - .5 - 0.3 * (1. - t), vP.y - .5 - 0.3 * (1. - t));
+    float d = sqrt(coord.x * coord.x + coord.y * coord.y * .7);
+    d = clamp(d - t * sqrt(2.), 0., 1.);
+    float radius = 0.3;
+
+    float z = (1. - io2(d / radius)) * step(d, radius);
+
+    color = !uSwap ? mix(color, c, z) : mix(c, color, z);
 
     vec2 cornerTopRight = vec2((vUv.x - 1.) * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
     cornerTopRight += uBorderRadius;
@@ -393,7 +430,7 @@ void main() {
     vP = position;
 
 
-    float t = uProgress;
+    float t = uProgress * 2.;
     if(uProgress > .5){
         t = 2. - uProgress * 2.;
     }
@@ -404,8 +441,8 @@ void main() {
     float z = (1. - io2(d / radius)) * step(d, radius);
 
     vec4 mvmP = modelViewMatrix * vec4(position, 1.);
-    mvmP.z += z * 1.3;
-    mvmP.x += z * -0.2 ;
+    mvmP.z += z * 1.9;
+    mvmP.x += z * -0.4 ;
 
     gl_Position = projectionMatrix * mvmP;
 }`;
