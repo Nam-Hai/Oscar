@@ -103,7 +103,11 @@ main {
 }
 
 .index-container {
+    height: 100%;
+    width: 100%;
     pointer-events: none;
+    top: -5rem;
+    position: absolute;
     &.current {
         pointer-events: auto;
     }
