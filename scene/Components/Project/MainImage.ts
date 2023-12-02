@@ -1,5 +1,4 @@
 import { Vec2, Program, Mesh, Texture, Plane, Vec3 } from 'ogl'
-import { basicVer } from "../../shaders/BasicVer";
 import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
@@ -111,7 +110,7 @@ export class MainImage extends CanvasNode {
             const to = +b
             tl.from({
                 d: 1000,
-                e: 'o4',
+                e: 'o2',
                 update: ({ progE }) => {
                     this.uProgress.value = N.Lerp(from, to, progE)
                     this.computeUniform()
@@ -163,11 +162,13 @@ export class MainImage extends CanvasNode {
 
     mount() {
         const geometry = new Plane(this.gl, {
+            widthSegments: 20,
+            heightSegments: 20
         })
 
         const program = new Program(this.gl, {
             fragment,
-            vertex: basicVer,
+            vertex,
             transparent: true,
             depthTest: false,
             depthWrite: false,
@@ -177,6 +178,7 @@ export class MainImage extends CanvasNode {
                 uBorderRadius: this.uBorderRadius,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
+                uProgress: this.uProgress,
                 uId: this.uId
             }
         })
@@ -190,9 +192,12 @@ export class MainImage extends CanvasNode {
 
     update(e: rafEvent) {
         // this.node.position.lerp(this.positionTarget, this.lerp)
-        if (!this.on) return
 
-        this.pixelScroll = scrollY
+        // this.uProgress.value = (Math.cos(e.elapsed) + 1) / 2
+
+        if (this.on) {
+            this.pixelScroll = scrollY
+        }
 
         this.node.position.set(
             this.canvasSize.width * this.pixelPosition.x / vw.value,
@@ -309,30 +314,26 @@ uniform vec2 uSizePixel;
 uniform vec2 uScaleOffset;
 uniform vec2 uTranslateOffset;
 uniform float uBorderRadius;
-// uniform float uBorderWidth;
 
 uniform vec4 uId;
 
 in vec2 vUv;
+in vec3 vP;
 out vec4 FragColor[2];
 
+uniform float uProgress;
+
+float io2(float t) {
+    float p = 2.0 * t * t;
+    return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+}
 
 void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
-    // color.a = 1.;
 
-    // vec4 borderColor = mix(color, vec4(1.), uTransparency);
     vec4 borderColor = color;
     float borderWidth = 1.;
-
-    // float xPixel = vUv.x * uSizePixel.x;
-    // float yPixel = vUv.y * uSizePixel.y;
-
-    // if(xPixel < borderWidth) color = borderColor;
-    // if(xPixel > uSizePixel.x - borderWidth) color = borderColor;
-    // if(yPixel > uSizePixel.y - borderWidth) color = borderColor;
-    // if(yPixel < borderWidth) color = borderColor;
 
     vec2 cornerTopRight = vec2((vUv.x - 1.) * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
     cornerTopRight += uBorderRadius;
@@ -367,3 +368,44 @@ void main() {
     FragColor[1] = uId;
 }
 `
+const vertex = /* glsl */`#version 300 es
+precision highp float;
+
+in vec3 position;
+in vec2 uv;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+uniform float uProgress;
+
+out vec2 vUv;
+
+out vec3 vP;
+
+float io2(float t) {
+    float p = 2.0 * t * t;
+    return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+}
+
+void main() {
+    vUv = uv;
+    vP = position;
+
+
+    float t = uProgress;
+    if(uProgress > .5){
+        t = 2. - uProgress * 2.;
+    }
+    vec2 coord = vec2(mix(1.1, -1.1, uProgress), mix(0.3, -0.4, uProgress));
+
+    float radius = mix(0.6, 1.3, t);
+    float d = sqrt((vP.x - coord.x) * (vP.x - coord.x) + (vP.y - coord.y) * (vP.y - coord.y));
+    float z = (1. - io2(d / radius)) * step(d, radius);
+
+    vec4 mvmP = modelViewMatrix * vec4(position, 1.);
+    mvmP.z += z * 1.3;
+    mvmP.x += z * -0.2 ;
+
+    gl_Position = projectionMatrix * mvmP;
+}`;
