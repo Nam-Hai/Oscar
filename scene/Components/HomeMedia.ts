@@ -84,7 +84,7 @@ export class HomeMedia extends CanvasNode {
 
     mount() {
         this.node = new Transform()
-        this.currentMesh = this.createPlane(0)
+        this.currentMesh = this.createPlane(currentIndex.value)
         this.currentMesh.setParent(this.node)
         this.currentMesh.program.uniforms.uInProgress.value = 1
 
@@ -215,7 +215,7 @@ in vec2 vUv;
 
 in vec4 vP;
 
-out vec4 FragColor;
+out vec4 FragColor[2];
 
 float iLerp(float a, float b, float value) {
     return (value - a) / (b - a);
@@ -238,7 +238,8 @@ void main() {
     }
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset + a);
 
-    FragColor = color;
+    FragColor[0] = color;
+    // FragColor[1] = color;
 }
 `
 const vertex = /* glsl */`#version 300 es

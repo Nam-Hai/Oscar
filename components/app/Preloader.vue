@@ -30,12 +30,15 @@ const route = useRoute()
 const canvas = useCanvas()
 
 
+// is set to True in preloader at the end of its animation
 watch(preloaderComplete, async () => {
-  await nextTick()
 
   fromPreloader.value = false
 
   canvas.onChange(flowProvider.getRouteTo())
+  canvas.resolveOnChange()
+
+  await nextTick()
 
   useDelay(1000, () => {
     killPreloader.value = true
@@ -56,14 +59,12 @@ onMounted(() => {
 
   manifest.loadManifest().then(() => {
     manifestLoaded.value = true
-    console.log('load');
     endPreloader()
   })
   // if (manifest.length == 0) return endPreloader()
 })
 
 function endPreloader() {
-
   canvas.preloader()
 
   N.Class.add(wrapperRef.value, 'hide')

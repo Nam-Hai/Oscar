@@ -2,7 +2,7 @@
     <main ref="mainRef">
         <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index"
             :class="{ current: currentIndex == index }">
-            <NuxtLink to="/project-page/test">
+            <NuxtLink :to="data.link">
                 <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs"
                     @mouseenter="hideTrail = true" @mouseleave="hideTrail = false"></h1>
             </NuxtLink>
@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
-import { defaultFlowIn, defaultFlowOut } from './default.transition';
+import { defaultFlowIn, defaultFlowOut } from './index.transition';
 import { onFlow } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 

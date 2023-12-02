@@ -15,6 +15,7 @@ export default class Manifest {
   index: globalThis.Ref<number>;
   callback?: (n: number) => void;
 
+
   textures: {
     [key: string]: Texture[];
   };
@@ -25,6 +26,7 @@ export default class Manifest {
   percentage: Ref<number>;
   canvasContext: any;
   currentBackground: number;
+  emptyTexture: Texture;
 
   constructor(gl: any) {
     this.canvasContext = gl;
@@ -32,6 +34,8 @@ export default class Manifest {
     this.manifestTextures = {
 
     }
+
+    this.emptyTexture = new Texture(this.canvasContext)
 
     this.index = ref(0);
     this.percentage = ref(0);

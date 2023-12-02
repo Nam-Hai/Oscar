@@ -7,8 +7,9 @@ import { FlowProvider } from '~/waterflow/FlowProvider';
 import { PreloaderCanvas } from './Pages/PreloaderCanvas';
 import type { CanvasPage } from './utils/types';
 import { IndexCanvas } from './Pages/IndexCanvas';
+import { ProjectCanvas } from './Pages/ProjectCanvas';
 
-type routeMapType = 'index'
+type routeMapType = 'index' | 'project-page-id'
 
 export default class Canvas {
     renderer: Renderer;
@@ -26,6 +27,8 @@ export default class Canvas {
     size: Ref<{ width: number; height: number; }>;
     fallback?: FallbackCanvas;
     index?: IndexCanvas;
+    projectPage?: ProjectCanvas;
+
     dom: HTMLCanvasElement;
 
     constructor() {
@@ -35,12 +38,13 @@ export default class Canvas {
             dpr: devicePixelRatio,
         });
         this.gl = this.renderer.gl
-        this.gl.clearColor(0., 0., 0, 0)
+        this.gl.clearColor(0.945, 0.945, 0.945, 1)
         this.dom = this.gl.canvas
 
         this.map = new Map([
             // ['fallback', this.createFallbackCanvas],
             ['index', this.createIndexCanvas],
+            ['project-page-id', this.createProjectPage]
         ])
 
         this.camera = new Camera(this.gl);
@@ -107,6 +111,10 @@ export default class Canvas {
     createIndexCanvas() {
         this.index = new IndexCanvas(this.gl, { camera: this.camera, scene: this.scene })
         return this.index
+    }
+    createProjectPage() {
+        this.projectPage = new ProjectCanvas(this.gl, { camera: this.camera, scene: this.scene })
+        return this.projectPage
     }
     createFallbackCanvas() {
         // this.fallback = new FallbackCanvas({ gl: this.gl, scene: this.scene, camera: this.camera })

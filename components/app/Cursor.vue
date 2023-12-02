@@ -1,5 +1,5 @@
 <template>
-    <div :style="{ transform: translate }" :class="{ hover: cursorState == 'hover', hold: isHolding }"
+    <div :style="{ transform: translate }" :class="{ hover: cursorState == 'hover', hold: isHolding, dark: pickerDark }"
         class="cursor__wrapper" ref="wrapperRef">
 
         <div class="hold-border">
@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 
 const { mouse } = useStoreView()
-const { cursorState, isHolding } = useCursorStore()
+const { cursorState, isHolding, pickerDark } = useCursorStore()
 
 const translate = computed(() => {
     return `translate(${mouse.value.x}px, ${mouse.value.y}px)`
@@ -39,10 +39,14 @@ onMounted(() => {
     pointer-events: none;
     @include user-select(none);
 
-    position: absolute;
+    position: fixed;
     z-index: 200;
     color: $white;
     transition: color 350ms;
+
+    &.dark {
+        color: $black;
+    }
 
     &.hover {
         &::after {
@@ -58,12 +62,6 @@ onMounted(() => {
         .hold-border svg {
             transform: scale(0);
         }
-
-        // .hold-border {
-        //     path {
-        //         stroke-dashoffset: 0px !important;
-        //     }
-        // }
     }
 
     .hold-border {

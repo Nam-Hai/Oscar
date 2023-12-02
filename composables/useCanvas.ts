@@ -11,9 +11,10 @@ const canvasRecord = new Map()
 // TODO : 
 // Maybe that's not the best way to go
 // Might juste create Store/Service
-function canvasInject<T>(key: string, defaultValue?: T) {
+export function canvasInject<T>(key: string, defaultValue?: T) {
     function provider(value: T) {
         canvasRecord.set(key, value)
+        console.log(canvasRecord);
 
         return () => canvasRecord.delete(key)
     }
@@ -26,7 +27,7 @@ function canvasInject<T>(key: string, defaultValue?: T) {
 }
 
 // example
-export const [providerPicker, usePicker] = canvasInject<Picker>('picker')
+export const [providePicker, usePicker] = canvasInject<Picker>('picker')
 
 export const usePick = (ctx: CanvasNode) => {
     const picker = usePicker()

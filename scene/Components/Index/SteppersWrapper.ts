@@ -1,12 +1,8 @@
 import { Vec2, Program, Mesh, Texture, Plane, Vec3, Transform } from 'ogl'
-import { basicVer } from "../../shaders/BasicVer";
 import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
-import type { Timeline } from "~/plugins/core/motion";
 import { BorderImage } from './BorderImage';
-import { TransformNode } from '../TransformNode';
-import { Picker } from '../Picker';
 
 const { vh, vw, mouse } = useStoreView()
 const { isHold } = useCursorStore()
@@ -87,15 +83,13 @@ export class SteppersWrapper extends CanvasNode {
     mount() {
         this.node = new Transform()
 
-        const picker = new Picker(this.gl, { renderTargetRatio: 5 })
-        picker.add(this)
 
         this.child = stack.map((el, index) => new BorderImage(this.gl, { lerp: el.lerp, index: index, renderOrder: el.renderOrder, texture: getTexture(index) }))
         this.add(this.child)
         const curr = currentIndex.value
         const fakeImage = new BorderImage(this.gl, { lerp: stack[curr].lerp, index: curr, renderOrder: stack[curr].renderOrder - 1, texture: getTexture(curr), fake: true })
-        fakeImage.id = this.child[0].id
-        fakeImage.uId.value = this.child[0].uId.value
+        fakeImage.id = this.child[curr].id
+        fakeImage.uId.value = this.child[curr].uId.value
         this.add(fakeImage)
         this.fakeImage = fakeImage
 

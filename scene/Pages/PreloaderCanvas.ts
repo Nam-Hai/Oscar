@@ -46,6 +46,7 @@ export class PreloaderCanvas extends CanvasPage {
   preloaderAnimation() {
     // DEBUG, skip preloader animation
     useStore().preloaderComplete.value = true
+    console.log('preloaderAnimation', ' preloader Complete = true');
     this.destroy()
   }
 

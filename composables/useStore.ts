@@ -20,7 +20,7 @@ const useCursorStore = createStore(() => {
   const cursorState: Ref<CursorState> = ref("default")
   const isHolding = ref(false)
   const isHold = ref(false)
-
+  const pickerDark = ref(false)
 
   function toggleHover(hover: boolean) {
     cursorState.value = hover ? "hover" : "default"
@@ -53,7 +53,7 @@ const useCursorStore = createStore(() => {
     useEventListeneer(el, 'mouseup', onMouseUp)
   }
 
-  return { cursorState, toggleHover, onHold, isHolding, isHold }
+  return { cursorState, toggleHover, onHold, isHolding, isHold, pickerDark }
 })
 
 export { useCursorStore }

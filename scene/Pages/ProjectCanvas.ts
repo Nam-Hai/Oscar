@@ -3,12 +3,10 @@ import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 
 import { CanvasPage } from "../utils/types";
 import type { Camera, OGLRenderingContext, Renderer, Transform } from "ogl";
-import { HomeMedia } from "../Components/HomeMedia";
-import { SteppersWrapper } from "../Components/Index/SteppersWrapper";
 import { Picker } from "../Components/Picker";
-import { providePicker } from "~/composables/useCanvas";
+import { MainImage } from "../Components/Project/MainImage";
 
-export class IndexCanvas extends CanvasPage {
+export class ProjectCanvas extends CanvasPage {
 
     ro: ROR
     raf: RafR
@@ -22,7 +20,6 @@ export class IndexCanvas extends CanvasPage {
 
         this.node = options.scene
 
-        // const canvasWatch = plugReactivity(this)
         this.renderer = this.gl.renderer
 
         this.camera = options.camera
@@ -50,11 +47,7 @@ export class IndexCanvas extends CanvasPage {
         const picker = new Picker(this.gl, { renderTargetRatio: 5 })
         picker.add(this)
 
-        // last is on Top
-        this.add(new SteppersWrapper(this.gl))
-
-        this.add(new HomeMedia(this.gl))
-
+        this.add(new MainImage(this.gl, {}))
     }
 
     resize({ vh, vw, scale, breakpoint }: ResizeEvent) {

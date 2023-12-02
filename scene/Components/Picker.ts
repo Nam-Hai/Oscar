@@ -3,8 +3,10 @@ import { Transform, Camera, RenderTarget, Program, type OGLRenderingContext } fr
 
 import { CanvasNode } from '../utils/types';
 import { EventHandler } from '../utils/WebGL.utils';
+import { providePicker } from '~/composables/useCanvas';
 
 const { mouse, vh, vw } = useStoreView()
+const { pickerDark } = useCursorStore()
 
 // Drop frames with mousemove after 300 meshes
 export class Picker extends CanvasNode {
@@ -50,7 +52,7 @@ export class Picker extends CanvasNode {
         this.clickHandler = new EventHandler()
         this.hoverHandler = new EventHandler()
 
-        this.onDestroy(providerPicker(this))
+        this.onDestroy(providePicker(this))
     }
 
     mount() {
@@ -59,18 +61,6 @@ export class Picker extends CanvasNode {
             width: innerWidth * devicePixelRatio / this.renderTargetRatio,
             height: innerHeight * devicePixelRatio / this.renderTargetRatio
         })
-
-        const renderList = this.gl.renderer.getRenderList({
-            scene: this.node,
-            camera: this.camera,
-            frustumCull: false,
-            sort: false
-        })
-
-        for (let index = 0; index < renderList.length; index++) {
-            const program = renderList[index].program
-            program.uniforms.uPicking = { value: false }
-        }
     }
     init() {
         const ro = useROR(({ vw, vh }) => {
@@ -104,15 +94,6 @@ export class Picker extends CanvasNode {
     }
 
     private pick() {
-        // if (!this.needUpdate.on) return
-
-        const renderList = this.gl.renderer.getRenderList({
-            scene: this.node,
-            camera: this.camera,
-            frustumCull: false,
-            sort: false
-        })
-
         this.gl.renderer.render({
             scene: this.node,
             camera: this.camera,
@@ -123,6 +104,20 @@ export class Picker extends CanvasNode {
         if (!this.gl.renderer.isWebgl2) {
             console.warn("Picking not allowed")
         }
+
+        (this.gl as WebGL2RenderingContext).readBuffer((this.gl as WebGL2RenderingContext).COLOR_ATTACHMENT0);
+        const dataLumos = new Uint8Array(4);
+        this.gl.readPixels(
+            mouse.value.x * this.dpr / this.renderTargetRatio,
+            (vh.value - mouse.value.y) * this.dpr / this.renderTargetRatio,
+            1,
+            1,
+            this.gl.RGBA,           // format
+            this.gl.UNSIGNED_BYTE,  // type
+            dataLumos);             // typed array to hold result
+        const indexLumos = (dataLumos[0] * 0.2126 + dataLumos[1] * 0.7152 + dataLumos[2] * 0.0722) / 255;
+        pickerDark.value = indexLumos >= 0.5;
+        // L = 0.2126 * R + 0.7152 * G + 0.0722 * B;
 
         // Framebuffer is binded from render()
         // now read the right gl.COLOR_ATTACHMENT

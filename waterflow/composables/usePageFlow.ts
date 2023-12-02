@@ -2,7 +2,7 @@ import { onMounted, onUnmounted } from "vue";
 import { type FlowProps, FlowProvider, useFlowProvider } from "../FlowProvider";
 import { useRouter } from "vue-router";
 
-export type FlowFunction<T> = (props: T, resolve: () => void) => void
+export type FlowFunction<T> = (props: T, resolve: () => void, provider: FlowProvider) => void
 
 // TODO cancel animation if a new route is taken early
 type PageFlowOptions<T> = {
@@ -80,10 +80,11 @@ function createFlow<T>(provider: FlowProvider, flowMap: Map<string, FlowFunction
 
   const key: string = from.name?.toString() + ' => ' + to.name?.toString()
 
+
   let FlowFunction = getFlowFunction(key, flowMap, flow)
   return new Promise<void>(cb => {
     if (!FlowFunction) cb()
-    else FlowFunction(props, cb)
+    else FlowFunction(props, cb, provider)
   })
 }
 

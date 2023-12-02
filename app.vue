@@ -19,9 +19,6 @@ flowProvider.registerPage('index', Index)
 flowProvider.registerPage('project-page-id', ProjectPage)
 // flowProvider.registerPage('playground', Playground)
 
-const flowRef = ref(flowProvider)
-flowProvider.addProps('flowRef', flowRef)
-
 const matcher = window.matchMedia('(prefers-color-scheme: dark)');
 if (matcher.matches) {
   const els = N.getAll('link.light')

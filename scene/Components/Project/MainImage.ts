@@ -1,57 +1,41 @@
 import { Vec2, Program, Mesh, Texture, Plane, Vec3 } from 'ogl'
 import { basicVer } from "../../shaders/BasicVer";
 import type { RafR, rafEvent } from "~/plugins/core/raf";
-import type { ROR } from "~/plugins/core/resize";
 import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
-import type { Timeline } from "~/plugins/core/motion";
+import { canvasInject } from '~/composables/useCanvas';
 
 const { vh, vw, mouse } = useStoreView()
-const { isHold } = useCursorStore()
-// const m = toRefs(mouse)
-const { idToIndex, stack, imageBounds, currentIndex, hideTrail } = useStoreStepper()
 
-export class BorderImage extends CanvasNode {
+export const [provideMainImage, useCanvasMainImageProject] = canvasInject<MainImage>('canvas-main-image-project')
+
+export class MainImage extends CanvasNode {
     raf: RafR;
-    uResolution: { value: number[]; };
     uBorderRadius: { value: number; };
     uSizePixel: { value: Vec2; };
     uIntrinsecRatio: number;
     uScaleOffset: { value: number[]; };
     uTranslateOffset: { value: number[]; };
-    positionTarget: Vec3;
-    lerp: number;
-    renderOrder: number;
-    tl: Timeline;
     uTransparency: { value: number; };
-    index: number;
-    fake: boolean;
     tMap: { value: Texture; };
     uHide: { value: number; };
 
-    constructor(gl: any, props: { borderRadius?: number, lerp: number, renderOrder: number, texture: Texture, index: number, fake?: boolean }) {
+    el?: HTMLElement[];
+    bounds?: DOMRect[];
+
+    constructor(gl: any, props: { borderRadius?: number, el?: HTMLElement }) {
         super(gl)
-        N.BM(this, ['update', 'onResize', 'destroy', 'onMouseMove'])
+        N.BM(this, ['update', 'onResize', 'destroy'])
 
-        this.lerp = props.lerp
-        this.index = props.index
-
-        this.fake = props.fake || false
-        if (!this.fake) {
-            idToIndex.set(this.id, this.index)
-        }
-
-        // this.fake && (this.uId = [1, 1, 1, 1])
-
-        this.positionTarget = new Vec3(0, 0, 0)
-        this.renderOrder = props.renderOrder
-
-        // this.texture = this.fake ? new Texture(this.gl) : props.texture
-        this.tMap = { value: props.texture }
+        const manifest = useManifest()
+        // this.tMap = { value: manifest.manifestTextures.home[src] || manifest.emptyTexture }
+        this.tMap = { value: manifest.emptyTexture }
         this.uIntrinsecRatio = this.tMap.value.image
             ? (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
             : 1;
-        this.uSizePixel = { value: new Vec2(imageBounds.w, imageBounds.h) }
+
+        this.uSizePixel = { value: new Vec2(1, 1) }
+
         this.uScaleOffset = {
             value: [
                 this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
@@ -81,34 +65,21 @@ export class BorderImage extends CanvasNode {
                     0.5,
             ]
         };
-        this.tl = useTL()
 
         this.uBorderRadius = { value: props?.borderRadius || 5 }
         this.uTransparency = { value: 0 }
         this.uHide = { value: 0 }
 
         this.raf = useRafR(this.update)
-        this.uResolution = { value: [innerWidth, innerHeight] }
-
 
         const { watch } = useCanvasReactivity(this)
-        watch(mouse, this.onMouseMove)
-        const tl = useTL()
-        watch(hideTrail, (b) => {
-            const from = this.uHide.value
-            const to = b;
-            tl.reset()
-            tl.from({
-                d: 200,
-                update: (e) => {
-                    this.uHide.value = N.Lerp(from, to, e.progE)
-                }
-            }).play()
-        })
+        // watch(mouse, this.onMouseMove)
         this.mount()
         this.init()
 
         const { unWatch: resizeUnWatch } = useCanvasSize(this.onResize)
+
+        provideMainImage(this)
 
         this.addEventListener()
 
@@ -116,14 +87,26 @@ export class BorderImage extends CanvasNode {
         this.onDestroy(() => resizeUnWatch())
     }
 
-    setRenderOrder(i: number) {
-        this.renderOrder = i;
-        (this.node as Mesh).renderOrder = i
-    }
-
     addEventListener() {
     }
 
+    mountElement(el: HTMLElement, next: HTMLElement) {
+        this.el = [el, next]
+
+
+        const src = N.Ga(this.el[0], "data-src") || "/Assets/Home3.png"
+
+        // console.log(src);
+        // this.bounds = this.el.getBoundingClientRect()
+
+        const manifest = useManifest()
+        this.tMap.value = manifest.manifestTextures.home[src]
+        console.log(this.tMap.value.image);
+        this.uIntrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
+
+        this.onResize(useCanvas().size.value)
+
+    }
 
     init() {
         this.raf.run()
@@ -145,9 +128,6 @@ export class BorderImage extends CanvasNode {
                 uBorderRadius: this.uBorderRadius,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
-                uTransparency: this.uTransparency,
-                uFake: { value: this.fake ? 1 : 0 },
-                uHide: this.uHide,
                 uId: this.uId
             }
         })
@@ -155,27 +135,18 @@ export class BorderImage extends CanvasNode {
         this.node = new Mesh(this.gl, {
             geometry,
             program,
-            renderOrder: this.renderOrder
         })
     }
 
 
     update(e: rafEvent) {
-        this.node.position.lerp(this.positionTarget, this.lerp)
-    }
-
-    onMouseMove(mouse: { x: number, y: number }) {
-        const { size } = useCanvas()
-        this.positionTarget.set(
-            (mouse.x - vw.value / 2 + imageBounds.w * 0.5 + 18) * size.value.width / vw.value,
-            (vh.value / 2 - mouse.y + imageBounds.h * 0.5 + 18) * size.value.height / vh.value,
-            0
-        )
+        // this.node.position.lerp(this.positionTarget, this.lerp)
     }
 
     onResize(canvasSize: { width: number, height: number }) {
+        if (!this.el) return
 
-        this.uResolution.value = [vw.value, vh.value]
+        this.bounds = [this.el[0].getBoundingClientRect(), this.el[1].getBoundingClientRect()]
 
         this.uScaleOffset.value = [
             this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
@@ -204,9 +175,21 @@ export class BorderImage extends CanvasNode {
         ];
 
         this.node.scale.set(
-            canvasSize.width * this.uSizePixel.value.x / this.uResolution.value[0],
-            canvasSize.height * this.uSizePixel.value.y / this.uResolution.value[1],
+            // canvasSize.width * this.uSizePixel.value.x / vw.value,
+            // canvasSize.height * this.uSizePixel.value.y / vh.value,
+            1,
+            1,
             1
+        )
+
+        const x = this.bounds[0].x + this.bounds[0].width / 2 - vw.value / 2
+        const y = vh.value / 2 - this.bounds[0].height / 2 - this.bounds[0].y
+        this.node.position.set(
+            // canvasSize.width * x / vw.value,
+            // canvasSize.height * y / vh.value,
+            0,
+            0,
+            0
         )
     }
 }
@@ -219,6 +202,7 @@ uniform vec2 uSizePixel;
 uniform vec2 uScaleOffset;
 uniform vec2 uTranslateOffset;
 uniform float uBorderRadius;
+// uniform float uBorderWidth;
 uniform float uTransparency;
 uniform float uHide;
 uniform float uFake;
@@ -233,19 +217,18 @@ void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
     // color.a = 1.;
-    color = mix(color, vec4(0.98,1.,0.,0.), uHide);
 
-    color = mix(color, vec4(0.), uFake);
-    vec4 borderColor = mix(color, vec4(1.), uTransparency);
+    // vec4 borderColor = mix(color, vec4(1.), uTransparency);
+    vec4 borderColor = color;
     float borderWidth = 1.;
 
-    float xPixel = vUv.x * uSizePixel.x;
-    float yPixel = vUv.y * uSizePixel.y;
+    // float xPixel = vUv.x * uSizePixel.x;
+    // float yPixel = vUv.y * uSizePixel.y;
 
-    if(xPixel < borderWidth) color = borderColor;
-    if(xPixel > uSizePixel.x - borderWidth) color = borderColor;
-    if(yPixel > uSizePixel.y - borderWidth) color = borderColor;
-    if(yPixel < borderWidth) color = borderColor;
+    // if(xPixel < borderWidth) color = borderColor;
+    // if(xPixel > uSizePixel.x - borderWidth) color = borderColor;
+    // if(yPixel > uSizePixel.y - borderWidth) color = borderColor;
+    // if(yPixel < borderWidth) color = borderColor;
 
     vec2 cornerTopRight = vec2((vUv.x - 1.) * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
     cornerTopRight += uBorderRadius;

@@ -5,19 +5,22 @@ const homeStore = [
         title: "Viadomo©DECO",
         titleHTML: '<span class="overflow-content">V</span><span class="overflow-content">i</span><span class="overflow-content">a</span><span class="overflow-content">d</span><span class="overflow-content">o</span><span class="overflow-content">m</span><span class="overflow-content">o</span><span class="overflow-content">©</span><span class="overflow-content">D</span><span class="overflow-content">E</span><span class="overflow-content">C</span><span class="overflow-content">O</span>',
         flavorMain: "An innovative collection of top-tier furniture",
-        flavorSub: ["Web design", "Furniture", "11.2023"]
+        flavorSub: ["Web design", "Furniture", "11.2023"],
+        link: "/project-page/viadomo-deco"
     },
     {
         title: "Avant garden",
         titleHTML: '<span class="overflow-content">A</span><span class="overflow-content">v</span><span class="overflow-content">a</span><span class="overflow-content">n</span><span class="overflow-content">t</span><span class="overflow-content">&nbsp;</span><span class="overflow-content">g</span><span class="overflow-content">a</span><span class="overflow-content">r</span><span class="overflow-content">d</span><span class="overflow-content">e</span><span class="overflow-content">n</span>',
         flavorMain: "Fashion clothing from the future.",
-        flavorSub: ["Web design", "Fashion", "03.2023"]
+        flavorSub: ["Web design", "Fashion", "03.2023"],
+        link: "/project-page/avant-garden"
     },
     {
         title: "MUCHO MATXA",
         titleHTML: '<span class="overflow-content">M</span><span class="overflow-content">U</span><span class="overflow-content">C</span><span class="overflow-content">H</span><span class="overflow-content">O</span><span class="overflow-content">&nbsp;</span><span class="overflow-content">M</span><span class="overflow-content">A</span><span class="overflow-content">T</span><span class="overflow-content">X</span><span class="overflow-content">A</span>',
         flavorMain: "Lorem ipsum dolor sit amet consectetur.",
-        flavorSub: ["Type", "Field", "Date"]
+        flavorSub: ["Type", "Field", "Date"],
+        link: "/project-page/mucho-matxa"
     }
 ]
 

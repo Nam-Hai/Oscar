@@ -1,5 +1,5 @@
 export const useLenisScroll = (callback: (e: any) => void) => {
-  const $lenis = useStore().lenis
+  const $lenis = useStoreView().lenis
 
   const onScrollSubscription = ref()
   onMounted(() => {
