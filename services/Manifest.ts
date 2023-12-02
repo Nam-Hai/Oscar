@@ -18,6 +18,9 @@ export default class Manifest {
   textures: {
     [key: string]: Texture[];
   };
+  manifestTextures: {
+    [key: string]: { [key: string]: Texture };
+  };
   jsons: { [key: string]: {} };
   percentage: Ref<number>;
   canvasContext: any;
@@ -26,6 +29,9 @@ export default class Manifest {
   constructor(gl: any) {
     this.canvasContext = gl;
     this.textures = {};
+    this.manifestTextures = {
+
+    }
 
     this.index = ref(0);
     this.percentage = ref(0);
@@ -61,6 +67,7 @@ export default class Manifest {
       ((this.percentage.value = 1), (manifestLoaded.value = true));
     for (const [keys, m] of Object.entries(MANIFEST)) {
       this.textures[keys] = [];
+      this.manifestTextures[keys] = {}
       for (const src of m) {
         await new Promise<void>((res) => {
           const texture = new Texture(this.canvasContext);
@@ -70,6 +77,7 @@ export default class Manifest {
           image.onload = () => {
             texture.image = image;
             this.textures[keys].push(texture);
+            this.manifestTextures[keys][src] = texture
             this.index.value++;
             res();
           };
