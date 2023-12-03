@@ -247,13 +247,13 @@ void main() {
     float d = sqrt(coord.x * coord.x + coord.y * coord.y);
     float limit = dMax * mix(0.07, 1., uInProgress);
 
-    if (d > limit + uReach) {
+    if (d > limit) {
         discard;
     }
 
     float a = 0.;
-    if (d > limit) {
-        a = iLerp(limit, limit + uReach, d) * uForce;
+    if (d > limit - uReach) {
+        a = iLerp(limit - uReach, limit, d) * uForce;
     }
 
     vec2 offset = vP.xy * a;
