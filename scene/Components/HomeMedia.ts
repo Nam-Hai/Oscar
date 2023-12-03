@@ -256,7 +256,9 @@ void main() {
         a = iLerp(limit - uReach, limit, d) * uForce;
     }
 
-    vec2 offset = vP.xy * a;
+    float f = clamp(iLerp(1., .9, uInProgress), 0.,1.);
+
+    vec2 offset = vP.xy * a * f;
 
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset - offset);
 
