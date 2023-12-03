@@ -233,7 +233,7 @@ void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
     // color.a = 1.;
-    color = mix(color, vec4(0.98,1.,0.,0.), uHide);
+    color = mix(color, vec4(0.), uHide);
 
     color = mix(color, vec4(0.), uFake);
     vec4 borderColor = mix(color, vec4(1.), uTransparency);

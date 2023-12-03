@@ -33,6 +33,7 @@ export class MainImage extends CanvasNode {
     canvasSize!: { width: number; height: number; };
     on: boolean = false;
     tMap2: { value: Texture; };
+    uLoaded2: { value: number; };
 
     constructor(gl: any, props: { borderRadius?: number, el?: HTMLElement }) {
         super(gl)
@@ -43,6 +44,7 @@ export class MainImage extends CanvasNode {
         const manifest = useManifest()
         this.tMap = { value: manifest.emptyTexture }
         this.tMap2 = { value: manifest.emptyTexture }
+        this.uLoaded2 = { value: 0 }
         this.uSizePixel = { value: new Vec2(1, 1) }
 
         const uIntrinsecRatio = 1
@@ -153,7 +155,15 @@ export class MainImage extends CanvasNode {
         const { watch } = useCanvasReactivity(this)
         watch(a.loaded, b => {
             console.log("lazy loaded load", b);
-            if (b) this.uniformFromTo[1].intrinsecRatio = (this.tMap2.value.image as HTMLImageElement).width / (this.tMap2.value.image as HTMLImageElement).height
+            if (b) {
+                this.uniformFromTo[1].intrinsecRatio = (this.tMap2.value.image as HTMLImageElement).width / (this.tMap2.value.image as HTMLImageElement).height
+                useTL().from({
+                    d: 300,
+                    update: (e) => {
+                        this.uLoaded2.value = e.progE
+                    }
+                }).play()
+            }
         }, { immediate: true })
 
         this.onResize(useCanvas().size.value)
@@ -185,6 +195,7 @@ export class MainImage extends CanvasNode {
                 uTranslateOffset: this.uTranslateOffset,
                 uProgress: this.uProgress,
                 uSwap: { value: false },
+                uLoaded: { value: 1 },
                 uId: this.uId
             }
         })
@@ -209,6 +220,7 @@ export class MainImage extends CanvasNode {
                 uTranslateOffset: this.uTranslateOffset,
                 uProgress: this.uProgress,
                 uSwap: { value: true },
+                uLoaded: this.uLoaded2,
                 uId: this.uId
             }
         })
@@ -355,6 +367,7 @@ out vec4 FragColor[2];
 uniform bool uSwap;
 
 uniform float uProgress;
+uniform float uLoaded;
 
 float io2(float t) {
     float p = 2.0 * t * t;
@@ -364,6 +377,8 @@ float io2(float t) {
 void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
+
+    color = mix(vec4(0.886,0.886,0.886,1.), color, uLoaded);
 
     vec4 borderColor = color;
     float borderWidth = 1.;

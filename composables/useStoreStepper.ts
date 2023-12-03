@@ -39,7 +39,7 @@ export const useStoreStepper = createStore(() => {
     stack[0].renderOrder++
 
     function getTexture(id: number) {
-        const homeTextures = useManifest().textures.home
+        const homeTextures = Object.values(useManifest().textures.home)
         return homeTextures[id]
     }
 
@@ -47,5 +47,5 @@ export const useStoreStepper = createStore(() => {
 
     const hideTrail = ref(false)
 
-    return { stack, LERP, imageBounds, getTexture, currentIndex, stepperIsHovered, length, idToIndex, homeStore, hideTrail}
+    return { stack, LERP, imageBounds, getTexture, currentIndex, stepperIsHovered, length, idToIndex, homeStore, hideTrail }
 })

@@ -11,15 +11,15 @@ const MANIFEST = {
 
 };
 const LAZY_MANIFEST = {
-  VIADOMO: [
-    "/Assets/Viadomo/1.jpg"
-  ],
   junk: [
     "/junk/1.avif",
     "/junk/2.avif",
     "/junk/3.avif",
     "/junk/4.avif",
-  ]
+  ],
+  VIADOMO: [
+    "/Assets/Viadomo/1.jpg"
+  ],
 }
 
 export default class Manifest {
@@ -131,8 +131,12 @@ export default class Manifest {
               image.crossOrigin = "anonymous";
 
               image.onload = () => {
-                texture.image = image;
-                this.loaded.value = true
+                console.log('delayed getter');
+                useDelay(2000, () => {
+                  console.log('delayed getter onload');
+                  texture.image = image;
+                  this.loaded.value = true
+                })
               };
               image.src = src;
             }
@@ -159,9 +163,12 @@ export default class Manifest {
               res()
               return
             }
-            this.lazyTextures[keys][src].loaded.value = true
-            this.lazyTextures[keys][src].texture.image = image;
-            res()
+            useDelay(2000, () => {
+              console.log("DELAYED SHIT", src);
+              this.lazyTextures[keys][src].loaded.value = true
+              this.lazyTextures[keys][src].texture.image = image;
+              res()
+            })
           };
           image.src = src;
         });
