@@ -3,9 +3,24 @@ import { Mesh, Plane, Program, Texture, Transform } from "ogl";
 import { CanvasNode } from "../utils/types";
 import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { useCanvasReactivity } from "../utils/WebGL.utils";
+import { Pane } from 'tweakpane'
 
-const { vh, vw } = useStoreView()
 const { currentIndex } = useStoreStepper()
+
+const uReach = { value: 0.63 }
+const uForce = { value: 0.3 }
+
+const pane = new Pane()
+const widthFolder = pane.addFolder({ title: "Width" })
+widthFolder.addBinding(uReach, 'value', {
+    min: 0, max: 2
+})
+
+const forceFolder = pane.addFolder({title: "Force"})
+forceFolder.addBinding(uForce, 'value', {
+    min: 0, max: 2
+})
+// Pan
 
 export class HomeMedia extends CanvasNode {
 
@@ -98,7 +113,7 @@ export class HomeMedia extends CanvasNode {
         let added = false
 
         const DURATION = 1000
-        const DELAY_IN = 300
+        const DELAY_IN = 250
 
         useTL().from({
             d: 600,
@@ -138,7 +153,9 @@ export class HomeMedia extends CanvasNode {
                 uTranslateOffset: this.uTranslateOffset,
                 uSizeCanvas: this.uSizeCanvas,
                 uInProgress: { value: 0 },
-                uOutProgress: { value: 0 }
+                uOutProgress: { value: 0 },
+                uReach,
+                uForce
             }
         })
         const geometry = new Plane(this.gl, {
@@ -210,6 +227,10 @@ uniform vec2 uTranslateOffset;
 
 uniform float uInProgress;
 
+// DEBUG
+uniform float uForce;
+uniform float uReach;
+
 in vec2 vUv;
 
 in vec4 vP;
@@ -224,18 +245,20 @@ void main() {
     vec2 coord = vec2(vP.x * uSizeCanvas.x, vP.y * uSizeCanvas.y);
     float dMax = sqrt(uSizeCanvas.x * uSizeCanvas.x + uSizeCanvas.y * uSizeCanvas.y) * 0.5;
     float d = sqrt(coord.x * coord.x + coord.y * coord.y);
-    float limit = dMax * mix(0.25, 1., uInProgress);
+    float limit = dMax * mix(0.07, 1., uInProgress);
 
-    float reach = 0.5;
-    if (d > limit + reach) {
+    if (d > limit + uReach) {
         discard;
     }
 
     float a = 0.;
     if (d > limit) {
-        a = iLerp(limit, limit + reach, d) * 0.3;
+        a = iLerp(limit, limit + uReach, d) * uForce;
     }
-    vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset + a);
+
+    vec2 offset = vP.xy * a;
+
+    vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset - offset);
 
     FragColor[0] = color;
     // FragColor[1] = color;
