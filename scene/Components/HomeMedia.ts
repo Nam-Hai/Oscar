@@ -7,13 +7,13 @@ import { Pane } from 'tweakpane'
 
 const { currentIndex } = useStoreStepper()
 
-const uReach = { value: 0.63 }
-const uForce = { value: 0.3 }
+const uReach = { value: 2}
+const uForce = { value: 0.6 }
 
 const pane = new Pane()
 const widthFolder = pane.addFolder({ title: "Width" })
 widthFolder.addBinding(uReach, 'value', {
-    min: 0, max: 2
+    min: 0, max: 4
 })
 
 const forceFolder = pane.addFolder({title: "Force"})
@@ -112,7 +112,7 @@ export class HomeMedia extends CanvasNode {
         this.currentMesh = currentMesh
         let added = false
 
-        const DURATION = 1000
+        const DURATION = 800
         const DELAY_IN = 250
 
         useTL().from({
@@ -124,9 +124,9 @@ export class HomeMedia extends CanvasNode {
             cb: () => {
             },
         }).from({
-            d: DURATION - DELAY_IN,
+            d: DURATION,
             delay: DELAY_IN,
-            e: "o4",
+            e: "o2",
             update: ({ progE }) => {
                 if (!added) {
                     currentMesh.setParent(this.node)
@@ -241,9 +241,13 @@ float iLerp(float a, float b, float value) {
     return (value - a) / (b - a);
 }
 
+float i3(float x){
+    return x * x * x;
+}
+
 void main() {
     vec2 coord = vec2(vP.x * uSizeCanvas.x, vP.y * uSizeCanvas.y);
-    float dMax = sqrt(uSizeCanvas.x * uSizeCanvas.x + uSizeCanvas.y * uSizeCanvas.y) * 0.5;
+    float dMax = sqrt(uSizeCanvas.x * uSizeCanvas.x + uSizeCanvas.y * uSizeCanvas.y) * 0.60;
     float d = sqrt(coord.x * coord.x + coord.y * coord.y);
     float limit = dMax * mix(0.07, 1., uInProgress);
 
@@ -253,10 +257,11 @@ void main() {
 
     float a = 0.;
     if (d > limit - uReach) {
-        a = iLerp(limit - uReach, limit, d) * uForce;
+        a = iLerp(limit - uReach, limit, d);
     }
 
-    float f = clamp(iLerp(1., .9, uInProgress), 0.,1.);
+    float f = clamp(iLerp(1., .95, uInProgress), 0.,1.);
+    a = i3(a) * uForce;
 
     vec2 offset = vP.xy * a * f;
 
