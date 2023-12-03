@@ -21,6 +21,11 @@ export const defaultFlowIn: FlowFunction<TemplateTransitionProps> = ({ }, resolv
     resolve()
 }
 
+export const indexIdFlowIn: FlowFunction<TemplateTransitionProps> = ({ }, resolve,) => {
+    useDelay(1100, () => {
+        resolve()
+    })
+}
 
 export const flowOutMap = new Map([
     ['default', defaultFlowOut],

@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import { useFlowProvider } from '~/waterflow/FlowProvider';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
-import { defaultFlowOut, defaultFlowIn } from '../default.transition';
+import { defaultFlowOut, defaultFlowIn, indexIdFlowIn } from '../default.transition';
 
 // const { client } = usePrismic()
 // const { data: media } = await useAsyncData('media', () => client.getAllByType('mediatest'))
@@ -45,7 +45,7 @@ useLenisScroll((e) => {
 usePageFlow({
     props: {},
     flowOut: defaultFlowOut,
-    flowInCrossfade: defaultFlowIn,
+    flowInCrossfade: indexIdFlowIn,
     enableCrossfade: 'BOTTOM'
 })
 

@@ -50,13 +50,14 @@ export function usePageFlow<T>({
     }
     provider.scrollFlow.stop()
 
+    let flowPromise = crossfade ? provider.hijackFlow() : null
     // mount next page
     provider.onChangeRoute(to)
 
     crossfade && provider.setCrossfadeMode(crossfade)
 
     let promiseOut = createFlow<T>(provider, flowOutMap, flowOut, props)
-    let flowPromise = crossfade ? provider.hijackFlow() : null
+
     await Promise.all([promiseOut, flowPromise])
     provider.unMountBufferPage()
 

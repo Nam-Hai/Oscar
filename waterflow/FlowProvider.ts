@@ -120,6 +120,7 @@ export class FlowProvider {
   }
 
   public hijackFlow() {
+    console.log('hijacked');
     this.flowIsHijacked.value = true
     this.flowHijacked = new Promise<void>((resolve) => {
       this.flowHijackResolver = resolve;

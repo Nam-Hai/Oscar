@@ -29,9 +29,10 @@
 
 <script lang="ts" setup>
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
-import { defaultFlowIn, defaultFlowOut } from './index.transition';
-import { onFlow } from '~/waterflow/composables/onFlow';
+import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
+import { indexFlowIn, indexFlowOutMap } from './index.transition';
+import { T } from '~/plugins/core/utils';
 
 const mainRef = ref()
 const flavorMainRef = ref()
@@ -86,11 +87,31 @@ function titleAnimations(i: number, old: number) {
     })
 }
 
+onLeave(() => {
+    const i = currentIndex.value
+    const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
+    const spans = [flavorMainRef.value[i], ...subs]
+    const tl = titleTls[i]
+    // tl.reset()
+    for (let i = tl.arr.length - 4; i < tl.arr.length; i++) {
+        const motion = tl.arr[i]
+        motion.play({
+            d: 1000,
+            p: {
+                y: { newEnd: 100 }
+            },
+            delay: 0
+        })
+    }
+})
+
 usePageFlow({
-    props: {},
-    flowOut: defaultFlowOut,
-    flowInCrossfade: defaultFlowIn,
-    enableCrossfade: 'BOTTOM'
+    props: {
+        titleRefs: titleRefs,
+    },
+    flowOutMap: indexFlowOutMap,
+    flowInCrossfade: indexFlowIn,
+    enableCrossfade: 'TOP'
 })
 
 </script>
@@ -116,6 +137,8 @@ main {
     &.current {
         pointer-events: auto;
     }
+
+    clip-path: inset(0 0 17rem 0);
 }
 
 .flavor {
@@ -148,7 +171,6 @@ main {
 h1 {
     text-transform: uppercase;
     text-align: center;
-    font-size: 8.8rem;
     font-weight: 500;
     // line-height: 6rem;
     width: max-content;
@@ -156,6 +178,7 @@ h1 {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    font-size: 8.8rem;
     letter-spacing: -0.088rem;
 
 

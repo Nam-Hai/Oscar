@@ -20,6 +20,8 @@
 </template>
 
 <script lang="ts" setup>
+import { onLeave } from '~/waterflow/composables/onFlow';
+
 // const {propName = fallbackValue} = defineProps<{propName: type}>()
 // const emits = defineEmits([])
 
@@ -27,6 +29,9 @@ const { stepperIsHovered, imageBounds, currentIndex, length } = useStoreStepper(
 
 const wrapperRef = ref() as Ref<HTMLElement>
 
+onLeave(() => {
+    N.Class.add(wrapperRef.value, 'hide')
+})
 </script>
 
 <style lang="scss" scoped>
@@ -48,6 +53,10 @@ const wrapperRef = ref() as Ref<HTMLElement>
     margin: -5rem -0rem -3rem;
     transition: opacity 300ms;
 
+    &.hide {
+        transition: opacity 500ms;
+        opacity: 0;
+    }
     &:hover {
         opacity: 0;
     }

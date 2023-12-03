@@ -27,5 +27,7 @@ export const useStoreProject = createStore(() => {
     const copy = projectCopy
     const firstScroll = ref(false)
 
-    return { copy, firstScroll }
+    const currentIndex = ref(0)
+
+    return { copy, firstScroll, currentIndex}
 })

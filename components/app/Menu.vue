@@ -91,6 +91,18 @@ console.log(router.currentRoute.value.name);
     >span {
       text-transform: capitalize;
       // color: $white;
+
+      @include breakpoint-width-max(1000px) {
+        font-size: 2rem;
+        line-height: 100%;
+
+        &:first-child {
+          svg {
+            height: 1.6rem!important;
+          }
+        }
+      }
+
       font-size: 1.3rem;
       font-weight: 500;
       line-height: 1.5rem;

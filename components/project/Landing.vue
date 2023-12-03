@@ -4,8 +4,9 @@
 
         <div class="project__landing__wrapper" :class="{ show: firstScroll }">
             <div class="title__wrapper">
-                <h1 :style="{ justifyContent: (COPY.title.split(' ').length == 1) ? 'flex-end' : 'space-between' }"><span
-                        v-for="  word   in   COPY.title.split(' ')  ">{{ word }}</span></h1>
+                <h1 :style="{ justifyContent: (COPY.title.split(' ').length == 1) ? 'flex-end' : 'space-between' }"
+                    class="overflow"><span v-for="word in COPY.title.split(' ')" class="overflow-content">{{ word }}</span>
+                </h1>
                 <h2>{{ COPY.type }}</h2>
                 <h2>{{ COPY.date }}</h2>
             </div>
@@ -26,6 +27,7 @@
 <script lang="ts" setup>
 import { useCanvasMainImageProject } from '~/scene/Components/Project/MainImage';
 import { useFlowProvider } from '~/waterflow/FlowProvider';
+import { onFlow } from '~/waterflow/composables/onFlow';
 
 const route = useFlowProvider().getRouteTo()
 const id = route.params.id ? route.params.id[0] : 'viadomo-deco'
@@ -40,6 +42,27 @@ onMounted(() => {
     const next__el = N.get('.project__main-image__next-placeholder', wrapperRef.value) as HTMLElement
     const mainImage = useCanvasMainImageProject()
     mainImage.mountElement(el, next__el)
+})
+
+const tl = useTL()
+onFlow(() => {
+    console.log("onFlow");
+    const spans = N.getAll('h1 span', wrapperRef.value)
+    tl.from({
+        el: spans,
+        p: {
+            y: [-100, 0]
+        },
+        e: 'o4',
+        d: 500,
+        cb: () => {
+            // N.Class.remove(N.get('h1', wrapperRef.value)!, 'overflow')
+        }
+    }).play()
+})
+
+onBeforeUnmount(() => {
+    tl.pause()
 })
 </script>
 
@@ -88,6 +111,9 @@ onMounted(() => {
     }
 
     .title__wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
 
         h2 {
             transition: transform 1000ms 50ms $easeInOutQuart;
@@ -100,7 +126,6 @@ onMounted(() => {
         }
 
         h1 {
-
             justify-content: space-between;
 
             span {
@@ -115,16 +140,17 @@ onMounted(() => {
         h1,
         h2 {
             display: flex;
-            width: calc(100vw - 4.8rem);
+            // width: calc(100vw - 4.8rem);
             text-align: justify;
             font-size: 17.7rem;
-            line-height: 80%;
+            line-height: 90%;
             letter-spacing: -.177rem;
             font-weight: 500;
             text-transform: uppercase;
 
             position: relative;
             right: -1rem;
+            top: -0.5rem;
         }
 
     }
