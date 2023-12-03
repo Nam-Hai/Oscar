@@ -140,13 +140,13 @@ export class MainImage extends CanvasNode {
     mountElement(el: HTMLElement, next: HTMLElement) {
         this.el = [el, next]
 
-        const src = N.Ga(this.el[0], "data-src") || "/Assets/Home3.png"
-
+        const src_1 = N.Ga(this.el[0], "data-src") || "/Assets/Home3.png"
+        const src_2 = N.Ga(this.el[1], "data-src") || "/Assets/Home3.png"
 
         const manifest = useManifest()
-        this.tMap.value = manifest.textures.home[src]
+        this.tMap.value = manifest.textures.home[src_1]
 
-        const a = manifest.lazyTextures.VIADOMO["/Assets/Viadomo/1.jpg"]
+        const a = manifest.lazyTextures.VIADOMO[src_2]
         const t = a.texture
         this.tMap2.value = t
         this.uniformFromTo[0].intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
@@ -382,7 +382,7 @@ void main() {
 
     vec4 c = vec4(0.);
 
-    float t = uProgress;
+    float t = uSwap ? uProgress * 1.2: uProgress * 0.6;
     vec2 coord = vec2(vP.x - .5 - 0.3 * (1. - t), vP.y - .5 - 0.3 * (1. - t));
     float d = sqrt(coord.x * coord.x + coord.y * coord.y * .7);
     d = clamp(d - t * sqrt(2.), 0., 1.);

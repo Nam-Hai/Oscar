@@ -1,6 +1,6 @@
 <template>
     <div class="project__landing__container" ref="wrapperRef">
-        <div class="project__main-image" data-src="/Assets/Home1.png"></div>
+        <div class="project__main-image" :data-src="COPY.main_image.src_1"></div>
 
         <div class="project__landing__wrapper" :class="{ show: firstScroll }">
             <div class="title__wrapper">
@@ -21,7 +21,7 @@
                     and sophistication.
                 </p>
 
-                <div class="project__main-image__next-placeholder">
+                <div class="project__main-image__next-placeholder" :data-src="COPY.main_image.src_2">
                 </div>
             </div>
 
