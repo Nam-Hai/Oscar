@@ -35,7 +35,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         slice: []
     },
     "mucho-matxa": {
-        title: 'c',
+        title: 'mucho matxa',
         type: "Fourniture",
         date: "03.2023",
         main_image: {

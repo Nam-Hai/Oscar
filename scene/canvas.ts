@@ -35,6 +35,7 @@ export default class Canvas {
         this.renderer = new Renderer({
             alpha: true,
             antialias: true,
+            premultipliedAlpha: true,
             dpr: devicePixelRatio,
         });
         this.gl = this.renderer.gl

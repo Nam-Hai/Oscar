@@ -382,7 +382,7 @@ void main() {
 
     vec4 c = vec4(0.);
 
-    float t = uSwap ? uProgress * 1.2: uProgress * 0.6;
+    float t = uSwap ? uProgress * 1.2: uProgress * 0.;
     vec2 coord = vec2(vP.x - .5 - 0.3 * (1. - t), vP.y - .5 - 0.3 * (1. - t));
     float d = sqrt(coord.x * coord.x + coord.y * coord.y * .7);
     d = clamp(d - t * sqrt(2.), 0., 1.);
