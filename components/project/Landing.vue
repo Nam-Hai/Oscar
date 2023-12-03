@@ -5,7 +5,12 @@
         <div class="project__landing__wrapper" :class="{ show: firstScroll }">
             <div class="title__wrapper">
                 <h1 :style="{ justifyContent: (COPY.title.split(' ').length == 1) ? 'flex-end' : 'space-between' }"
-                    class="overflow"><span v-for="word in COPY.title.split(' ')" class="overflow-content">{{ word }}</span>
+                    class="overflow">
+                    <span v-for="word in COPY.title.split(' ')">
+                        <span v-for="char in word.split('')" class="overflow-content">
+                            {{ char }}
+                        </span>
+                    </span>
                 </h1>
                 <h2>{{ COPY.type }}</h2>
                 <h2>{{ COPY.date }}</h2>
@@ -47,18 +52,20 @@ onMounted(() => {
 const tl = useTL()
 onFlow(() => {
     console.log("onFlow");
-    const spans = N.getAll('h1 span', wrapperRef.value)
-    tl.from({
-        el: spans,
-        p: {
-            y: [-100, 0]
-        },
-        e: 'o4',
-        d: 500,
-        cb: () => {
-            // N.Class.remove(N.get('h1', wrapperRef.value)!, 'overflow')
-        }
-    }).play()
+    const spans = N.getAll('h1 > span > span', wrapperRef.value)
+    for (let i = 0; i < spans.length; i++) {
+        const span = spans[i]
+        tl.from({
+            el: span,
+            p: {
+                y: [-100, 0]
+            },
+            e: 'o4',
+            delay: i * 35,
+            d: 500,
+        })
+    }
+    tl.play()
 })
 
 onBeforeUnmount(() => {
@@ -127,10 +134,17 @@ onBeforeUnmount(() => {
 
         h1 {
             justify-content: space-between;
+            width: 100%;
 
-            span {
+            >span {
                 justify-self: ﬂex-end;
+                display: flex;
+
+                >span {
+                    letter-spacing: -.177rem;
+                }
             }
+
         }
 
         h2 {
