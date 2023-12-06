@@ -7,9 +7,6 @@
         </div>
         <div class="step__wrapper">
             <div class="step" :class="{ active: i - 1 == currentIndex }" :key="i" v-for="i in length">
-                <div class="left"></div>
-                <div class="bot"></div>
-                <div class="right"></div>
             </div>
         </div>
         <div class="right d">
@@ -20,6 +17,8 @@
 </template>
 
 <script lang="ts" setup>
+import Lenis from '@studio-freight/lenis';
+import { mod } from '~/plugins/core/utils';
 import { onLeave } from '~/waterflow/composables/onFlow';
 
 // const {propName = fallbackValue} = defineProps<{propName: type}>()
@@ -28,6 +27,30 @@ import { onLeave } from '~/waterflow/composables/onFlow';
 const { stepperIsHovered, imageBounds, currentIndex, length } = useStoreStepper()
 
 const wrapperRef = ref() as Ref<HTMLElement>
+
+let on = true
+
+useLenisScroll((e: Lenis) => {
+    // console.log('lenis', e.direction, on);
+    if (!on) return
+    if (Math.abs(e.velocity) == 0) return
+
+    on = false
+    const direction = e.direction
+    const i = currentIndex.value
+    currentIndex.value = mod(i + direction, length)
+
+    const lenis = useLenis()
+    lenis.stop()
+    lenis.targetScroll = lenis.animatedScroll
+
+    useDelay(1500, () => {
+        console.log("300");
+        lenis.start()
+        on = true
+    })
+})
+
 
 onLeave(() => {
     N.Class.add(wrapperRef.value, 'hide')
@@ -57,6 +80,7 @@ onLeave(() => {
         transition: opacity 500ms;
         opacity: 0;
     }
+
     &:hover {
         opacity: 0;
     }
@@ -78,10 +102,10 @@ onLeave(() => {
             width: 0px;
             // background-color: $white;
             transform-origin: bottom;
-            // transition: transform 300ms $easeInOutSine;
+            transition: width 500ms $easeOutQuart, border-left-width 100ms 400ms $easeInQuart;
 
             &.active {
-                // transform: scaleY(1.3);
+                transition: width 500ms $easeOutQuart, border-left-width 300ms 0ms $easeInQuart;
                 width: 12px;
                 border: 1px solid $yellow;
             }

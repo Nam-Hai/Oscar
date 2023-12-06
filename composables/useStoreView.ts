@@ -30,16 +30,18 @@ export const useStoreView = createStore(() => {
     document.addEventListener("mousemove", updateMouse);
   }
   function resetLenis({
-    wrapper, content, target, infinite, direction
+    wrapper, content, target, infinite, direction, duration, lerp
   }: {
     wrapper?: Window | HTMLElement;
     content?: HTMLElement;
     target?: Window | HTMLElement;
     infinite?: boolean;
     direction?: "horizontal" | "vertical";
+    duration?: number;
+    lerp?: number
   }) {
 
-    lenis.value.stop();
+    lenis.value.destroy();
     lenis.value = new Lenis({
       wrapper,
       content,
@@ -50,8 +52,11 @@ export const useStoreView = createStore(() => {
       wheelMultiplier: 0.82,
       touchMultiplier: 1.7,
       infinite: infinite,
-      orientation: direction
+      orientation: direction,
+      duration,
+      lerp
     });
+    // lenis.value.normalizeWheel
   }
 
 

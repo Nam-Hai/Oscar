@@ -44,41 +44,90 @@ export class SteppersWrapper extends CanvasNode {
     addEventListener() {
         const { onClick, useHover } = usePick(this)
 
+        const { watch } = useCanvasReactivity(this)
+
+        let click = false
         for (const el of [...this.child]) {
             onClick(el.id, () => {
                 const index = idToIndex.get(el.id)!;
 
-                const curr = currentIndex.value
-                if (curr == index) return
-
-                if (index - curr > 0) {
-                    for (let i = 0; i < index - curr; i++) {
-                        const a = this.child.shift()!
-                        this.child.push(a)
-                    }
-                } else if (index - curr < 0) {
-                    for (let i = 0; i < -index + curr; i++) {
-                        const a = this.child.pop()!
-                        this.child.unshift(a)
-                    }
-                }
-                this.fakeImage.index = index
-                this.fakeImage.uId.value = el.uId.value
-
-                for (const [i, e] of this.child.entries()) {
-                    e.setRenderOrder(stack[i].renderOrder)
-                    e.lerp = stack[i].lerp
-                }
+                click = true
                 currentIndex.value = index
-                this.onStepperHover(stepperIsHovered.value, true)
             })
 
             const { hover } = useHover(el.id)
-            const { watch } = useCanvasReactivity(this)
             watch(hover, h => {
                 toggleHover(h && (stepperIsHovered.value))
             })
         }
+
+        const scrollTL = useTL()
+
+        watch(currentIndex, (newIndex, oldIndex) => {
+            const curr = oldIndex
+            const index = newIndex
+
+            if (index - curr > 0) {
+                for (let i = 0; i < index - curr; i++) {
+                    const a = this.child.shift()!
+                    this.child.push(a)
+                }
+            } else if (index - curr < 0) {
+                for (let i = 0; i < -index + curr; i++) {
+                    const a = this.child.pop()!
+                    this.child.unshift(a)
+                }
+            }
+
+
+            this.fakeImage.index = index
+            this.fakeImage.uId.value = this.child[0].uId.value
+
+            if (!click) {
+                scrollTL.reset()
+
+                let dir = 0
+                if (index == 0 && curr == length - 1) {
+                    dir = 1
+                } else if (index == length - 1 && curr == 0) {
+                    dir = -1
+                } else {
+                    dir = index - curr
+                }
+                const c = this.child[dir == -1 ? 0 : length - 1]
+                const from = c.positionTarget.y
+                const fromX = c.positionTarget.x
+                scrollTL.from({
+                    d: 300,
+                    e: 'io2',
+                    update: (e) => {
+                        c.positionTarget.y = N.Lerp(from + 0.2, from, e.progE)
+                        c.positionTarget.x = N.Lerp(fromX + 0.2, fromX, e.progE)
+                    }
+                }).from({
+                    d: 150,
+                    update: () => {
+
+                    },
+                    cb: () => {
+                        for (const [i, e] of this.child.entries()) {
+                            e.setRenderOrder(stack[i].renderOrder)
+                            e.lerp = stack[i].lerp
+                        }
+                    },
+                })
+                    .play()
+            } else {
+                for (const [i, e] of this.child.entries()) {
+                    e.setRenderOrder(stack[i].renderOrder)
+                    e.lerp = stack[i].lerp
+                }
+            }
+            click = false
+
+            this.onStepperHover(stepperIsHovered.value, true)
+        })
+
     }
     mount() {
         this.node = new Transform()

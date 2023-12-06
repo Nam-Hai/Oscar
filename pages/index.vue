@@ -32,7 +32,6 @@ import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 import { indexFlowIn, indexFlowOutMap } from './index.transition';
-import { T } from '~/plugins/core/utils';
 
 const mainRef = ref()
 const flavorMainRef = ref()
@@ -103,6 +102,10 @@ onLeave(() => {
             delay: 0
         })
     }
+})
+
+useResetLenis({
+    infinite: true,
 })
 
 usePageFlow({
