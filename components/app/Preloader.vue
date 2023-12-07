@@ -76,9 +76,9 @@ watch(preloaderComplete, async () => {
 
   await nextTick()
 
-  useDelay(1000, () => {
-    killPreloader.value = true
-  }).run()
+  killPreloader.value = true
+  // useDelay(1000, () => {
+  // }).run()
 })
 
 
@@ -101,7 +101,6 @@ onMounted(() => {
 })
 
 function endPreloader() {
-  console.log('canvas.preloader');
   canvas.preloader()
 
   N.Class.add(wrapperRef.value, 'hide')

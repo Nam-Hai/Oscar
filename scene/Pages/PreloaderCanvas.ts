@@ -44,7 +44,7 @@ export class PreloaderCanvas extends CanvasPage {
   init() {
     this.raf.run();
 
-    this.preloaderAnimation();
+    // this.preloaderAnimation();
   }
 
   mount() {
@@ -60,6 +60,10 @@ export class PreloaderCanvas extends CanvasPage {
       const node = this.nodes[i]
       node.growAnimation()
     }
+
+    useDelay(800, () => {
+      this.preloaderAnimation()
+    })
   }
 
   preloaderAnimation() {
@@ -70,8 +74,8 @@ export class PreloaderCanvas extends CanvasPage {
 
 
     // DEBUG, skip preloader animation
-    // useStore().preloaderComplete.value = true
-    // this.destroy()
+    useStore().preloaderComplete.value = true
+    this.destroy()
   }
 
   resize({ vh, vw, scale, breakpoint }: ResizeEvent) { }
