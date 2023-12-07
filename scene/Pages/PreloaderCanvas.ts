@@ -5,6 +5,8 @@ import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 //@ts-ignore
 import { Camera, Renderer, Transform, type OGLRenderingContext } from "ogl";
 import { CanvasPage } from "../utils/types";
+import { PreloaderImage } from "../Components/Preloader/PreloaderImage";
+
 
 export class PreloaderCanvas extends CanvasPage {
 
@@ -16,6 +18,7 @@ export class PreloaderCanvas extends CanvasPage {
   camera: Camera;
   canvasScene: Transform;
   scene: Transform;
+  nodes!: PreloaderImage[];
 
   constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
     super(gl)
@@ -31,6 +34,7 @@ export class PreloaderCanvas extends CanvasPage {
     this.raf = useRafR(this.render);
     this.ro = useROR(this.resize);
 
+    this.mount()
 
     this.destroyStack = new Callstack([
       () => this.raf.stop(),
@@ -43,11 +47,31 @@ export class PreloaderCanvas extends CanvasPage {
     this.preloaderAnimation();
   }
 
+  mount() {
+    const manifest = useManifest()
+    const textures = Object.values(manifest.textures.home)
+    this.nodes = N.Arr.create(1).map((index) => {
+      const node = new PreloaderImage(this.gl, { texture: textures[index] })
+      node.node.setParent(this.scene)
+      return node
+    })
+
+    for (let i = 0; i < this.nodes.length; i++) {
+      const node = this.nodes[i]
+      node.growAnimation()
+    }
+  }
+
   preloaderAnimation() {
+
+    const { getBounds } = usePreloaderStore()
+    const bounds = getBounds()
+    console.log("prelaoder bounds", getBounds());
+
+
     // DEBUG, skip preloader animation
-    useStore().preloaderComplete.value = true
-    console.log('preloaderAnimation', ' preloader Complete = true');
-    this.destroy()
+    // useStore().preloaderComplete.value = true
+    // this.destroy()
   }
 
   resize({ vh, vw, scale, breakpoint }: ResizeEvent) { }

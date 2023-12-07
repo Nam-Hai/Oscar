@@ -35,7 +35,6 @@ export function useDelay(delay: number, callback: () => void, options?: { immedi
 
 export function useRafR(callback: (arg: rafEvent) => void, priority: RafPriority = RafPriority.NORMAL) {
     const { $RafR } = useNuxtApp()
-    console.log(priority);
     return new $RafR(callback, priority)
 }
 

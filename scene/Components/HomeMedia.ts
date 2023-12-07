@@ -10,16 +10,16 @@ const { currentIndex } = useStoreStepper()
 const uReach = { value: 2}
 const uForce = { value: 0.6 }
 
-const pane = new Pane()
-const widthFolder = pane.addFolder({ title: "Width" })
-widthFolder.addBinding(uReach, 'value', {
-    min: 0, max: 4
-})
+// const pane = new Pane()
+// const widthFolder = pane.addFolder({ title: "Width" })
+// widthFolder.addBinding(uReach, 'value', {
+//     min: 0, max: 4
+// })
 
-const forceFolder = pane.addFolder({title: "Force"})
-forceFolder.addBinding(uForce, 'value', {
-    min: 0, max: 2
-})
+// const forceFolder = pane.addFolder({title: "Force"})
+// forceFolder.addBinding(uForce, 'value', {
+//     min: 0, max: 2
+// })
 // Pan
 
 export class HomeMedia extends CanvasNode {
