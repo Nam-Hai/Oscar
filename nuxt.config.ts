@@ -45,14 +45,14 @@ export default defineNuxtConfig({
             ],
             title: "Nam-Hai Boilerplate",
             link: [
-                // {
-                //     rel: "preload",
-                //     //   href: '/fonts/founders-grotesk-light.woff2',
-                //     href: "/fonts/GT-America-Standard-Regular.ttf",
-                //     as: "font",
-                //     type: "font/ttf",
-                //     crossorigin: "anonymous",
-                // },
+                {
+                    rel: "preload",
+                    //   href: '/fonts/founders-grotesk-light.woff2',
+                    href: "https://use.typekit.net/af/7b43bd/00000000000000007735e8ac/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3",
+                    as: "font",
+                    type: "font/ttf",
+                    crossorigin: "anonymous",
+                },
                 // {
                 //     rel: "icon",
                 //     type: "image/png",
