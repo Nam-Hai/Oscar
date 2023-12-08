@@ -44,38 +44,39 @@ export class PreloaderCanvas extends CanvasPage {
   init() {
     this.raf.run();
 
-    // this.preloaderAnimation();
+    this.preloaderAnimation();
+
+
   }
 
   mount() {
     const manifest = useManifest()
     const textures = Object.values(manifest.textures.home)
-    this.nodes = N.Arr.create(1).map((index) => {
+    this.nodes = N.Arr.create(textures.length).map((index) => {
       const node = new PreloaderImage(this.gl, { texture: textures[index] })
       node.node.setParent(this.scene)
       return node
-    })
-
-    for (let i = 0; i < this.nodes.length; i++) {
-      const node = this.nodes[i]
-      node.growAnimation()
-    }
-
-    useDelay(800, () => {
-      this.preloaderAnimation()
     })
   }
 
   preloaderAnimation() {
 
-    const { getBounds } = usePreloaderStore()
-    const bounds = getBounds()
-    console.log("prelaoder bounds", getBounds());
+    for (let i = 0; i < this.nodes.length; i++) {
+      useDelay(200 * i, () => {
+        const node = this.nodes[i]
+        // console.log(node);
+        node.growAnimation()
+      })
+    }
+
+    // const { getBounds } = usePreloaderStore()
+    // const bounds = getBounds()
+    // console.log("prelaoder bounds", getBounds());
 
 
     // DEBUG, skip preloader animation
-    useStore().preloaderComplete.value = true
-    this.destroy()
+    // useStore().preloaderComplete.value = true
+    // this.destroy()
   }
 
   resize({ vh, vw, scale, breakpoint }: ResizeEvent) { }
@@ -84,7 +85,7 @@ export class PreloaderCanvas extends CanvasPage {
     this.renderer.render({
       scene: this.scene,
       camera: this.camera,
-      frustumCull: false,
+      // frustumCull: false,
     });
   }
 

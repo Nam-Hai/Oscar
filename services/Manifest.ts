@@ -114,7 +114,7 @@ export default class Manifest {
       this.index.value += 1;
     }
 
-    this.lazyLoadManifest()
+    // this.lazyLoadManifest()
   }
 
   async lazyLoadManifest() {

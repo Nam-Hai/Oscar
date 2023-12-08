@@ -26,7 +26,7 @@ export function useMotion(arg: MotionArg) {
     return new $Motion(arg)
 }
 
-export function useDelay(delay: number, callback: () => void, options?: { immediate?: boolean }) {
+export function useDelay(delay: number, callback: () => void) {
     const { $Delay } = useNuxtApp()
     const d = new $Delay(callback, delay)
     d.run()

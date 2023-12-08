@@ -42,7 +42,6 @@ const Ro = new class {
     vw!: number
     private breakpoint!: string
     mode: 'fit' | 'width' | 'height'
-    // raf: RafR
 
     constructor() {
         this.tick = false
@@ -92,9 +91,6 @@ const Ro = new class {
         this.arr.push(t)
     }
     remove(id: number) {
-        // for (let t = this.l(); 0 <= t; t--) {
-        //     if (this.arr[t].id === id) return void this.arr.splice(t, 1)
-        // }
         this.arr = this.arr.filter(el => {
             return el.id != id
         })
@@ -114,14 +110,10 @@ const Ro = new class {
             scale: this.scale,
             breakpoint: this.breakpoint
         }
-        // for (let t = this.l(); 0 <= t; t--) this.arr[t].cb(arg);
         for (const el of this.arr) {
             el.cb(arg)
         }
         this.tick = false
-    }
-    l() {
-        return this.arr.length - 1
     }
 
     get callbackArg() {

@@ -6,8 +6,12 @@ function Now() {
 
 export enum RafPriority {
     FIRST = 0,
-    NORMAL = 1,
-    LAST = 2
+
+    // To be sure the Motions are computed before Regular rafs
+    MOTION = 1,
+    NORMAL = 2,
+
+    LAST = 3
 }
 
 export type rafItem = {
@@ -38,7 +42,7 @@ const Tab = new class {
         this.arr.push(arg)
     }
 
-    // calcule le temps entre le moment ou pas visible a visible, puis accionne, tOff() ou tOn(r)
+    // calcule le temps entre le moment ou pas visible a visible, puis actionne, tOff() ou tOn(r)
     v() {
         var t = performance.now();
         let dT: number = 0, s: 'stop' | 'start';
@@ -76,21 +80,16 @@ function binarySearch(arr: { id: number }[], n: number): number {
     }
 
     return -1
-    // return left
 }
 
 const Raf = new class {
-    // arr: Array<{
-    //     id: number,
-    //     cb: (arg: { elapsed: number, delta: number }) => void,
-    //     startTime: number
-    // } | rafItem>[];
-    arr: [rafItem[], rafItem[], rafItem[]]
+    arr: [rafItem[], rafItem[], rafItem[], rafItem[]]
     on: boolean;
     now: number = 0;
     constructor() {
-        // 3 stack for low, medium, high priority
-        this.arr = [[], [], []]
+        // 4 stack for low, medium, high priority
+        this.arr = [[], [], [], []]
+
 
         this.on = !0
         BM(this, ['update', 'stop', 'resume'])
@@ -119,7 +118,11 @@ const Raf = new class {
     // take advantage to the fact we sorted the rafscallbacks
     remove(id: number, priority: RafPriority): void {
         const i = binarySearch(this.arr[priority], id)
-        // if (this.arr[priority][i].id !== id) return
+
+        if (i == -1) {
+            console.warn("Raf remove jammed")
+            return
+        }
         this.arr[priority].splice(i, 1)
     }
 
@@ -131,10 +134,11 @@ const Raf = new class {
         if (Math.floor(1 / d * 1000) < 20) {
             console.debug("frame droped")
         }
+
         if (this.on) {
-            for (let i = 0; i < _arr.length; i++) {
-                const arr = _arr[i]
-                for (const el of arr) {
+            for (const arr of _arr) {
+                for (let index = arr.length - 1; index >= 0; index--) {
+                    const el = arr[index]
                     if (!el.startTime) {
                         el.startTime = t
                     }
@@ -143,6 +147,7 @@ const Raf = new class {
                 }
             }
         }
+
         this.raf()
     }
 
@@ -178,6 +183,7 @@ class RafR {
     stop() {
         if (!this.on) return
         this.on = false
+
         Raf.remove(this.id, this.priority)
     }
     kill() {
@@ -196,7 +202,7 @@ class Delay {
         BM(this, ["update"])
 
         // might want to have the delay callbacks be called after all the rafs callbacks
-        this.raf = new RafR(this.update)
+        this.raf = new RafR(this.update, RafPriority.MOTION)
     }
 
     run() {

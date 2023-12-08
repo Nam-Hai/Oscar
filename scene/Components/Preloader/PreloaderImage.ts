@@ -16,6 +16,9 @@ export class PreloaderImage extends CanvasNode {
     tMap: { value: Texture; };
     targetSize: { width: number; height: number; };
     canvasSize!: { width: number; height: number; };
+    progress: { old: number; new: number; };
+    uVelo: { value: number; };
+    uAcc: { value: number; };
 
     constructor(gl: any, props: { texture: Texture }) {
         super(gl)
@@ -31,10 +34,16 @@ export class PreloaderImage extends CanvasNode {
         }
 
 
-        this.uIntrinsecRatio = this.tMap.value.image
-            ? (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
-            : 1;
+        this.uIntrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
         this.uSizePixel = { value: new Vec2(0) }
+
+        this.progress = {
+            old: 0,
+            new: 0
+        }
+        this.uVelo = { value: 0 }
+        this.uAcc = { value: 0 }
+
         this.targetSize = {
             width: 1,
             height: 1
@@ -42,31 +51,12 @@ export class PreloaderImage extends CanvasNode {
 
         this.uScaleOffset = {
             value: [
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
-                    ? this.uSizePixel.value[0] /
-                    (this.uSizePixel.value[1] * this.uIntrinsecRatio)
-                    : 1,
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
-                    ? 1
-                    : (this.uSizePixel.value[1] * this.uIntrinsecRatio) /
-                    this.uSizePixel.value[0],
+                1, 1
             ]
         };
         this.uTranslateOffset = {
             value: [
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
-                    ? 0.5 *
-                    (1 -
-                        this.uSizePixel.value[0] /
-                        (this.uSizePixel.value[1] * this.uIntrinsecRatio))
-                    : 0,
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] <=
-                    this.uIntrinsecRatio
-                    ? 0
-                    : (1 -
-                        (this.uSizePixel.value[1] * this.uIntrinsecRatio) /
-                        this.uSizePixel.value[0]) *
-                    0.5,
+                0, 0
             ]
         };
 
@@ -95,11 +85,13 @@ export class PreloaderImage extends CanvasNode {
 
     mount() {
         const geometry = new Plane(this.gl, {
+            widthSegments: 20,
+            heightSegments: 20
         })
 
         const program = new Program(this.gl, {
             fragment,
-            vertex: basicVer,
+            vertex,
             depthTest: false,
             depthWrite: false,
             uniforms: {
@@ -107,7 +99,11 @@ export class PreloaderImage extends CanvasNode {
                 uSizePixel: this.uSizePixel,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
-                uId: this.uId
+                uId: this.uId,
+
+                uProgress: { value: 0 },
+                uVelo: this.uVelo,
+                uAcc: this.uAcc
             }
         })
 
@@ -122,25 +118,33 @@ export class PreloaderImage extends CanvasNode {
 
 
     update(e: rafEvent) {
+        const prog = this.progress.old
+        const velo = this.uVelo.value
+
+        this.progress.old = this.progress.new
+        this.uVelo.value = N.Round((this.progress.new - prog) / e.delta * 800, 5);
+        this.uAcc.value = (this.uVelo.value - velo) / e.delta;
+
+        this.node.scale.set(
+            this.canvasSize.width * this.uSizePixel.value.x / vw.value,
+            this.canvasSize.height * this.uSizePixel.value.y / vh.value,
+            1
+        )
     }
 
     growAnimation() {
-        useTL().from({
-            d: 800,
-            e: 'io3',
+        const tl = useTL()
+        tl.from({
+            d: 1000,
+            e: 'o2',
             update: (e) => {
+                this.progress.new = e.progE
+
                 this.uSizePixel.value.set(
                     N.Lerp(0, this.targetSize.width, e.progE),
                     N.Lerp(0, this.targetSize.height, e.progE)
                 )
-
                 this.computeUniforms()
-
-                this.node.scale.set(
-                    this.canvasSize.width * this.uSizePixel.value.x / vw.value,
-                    this.canvasSize.height * this.uSizePixel.value.y / vh.value,
-                    1
-                )
             }
         }).play()
     }
@@ -149,12 +153,18 @@ export class PreloaderImage extends CanvasNode {
     onResize(canvasSize: { width: number, height: number }) {
         this.canvasSize = canvasSize
 
-        this.computeUniforms()
-    }
-    computeUniforms() {
         const imageBounds = usePreloaderStore().getBounds()
         this.targetSize.width = imageBounds.value.width
         this.targetSize.height = imageBounds.value.height
+
+        this.uSizePixel.value.set(
+            N.Lerp(0, this.targetSize.width, this.progress.new),
+            N.Lerp(0, this.targetSize.height, this.progress.new)
+        )
+
+        this.computeUniforms()
+    }
+    computeUniforms() {
 
         this.uScaleOffset.value = [
             this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
@@ -206,31 +216,43 @@ void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
 
-    // vec2 cornerTopRight = vec2((vUv.x - 1.) * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
-    // cornerTopRight += uBorderRadius;
-    // if(cornerTopRight.x > 0.  && cornerTopRight.y > 0.){
-    //     if(sqrt(cornerTopRight.y * cornerTopRight.y + cornerTopRight.x * cornerTopRight.x)> uBorderRadius ) discard;
-    // }
-
-    // vec2 cornerTopLeft = vec2(vUv.x * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
-    // cornerTopLeft += vec2(-uBorderRadius, uBorderRadius);
-    // if(cornerTopLeft.x < 0.  && cornerTopLeft.y > 0.){
-    //     if(sqrt(cornerTopLeft.y * cornerTopLeft.y + cornerTopLeft.x * cornerTopLeft.x) > uBorderRadius ) discard;
-    // }
-
-    // vec2 cBL = vec2(vUv.x * uSizePixel.x, vUv.y * uSizePixel.y);
-    // cBL += vec2(-uBorderRadius, -uBorderRadius);
-    // if(cBL.x < 0.  && cBL.y < 0.){
-    //     if(sqrt(cBL.y * cBL.y + cBL.x * cBL.x) > uBorderRadius ) discard;
-    // }
-
-    // vec2 cBR = vec2((vUv.x - 1.) * uSizePixel.x, vUv.y * uSizePixel.y);
-    // cBR += vec2(uBorderRadius, -uBorderRadius);
-    // if(cBR.x > 0.  && cBR.y < 0.){
-    //     if(sqrt(cBR.y * cBR.y + cBR.x * cBR.x) > uBorderRadius ) discard;
-    // }
-
     FragColor[0] = color;
     FragColor[1] = uId;
+    // FragColor[0] = uId;
+    // FragColor[0].x *= 40.;
+    
 }
 `
+
+const vertex = /* glsl */`#version 300 es
+precision highp float;
+
+in vec3 position;
+in vec2 uv;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+uniform vec2 uSizePixel;
+uniform float uVelo;
+uniform float uAcc;
+uniform float uProgress;
+
+out vec2 vUv;
+
+void main() {
+    vUv = uv;
+
+    vec4 mvmP = modelViewMatrix * vec4(position, 1.);
+
+    vec4 vP = vec4(position, 1.);
+
+    vec2 coord = vec2(vP.x * uSizePixel.x, vP.y * uSizePixel.y);
+    float dMax = sqrt(uSizePixel.x * uSizePixel.x + uSizePixel.y * uSizePixel.y);
+    float d = sqrt(coord.x * coord.x + coord.y * coord.y);
+
+    // mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uProgress;
+    mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uVelo;
+
+    gl_Position = projectionMatrix * mvmP;
+}`;

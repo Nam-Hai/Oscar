@@ -1,5 +1,5 @@
 import { type EaseFunctionName, type Ease4Arg, Ease, Ease4 } from "./eases";
-import { Delay, type rafEvent, RafR } from "./raf";
+import { Delay, type rafEvent, RafR, RafPriority } from "./raf";
 import { BM, Select, Has, Svg, Is, Round, Clamp, Lerp } from "./utils";
 
 export interface svgProp {
@@ -130,7 +130,7 @@ class Motion {
     constructor(arg: MotionArg) {
         BM(this, ["initRaf", "run", "uSvg", "uLine", "uProp"])
         this.v = this.vInit(arg)
-        this.raf = new RafR(this.run)
+        this.raf = new RafR(this.run, RafPriority.MOTION)
     }
 
     vInit(arg: MotionArg) {
@@ -293,7 +293,6 @@ class Motion {
 
         this.v.prog = this.v.progE = (this.v.d && this.v.d.curr === 0) ? 1 : 0
         this.delay = new Delay(this.initRaf, this.v.delay)
-
     }
 
     initRaf() {
@@ -302,15 +301,15 @@ class Motion {
 
     run(e: rafEvent) {
         let t = e.elapsed
+
+        this.v.elapsed = Clamp(t, 0, this.v.d.curr)
+        this.v.prog = Clamp(this.v.elapsed / this.v.d.curr, 0, 1)
+        this.v.progE = this.v.e.calc!(this.v.prog)
+        this.v.update({ prog: this.v.prog, progE: this.v.progE })
+
         if (this.v.prog === 1) {
             this.pause()
-            this.v.update({ prog: 1, progE: 1 })
             this.v.cb && this.v.cb()
-        } else {
-            this.v.elapsed = Clamp(t, 0, this.v.d.curr)
-            this.v.prog = Clamp(this.v.elapsed / this.v.d.curr, 0, 1)
-            this.v.progE = this.v.e.calc!(this.v.prog)
-            this.v.update({ prog: this.v.prog, progE: this.v.progE })
         }
 
     }
