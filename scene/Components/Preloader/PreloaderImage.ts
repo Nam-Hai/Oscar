@@ -93,9 +93,9 @@ export class PreloaderImage extends CanvasNode {
         const program = new Program(this.gl, {
             fragment,
             vertex,
-            depthTest: false,
+            // depthTest: false,
             depthWrite: false,
-            cullFace: false,
+            // cullFace: false,
             uniforms: {
                 tMap: this.tMap,
                 uSizePixel: this.uSizePixel,
@@ -107,7 +107,7 @@ export class PreloaderImage extends CanvasNode {
                 uVelo: this.uVelo,
                 uAcc: this.uAcc,
 
-                uMorph: { value: 0 }
+                uMorph: { value: 1 }
             }
         })
 
@@ -142,7 +142,7 @@ export class PreloaderImage extends CanvasNode {
             this.canvasSize.height * this.uSizePixel.value.y / vh.value,
             this.canvasSize.height * this.uSizePixel.value.y / vh.value
         );
-        this.mesh.program.uniforms.uMorph.value = 1
+        // this.mesh.program.uniforms.uMorph.value = 1
 
 
     }
@@ -226,11 +226,20 @@ uniform vec2 uSizePixel;
 uniform vec2 uScaleOffset;
 uniform vec2 uTranslateOffset;
 
+uniform float uMorph;
+
 uniform vec4 uId;
 
 in vec2 vUv;
 out vec4 FragColor[2];
 
+float o3(float x) {
+    return 1. - (1. - x) * (1. - x) * (1. - x);
+}
+
+float i4(float x){
+    return x == 0. ? 0. : pow(2., 10. * x - 10.);
+}
 
 void main() {
     // object-fix: cover
@@ -238,8 +247,18 @@ void main() {
 
     FragColor[0] = color;
     FragColor[1] = uId;
+
+    // float y = vUv.x < .5 ? vUv.x * 2. : 2. - vUv.x * 2.;
+    // if(vUv.y > y) {discard;}
+
+    float t = clamp(0., 1., uMorph * 2.);
+    if(vUv.x < vUv.y * (1. - uMorph) * 0.5 || vUv.x > 1. -vUv.y * (1. - uMorph) * .5 || i4(vUv.y) > 2. - t - vUv.x * 2. * (1. - uMorph)) {
+        discard;
+    }
+
+    // FragColor[0].a = step(uMorph, mix(abs(coord.x));
+
     // FragColor[0] = uId;
-    // FragColor[0].x *= 40.;
     
 }
 `
@@ -258,7 +277,6 @@ uniform float uVelo;
 uniform float uAcc;
 uniform float uProgress;
 
-uniform float uMorph;
 
 out vec2 vUv;
 
@@ -275,12 +293,9 @@ void main() {
 
 
 
-    // p.x = mix(p.x, 0., p.y + 0.5); 
-    // p = mix(p, position, uMorph);
 
     vec4 mvmP = modelViewMatrix * vec4(p, 1.);
 
-    // mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uProgress;
     mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uVelo;
 
     gl_Position = projectionMatrix * mvmP;
