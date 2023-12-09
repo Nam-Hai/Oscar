@@ -176,6 +176,7 @@ export class HomeMedia extends CanvasNode {
     }
 
     resize({ width, height }: { width: number, height: number }) {
+        console.log('resize');
 
         this.uSizeCanvas.value = [width, height]
 

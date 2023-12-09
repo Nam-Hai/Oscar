@@ -16,10 +16,10 @@ export class PreloaderImage extends CanvasNode {
     tMap: { value: Texture; };
     targetSize: { width: number; height: number; };
     canvasSize!: { width: number; height: number; };
-    progress: { old: number; new: number; };
-    uVelo: { value: number; };
-    uAcc: { value: number; };
     mesh: any;
+    zRatio: number;
+    uDeform: { value: number; };
+    progress: number;
 
     constructor(gl: any, props: { texture: Texture }) {
         super(gl)
@@ -37,14 +37,10 @@ export class PreloaderImage extends CanvasNode {
 
         this.uIntrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
         this.uSizePixel = { value: new Vec2(0) }
+        this.zRatio = 0
 
-        this.progress = {
-            old: 0,
-            new: 0
-        }
-        this.uVelo = { value: 0 }
-        this.uAcc = { value: 0 }
-
+        this.uDeform = { value: 0 }
+        this.progress = 0
         this.targetSize = {
             width: 1,
             height: 1
@@ -103,9 +99,7 @@ export class PreloaderImage extends CanvasNode {
                 uTranslateOffset: this.uTranslateOffset,
                 uId: this.uId,
 
-                uProgress: { value: 0 },
-                uVelo: this.uVelo,
-                uAcc: this.uAcc,
+                uDeform: this.uDeform,
 
                 uMorph: { value: 1 }
             }
@@ -127,20 +121,12 @@ export class PreloaderImage extends CanvasNode {
 
 
     update(e: rafEvent) {
-        const prog = this.progress.old
-        const velo = this.uVelo.value
 
-        this.progress.old = this.progress.new
-        this.uVelo.value = N.Round((this.progress.new - prog) / e.delta * 800, 5);
-        this.uAcc.value = (this.uVelo.value - velo) / e.delta;
-
-        const w = this.canvasSize.width * this.uSizePixel.value.x / vw.value
-        const h = this.canvasSize.height * this.uSizePixel.value.y / vh.value
-        this.mesh.scale.set(w / h, 1, 1)
+        // this.mesh.scale.set(w / h, 1, 1)
         this.node.scale.set(
+            this.canvasSize.width * this.uSizePixel.value.x / vw.value,
             this.canvasSize.height * this.uSizePixel.value.y / vh.value,
-            this.canvasSize.height * this.uSizePixel.value.y / vh.value,
-            this.canvasSize.height * this.uSizePixel.value.y / vh.value
+            N.Lerp(this.canvasSize.height * this.uSizePixel.value.y / vh.value, 1, this.zRatio)
         );
         // this.mesh.program.uniforms.uMorph.value = 1
 
@@ -150,12 +136,12 @@ export class PreloaderImage extends CanvasNode {
     growAnimation() {
         return new Promise<void>((res) => {
             const tl = useTL()
+            this.uDeform.value = 1
             tl.from({
                 d: 700,
                 e: 'o1',
                 update: (e) => {
-                    this.progress.new = e.progE
-
+                    this.progress = e.progE
                     this.uSizePixel.value.set(
                         N.Lerp(0, this.targetSize.width, e.progE),
                         N.Lerp(0, this.targetSize.height, e.progE)
@@ -165,7 +151,79 @@ export class PreloaderImage extends CanvasNode {
                 cb: () => {
                     res()
                 }
-            }).play()
+            })
+            tl.from({
+                d: 700,
+                // e: 'i4',
+                e: [.48, 0, .8, .63],
+                update: (e) => {
+                    this.uDeform.value = N.Lerp(1, 0, e.progE)
+                }
+            })
+                .play()
+        })
+    }
+
+    growToHome() {
+        const DELAY = 200
+        return new Promise<void>((res) => {
+            const tl = useTL()
+            tl.from({
+                d: 1000,
+                // e: 'o1',
+                e: [.49, -0.48, .58, 1],
+                update: (e) => {
+                    this.uSizePixel.value.set(
+                        N.Lerp(this.targetSize.width, vw.value, e.progE),
+                        N.Lerp(this.targetSize.height, vh.value, e.progE)
+                    )
+                    // this.mesh.position.set(0, 0, .5)
+                    this.zRatio = e.progE
+                    this.computeUniforms()
+                },
+            }).from({
+                d: 150,
+                e: 'o2',
+                update: (e) => {
+                    this.uDeform.value = e.progE * -0.4
+                }
+            }).from({
+                d: 150,
+                delay: 150,
+                e: 'i2',
+                update: (e) => {
+                    this.uDeform.value = (1 - e.progE) * -0.4
+                }
+            })
+
+            tl.from({
+                d: 400,
+                delay: DELAY,
+                e: "o2",
+                update: (e) => {
+                    this.uDeform.value = N.Lerp(0, 1, e.progE)
+                }
+            })
+                .from({
+                    d: 400,
+                    e: "io1",
+                    delay: 400 + DELAY,
+                    update: (e) => {
+                        this.uDeform.value = N.Lerp(1, -0.8, e.progE)
+                    }
+                })
+                .from({
+                    d: 400,
+                    e: "o2",
+                    delay: 800 + DELAY,
+                    update: (e) => {
+                        this.uDeform.value = N.Lerp(-0.8, 0, e.progE)
+                    },
+                    cb: () => {
+                        res()
+                    }
+                })
+                .play()
         })
     }
 
@@ -178,8 +236,8 @@ export class PreloaderImage extends CanvasNode {
         this.targetSize.height = imageBounds.value.height
 
         this.uSizePixel.value.set(
-            N.Lerp(0, this.targetSize.width, this.progress.new),
-            N.Lerp(0, this.targetSize.height, this.progress.new)
+            N.Lerp(0, this.targetSize.width, this.progress),
+            N.Lerp(0, this.targetSize.height, this.progress)
         )
 
         this.computeUniforms()
@@ -273,9 +331,8 @@ uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
 uniform vec2 uSizePixel;
-uniform float uVelo;
-uniform float uAcc;
-uniform float uProgress;
+
+uniform float uDeform;
 
 
 out vec2 vUv;
@@ -296,7 +353,7 @@ void main() {
 
     vec4 mvmP = modelViewMatrix * vec4(p, 1.);
 
-    mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uVelo;
+    mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uDeform;
 
     gl_Position = projectionMatrix * mvmP;
 }`;

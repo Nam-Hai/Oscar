@@ -96,15 +96,33 @@ export class PreloaderCanvas extends CanvasPage {
     tl.from({
       d: 1000,
       e: "io3",
-      update: ({ progE, prog}) => {
+      update: ({ progE, prog }) => {
 
         this.group.rotation.set(progE * Math.PI * 0.5, 0, 0)
         // this.nodes[1].mesh.program.uniforms.uMorph.value = N.Ease.io4(prog)
-        
+
         this.nodes[1].mesh.program.uniforms.uMorph.value = progE
 
-      }
+      },
+      cb: () => {
+        this.nodes[0].node.rotation.set(-Math.PI * 1, 0, 0)
+      },
+    }).from({
+      d: 1000,
+      e: "io3",
+      delay: 1000,
+      update: ({ progE, prog }) => {
+        this.group.rotation.set((1 + progE) * Math.PI * 0.5, 0, 0)
+        this.nodes[0].mesh.program.uniforms.uMorph.value = progE
+      },
+      cb: () => {
+        this.nodes[0].growToHome().then(() => {
+          useStore().preloaderComplete.value = true
+          this.destroy()
+        })
+      },
     }).play()
+
 
     // const { getBounds } = usePreloaderStore()
     // const bounds = getBounds()
@@ -112,8 +130,6 @@ export class PreloaderCanvas extends CanvasPage {
 
 
     // DEBUG, skip preloader animation
-    useStore().preloaderComplete.value = true
-    this.destroy()
   }
 
   resize({ vh, vw, scale, breakpoint }: ResizeEvent) { }

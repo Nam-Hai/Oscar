@@ -68,7 +68,6 @@ export const usePreloaderStore = createStore(() => {
   let preloaderBounds: Ref<DOMRect>;
   function setBounds(el: Ref<HTMLElement>) {
     preloaderBounds = useBounds(el)
-    console.log("store preloader", preloaderBounds);
   }
   function getBounds() {
     return preloaderBounds
