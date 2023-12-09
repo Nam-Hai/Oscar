@@ -94,8 +94,8 @@ export class PreloaderCanvas extends CanvasPage {
 
 
     // DEBUG, skip preloader animation
-    // useStore().preloaderComplete.value = true
-    // this.destroy()
+    useStore().preloaderComplete.value = true
+    this.destroy()
   }
 
   resize({ vh, vw, scale, breakpoint }: ResizeEvent) { }
