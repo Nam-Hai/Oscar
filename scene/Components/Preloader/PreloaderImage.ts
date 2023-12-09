@@ -217,7 +217,7 @@ export class PreloaderImage extends CanvasNode {
                     e: "o2",
                     delay: 800 + DELAY,
                     update: (e) => {
-                        this.uDeform.value = N.Lerp(-0.8, 0, e.progE)
+                        this.uDeform.value = N.Lerp(-1, 0, e.progE)
                     },
                     cb: () => {
                         res()
