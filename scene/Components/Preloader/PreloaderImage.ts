@@ -1,4 +1,4 @@
-import { Vec2, Program, Mesh, Texture, Plane, Vec3 } from 'ogl'
+import { Vec2, Program, Mesh, Texture, Plane, Vec3, Transform } from 'ogl'
 import { basicVer } from "../../shaders/BasicVer";
 import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
@@ -19,6 +19,7 @@ export class PreloaderImage extends CanvasNode {
     progress: { old: number; new: number; };
     uVelo: { value: number; };
     uAcc: { value: number; };
+    mesh: any;
 
     constructor(gl: any, props: { texture: Texture }) {
         super(gl)
@@ -94,6 +95,7 @@ export class PreloaderImage extends CanvasNode {
             vertex,
             depthTest: false,
             depthWrite: false,
+            cullFace: false,
             uniforms: {
                 tMap: this.tMap,
                 uSizePixel: this.uSizePixel,
@@ -103,14 +105,21 @@ export class PreloaderImage extends CanvasNode {
 
                 uProgress: { value: 0 },
                 uVelo: this.uVelo,
-                uAcc: this.uAcc
+                uAcc: this.uAcc,
+
+                uMorph: { value: 0 }
             }
         })
 
-        this.node = new Mesh(this.gl, {
+        this.node = new Transform()
+        this.mesh = new Mesh(this.gl, {
             geometry,
             program,
         })
+
+        this.mesh.setParent(this.node)
+        this.mesh.position.set(0, 0, 0.5)
+
 
         this.node.scale.set(0, 0, 0)
 
@@ -125,28 +134,39 @@ export class PreloaderImage extends CanvasNode {
         this.uVelo.value = N.Round((this.progress.new - prog) / e.delta * 800, 5);
         this.uAcc.value = (this.uVelo.value - velo) / e.delta;
 
+        const w = this.canvasSize.width * this.uSizePixel.value.x / vw.value
+        const h = this.canvasSize.height * this.uSizePixel.value.y / vh.value
+        this.mesh.scale.set(w / h, 1, 1)
         this.node.scale.set(
-            this.canvasSize.width * this.uSizePixel.value.x / vw.value,
             this.canvasSize.height * this.uSizePixel.value.y / vh.value,
-            1
-        )
+            this.canvasSize.height * this.uSizePixel.value.y / vh.value,
+            this.canvasSize.height * this.uSizePixel.value.y / vh.value
+        );
+        this.mesh.program.uniforms.uMorph.value = 1
+
+
     }
 
     growAnimation() {
-        const tl = useTL()
-        tl.from({
-            d: 1000,
-            e: 'o2',
-            update: (e) => {
-                this.progress.new = e.progE
+        return new Promise<void>((res) => {
+            const tl = useTL()
+            tl.from({
+                d: 700,
+                e: 'o1',
+                update: (e) => {
+                    this.progress.new = e.progE
 
-                this.uSizePixel.value.set(
-                    N.Lerp(0, this.targetSize.width, e.progE),
-                    N.Lerp(0, this.targetSize.height, e.progE)
-                )
-                this.computeUniforms()
-            }
-        }).play()
+                    this.uSizePixel.value.set(
+                        N.Lerp(0, this.targetSize.width, e.progE),
+                        N.Lerp(0, this.targetSize.height, e.progE)
+                    )
+                    this.computeUniforms()
+                },
+                cb: () => {
+                    res()
+                }
+            }).play()
+        })
     }
 
 
@@ -238,18 +258,27 @@ uniform float uVelo;
 uniform float uAcc;
 uniform float uProgress;
 
+uniform float uMorph;
+
 out vec2 vUv;
 
 void main() {
     vUv = uv;
 
-    vec4 mvmP = modelViewMatrix * vec4(position, 1.);
 
     vec4 vP = vec4(position, 1.);
+    vec3 p = position;
 
     vec2 coord = vec2(vP.x * uSizePixel.x, vP.y * uSizePixel.y);
     float dMax = sqrt(uSizePixel.x * uSizePixel.x + uSizePixel.y * uSizePixel.y);
     float d = sqrt(coord.x * coord.x + coord.y * coord.y);
+
+
+
+    // p.x = mix(p.x, 0., p.y + 0.5); 
+    // p = mix(p, position, uMorph);
+
+    vec4 mvmP = modelViewMatrix * vec4(p, 1.);
 
     // mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uProgress;
     mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uVelo;
