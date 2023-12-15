@@ -4,9 +4,8 @@
 
         <div class="project__landing__wrapper" :class="{ show: firstScroll }">
             <div class="title__wrapper">
-                <h1 :style="{ justifyContent: (COPY.title.split(' ').length == 1) ? 'flex-end' : 'space-between' }"
-                    class="overflow">
-                    <span v-for="word in COPY.title.split(' ')">
+                <h1 :style="{ justifyContent: (COPY.title.split(' ').length == 1) ? 'flex-end' : 'space-between' }">
+                    <span v-for="word in COPY.title.split(' ')" class="overflow">
                         <span v-for="char in word.split('')" class="overflow-content">
                             {{ char }}
                         </span>
@@ -137,7 +136,8 @@ onBeforeUnmount(() => {
             width: 100%;
 
             >span {
-                justify-self: ﬂex-end;
+                justify-self: flex-end;
+                justify-content: flex-end;
                 display: flex;
 
                 >span {
@@ -154,7 +154,6 @@ onBeforeUnmount(() => {
         h1,
         h2 {
             display: flex;
-            // width: calc(100vw - 4.8rem);
             text-align: justify;
             font-size: 17.7rem;
             line-height: 90%;
@@ -163,7 +162,10 @@ onBeforeUnmount(() => {
             text-transform: uppercase;
 
             position: relative;
+
+            width: calc(100vw - 2.8rem);
             right: -1rem;
+
             top: -0.5rem;
         }
 

@@ -1,10 +1,10 @@
 <template>
-    <main ref="mainRef">
+    <main ref="mainRef" @mousemove="mainMove($event)">
         <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index"
             :class="{ current: currentIndex == index }">
             <NuxtLink :to="data.link">
                 <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs"
-                    @mouseenter="hideTrail = true" @mouseleave="hideTrail = false"></h1>
+                    @mouseenter="hideTrail = true" @mouseleave="hideTrail = false" @mousemove="headerMove($event)"></h1>
             </NuxtLink>
 
             <div class="flavor">
@@ -32,6 +32,22 @@ import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 import { indexFlowIn, indexFlowOutMap } from './index.transition';
+
+let first = false
+function headerMove(e: MouseEvent) {
+    if (!first) {
+        first = true
+        e.stopPropagation()
+        hideTrail.value = true
+    }
+}
+function mainMove(e: MouseEvent) {
+    if (!first) {
+        first = true
+        e.stopPropagation()
+        hideTrail.value = false
+    }
+}
 
 const mainRef = ref()
 const flavorMainRef = ref()

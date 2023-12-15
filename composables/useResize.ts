@@ -3,10 +3,12 @@ export function useRO(callback: (e: { vh: number, vw: number, scale: number, bre
   const ro = new $ROR(callback, triggerCb)
 
   onMounted(() => {
+    console.trace('Resize mount');
     ro.on()
   });
 
   onBeforeUnmount(() => {
+    console.trace('Resize unmount');
     ro.off()
   });
 
@@ -29,6 +31,7 @@ export function useCanvasSize(callback?: (size: { width: number, height: number 
 export function useBounds(el: Ref<HTMLElement>): Ref<DOMRect> {
   const bounds = ref()
   useRO(() => {
+    if (!el.value) return
     bounds.value = el.value.getBoundingClientRect()
   })
 

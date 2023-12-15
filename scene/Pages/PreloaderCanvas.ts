@@ -19,6 +19,7 @@ export class PreloaderCanvas extends CanvasPage {
   canvasScene: Transform;
   scene: Transform;
   nodes!: PreloaderImage[];
+  group: Transform;
 
   constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
     super(gl)
@@ -26,6 +27,8 @@ export class PreloaderCanvas extends CanvasPage {
 
     this.canvasScene = options.scene;
     this.scene = new Transform();
+    this.group = new Transform()
+    this.group.setParent(this.scene)
     this.scene.setParent(this.canvasScene);
     this.camera = options.camera;
 
@@ -52,36 +55,90 @@ export class PreloaderCanvas extends CanvasPage {
   mount() {
     const manifest = useManifest()
     const textures = Object.values(manifest.textures.home)
-    this.nodes = N.Arr.create(textures.length).map((index) => {
-      const node = new PreloaderImage(this.gl, { texture: textures[index] })
-      node.node.setParent(this.scene)
-      return node
+
+    this.group.position.set(0, 0, -.5)
+
+    this.nodes = N.Arr.create(3).map((index) => {
+      const image = new PreloaderImage(this.gl, { texture: textures[index] })
+      const node = image.node
+
+      node.setParent(this.group)
+
+      return image
     })
+
   }
 
-  preloaderAnimation() {
+  async preloaderAnimation() {
+    // DEBUG, skip preloader animation
+    useStore().preloaderComplete.value = true;
+    this.destroy();
+    return false;
 
+    const promise = []
     for (let i = 0; i < this.nodes.length; i++) {
-      useDelay(200 * i, () => {
-        const node = this.nodes[i]
-        // console.log(node);
-        node.growAnimation()
+      const p = new Promise<void>((res) => {
+        useDelay(200 * i, () => {
+          const node = this.nodes[i]
+          // console.log(node);
+          node.growAnimation().then(() => {
+            console.log('PRomise');
+            res()
+          })
+        })
       })
+      promise.push(p)
     }
+
+    await Promise.all(promise)
+    console.log('Grow animation DONE');
+
+
+    this.nodes[1].node.rotation.set(-Math.PI * 0.5, 0, 0)
+
+    const tl = useTL()
+    tl.from({
+      d: 1000,
+      e: "io3",
+      update: ({ progE, prog }) => {
+
+        this.group.rotation.set(progE * Math.PI * 0.5, 0, 0)
+        // this.nodes[1].mesh.program.uniforms.uMorph.value = N.Ease.io4(prog)
+
+        this.nodes[1].mesh.program.uniforms.uMorph.value = progE
+
+      },
+      cb: () => {
+        this.nodes[0].node.rotation.set(-Math.PI * 1, 0, 0)
+      },
+    }).from({
+      d: 1000,
+      e: "io3",
+      delay: 1000,
+      update: ({ progE, prog }) => {
+        this.group.rotation.set((1 + progE) * Math.PI * 0.5, 0, 0)
+        this.nodes[0].mesh.program.uniforms.uMorph.value = progE
+      },
+      cb: () => {
+        this.nodes[0].growToHome().then(() => {
+          useStore().preloaderComplete.value = true
+          this.destroy()
+        })
+      },
+    }).play()
+
 
     // const { getBounds } = usePreloaderStore()
     // const bounds = getBounds()
     // console.log("prelaoder bounds", getBounds());
 
 
-    // DEBUG, skip preloader animation
-    // useStore().preloaderComplete.value = true
-    // this.destroy()
   }
 
   resize({ vh, vw, scale, breakpoint }: ResizeEvent) { }
 
   render(e: rafEvent) {
+    // this.group.rotation.set(e.elapsed / 1000, 0, 0)
     this.renderer.render({
       scene: this.scene,
       camera: this.camera,

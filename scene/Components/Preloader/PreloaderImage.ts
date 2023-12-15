@@ -1,4 +1,4 @@
-import { Vec2, Program, Mesh, Texture, Plane, Vec3 } from 'ogl'
+import { Vec2, Program, Mesh, Texture, Plane, Vec3, Transform } from 'ogl'
 import { basicVer } from "../../shaders/BasicVer";
 import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
@@ -16,9 +16,10 @@ export class PreloaderImage extends CanvasNode {
     tMap: { value: Texture; };
     targetSize: { width: number; height: number; };
     canvasSize!: { width: number; height: number; };
-    progress: { old: number; new: number; };
-    uVelo: { value: number; };
-    uAcc: { value: number; };
+    mesh: any;
+    zRatio: number;
+    uDeform: { value: number; };
+    progress: number;
 
     constructor(gl: any, props: { texture: Texture }) {
         super(gl)
@@ -36,14 +37,10 @@ export class PreloaderImage extends CanvasNode {
 
         this.uIntrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
         this.uSizePixel = { value: new Vec2(0) }
+        this.zRatio = 0
 
-        this.progress = {
-            old: 0,
-            new: 0
-        }
-        this.uVelo = { value: 0 }
-        this.uAcc = { value: 0 }
-
+        this.uDeform = { value: 0 }
+        this.progress = 0
         this.targetSize = {
             width: 1,
             height: 1
@@ -92,8 +89,9 @@ export class PreloaderImage extends CanvasNode {
         const program = new Program(this.gl, {
             fragment,
             vertex,
-            depthTest: false,
+            // depthTest: false,
             depthWrite: false,
+            // cullFace: false,
             uniforms: {
                 tMap: this.tMap,
                 uSizePixel: this.uSizePixel,
@@ -101,16 +99,21 @@ export class PreloaderImage extends CanvasNode {
                 uTranslateOffset: this.uTranslateOffset,
                 uId: this.uId,
 
-                uProgress: { value: 0 },
-                uVelo: this.uVelo,
-                uAcc: this.uAcc
+                uDeform: this.uDeform,
+
+                uMorph: { value: 1 }
             }
         })
 
-        this.node = new Mesh(this.gl, {
+        this.node = new Transform()
+        this.mesh = new Mesh(this.gl, {
             geometry,
             program,
         })
+
+        this.mesh.setParent(this.node)
+        this.mesh.position.set(0, 0, 0.5)
+
 
         this.node.scale.set(0, 0, 0)
 
@@ -118,35 +121,110 @@ export class PreloaderImage extends CanvasNode {
 
 
     update(e: rafEvent) {
-        const prog = this.progress.old
-        const velo = this.uVelo.value
 
-        this.progress.old = this.progress.new
-        this.uVelo.value = N.Round((this.progress.new - prog) / e.delta * 800, 5);
-        this.uAcc.value = (this.uVelo.value - velo) / e.delta;
-
+        // this.mesh.scale.set(w / h, 1, 1)
         this.node.scale.set(
             this.canvasSize.width * this.uSizePixel.value.x / vw.value,
             this.canvasSize.height * this.uSizePixel.value.y / vh.value,
-            1
-        )
+            N.Lerp(this.canvasSize.height * this.uSizePixel.value.y / vh.value, 1, this.zRatio)
+        );
+        // this.mesh.program.uniforms.uMorph.value = 1
+
+
     }
 
     growAnimation() {
-        const tl = useTL()
-        tl.from({
-            d: 1000,
-            e: 'o2',
-            update: (e) => {
-                this.progress.new = e.progE
+        return new Promise<void>((res) => {
+            const tl = useTL()
+            this.uDeform.value = 1
+            tl.from({
+                d: 700,
+                e: 'o1',
+                update: (e) => {
+                    this.progress = e.progE
+                    this.uSizePixel.value.set(
+                        N.Lerp(0, this.targetSize.width, e.progE),
+                        N.Lerp(0, this.targetSize.height, e.progE)
+                    )
+                    this.computeUniforms()
+                },
+                cb: () => {
+                    res()
+                }
+            })
+            tl.from({
+                d: 700,
+                // e: 'i4',
+                e: [.48, 0, .8, .63],
+                update: (e) => {
+                    this.uDeform.value = N.Lerp(1, 0, e.progE)
+                }
+            })
+                .play()
+        })
+    }
 
-                this.uSizePixel.value.set(
-                    N.Lerp(0, this.targetSize.width, e.progE),
-                    N.Lerp(0, this.targetSize.height, e.progE)
-                )
-                this.computeUniforms()
-            }
-        }).play()
+    growToHome() {
+        const DELAY = 200
+        return new Promise<void>((res) => {
+            const tl = useTL()
+            tl.from({
+                d: 1000,
+                // e: 'o1',
+                e: [.49, -0.48, .58, 1],
+                update: (e) => {
+                    this.uSizePixel.value.set(
+                        N.Lerp(this.targetSize.width, vw.value, e.progE),
+                        N.Lerp(this.targetSize.height, vh.value, e.progE)
+                    )
+                    // this.mesh.position.set(0, 0, .5)
+                    this.zRatio = e.progE
+                    this.computeUniforms()
+                },
+            }).from({
+                d: 150,
+                e: 'o2',
+                update: (e) => {
+                    this.uDeform.value = e.progE * -0.4
+                }
+            }).from({
+                d: 150,
+                delay: 150,
+                e: 'i2',
+                update: (e) => {
+                    this.uDeform.value = (1 - e.progE) * -0.4
+                }
+            })
+
+            tl.from({
+                d: 400,
+                delay: DELAY,
+                e: "o2",
+                update: (e) => {
+                    this.uDeform.value = N.Lerp(0, 1, e.progE)
+                }
+            })
+                .from({
+                    d: 400,
+                    e: "io1",
+                    delay: 400 + DELAY,
+                    update: (e) => {
+                        this.uDeform.value = N.Lerp(1, -0.8, e.progE)
+                    }
+                })
+                .from({
+                    d: 400,
+                    e: "o2",
+                    delay: 800 + DELAY,
+                    update: (e) => {
+                        this.uDeform.value = N.Lerp(-1, 0, e.progE)
+                    },
+                    cb: () => {
+                        res()
+                    }
+                })
+                .play()
+        })
     }
 
 
@@ -158,8 +236,8 @@ export class PreloaderImage extends CanvasNode {
         this.targetSize.height = imageBounds.value.height
 
         this.uSizePixel.value.set(
-            N.Lerp(0, this.targetSize.width, this.progress.new),
-            N.Lerp(0, this.targetSize.height, this.progress.new)
+            N.Lerp(0, this.targetSize.width, this.progress),
+            N.Lerp(0, this.targetSize.height, this.progress)
         )
 
         this.computeUniforms()
@@ -206,11 +284,20 @@ uniform vec2 uSizePixel;
 uniform vec2 uScaleOffset;
 uniform vec2 uTranslateOffset;
 
+uniform float uMorph;
+
 uniform vec4 uId;
 
 in vec2 vUv;
 out vec4 FragColor[2];
 
+float o3(float x) {
+    return 1. - (1. - x) * (1. - x) * (1. - x);
+}
+
+float i4(float x){
+    return x == 0. ? 0. : pow(2., 10. * x - 10.);
+}
 
 void main() {
     // object-fix: cover
@@ -218,8 +305,18 @@ void main() {
 
     FragColor[0] = color;
     FragColor[1] = uId;
+
+    // float y = vUv.x < .5 ? vUv.x * 2. : 2. - vUv.x * 2.;
+    // if(vUv.y > y) {discard;}
+
+    float t = clamp(0., 1., uMorph * 2.);
+    if(vUv.x < vUv.y * (1. - uMorph) * 0.5 || vUv.x > 1. -vUv.y * (1. - uMorph) * .5 || i4(vUv.y) > 2. - t - vUv.x * 2. * (1. - uMorph)) {
+        discard;
+    }
+
+    // FragColor[0].a = step(uMorph, mix(abs(coord.x));
+
     // FragColor[0] = uId;
-    // FragColor[0].x *= 40.;
     
 }
 `
@@ -234,25 +331,29 @@ uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
 uniform vec2 uSizePixel;
-uniform float uVelo;
-uniform float uAcc;
-uniform float uProgress;
+
+uniform float uDeform;
+
 
 out vec2 vUv;
 
 void main() {
     vUv = uv;
 
-    vec4 mvmP = modelViewMatrix * vec4(position, 1.);
 
     vec4 vP = vec4(position, 1.);
+    vec3 p = position;
 
     vec2 coord = vec2(vP.x * uSizePixel.x, vP.y * uSizePixel.y);
     float dMax = sqrt(uSizePixel.x * uSizePixel.x + uSizePixel.y * uSizePixel.y);
     float d = sqrt(coord.x * coord.x + coord.y * coord.y);
 
-    // mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uProgress;
-    mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uVelo;
+
+
+
+    vec4 mvmP = modelViewMatrix * vec4(p, 1.);
+
+    mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uDeform;
 
     gl_Position = projectionMatrix * mvmP;
 }`;

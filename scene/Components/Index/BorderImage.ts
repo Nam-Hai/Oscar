@@ -85,7 +85,7 @@ export class BorderImage extends CanvasNode {
 
         this.uBorderRadius = { value: props?.borderRadius || 5 }
         this.uTransparency = { value: 0 }
-        this.uHide = { value: 0 }
+        this.uHide = { value: 1 }
 
         this.raf = useRafR(this.update)
         this.uResolution = { value: [innerWidth, innerHeight] }

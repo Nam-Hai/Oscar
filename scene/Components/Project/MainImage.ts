@@ -9,6 +9,12 @@ const { firstScroll } = useStoreProject()
 
 export const [provideMainImage, useCanvasMainImageProject] = canvasInject<MainImage>('canvas-main-image-project')
 
+const endBounds = computed(() => {
+    return {
+        heigth: vh.value - 24 * 2 * scale.value,
+        width: vw.value - 24 * 2 * scale.value,
+    }
+})
 export class MainImage extends CanvasNode {
     raf: RafR;
     uBorderRadius: { value: number; };
@@ -34,9 +40,15 @@ export class MainImage extends CanvasNode {
     tMap2: { value: Texture; };
     uLoaded2: { value: number; };
 
+    scalePixelScroll = {
+        width: 0,
+        height: 0
+    }
+
+
     constructor(gl: any, props: { borderRadius?: number, el?: HTMLElement }) {
         super(gl)
-        N.BM(this, ['update', 'onResize', 'destroy'])
+        N.BM(this, ['update', 'onResize', 'destroy', "onScroll"])
 
         this.pixelPosition = new Vec2(0, 0)
         this.pixelScroll = 0
@@ -123,7 +135,6 @@ export class MainImage extends CanvasNode {
 
         provideMainImage(this)
 
-        this.addEventListener()
 
         this.onDestroy(() => this.raf.stop())
         this.onDestroy(() => resizeUnWatch())
@@ -131,13 +142,24 @@ export class MainImage extends CanvasNode {
 
     addEventListener() {
         const lenis = useLenis()
-        const scrollUnsub = lenis.on("scroll", () => this.on = true);
+
+        const scrollUnsub = lenis.on("scroll", this.onScroll);
 
         this.onDestroy(() => scrollUnsub())
     }
 
+    onScroll(e: any) {
+        this.pixelScroll = e.animatedScroll
+        this.scalePixelScroll = {
+            height: this.pixelScroll,
+            width: this.pixelScroll
+        }
+        console.log(this.pixelScroll);
+    }
+
 
     mountElement(el: HTMLElement, next: HTMLElement) {
+        this.addEventListener()
         this.el = [el, next]
 
         const src_1 = N.Ga(this.el[0], "data-src") || "/Assets/Home3.png"
@@ -153,7 +175,6 @@ export class MainImage extends CanvasNode {
 
         const { watch } = useCanvasReactivity(this)
         watch(a.loaded, b => {
-            console.log("lazy loaded load", b);
             if (b) {
                 this.uniformFromTo[1].intrinsecRatio = (this.tMap2.value.image as HTMLImageElement).width / (this.tMap2.value.image as HTMLImageElement).height
                 useTL().from({
@@ -242,9 +263,15 @@ export class MainImage extends CanvasNode {
         }
 
         this.node.position.set(
-            this.canvasSize.width * this.pixelPosition.x / vw.value,
-            this.canvasSize.height * (this.pixelPosition.y + this.pixelScroll) / vh.value,
+            this.canvasSize.width * (this.pixelPosition.x - this.pixelScroll / 2) / vw.value,
+            this.canvasSize.height * (this.pixelPosition.y + this.pixelScroll / 2) / vh.value,
             0
+        )
+
+        this.node.scale.set(
+            this.canvasSize.width * (this.scalePixelScroll.width + this.uSizePixel.value.x) / vw.value,
+            this.canvasSize.height * (this.scalePixelScroll.height + this.uSizePixel.value.y) / vh.value,
+            1
         )
     }
 
@@ -329,11 +356,6 @@ export class MainImage extends CanvasNode {
             N.Lerp(this.uniformFromTo[0].translate.y, this.uniformFromTo[1].translate.y, this.uProgress.value),
         )
 
-        this.node.scale.set(
-            this.canvasSize.width * this.uSizePixel.value.x / vw.value,
-            this.canvasSize.height * this.uSizePixel.value.y / vh.value,
-            1
-        )
 
         if (!this.bounds) return
         const x = N.Lerp(this.bounds[0].x, this.bounds[1].x, this.uProgress.value) + this.uSizePixel.value.x / 2 - vw.value / 2

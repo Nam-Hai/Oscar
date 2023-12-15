@@ -114,7 +114,7 @@ export default class Manifest {
       this.index.value += 1;
     }
 
-    // this.lazyLoadManifest()
+    this.lazyLoadManifest()
   }
 
   async lazyLoadManifest() {
@@ -146,6 +146,9 @@ export default class Manifest {
       }
     }
 
+
+    return false
+    // start loading auto
 
     for (const [keys, m] of Object.entries(this.lazyTextures)) {
       for (const src of Object.keys(m)) {
