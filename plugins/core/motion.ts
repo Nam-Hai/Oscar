@@ -303,8 +303,7 @@ class Motion {
         let t = e.elapsed
 
         this.v.elapsed = Clamp(t, 0, this.v.d.curr)
-        if (this.v.d.curr == 0) this.v.prog = 1
-        else this.v.prog = Clamp(this.v.elapsed / this.v.d.curr, 0, 1)
+        this.v.prog = Clamp(this.v.elapsed / this.v.d.curr, 0, 1)
         this.v.progE = this.v.e.calc!(this.v.prog)
         this.v.update({ prog: this.v.prog, progE: this.v.progE })
 
@@ -377,7 +376,7 @@ export class Timeline {
 
     from(t: MotionArg) {
         let m = new Motion(t)
-        this.arr.unshift(m)
+        this.arr.push(m)
         return this
     }
     play(arg?: MotionArg) {

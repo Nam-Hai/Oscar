@@ -129,7 +129,6 @@ const Raf = new class {
     update(t: number) {
         const d = t - this.now
         this.now = t
-
         const _arr = this.arr
 
         if (Math.floor(1 / d * 1000) < 20) {
