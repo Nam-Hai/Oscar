@@ -219,7 +219,7 @@ export class SteppersWrapper extends CanvasNode {
             }
             if (h) {
                 const { size } = useCanvas()
-                const posI = new Vec3()
+                const posI = new Vec3(0)
 
                 const posF = {
                     x: ((imageBounds.w + 8) * (el.index - (length - 1) / 2)) * size.value.width / vw.value,
@@ -231,7 +231,6 @@ export class SteppersWrapper extends CanvasNode {
                 el.tl.from({
                     d: delay,
                     update: () => {
-
                         posI.copy(el.node.position)
                     },
                     cb: () => {

@@ -70,6 +70,11 @@ export class PreloaderCanvas extends CanvasPage {
   }
 
   async preloaderAnimation() {
+    // DEBUG, skip preloader animation
+    useStore().preloaderComplete.value = true;
+    this.destroy();
+    return false;
+
     const promise = []
     for (let i = 0; i < this.nodes.length; i++) {
       const p = new Promise<void>((res) => {
@@ -86,10 +91,9 @@ export class PreloaderCanvas extends CanvasPage {
     }
 
     await Promise.all(promise)
-    console.log('DONE');
+    console.log('Grow animation DONE');
 
 
-    // this.nodes[0].node.rotation.set(-Math.PI * 0.5, 0, 0)
     this.nodes[1].node.rotation.set(-Math.PI * 0.5, 0, 0)
 
     const tl = useTL()
@@ -129,7 +133,6 @@ export class PreloaderCanvas extends CanvasPage {
     // console.log("prelaoder bounds", getBounds());
 
 
-    // DEBUG, skip preloader animation
   }
 
   resize({ vh, vw, scale, breakpoint }: ResizeEvent) { }
