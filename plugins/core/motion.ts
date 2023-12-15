@@ -303,7 +303,12 @@ class Motion {
         let t = e.elapsed
 
         this.v.elapsed = Clamp(t, 0, this.v.d.curr)
-        this.v.prog = Clamp(this.v.elapsed / this.v.d.curr, 0, 1)
+        // console.log("0", this.v.d.curr, this.v.d.curr == 0);
+        if (this.v.d.curr == 0) {
+            this.v.prog = 1
+        } else {
+            this.v.prog = Clamp(this.v.elapsed / this.v.d.curr, 0, 1)
+        }
         this.v.progE = this.v.e.calc!(this.v.prog)
         this.v.update({ prog: this.v.prog, progE: this.v.progE })
 
@@ -380,17 +385,21 @@ export class Timeline {
         return this
     }
     play(arg?: MotionArg) {
-        for (const motion of this.arr) {
+        for (let i = this.arr.length - 1; i >= 0; i--) {
+            const motion = this.arr[i]
+
             motion.play(arg)
         }
     }
     pause() {
-        for (const motion of this.arr) {
+        for (let i = this.arr.length - 1; i >= 0; i--) {
+            const motion = this.arr[i]
             motion.pause()
         }
     }
     reset() {
-        for (const motion of this.arr) {
+        for (let i = this.arr.length - 1; i >= 0; i--) {
+            const motion = this.arr[i]
             motion.pause()
         }
 
