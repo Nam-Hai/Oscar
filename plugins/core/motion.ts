@@ -377,7 +377,7 @@ export class Timeline {
 
     from(t: MotionArg) {
         let m = new Motion(t)
-        this.arr.push(m)
+        this.arr.unshift(m)
         return this
     }
     play(arg?: MotionArg) {

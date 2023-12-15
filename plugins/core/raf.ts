@@ -86,11 +86,9 @@ const Raf = new class {
     arr: [rafItem[], rafItem[], rafItem[], rafItem[]]
     on: boolean;
     now: number = 0;
-    spliceBuffer: { priorityStack: number, index: number }[]
     constructor() {
         // 4 stack for low, medium, high priority
         this.arr = [[], [], [], []]
-        this.spliceBuffer = []
 
 
         this.on = !0
@@ -125,18 +123,13 @@ const Raf = new class {
             console.warn("Raf remove jammed")
             return
         }
-        // this.arr[priority].splice(i, 1)
-        this.spliceBuffer.push({ priorityStack: priority, index: i })
+        this.arr[priority].splice(i, 1)
     }
 
     update(t: number) {
         const d = t - this.now
         this.now = t
 
-        for (let i = 0; i < this.spliceBuffer.length; i++) {
-            const spliceBuffer = this.spliceBuffer.pop()!
-            this.arr[spliceBuffer.priorityStack].splice(spliceBuffer.index, 1)
-        }
         const _arr = this.arr
 
         if (Math.floor(1 / d * 1000) < 20) {
@@ -145,9 +138,8 @@ const Raf = new class {
 
         if (this.on) {
             for (const arr of _arr) {
-                // for (let index = arr.length - 1; index >= 0; index--) {
-                // const el = arr[index]
-                for (const el of arr) {
+                for (let index = arr.length - 1; index >= 0; index--) {
+                    const el = arr[index]
                     if (!el.startTime) {
                         el.startTime = t
                     }
