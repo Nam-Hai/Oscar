@@ -50,8 +50,9 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
 export const useStoreProject = createStore(() => {
     const copy = projectCopy
     const firstScroll = ref(false)
+    const landingHeaderScale = ref(1)
 
     const currentIndex = ref(0)
 
-    return { copy, firstScroll, currentIndex }
+    return { copy, firstScroll, currentIndex, landingHeaderScale }
 })

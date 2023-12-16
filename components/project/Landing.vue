@@ -3,7 +3,7 @@
         <div class="project__main-image" :data-src="COPY.main_image.src_1"></div>
 
         <div class="project__landing__wrapper" :class="{ show: firstScroll }">
-            <div class="title__wrapper">
+            <div class="title__wrapper" ref="titleWrapperRef">
                 <h1 :style="{ justifyContent: (COPY.title.split(' ').length == 1) ? 'flex-end' : 'space-between' }">
                     <span v-for="word in COPY.title.split(' ')" class="overflow">
                         <span v-for="char in word.split('')" class="overflow-content">
@@ -36,10 +36,19 @@ import { onFlow } from '~/waterflow/composables/onFlow';
 const route = useFlowProvider().getRouteTo()
 const id = route.params.id ? route.params.id[0] : 'viadomo-deco'
 
-const { copy, firstScroll } = useStoreProject()
+const { copy, firstScroll, landingHeaderScale } = useStoreProject()
 const COPY = copy[id]
 
 const wrapperRef = ref()
+
+const titleWrapperRef = ref() as Ref<HTMLElement>
+useLenisScroll((e) => {
+    const size = 400
+    const s = N.Clamp(e.animatedScroll, 0, size);
+    const scale = N.Lerp(1, 0.6, s / size)
+    landingHeaderScale.value = scale
+    titleWrapperRef.value.style.transform = `translateY(${s}px) scale(${scale}) `
+})
 
 onMounted(() => {
     const el = N.get('.project__main-image', wrapperRef.value) as HTMLElement
@@ -99,6 +108,7 @@ onBeforeUnmount(() => {
         transform: translateY(0);
 
         .title__wrapper {
+            transform-origin: top right;
 
             h2 {
                 transition: transform 1000ms 100ms $easeInOutQuart;
@@ -175,7 +185,8 @@ onBeforeUnmount(() => {
         display: flex;
         justify-content: space-between;
         height: 100%;
-        max-height: 34.8rem;
+        // max-height: 34.8rem;
+        height: 100%;
         align-items: flex-end;
 
         transition: transform 1000ms 200ms $easeInOutQuart;

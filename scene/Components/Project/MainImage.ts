@@ -5,13 +5,13 @@ import { useCanvasReactivity } from "../../utils/WebGL.utils";
 import { canvasInject } from '~/composables/useCanvas';
 
 const { vh, vw, scale, mouse } = useStoreView()
-const { firstScroll } = useStoreProject()
+const { firstScroll, landingHeaderScale } = useStoreProject()
 
 export const [provideMainImage, useCanvasMainImageProject] = canvasInject<MainImage>('canvas-main-image-project')
 
 const endBounds = computed(() => {
     return {
-        heigth: vh.value - 24 * 2 * scale.value,
+        height: vh.value - 24 * 2 * scale.value,
         width: vw.value - 24 * 2 * scale.value,
     }
 })
@@ -42,7 +42,9 @@ export class MainImage extends CanvasNode {
 
     scalePixelScroll = {
         width: 0,
-        height: 0
+        height: 0,
+        x: 0,
+        y: 0
     }
 
 
@@ -101,6 +103,12 @@ export class MainImage extends CanvasNode {
                 translate: new Vec2(0, 0),
                 size: new Vec2(1, 1),
                 intrinsecRatio: 1
+            },
+            {
+                scale: new Vec2(1, 1),
+                translate: new Vec2(0, 0),
+                size: new Vec2(1, 1),
+                intrinsecRatio: 1
             }
         ]
 
@@ -112,6 +120,15 @@ export class MainImage extends CanvasNode {
         this.raf = useRafR(this.update)
 
         const { watch } = useCanvasReactivity(this)
+
+        watch(landingHeaderScale, (scale) => {
+            if (this.uProgress.value < 1) return
+
+            this.uProgress.value = 1 + N.iLerp(scale, 1, 0.6);
+            console.log(this.uProgress, "landing");
+            this.computeUniform()
+            // this.uSizePixel.value.x = N.Lerp()
+        })
 
         const tl = useTL()
         watch(firstScroll, (b) => {
@@ -150,11 +167,8 @@ export class MainImage extends CanvasNode {
 
     onScroll(e: any) {
         this.pixelScroll = e.animatedScroll
-        this.scalePixelScroll = {
-            height: this.pixelScroll,
-            width: this.pixelScroll
-        }
-        console.log(this.pixelScroll);
+
+        this.scalePixelScroll.y = this.pixelScroll
     }
 
 
@@ -263,14 +277,14 @@ export class MainImage extends CanvasNode {
         }
 
         this.node.position.set(
-            this.canvasSize.width * (this.pixelPosition.x - this.pixelScroll / 2) / vw.value,
-            this.canvasSize.height * (this.pixelPosition.y + this.pixelScroll / 2) / vh.value,
+            this.canvasSize.width * (this.pixelPosition.x + this.scalePixelScroll.x) / vw.value,
+            this.canvasSize.height * (this.pixelPosition.y + this.scalePixelScroll.y) / vh.value,
             0
         )
 
         this.node.scale.set(
-            this.canvasSize.width * (this.scalePixelScroll.width + this.uSizePixel.value.x) / vw.value,
-            this.canvasSize.height * (this.scalePixelScroll.height + this.uSizePixel.value.y) / vh.value,
+            this.canvasSize.width * (this.uSizePixel.value.x) / vw.value,
+            this.canvasSize.height * (this.uSizePixel.value.y) / vh.value,
             1
         )
     }
@@ -283,84 +297,88 @@ export class MainImage extends CanvasNode {
 
         this.uniformFromTo[0].size.set(this.bounds[0].width, this.bounds[0].height)
         this.uniformFromTo[1].size.set(this.bounds[1].width, this.bounds[1].height)
+        this.uniformFromTo[2].size.set(endBounds.value.width, endBounds.value.height)
 
-        this.uniformFromTo[0].scale.set(
-            this.uniformFromTo[0].size[0] / this.uniformFromTo[0].size[1] < this.uniformFromTo[0].intrinsecRatio
-                ? this.uniformFromTo[0].size[0] /
-                (this.uniformFromTo[0].size[1] * this.uniformFromTo[0].intrinsecRatio)
-                : 1,
-            this.uniformFromTo[0].size[0] / this.uniformFromTo[0].size[1] < this.uniformFromTo[0].intrinsecRatio
-                ? 1
-                : (this.uniformFromTo[0].size[1] * this.uniformFromTo[0].intrinsecRatio) /
-                this.uniformFromTo[0].size[0],
-        )
-
-        this.uniformFromTo[0].translate.set(
-            this.uniformFromTo[0].size[0] / this.uniformFromTo[0].size[1] < this.uniformFromTo[0].intrinsecRatio
-                ? 0.5 *
-                (1 -
-                    this.uniformFromTo[0].size[0] /
-                    (this.uniformFromTo[0].size[1] * this.uniformFromTo[0].intrinsecRatio))
-                : 0,
-            this.uniformFromTo[0].size[0] / this.uniformFromTo[0].size[1] <=
-                this.uniformFromTo[0].intrinsecRatio
-                ? 0
-                : (1 -
-                    (this.uniformFromTo[0].size[1] * this.uniformFromTo[0].intrinsecRatio) /
-                    this.uniformFromTo[0].size[0]) *
-                0.5,
-        );
-        this.uniformFromTo[1].scale.set(
-            this.uniformFromTo[1].size[0] / this.uniformFromTo[1].size[1] < this.uniformFromTo[1].intrinsecRatio
-                ? this.uniformFromTo[1].size[0] /
-                (this.uniformFromTo[1].size[1] * this.uniformFromTo[1].intrinsecRatio)
-                : 1,
-            this.uniformFromTo[1].size[0] / this.uniformFromTo[1].size[1] < this.uniformFromTo[1].intrinsecRatio
-                ? 1
-                : (this.uniformFromTo[1].size[1] * this.uniformFromTo[1].intrinsecRatio) /
-                this.uniformFromTo[1].size[0],
-        )
-
-        this.uniformFromTo[1].translate.set(
-            this.uniformFromTo[1].size[0] / this.uniformFromTo[1].size[1] < this.uniformFromTo[1].intrinsecRatio
-                ? 0.5 *
-                (1 -
-                    this.uniformFromTo[1].size[0] /
-                    (this.uniformFromTo[1].size[1] * this.uniformFromTo[1].intrinsecRatio))
-                : 0,
-            this.uniformFromTo[1].size[0] / this.uniformFromTo[1].size[1] <=
-                this.uniformFromTo[1].intrinsecRatio
-                ? 0
-                : (1 -
-                    (this.uniformFromTo[1].size[1] * this.uniformFromTo[1].intrinsecRatio) /
-                    this.uniformFromTo[1].size[0]) *
-                0.5,
-        );
+        this.computeFromTo(0)
+        this.computeFromTo(1)
+        this.computeFromTo(2)
 
         this.computeUniform()
 
     }
 
+    computeFromTo(i: number) {
+        this.uniformFromTo[i].scale.set(
+            this.uniformFromTo[i].size[0] / this.uniformFromTo[i].size[1] < this.uniformFromTo[i].intrinsecRatio
+                ? this.uniformFromTo[i].size[0] /
+                (this.uniformFromTo[i].size[1] * this.uniformFromTo[i].intrinsecRatio)
+                : 1,
+            this.uniformFromTo[i].size[0] / this.uniformFromTo[i].size[1] < this.uniformFromTo[i].intrinsecRatio
+                ? 1
+                : (this.uniformFromTo[i].size[1] * this.uniformFromTo[i].intrinsecRatio) /
+                this.uniformFromTo[i].size[0],
+        )
+
+        this.uniformFromTo[i].translate.set(
+            this.uniformFromTo[i].size[0] / this.uniformFromTo[i].size[1] < this.uniformFromTo[i].intrinsecRatio
+                ? 0.5 *
+                (1 -
+                    this.uniformFromTo[i].size[0] /
+                    (this.uniformFromTo[i].size[1] * this.uniformFromTo[i].intrinsecRatio))
+                : 0,
+            this.uniformFromTo[i].size[0] / this.uniformFromTo[i].size[1] <=
+                this.uniformFromTo[i].intrinsecRatio
+                ? 0
+                : (1 -
+                    (this.uniformFromTo[i].size[1] * this.uniformFromTo[i].intrinsecRatio) /
+                    this.uniformFromTo[i].size[0]) *
+                0.5,
+        );
+
+    }
+
     computeUniform() {
         this.on = true
-        this.uSizePixel.value.set(
-            N.Lerp(this.uniformFromTo[0].size.x, this.uniformFromTo[1].size.x, this.uProgress.value),
-            N.Lerp(this.uniformFromTo[0].size.y, this.uniformFromTo[1].size.y, this.uProgress.value),
-        )
-        this.uScaleOffset.value.set(
-            N.Lerp(this.uniformFromTo[0].scale.x, this.uniformFromTo[1].scale.x, this.uProgress.value),
-            N.Lerp(this.uniformFromTo[0].scale.y, this.uniformFromTo[1].scale.y, this.uProgress.value),
-        )
-        this.uTranslateOffset.value.set(
-            N.Lerp(this.uniformFromTo[0].translate.x, this.uniformFromTo[1].translate.x, this.uProgress.value),
-            N.Lerp(this.uniformFromTo[0].translate.y, this.uniformFromTo[1].translate.y, this.uProgress.value),
-        )
+        if (this.uProgress.value <= 1) {
+            this.uSizePixel.value.set(
+                N.Lerp(this.uniformFromTo[0].size.x, this.uniformFromTo[1].size.x, this.uProgress.value),
+                N.Lerp(this.uniformFromTo[0].size.y, this.uniformFromTo[1].size.y, this.uProgress.value),
+            )
+            this.uScaleOffset.value.set(
+                N.Lerp(this.uniformFromTo[0].scale.x, this.uniformFromTo[1].scale.x, this.uProgress.value),
+                N.Lerp(this.uniformFromTo[0].scale.y, this.uniformFromTo[1].scale.y, this.uProgress.value),
+            )
+            this.uTranslateOffset.value.set(
+                N.Lerp(this.uniformFromTo[0].translate.x, this.uniformFromTo[1].translate.x, this.uProgress.value),
+                N.Lerp(this.uniformFromTo[0].translate.y, this.uniformFromTo[1].translate.y, this.uProgress.value),
+            )
+
+            if (!this.bounds) return
+            const x = N.Lerp(this.bounds[0].x, this.bounds[1].x, this.uProgress.value) + this.uSizePixel.value.x / 2 - vw.value / 2
+            const y = vh.value / 2 - this.uSizePixel.value.y / 2 - N.Lerp(this.bounds[0].y, vh.value - 24 * scale.value - this.bounds[1].height, this.uProgress.value)
+            this.pixelPosition.set(x, y)
+        } else {
+            this.uSizePixel.value.set(
+                N.Lerp(this.uniformFromTo[1].size.x, this.uniformFromTo[2].size.x, this.uProgress.value - 1),
+                N.Lerp(this.uniformFromTo[1].size.y, this.uniformFromTo[2].size.y, this.uProgress.value - 1),
+            )
+            this.uScaleOffset.value.set(
+                N.Lerp(this.uniformFromTo[1].scale.x, this.uniformFromTo[2].scale.x, this.uProgress.value - 1),
+                N.Lerp(this.uniformFromTo[1].scale.y, this.uniformFromTo[2].scale.y, this.uProgress.value - 1),
+            )
+            this.uTranslateOffset.value.set(
+                N.Lerp(this.uniformFromTo[1].translate.x, this.uniformFromTo[2].translate.x, this.uProgress.value - 1),
+                N.Lerp(this.uniformFromTo[1].translate.y, this.uniformFromTo[2].translate.y, this.uProgress.value - 1),
+            )
+
+            if (!this.bounds) return
+            const x = N.Lerp(this.bounds[1].x, 24 * scale.value, this.uProgress.value - 1) + this.uSizePixel.value.x / 2 - vw.value / 2
+
+            const y = vh.value / 2 - this.uSizePixel.value.y / 2 - N.Lerp(vh.value - 24 * scale.value - this.bounds[1].height, (vh.value - 24 * scale.value - this.bounds[1].height) * 1.4, this.uProgress.value - 1)
+            this.pixelPosition.set(x, y)
+        }
 
 
-        if (!this.bounds) return
-        const x = N.Lerp(this.bounds[0].x, this.bounds[1].x, this.uProgress.value) + this.uSizePixel.value.x / 2 - vw.value / 2
-        const y = vh.value / 2 - this.uSizePixel.value.y / 2 - N.Lerp(this.bounds[0].y, vh.value - 24 * scale.value - this.bounds[1].height, this.uProgress.value)
-        this.pixelPosition.set(x, y)
 
         // this.node.position.set(
         //     this.canvasSize.width * x / vw.value,
@@ -404,7 +422,8 @@ void main() {
 
     vec4 c = vec4(0.);
 
-    float t = uSwap ? uProgress * 1.2: uProgress * 0.;
+    float p = clamp(uProgress, 0., 1.);
+    float t = uSwap ? p * 1.2: p * 0.;
     vec2 coord = vec2(vP.x - .5 - 0.3 * (1. - t), vP.y - .5 - 0.3 * (1. - t));
     float d = sqrt(coord.x * coord.x + coord.y * coord.y * .7);
     d = clamp(d - t * sqrt(2.), 0., 1.);
