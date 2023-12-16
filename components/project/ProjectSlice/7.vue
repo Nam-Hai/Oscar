@@ -5,7 +5,17 @@
 </template>
 
 <script lang="ts" setup>
+import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
+import { onFlow } from '~/waterflow/composables/onFlow';
 const { data } = defineProps<{ data: { [key: string]: string } }>()
+
+const projectCanvas = useProjectCanvas()
+
+const elRef1 = ref()
+
+onFlow(() => {
+    projectCanvas.addMedia(elRef1.value)
+})
 </script>
 
 <style lang="scss" scoped>

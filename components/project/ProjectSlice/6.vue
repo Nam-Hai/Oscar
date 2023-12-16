@@ -11,8 +11,21 @@
 </template>
 
 <script lang="ts" setup>
+import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
+import { onFlow } from '~/waterflow/composables/onFlow';
 const { data } = defineProps<{ data: { [key: string]: string } }>()
 
+const projectCanvas = useProjectCanvas()
+
+const elRef1 = ref()
+const elRef2 = ref()
+const elRef3 = ref()
+
+onFlow(() => {
+    projectCanvas.addMedia(elRef1.value)
+    projectCanvas.addMedia(elRef2.value)
+    projectCanvas.addMedia(elRef3.value)
+})
 
 </script>
 
