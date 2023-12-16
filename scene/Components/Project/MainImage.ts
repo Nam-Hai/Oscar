@@ -125,7 +125,6 @@ export class MainImage extends CanvasNode {
             if (this.uProgress.value < 1) return
 
             this.uProgress.value = 1 + N.iLerp(scale, 1, 0.6);
-            console.log(this.uProgress, "landing");
             this.computeUniform()
             // this.uSizePixel.value.x = N.Lerp()
         })
@@ -424,7 +423,7 @@ void main() {
 
     float p = clamp(uProgress, 0., 1.);
     float t = uSwap ? p * 1.2: p * 0.;
-    vec2 coord = vec2(vP.x - .5 - 0.3 * (1. - t), vP.y - .5 - 0.3 * (1. - t));
+    vec2 coord = vec2(vP.x + .5 + 0.3 * (1. - t), vP.y - .5 - 0.3 * (1. - t));
     float d = sqrt(coord.x * coord.x + coord.y * coord.y * .7);
     d = clamp(d - t * sqrt(2.), 0., 1.);
     float radius = 0.3;
@@ -491,7 +490,7 @@ void main() {
     if(uProgress > .5){
         t = 2. - uProgress * 2.;
     }
-    vec2 coord = vec2(mix(1.1, -1.1, uProgress), mix(0.3, -0.4, uProgress));
+    vec2 coord = vec2(mix(-1.1, 1.1, uProgress), mix(0.3, -0.4, uProgress));
 
     float radius = mix(0.6, 1.3, t);
     float d = sqrt((vP.x - coord.x) * (vP.x - coord.x) + (vP.y - coord.y) * (vP.y - coord.y));
@@ -499,7 +498,7 @@ void main() {
 
     vec4 mvmP = modelViewMatrix * vec4(position, 1.);
     mvmP.z += z * 1.9;
-    mvmP.x += z * -0.4 ;
+    mvmP.x -= z * -0.4 ;
 
     gl_Position = projectionMatrix * mvmP;
 }`;

@@ -15,7 +15,7 @@
                 <h2>{{ COPY.date }}</h2>
             </div>
             <div class="lower-container">
-                <p>
+                <p ref="lowerDesRef">
                     VIADOMO©DECO boasts an innovative collection of top-tier furniture, reshaping the definition of luxury
                     and sophistication.
                 </p>
@@ -41,6 +41,8 @@ const COPY = copy[id]
 
 const wrapperRef = ref()
 
+const lowerDesRef = ref() as Ref<HTMLElement>
+
 const titleWrapperRef = ref() as Ref<HTMLElement>
 useLenisScroll((e) => {
     const size = 400
@@ -48,6 +50,7 @@ useLenisScroll((e) => {
     const scale = N.Lerp(1, 0.6, s / size)
     landingHeaderScale.value = scale
     titleWrapperRef.value.style.transform = `translateY(${s}px) scale(${scale}) `
+    N.T(lowerDesRef.value, 0, e.animatedScroll, 'px');
 })
 
 onMounted(() => {
@@ -90,7 +93,7 @@ onBeforeUnmount(() => {
 
     position: relative;
 
-    overflow: hidden;
+    // overflow: hidden;
 }
 
 .project__landing__wrapper {
@@ -198,6 +201,8 @@ onBeforeUnmount(() => {
             font-weight: 400;
             line-height: 2.7rem;
             letter-spacing: -.024rem;
+
+            // position: fixed;
         }
 
         .project__main-image__next-placeholder {
