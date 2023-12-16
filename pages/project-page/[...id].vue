@@ -1,9 +1,16 @@
 <template>
-    <div class="project__wrapper" ref="wrapperRef">
+    <main class="project__wrapper" ref="wrapperRef">
         <Landing />
+        <ProjectSlice1 />
+        <ProjectSlice2 />
+        <ProjectSlice3 />
+        <ProjectSlice4 />
+        <ProjectSlice5 />
+        <ProjectSlice6 />
+        <ProjectSlice7 />
+        <ProjectSliceNextProject />
 
-        <div style="height: 140rem; width: 20rem;"></div>
-    </div>
+    </main>
 </template>
 
 <script lang="ts" setup>

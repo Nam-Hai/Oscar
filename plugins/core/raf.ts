@@ -112,7 +112,7 @@ const Raf = new class {
 
     add(rafItem: rafItem, priority: RafPriority) {
         this.arr[priority].push(rafItem)
-        if (this.arr[1].length > 10000) console.warn("Main Raf congested", this.arr.length)
+        if (this.arr[2].length > 10000) console.warn("Main Raf congested", this.arr.length)
     }
 
     // take advantage to the fact we sorted the rafscallbacks

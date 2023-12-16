@@ -1,10 +1,8 @@
 <template>
-    <main ref="mainRef" @mousemove="mainMove($event)">
-        <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index"
-            :class="{ current: currentIndex == index }">
+    <div ref="wrapperRef" class="next-project__wrapper">
+        <div class="next-project-container">
             <NuxtLink :to="data.link">
-                <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs"
-                    @mouseenter="hideTrail = true" @mouseleave="hideTrail = false" @mousemove="headerMove($event)"></h1>
+                <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRef"></h1>
             </NuxtLink>
 
             <div class="flavor">
@@ -22,65 +20,44 @@
                 </div>
             </div>
         </div>
-
-        <Stepper />
-    </main>
+    </div>
 </template>
 
 <script lang="ts" setup>
-import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
-import { vCursorHover } from '~/directives/cursorActive';
-import { indexFlowIn, indexFlowOutMap } from './index.transition';
 
-let first = false
-function headerMove(e: MouseEvent) {
-    if (!first) {
-        first = true
-        e.stopPropagation()
-        hideTrail.value = true
-    }
-}
-function mainMove(e: MouseEvent) {
-    if (!first) {
-        first = true
-        e.stopPropagation()
-        hideTrail.value = false
-    }
-}
+const { homeStore, currentIndex, length, hideTrail } = useStoreStepper()
+const data = homeStore[(currentIndex.value + 1) % length]
+// const {propName = fallbackValue} = defineProps<{propName: type}>()
+// const emits = defineEmits([])
 
-const mainRef = ref()
-const { homeStore, currentIndex, hideTrail } = useStoreStepper()
+const store = useStore()
+
 const flavorMainRef = ref()
 const flavorSubRef = ref()
+const wrapperRef = ref() as Ref<HTMLElement>
 
-const titleTls = homeStore.map(() => {
-    return useTL()
-})
+const titleRef = ref()
+const tl = useTL()
 
 onFlow(() => {
-    titleAnimations(currentIndex.value, currentIndex.value + 1)
+    console.log('test');
+    titleAnimations()
 })
 
-watch(currentIndex, (i, old) => {
-    titleAnimations(i, old)
-})
-
-
-const titleRefs = ref()
-
-function titleAnimations(i: number, old: number) {
-    const tl = titleTls[i]
+function titleAnimations() {
     tl.reset()
-    const title = titleRefs.value[i]
+    const title = titleRef.value
+
     N.Class.remove(title, "leave")
-    const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
-    const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value[i], ...subs]
+    const subs = N.getAll(".overflow-content", flavorSubRef.value)!
+    const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value, ...subs]
+
     for (const [index, char] of spans.entries()) {
         tl.from({
             el: char,
             d: 1000,
-            delay: 40 * index,
+            delay: 30 * index,
             e: 'o4',
             p: {
                 y: [-100, 0]
@@ -88,78 +65,44 @@ function titleAnimations(i: number, old: number) {
         })
     }
     tl.play()
-
-    const oldTL = titleTls[old]
-    const oldTitle = titleRefs.value[old]
-
-    N.Class.add(oldTitle, "leave")
-    oldTL.play({
-        d: 1000,
-        p: {
-            y: { newEnd: 100 }
-        },
-        delay: 0
-    })
 }
 
 onLeave(() => {
     const i = currentIndex.value
     const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
     const spans = [flavorMainRef.value[i], ...subs]
-    const tl = titleTls[i]
     // tl.reset()
-    console.error("onLeave");
-    let a = 0
     for (let i = tl.arr.length - 4; i < tl.arr.length; i++) {
-
         const motion = tl.arr[i]
         motion.play({
             d: 1000,
             p: {
                 y: { newEnd: 100 }
             },
-            delay: a * 40
+            delay: 0
         })
-        a++;
     }
 })
-
-useResetLenis({
-    infinite: true,
-})
-
-usePageFlow({
-    props: {
-        titleRefs: titleRefs,
-    },
-    flowOutMap: indexFlowOutMap,
-    flowInCrossfade: indexFlowIn,
-    enableCrossfade: 'TOP'
-})
-
 </script>
 
 <style lang="scss" scoped>
 @use "@/styles/shared.scss" as *;
 
-main {
+.next-project__wrapper {
+    background-color: white;
     height: 100vh;
     width: 100vw;
     top: 0;
     // background-color: black;
     color: $white;
+    position: relative;
 }
 
-.index-container {
+.next-project-container {
     height: 100%;
     width: 100%;
-    pointer-events: none;
-    top: -3rem;
+    // top: -3rem;
     position: absolute;
-
-    &.current {
-        pointer-events: auto;
-    }
 
     clip-path: inset(0 0 17rem 0);
 }
@@ -216,3 +159,4 @@ h1 {
     }
 }
 </style>
+

@@ -24,7 +24,11 @@
                 </div>
             </div>
 
+
         </div>
+    </div>
+    <div class="pin-margin"
+        style="height: calc(800px + 3 * 0.9 * 17.7rem - 6.65 * 2.4rem); width: 20rem;">
     </div>
 </template>
 
@@ -45,7 +49,7 @@ const lowerDesRef = ref() as Ref<HTMLElement>
 
 const titleWrapperRef = ref() as Ref<HTMLElement>
 useLenisScroll((e) => {
-    const size = 400
+    const size = 800
     const s = N.Clamp(e.animatedScroll, 0, size);
     const scale = N.Lerp(1, 0.6, s / size)
     landingHeaderScale.value = scale
@@ -62,7 +66,6 @@ onMounted(() => {
 
 const tl = useTL()
 onFlow(() => {
-    console.log("onFlow");
     const spans = N.getAll('h1 > span > span', wrapperRef.value)
     for (let i = 0; i < spans.length; i++) {
         const span = spans[i]

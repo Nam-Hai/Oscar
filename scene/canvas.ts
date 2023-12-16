@@ -39,7 +39,8 @@ export default class Canvas {
             dpr: devicePixelRatio,
         });
         this.gl = this.renderer.gl
-        this.gl.clearColor(0.945, 0.945, 0.945, 1)
+        this.gl.clearColor(0.945, 0.945, 0.945, 0)
+        // this.gl.clearColor(0, 0, 0, 0)
         this.dom = this.gl.canvas
 
         this.map = new Map([

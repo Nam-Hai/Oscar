@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapperSceneRef" class="wrapper-scene">
+  <div ref="wrapperSceneRef" class="wrapper-scene" :class='{ TOP: router.currentRoute.value.name == "project-page-id" }'>
   </div>
 </template>
 
@@ -22,6 +22,8 @@ onUnmounted(() => {
   canvas.destroy()
 })
 
+const router = useRouter()
+
 </script>
 
 <style lang="scss">
@@ -32,6 +34,10 @@ onUnmounted(() => {
 
   &.BOTTOM {
     z-index: 6;
+  }
+
+  &.TOP {
+    z-index: 11;
   }
 
   canvas {

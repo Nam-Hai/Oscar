@@ -5,6 +5,9 @@ import { CanvasPage } from "../utils/types";
 import type { Camera, OGLRenderingContext, Renderer, Transform } from "ogl";
 import { Picker } from "../Components/Picker";
 import { MainImage } from "../Components/Project/MainImage";
+import { Media } from "../Components/Project/Media";
+
+export const [provideProjectCanvas, useProjectCanvas] = canvasInject<ProjectCanvas>('canvas-project-canvas')
 
 export class ProjectCanvas extends CanvasPage {
 
@@ -17,6 +20,7 @@ export class ProjectCanvas extends CanvasPage {
 
     constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
         super(gl)
+        provideProjectCanvas(this)
 
         this.node = options.scene
 
@@ -33,10 +37,12 @@ export class ProjectCanvas extends CanvasPage {
 
         this.ro = useROR(this.resize)
         this.raf = useRafR(this.render, RafPriority.LAST)
-        this.onDestroy(() => this.ro.off())
-        this.onDestroy(() => this.raf.kill())
+
 
         this.mount()
+
+        this.onDestroy(() => this.ro.off())
+        this.onDestroy(() => this.raf.kill())
     }
     init() {
         this.raf.run()
@@ -50,9 +56,12 @@ export class ProjectCanvas extends CanvasPage {
         this.add(new MainImage(this.gl, {}))
     }
 
-    resize({ vh, vw, scale, breakpoint }: ResizeEvent) {
+    addMedia(el: HTMLElement) {
+        this.add(new Media(this.gl, { el }))
     }
 
+    resize({ vh, vw, scale, breakpoint }: ResizeEvent) {
+    }
 
     render(e: rafEvent) {
         this.renderer.render({

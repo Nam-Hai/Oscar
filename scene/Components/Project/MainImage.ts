@@ -40,14 +40,6 @@ export class MainImage extends CanvasNode {
     tMap2: { value: Texture; };
     uLoaded2: { value: number; };
 
-    scalePixelScroll = {
-        width: 0,
-        height: 0,
-        x: 0,
-        y: 0
-    }
-
-
     constructor(gl: any, props: { borderRadius?: number, el?: HTMLElement }) {
         super(gl)
         N.BM(this, ['update', 'onResize', 'destroy', "onScroll"])
@@ -121,14 +113,6 @@ export class MainImage extends CanvasNode {
 
         const { watch } = useCanvasReactivity(this)
 
-        watch(landingHeaderScale, (scale) => {
-            if (this.uProgress.value < 1) return
-
-            this.uProgress.value = 1 + N.iLerp(scale, 1, 0.6);
-            this.computeUniform()
-            // this.uSizePixel.value.x = N.Lerp()
-        })
-
         const tl = useTL()
         watch(firstScroll, (b) => {
             tl.reset()
@@ -165,9 +149,22 @@ export class MainImage extends CanvasNode {
     }
 
     onScroll(e: any) {
-        this.pixelScroll = e.animatedScroll
+        // if (this.pixelScroll >= 800) return
+        const eS = e.animatedScroll
 
-        this.scalePixelScroll.y = this.pixelScroll
+
+        if (this.uProgress.value < 1) return
+        const size = 800
+        const s = N.Clamp(eS, 0, size);
+        const scale = N.Lerp(1, 0.6, s / size)
+
+        this.uProgress.value = 1 + N.iLerp(scale, 1, 0.6);
+        this.computeUniform()
+        if (this.uProgress.value == 2) {
+            this.pixelScroll = eS - 800
+        } else {
+            this.pixelScroll = 0
+        }
     }
 
 
@@ -190,6 +187,8 @@ export class MainImage extends CanvasNode {
         watch(a.loaded, b => {
             if (b) {
                 this.uniformFromTo[1].intrinsecRatio = (this.tMap2.value.image as HTMLImageElement).width / (this.tMap2.value.image as HTMLImageElement).height
+                this.uniformFromTo[2].intrinsecRatio = (this.tMap2.value.image as HTMLImageElement).width / (this.tMap2.value.image as HTMLImageElement).height
+                this.onResize(useCanvas().size.value)
                 useTL().from({
                     d: 300,
                     update: (e) => {
@@ -267,17 +266,13 @@ export class MainImage extends CanvasNode {
 
 
     update(e: rafEvent) {
-        // this.node.position.lerp(this.positionTarget, this.lerp)
-
-        // this.uProgress.value = (Math.cos(e.elapsed) + 1) / 2
-
         if (this.on) {
-            this.pixelScroll = scrollY
+            // this.pixelScroll = scrollY
         }
 
         this.node.position.set(
-            this.canvasSize.width * (this.pixelPosition.x + this.scalePixelScroll.x) / vw.value,
-            this.canvasSize.height * (this.pixelPosition.y + this.scalePixelScroll.y) / vh.value,
+            this.canvasSize.width * (this.pixelPosition.x) / vw.value,
+            this.canvasSize.height * (this.pixelPosition.y + this.pixelScroll) / vh.value,
             0
         )
 
@@ -293,6 +288,8 @@ export class MainImage extends CanvasNode {
         if (!this.el) return
 
         this.bounds = [this.el[0].getBoundingClientRect(), this.el[1].getBoundingClientRect()]
+        this.bounds[0].y = this.bounds[0].top + scrollY
+        this.bounds[1].y = this.bounds[1].top + scrollY
 
         this.uniformFromTo[0].size.set(this.bounds[0].width, this.bounds[0].height)
         this.uniformFromTo[1].size.set(this.bounds[1].width, this.bounds[1].height)
@@ -373,7 +370,8 @@ export class MainImage extends CanvasNode {
             if (!this.bounds) return
             const x = N.Lerp(this.bounds[1].x, 24 * scale.value, this.uProgress.value - 1) + this.uSizePixel.value.x / 2 - vw.value / 2
 
-            const y = vh.value / 2 - this.uSizePixel.value.y / 2 - N.Lerp(vh.value - 24 * scale.value - this.bounds[1].height, (vh.value - 24 * scale.value - this.bounds[1].height) * 1.4, this.uProgress.value - 1)
+            const y = vh.value / 2 - this.uSizePixel.value.y / 2 - N.Lerp(vh.value - 24 * scale.value - this.bounds[1].height, (vh.value - this.bounds[1].height) * .6 + 12 * scale.value, this.uProgress.value - 1)
+            // const y = vh.value / 2 - this.uSizePixel.value.y / 2 - (vh.value - 24 * scale.value - this.bounds[1].height) - this.pixelScroll
             this.pixelPosition.set(x, y)
         }
 

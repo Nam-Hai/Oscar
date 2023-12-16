@@ -18,7 +18,19 @@ const LAZY_MANIFEST = {
     "/junk/4.avif",
   ],
   VIADOMO: [
-    "/Assets/Viadomo/1.jpg"
+    "/Assets/Viadomo/1.jpg",
+    "/Assets/Viadomo/2.png",
+    "/Assets/Viadomo/3.png",
+    "/Assets/Viadomo/4.png",
+    "/Assets/Viadomo/5.png",
+    "/Assets/Viadomo/6.png",
+    "/Assets/Viadomo/7.png",
+    "/Assets/Viadomo/8.png",
+    "/Assets/Viadomo/9.png",
+    "/Assets/Viadomo/10.png",
+    "/Assets/Viadomo/11.png",
+    "/Assets/Viadomo/12.png",
+    "/Assets/Viadomo/13.png",
   ],
 }
 
@@ -39,6 +51,12 @@ export default class Manifest {
       }
     }
   }
+  lazyMap: {
+    [src: string]: {
+      get texture(): Texture,
+      loaded: Ref<boolean>
+    }
+  }
   jsons: { [key: string]: {} };
   percentage: Ref<number>;
   canvasContext: any;
@@ -50,6 +68,8 @@ export default class Manifest {
     this.textures = {
     }
     this.lazyTextures = {
+    }
+    this.lazyMap = {
 
     }
 
@@ -146,6 +166,7 @@ export default class Manifest {
       }
     }
 
+    console.log("LAZY LOAD ==============> ", this.lazyTextures);
 
     return false
     // start loading auto
