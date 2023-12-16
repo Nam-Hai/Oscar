@@ -1,16 +1,17 @@
 <template>
     <div class="container-6">
-        <div class="data-img" data-src="#"></div>
+        <div class="data-img" :data-src="data.src_1"></div>
 
         <div class="c-62">
-            <div class="data-img" data-src="#"></div>
-            <div class="data-img" data-src="#"></div>
+            <div class="data-img" :data-src="data.src_2"></div>
+            <div class="data-img" :data-src="data.src_3"></div>
 
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
+const { data } = defineProps<{ data: { [key: string]: string } }>()
 
 
 </script>

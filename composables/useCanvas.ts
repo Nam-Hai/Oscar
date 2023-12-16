@@ -14,7 +14,6 @@ const canvasRecord = new Map()
 export function canvasInject<T>(key: string, defaultValue?: T) {
     function provider(value: T) {
         canvasRecord.set(key, value)
-        console.log(canvasRecord);
 
         return () => canvasRecord.delete(key)
     }

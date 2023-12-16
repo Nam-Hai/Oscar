@@ -1,17 +1,18 @@
 <template>
     <div class="container-5">
-        <div class="data-img" data-src="/Assets/Viadomo/10.png" ref="elRef1"></div>
+        <div class="data-img" :data-src="data.src_1" ref="elRef1"></div>
         <div class="c-52">
-            <div class="data-img" data-src="/Assets/Viadomo/11.png" ref="elRef2"></div>
-            <div class="data-img" data-src="/Assets/Viadomo/12.png" ref="elRef3"></div>
+            <div class="data-img" :data-src="data.src_2" ref="elRef2"></div>
+            <div class="data-img" :data-src="data.src_3" ref="elRef3"></div>
         </div>
-        <div class="data-img" data-src="/Assets/Viadomo/13.png" ref="elRef4"></div>
+        <div class="data-img" :data-src="data.src_4" ref="elRef4"></div>
     </div>
 </template>
 
 <script lang="ts" setup>
-
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
+import { onFlow } from '~/waterflow/composables/onFlow';
+const { data } = defineProps<{ data: { [key: string]: string } }>()
 
 const projectCanvas = useProjectCanvas()
 
@@ -20,7 +21,7 @@ const elRef2 = ref()
 const elRef3 = ref()
 const elRef4 = ref()
 
-onMounted(() => {
+onFlow(() => {
     projectCanvas.addMedia(elRef1.value)
     projectCanvas.addMedia(elRef2.value)
     projectCanvas.addMedia(elRef3.value)

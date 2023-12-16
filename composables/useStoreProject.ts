@@ -22,7 +22,22 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             src_1: "/Assets/Home1.png",
             src_2: "/Assets/Viadomo/1.jpg",
         },
-        slice: []
+        slice: [
+            {
+                keyId: "ProjectSlice1",
+                data: {
+                    src_1: "/Assets/Viadomo/2.png",
+                    src_2: "/Assets/Viadomo/3.png",
+                }
+            },
+            {
+                keyId: "ProjectSlice2",
+                data: {
+                    src_1: "/Assets/Viadomo/4.png",
+                    src_2: "/Assets/Viadomo/5.png",
+                }
+            }
+        ]
     },
     "avant-garden": {
         title: 'Avant garden',
@@ -30,7 +45,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         date: "03.2023",
         main_image: {
             src_1: "/Assets/Home_2.jpg",
-            src_2: "/Assets/Viadomo/1.jpg",
+            src_2: "/Assets/Viadomo/6.png",
         },
         slice: []
     },
@@ -40,7 +55,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         date: "03.2023",
         main_image: {
             src_1: "/Assets/Home3.png",
-            src_2: "/Assets/Viadomo/1.jpg",
+            src_2: "/Assets/Viadomo/8.png",
         },
         slice: []
     }
@@ -52,7 +67,15 @@ export const useStoreProject = createStore(() => {
     const firstScroll = ref(false)
     const landingHeaderScale = ref(1)
 
-    const currentIndex = ref(0)
+    const currentIndex = ref(0);
+    const length = Object.values(copy).length
 
-    return { copy, firstScroll, currentIndex, landingHeaderScale }
+    const idToIndex = new Map<string, number>([
+        ['viadomo-deco', 0],
+        ['avant-garden', 1],
+        ['mucho-matxa', 2],
+    ])
+
+
+    return { copy, firstScroll, currentIndex, length, idToIndex, landingHeaderScale }
 })

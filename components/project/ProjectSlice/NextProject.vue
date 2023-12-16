@@ -26,9 +26,11 @@
 <script lang="ts" setup>
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 
-const { homeStore, currentIndex, length, hideTrail } = useStoreStepper()
-const data = homeStore[(currentIndex.value + 1) % length]
 // const {propName = fallbackValue} = defineProps<{propName: type}>()
+const { currentIndex, length } = useStoreProject()
+const { homeStore, hideTrail } = useStoreStepper()
+const data = homeStore[(currentIndex.value + 1) % length]
+console.log(data);
 // const emits = defineEmits([])
 
 const store = useStore()

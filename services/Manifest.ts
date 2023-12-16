@@ -8,7 +8,9 @@ const MANIFEST = {
     "/Assets/Home_2.jpg",
     "/Assets/Home3.png",
   ],
+  assets: [
 
+  ]
 };
 const LAZY_MANIFEST = {
   junk: [
@@ -17,7 +19,7 @@ const LAZY_MANIFEST = {
     "/junk/3.avif",
     "/junk/4.avif",
   ],
-  VIADOMO: [
+  assets: [
     "/Assets/Viadomo/1.jpg",
     "/Assets/Viadomo/2.png",
     "/Assets/Viadomo/3.png",

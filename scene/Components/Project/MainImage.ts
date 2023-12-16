@@ -178,7 +178,7 @@ export class MainImage extends CanvasNode {
         const manifest = useManifest()
         this.tMap.value = manifest.textures.home[src_1]
 
-        const a = manifest.lazyTextures.VIADOMO[src_2]
+        const a = manifest.lazyTextures.assets[src_2]
         const t = a.texture
         this.tMap2.value = t
         this.uniformFromTo[0].intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
@@ -474,7 +474,7 @@ out vec2 vUv;
 
 out vec3 vP;
 
-float io2(float t) {
+float io2(float t) { 
     float p = 2.0 * t * t;
     return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
 }

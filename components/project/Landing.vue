@@ -27,8 +27,7 @@
 
         </div>
     </div>
-    <div class="pin-margin"
-        style="height: calc(800px + 3 * 0.9 * 17.7rem - 6.65 * 2.4rem); width: 20rem;">
+    <div class="pin-margin" style="height: calc(800px + 3 * 0.9 * 17.7rem - 6.65 * 2.4rem); width: 20rem;">
     </div>
 </template>
 
@@ -37,8 +36,7 @@ import { useCanvasMainImageProject } from '~/scene/Components/Project/MainImage'
 import { useFlowProvider } from '~/waterflow/FlowProvider';
 import { onFlow } from '~/waterflow/composables/onFlow';
 
-const route = useFlowProvider().getRouteTo()
-const id = route.params.id ? route.params.id[0] : 'viadomo-deco'
+const { id } = defineProps<{ id: string }>()
 
 const { copy, firstScroll, landingHeaderScale } = useStoreProject()
 const COPY = copy[id]
@@ -57,7 +55,7 @@ useLenisScroll((e) => {
     N.T(lowerDesRef.value, 0, e.animatedScroll, 'px');
 })
 
-onMounted(() => {
+onFlow(() => {
     const el = N.get('.project__main-image', wrapperRef.value) as HTMLElement
     const next__el = N.get('.project__main-image__next-placeholder', wrapperRef.value) as HTMLElement
     const mainImage = useCanvasMainImageProject()

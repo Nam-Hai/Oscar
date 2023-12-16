@@ -1,17 +1,19 @@
 <template>
     <div class="container-4">
-        <div class="data-img" data-src="/Assets/Viadomo/9.png" ref="elRef1"></div>
+        <div class="data-img" :data-src="data.src_1" ref="elRef1"></div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
+import { onFlow } from '~/waterflow/composables/onFlow';
+const { data } = defineProps<{ data: { [key: string]: string } }>()
 
 const projectCanvas = useProjectCanvas()
 
 const elRef1 = ref()
 
-onMounted(() => {
+onFlow(() => {
     projectCanvas.addMedia(elRef1.value)
 })
 

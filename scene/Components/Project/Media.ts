@@ -21,6 +21,7 @@ export class Media extends CanvasNode {
     intrinsecRatio: number
 
     pixelScroll: number;
+    uVelo = { value: 0 }
 
     canvasSize!: { width: number; height: number; };
     on: boolean = false;
@@ -100,6 +101,7 @@ export class Media extends CanvasNode {
         // if (this.pixelScroll >= 800) return
         const eS = e.animatedScroll
 
+        this.uVelo.value = e.velocity
         this.pixelScroll = eS
 
     }
@@ -108,11 +110,10 @@ export class Media extends CanvasNode {
     mountElement(el: HTMLElement) {
         this.el = el
 
-        console.log(this.el);
         const src_1 = N.Ga(this.el, "data-src") || "/Assets/Home3.png"
 
         const manifest = useManifest()
-        const a = manifest.lazyTextures.VIADOMO[src_1]
+        const a = manifest.lazyTextures.assets[src_1]
         this.tMap.value = a.texture
 
         const { watch } = useCanvasReactivity(this)
@@ -153,6 +154,7 @@ export class Media extends CanvasNode {
                 uBorderRadius: this.uBorderRadius,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
+                uVelo: this.uVelo,
                 uSwap: { value: false },
                 uLoaded: this.uLoaded,
                 uId: this.uId
@@ -272,6 +274,7 @@ void main() {
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
 
     color = mix(vec4(0.886,0.886,0.886,1.), color, uLoaded);
+    
 
 
     vec2 cornerTopRight = vec2((vUv.x - 1.) * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
@@ -305,6 +308,7 @@ void main() {
 `
 const vertex = /* glsl */`#version 300 es
 precision highp float;
+#define PI 3.1415926
 
 in vec3 position;
 in vec2 uv;
@@ -312,17 +316,31 @@ in vec2 uv;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
-uniform float uProgress;
+uniform float uVelo;
 
 out vec2 vUv;
-
 out vec3 vP;
+
+float io2(float t) { 
+    float p = 2.0 * t * t;
+    return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+}
+
+float i2(float t) {
+    return t * t;
+}
+
 
 void main() {
     vUv = uv;
+    vec3 p = position;
     vP = position;
+    float f = 1000.;
+    p.y += cos(p.x* PI) * clamp(uVelo, -f, f) / f;
+    // p.y += i2(p.x + 0.5) * clamp(uVelo, -f, f) / f;
+    // p.y += sin(p.x + 0.5) * clamp(uVelo, -f, f) / f;
 
-    vec4 mvmP = modelViewMatrix * vec4(position, 1.);
+    vec4 mvmP = modelViewMatrix * vec4(p, 1.);
 
     gl_Position = projectionMatrix * mvmP;
 }`;

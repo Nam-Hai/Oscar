@@ -1,10 +1,11 @@
 <template>
     <div>
-        <div class="data-img" data-src="#"></div>
+        <div class="data-img" :data-src="data.src_1"></div>
     </div>
 </template>
 
 <script lang="ts" setup>
+const { data } = defineProps<{ data: { [key: string]: string } }>()
 </script>
 
 <style lang="scss" scoped>

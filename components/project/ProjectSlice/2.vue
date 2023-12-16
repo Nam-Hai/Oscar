@@ -1,20 +1,21 @@
 <template>
     <div class="container-2">
-        <div class="data-img" data-src="/Assets/Viadomo/3.png" ref="elRef1"></div>
-        <div class="data-img" data-src="/Assets/Viadomo/4.png" ref="elRef2"></div>
+        <div class="data-img" :data-src="data.src_1" ref="elRef1"></div>
+        <div class="data-img" :data-src="data.src_2" ref="elRef2"></div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
-
+import { onFlow } from '~/waterflow/composables/onFlow';
+const { data } = defineProps<{ data: { [key: string]: string } }>()
 
 const projectCanvas = useProjectCanvas()
 
 const elRef1 = ref()
 const elRef2 = ref()
 
-onMounted(() => {
+onFlow(() => {
     projectCanvas.addMedia(elRef1.value)
     projectCanvas.addMedia(elRef2.value)
 })

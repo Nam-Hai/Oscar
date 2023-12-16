@@ -1,15 +1,8 @@
 <template>
     <main class="project__wrapper" ref="wrapperRef">
-        <Landing />
-        <ProjectSlice1 />
-        <ProjectSlice2 />
-        <ProjectSlice3 />
-        <ProjectSlice4 />
-        <ProjectSlice5 />
-        <ProjectSlice6 />
-        <ProjectSlice7 />
+        <Landing :id="id" />
+        <component v-for="slice of COPY.slice" :is="slice.keyId" :data="slice.data" />
         <ProjectSliceNextProject />
-
     </main>
 </template>
 
@@ -25,10 +18,12 @@ const route = useFlowProvider().getRouteTo()
 const id = route.params.id ? route.params.id[0] : 'viadomo-deco'
 
 
-const { firstScroll } = useStoreProject()
-const wrapperRef = ref() as Ref<HTMLElement>
+const { firstScroll, currentIndex, idToIndex, copy } = useStoreProject()
+const wrapperRef = ref() as Ref<HTMLElement>;
 
-const hTestRef = ref()
+currentIndex.value = idToIndex.get(id) || 0
+const COPY = copy[id]
+
 
 useResetLenis()
 
