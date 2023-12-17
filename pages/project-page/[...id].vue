@@ -1,7 +1,7 @@
 <template>
     <main class="project__wrapper" ref="wrapperRef">
         <Landing :id="id" />
-        <component v-for="slice of COPY.slice" :is="slice.keyId" :data="slice.data" />
+        <component v-for="slice of COPY.slice" :is="slice.keyId" :data="slice.data" :key="slice.keyId" />
     </main>
 </template>
 

@@ -1,6 +1,7 @@
 export interface ISlice {
     keyId: string,
-    data: { [key: string]: any }
+    data: { [key: string]: any },
+    key: number
 }
 
 type ProjectCopyType = {
@@ -28,14 +29,16 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 data: {
                     src_1: "/Assets/Viadomo/2.png",
                     src_2: "/Assets/Viadomo/3.png",
-                }
+                },
+                key: 1
             },
             {
                 keyId: "ProjectSlice2",
                 data: {
                     src_1: "/Assets/Viadomo/4.png",
                     src_2: "/Assets/Viadomo/5.png",
-                }
+                },
+                key: 2
             },
             {
                 keyId: "ProjectSlice3",
@@ -44,11 +47,13 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                     src_2: "/Assets/Viadomo/7.png",
                     src_3: "/Assets/Viadomo/8.png",
                     src_4: "/Assets/Viadomo/9.png",
-                }
+                },
+                key: 3
             },
             {
                 keyId: "ProjectSliceNextProject",
-                data: {}
+                data: {},
+                key: 4
             }
 
         ]

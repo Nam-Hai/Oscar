@@ -64,7 +64,7 @@ export class StaticMedia extends CanvasNode {
             )
         };
 
-        this.uBorderRadius = { value: props?.borderRadius || 5 }
+        this.uBorderRadius = { value: props?.borderRadius || 0 }
 
         this.raf = useRafR(this.update)
 
