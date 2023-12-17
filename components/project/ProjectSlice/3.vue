@@ -58,7 +58,7 @@ onFlow(() => {
 }
 
 .data-img {
-    // background-color: $placeholder-grey;
+    background-color: $placeholder-grey;
 }
 </style>
 

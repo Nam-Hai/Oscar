@@ -2,7 +2,9 @@
     <main class="project__wrapper" ref="wrapperRef">
         <Landing :id="id" />
         <component v-for="slice of COPY.slice" :is="slice.keyId" :data="slice.data" />
-        <ProjectSliceNextProject />
+        <Teleport to=".over-webGL">
+            <ProjectSliceNextProject />
+        </Teleport>
     </main>
 </template>
 

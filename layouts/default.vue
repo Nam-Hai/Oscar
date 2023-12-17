@@ -9,6 +9,9 @@
         <BufferPage />
       </Preloader>
     </div>
+    <div class="over-webGL">
+
+    </div>
   </div>
 </template>
 
@@ -43,4 +46,9 @@ flowProvider.registerScrollInterface({
 
 <style lang="scss" scoped>
 @use "@/styles/shared.scss" as *;
+
+.over-webGL {
+  position: relative;
+  z-index: 12;
+}
 </style>

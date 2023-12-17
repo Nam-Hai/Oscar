@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="project-slice-1__wrapper">
         <div class="data-img" :data-src="data.src_1" ref="elRef1"></div>
         <div class="data-img" :data-src="data.src_2" ref="elRef2"></div>
     </div>
@@ -29,7 +29,7 @@ onFlow(() => {
     width: 83.8rem;
     height: 48rem;
     margin: 22.4rem auto;
-    // background-color: $placeholder-grey;
+    background-color: $placeholder-grey;
 }
 </style>
 
