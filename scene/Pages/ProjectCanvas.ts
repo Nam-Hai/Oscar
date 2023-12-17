@@ -74,6 +74,7 @@ export class ProjectCanvas extends CanvasPage {
         this.renderer.render({
             scene: this.scene,
             camera: this.camera,
+            frustumCull: false
         })
     }
 

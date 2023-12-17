@@ -127,7 +127,8 @@ const Raf = new class {
     }
 
     update(t: number) {
-        const d = t - this.now
+        let d = t - this.now
+        d = d > 40 ? 40 : d;
         this.now = t
         const _arr = this.arr
 
