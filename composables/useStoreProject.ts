@@ -36,6 +36,15 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                     src_1: "/Assets/Viadomo/4.png",
                     src_2: "/Assets/Viadomo/5.png",
                 }
+            },
+            {
+                keyId: "ProjectSlice3",
+                data: {
+                    src_1: "/Assets/Viadomo/6.png",
+                    src_2: "/Assets/Viadomo/7.png",
+                    src_3: "/Assets/Viadomo/8.png",
+                    src_4: "/Assets/Viadomo/9.png",
+                }
             }
         ]
     },
