@@ -4,13 +4,13 @@
     <Menu />
     <Cursor />
     <Stat />
+    <Overlay />
     <div class="page__wrapper">
       <Preloader>
         <BufferPage />
       </Preloader>
     </div>
     <div class="over-webGL">
-
     </div>
   </div>
 </template>

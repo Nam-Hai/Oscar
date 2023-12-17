@@ -40,6 +40,7 @@ useLenisScroll((e) => {
         })
     }
     if (e.direction < 0 && e.animatedScroll <= 0) {
+        console.log('firstScroll reset');
         firstScroll.value = false
     }
 })

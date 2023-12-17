@@ -1,7 +1,7 @@
 <template>
   <div ref="wrapperRef" class="preloader__wrapper" v-if="!killPreloader">
     <div class="left overflow">
-      <svg class="overflow-content" v-cursor-hover xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 9" fill="none">
+      <svg class="overflow-content" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 9" fill="none">
         <path
           d="M4.08958 9C1.48958 9 0 7.37714 0 4.49735C0 1.61756 1.48958 0 4.08958 0C6.68958 0 8.17917 1.62286 8.17917 4.49735C8.17917 7.37714 6.695 9 4.08958 9ZM1.70625 4.49735C1.70625 6.69299 2.58375 7.70065 4.08958 7.70065C5.60083 7.70065 6.47833 6.68768 6.47833 4.49735C6.47833 2.30701 5.60083 1.29935 4.08958 1.29935C2.58375 1.29935 1.70625 2.30701 1.70625 4.49735Z"
           fill="currentColor" />

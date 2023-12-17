@@ -2,7 +2,7 @@
     <div class="project__landing__container" ref="wrapperRef">
         <div class="project__main-image" :data-src="COPY.main_image.src_1"></div>
 
-        <div class="project__landing__wrapper" :class="{ show: firstScroll }">
+        <div class="project__landing__wrapper" :class="{ show: fs }">
             <div class="title__wrapper" ref="titleWrapperRef">
                 <h1 :style="{ justifyContent: (COPY.title.split(' ').length == 1) ? 'flex-end' : 'space-between' }">
                     <span v-for="word in COPY.title.split(' ')" class="overflow">
@@ -33,12 +33,17 @@
 
 <script lang="ts" setup>
 import { useCanvasMainImageProject } from '~/scene/Components/Project/MainImage';
-import { useFlowProvider } from '~/waterflow/FlowProvider';
-import { onFlow } from '~/waterflow/composables/onFlow';
+import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 
 const { id } = defineProps<{ id: string }>()
 
 const { copy, firstScroll, landingHeaderScale } = useStoreProject()
+
+const fs = computed(() => {
+    return leave ? true : firstScroll.value;
+})
+let leave = false
+onLeave(() => { leave = true })
 const COPY = copy[id]
 
 const wrapperRef = ref()
@@ -202,8 +207,6 @@ onBeforeUnmount(() => {
             font-weight: 400;
             line-height: 2.7rem;
             letter-spacing: -.024rem;
-
-            // position: fixed;
         }
 
         .project__main-image__next-placeholder {

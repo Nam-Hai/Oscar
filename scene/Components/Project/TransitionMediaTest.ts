@@ -6,110 +6,70 @@ import { useCanvasReactivity } from "../../utils/WebGL.utils";
 
 const { vh, vw, scale, mouse } = useStoreView()
 
-export class StaticMedia extends CanvasNode {
+export class TransitionMediaTest extends CanvasNode {
     raf: RafR;
     uBorderRadius: { value: number; };
     uSizePixel: { value: Vec2; };
     uScaleOffset: { value: Vec2; };
     uTranslateOffset: { value: Vec2; };
 
-    tMap!: { value: Texture; };
+    tMap: { value: Texture; };
 
-    el!: HTMLElement;
-    bounds!: DOMRect;
     intrinsecRatio: number
 
-    pixelScroll: number;
+    uVelo = { value: 0 }
 
     canvasSize!: { width: number; height: number; };
     on: boolean = false;
     pixelPosition: Vec2;
 
-    constructor(gl: any, props: { borderRadius?: number, el: HTMLElement }) {
+    constructor(gl: any, props: { borderRadius?: number, texture: Texture }) {
         super(gl)
-        N.BM(this, ['update', 'onResize', "onScroll"])
+        N.BM(this, ['update', 'onResize', 'destroy'])
 
-        this.pixelScroll = 0
         this.pixelPosition = new Vec2(0)
         this.uSizePixel = { value: new Vec2(1, 1) }
 
-        this.intrinsecRatio = 1
+        this.tMap = { value: props.texture }
+        this.intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
+
         this.uScaleOffset = {
             value: new Vec2(
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.intrinsecRatio
-                    ? this.uSizePixel.value[0] /
-                    (this.uSizePixel.value[1] * this.intrinsecRatio)
-                    : 1,
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.intrinsecRatio
-                    ? 1
-                    : (this.uSizePixel.value[1] * this.intrinsecRatio) /
-                    this.uSizePixel.value[0],
+                1, 1
             )
         };
         this.uTranslateOffset = {
             value: new Vec2(
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.intrinsecRatio
-                    ? 0.5 *
-                    (1 -
-                        this.uSizePixel.value[0] /
-                        (this.uSizePixel.value[1] * this.intrinsecRatio))
-                    : 0,
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] <=
-                    this.intrinsecRatio
-                    ? 0
-                    : (1 -
-                        (this.uSizePixel.value[1] * this.intrinsecRatio) /
-                        this.uSizePixel.value[0]) *
-                    0.5,
+                0, 0
             )
         };
 
-        this.uBorderRadius = { value: props?.borderRadius || 0 }
+        this.uBorderRadius = { value: props?.borderRadius || 5 }
 
         this.raf = useRafR(this.update)
 
 
-        this.mountElement(props.el)
 
         this.mount()
-        this.init()
 
         this.addEventListener()
+
+        this.init()
+
 
 
         this.onDestroy(() => this.raf.stop())
     }
 
     addEventListener() {
-        // const { watch } = useCanvasReactivity(this)
+        const { watch } = useCanvasReactivity(this)
 
         const { unWatch: resizeUnWatch } = useCanvasSize(this.onResize)
-        const lenis = useLenis()
-
-        const scrollUnsub = lenis.on("scroll", this.onScroll);
 
         this.onDestroy(() => resizeUnWatch())
-        this.onDestroy(() => scrollUnsub())
-    }
-
-    onScroll(e: any) {
-        // if (this.pixelScroll >= 800) return
-        const eS = e.animatedScroll
-
-        this.pixelScroll = eS
-
     }
 
 
-    mountElement(el: HTMLElement) {
-        this.el = el
-
-        const src_1 = N.Ga(this.el, "data-src") || "/Assets/Home3.png"
-        const manifest = useManifest()
-        this.tMap = { value: manifest.textures.home[src_1] }
-
-        this.intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
-    }
 
     init() {
         this.raf.run()
@@ -117,11 +77,14 @@ export class StaticMedia extends CanvasNode {
 
     mount() {
         const geometry = new Plane(this.gl, {
+            widthSegments: 40,
+            heightSegments: 40
         })
 
         const program = new Program(this.gl, {
             fragment,
             vertex,
+            transparent: true,
             depthTest: false,
             depthWrite: false,
             uniforms: {
@@ -130,6 +93,7 @@ export class StaticMedia extends CanvasNode {
                 uBorderRadius: this.uBorderRadius,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
+                uVelo: this.uVelo,
                 uId: this.uId
             }
         })
@@ -142,13 +106,10 @@ export class StaticMedia extends CanvasNode {
 
 
     update(e: rafEvent) {
-        if (this.on) {
-            // this.pixelScroll = scrollY
-        }
 
         this.node.position.set(
             this.canvasSize.width * (this.pixelPosition.x) / vw.value,
-            this.canvasSize.height * (this.pixelPosition.y + this.pixelScroll) / vh.value,
+            this.canvasSize.height * (this.pixelPosition.y) / vh.value,
             0
         )
 
@@ -161,23 +122,13 @@ export class StaticMedia extends CanvasNode {
 
     onResize(canvasSize: { width: number, height: number }) {
         this.canvasSize = canvasSize
-        if (!this.el) return
 
-        this.bounds = this.el.getBoundingClientRect()!
-        this.bounds.y = this.bounds.top + scrollY
-
-        this.computeUniform()
+        this.computeUniforms()
 
     }
 
-    computeUniform() {
+    computeUniforms() {
         this.on = true
-        if (!this.bounds) return
-        if (this.tMap.value.texture)
-            this.uSizePixel.value.set(
-                this.bounds.width,
-                this.bounds.height
-            )
         this.uScaleOffset.value.set(
             this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.intrinsecRatio
                 ? this.uSizePixel.value[0] /
@@ -203,13 +154,6 @@ export class StaticMedia extends CanvasNode {
                     this.uSizePixel.value[0]) *
                 0.5,
         )
-
-        if (!this.bounds) return
-        // const x = N.Lerp(this.bounds.x, this.bounds[1].x, this.uProgress.value) + this.uSizePixel.value.x / 2 - vw.value / 2
-        const x = this.bounds.x + this.uSizePixel.value.x / 2 - vw.value / 2
-        const y = vh.value / 2 - this.uSizePixel.value.y / 2 - this.bounds.y
-
-        this.pixelPosition.set(x, y)
     }
 }
 
@@ -270,13 +214,18 @@ in vec2 uv;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
+uniform float uVelo;
+
 out vec2 vUv;
 
 void main() {
     vUv = uv;
     vec3 p = position;
+    float f = 1000.;
+    p.y += cos(p.x* PI) * clamp(uVelo, -f, f) / f;
 
     vec4 mvmP = modelViewMatrix * vec4(p, 1.);
 
     gl_Position = projectionMatrix * mvmP;
 }`;
+export { vertex as veloVertex }

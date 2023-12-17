@@ -8,14 +8,12 @@ export function onFlow(mountedCallback: () => void) {
 
   watch(flowProvider.flowIsHijacked, isHijacked => {
     if (!isHijacked && !flow.value) {
-      console.log('?', flowProvider.flowIsHijacked.value);
       mountedCallback()
       flow.value = true
     }
   })
   onMounted(() => {
     if (!flowProvider.flowIsHijacked.value && !flow.value) {
-      console.log('?', flowProvider.flowIsHijacked.value);
       mountedCallback()
       flow.value = true
     }

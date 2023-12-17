@@ -17,7 +17,7 @@ export class CanvasNode {
     this.id = id
     this.uId = { value: uId }
 
-    N.BM(this, ["mount"])
+    // N.BM(this, ["mount"])
     this.destroyStack = new Callstack()
 
   }
@@ -65,4 +65,11 @@ export class CanvasNode {
   }
 }
 
-export class CanvasPage extends CanvasNode { }
+export class CanvasPage extends CanvasNode {
+
+  destroy() {
+    if (this.killed) return
+    this.killed = true
+    this.destroyStack.call()
+  }
+}

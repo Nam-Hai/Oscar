@@ -28,6 +28,7 @@
 <script lang="ts" setup>
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
+import { vCursorHover } from '~/directives/cursorActive';
 
 const { } = defineProps<{ data: {} }>()
 const { currentIndex, length } = useStoreProject()
@@ -78,8 +79,7 @@ onLeave(() => {
     const i = currentIndex.value
     const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
     const spans = [flavorMainRef.value[i], ...subs]
-    // tl.reset()
-    for (let i = tl.arr.length - 4; i < tl.arr.length; i++) {
+    for (let i = 0; i < tl.arr.length; i++) {
         const motion = tl.arr[i]
         motion.play({
             d: 1000,
@@ -103,7 +103,6 @@ onLeave(() => {
     height: 100vh;
     width: 100vw;
     top: 0;
-    // background-color: black;
     color: $white;
 }
 

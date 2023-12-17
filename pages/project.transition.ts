@@ -2,11 +2,12 @@ import type { FlowFunction } from "~/waterflow/composables/usePageFlow"
 import { defaultFlowIn, defaultFlowOut } from "./default.transition"
 import { TransitionImage } from "~/scene/Components/Project/TransitionImage"
 import { useCanvasMainImageProject } from "~/scene/Components/Project/MainImage"
+import { TransitionMediaTest } from "~/scene/Components/Project/TransitionMediaTest"
 
 export type ProjectFlowProps = {
 }
 
-export const projectFlowIn: FlowFunction<ProjectFlowProps> = (props: ProjectFlowProps, resolve, provider) => {
+export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: ProjectFlowProps, resolve, provider) => {
 
     const tl = useTL()
     const canvas = useCanvas()
@@ -120,11 +121,62 @@ export const projectFlowIn: FlowFunction<ProjectFlowProps> = (props: ProjectFlow
 
 }
 
+export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = async (props: ProjectFlowProps, resolve, provider) => {
+    const tl = useTL()
+    const canvas = useCanvas()
+    const { vh, vw, scale } = useStoreView()
+
+    const scene = canvas.projectPage!.node
+
+    const route = provider.getRouteTo()
+
+    const id = route.params.id ? route.params.id[0] : 'test'
+    const { currentIndex, idToIndex } = useStoreProject()
+    const { getTexture } = useStoreStepper()
+
+    currentIndex.value = idToIndex.get(id) || 0
+
+    const texture = getTexture(currentIndex.value)
+    const transitionNode = new TransitionMediaTest(canvas.gl, {
+        texture
+    })
+    const mainImage = useCanvasMainImageProject()
+    const width = mainImage && mainImage.bounds && mainImage.bounds[0].width || 268 * scale.value
+    const height = mainImage && mainImage.bounds && mainImage.bounds[0].height || 240 * scale.value
+
+    transitionNode.node.setParent(scene)
+    transitionNode.uSizePixel.value.set(width, height)
+    transitionNode.computeUniforms()
+
+    transitionNode.node.scale.set(
+        canvas.size.value.width * transitionNode.uSizePixel.value.x / vw.value,
+        canvas.size.value.height * transitionNode.uSizePixel.value.y / vh.value,
+        1
+    )
+    transitionNode.pixelPosition.y = vh.value
+
+    tl.from({
+        d: 500,
+        delay: 500,
+        e: 'o2',
+        update: ({ progE }) => {
+            transitionNode.pixelPosition.y = (1 - progE) * (vh.value / 2 + height / 2)
+            transitionNode.uVelo.value = -(1 - progE) * 200
+        },
+        cb: async () => {
+            resolve()
+
+            await nextTick()
+            transitionNode.destroy()
+        }
+    }).play()
+}
 
 export const projectFlowOutMap = new Map([
     ['default', defaultFlowOut],
 ])
 export const projectFlowInMap = new Map([
     ['default', defaultFlowIn],
-    ["index => project-page-id", projectFlowIn]
+    ["index => project-page-id", indexProjectFlowIn],
+    ["project-page-id => project-page-id", projectProjectFlowIn]
 ])

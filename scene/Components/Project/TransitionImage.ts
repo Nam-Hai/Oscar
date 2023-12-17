@@ -22,7 +22,7 @@ export class TransitionImage extends CanvasNode {
         N.BM(this, ['update', 'onResize', 'destroy'])
 
         this.tMap = { value: props.texture }
-        this.uSizePixel = { value: new Vec2(1, 1) }
+        this.uSizePixel = { value: new Vec2(vw.value, vh.value) }
 
         const uIntrinsecRatio = 1
         this.uIntrinsecRatio = this.tMap.value.image
@@ -30,31 +30,12 @@ export class TransitionImage extends CanvasNode {
             : 1;
         this.uScaleOffset = {
             value: new Vec2(
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < uIntrinsecRatio
-                    ? this.uSizePixel.value[0] /
-                    (this.uSizePixel.value[1] * uIntrinsecRatio)
-                    : 1,
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < uIntrinsecRatio
-                    ? 1
-                    : (this.uSizePixel.value[1] * uIntrinsecRatio) /
-                    this.uSizePixel.value[0],
+                1, 1
             )
         };
         this.uTranslateOffset = {
             value: new Vec2(
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < uIntrinsecRatio
-                    ? 0.5 *
-                    (1 -
-                        this.uSizePixel.value[0] /
-                        (this.uSizePixel.value[1] * uIntrinsecRatio))
-                    : 0,
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] <=
-                    uIntrinsecRatio
-                    ? 0
-                    : (1 -
-                        (this.uSizePixel.value[1] * uIntrinsecRatio) /
-                        this.uSizePixel.value[0]) *
-                    0.5,
+                1, 1
             )
         };
 
@@ -150,7 +131,7 @@ export class TransitionImage extends CanvasNode {
     }
 
     onResize(canvasSize: { width: number, height: number }) {
-        this.uSizePixel.value.set(vw.value, vh.value)
+        // this.uSizePixel.value.set(vw.value, vh.value)
         this.uScaleOffset.value.set(
             this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
                 ? this.uSizePixel.value[0] /

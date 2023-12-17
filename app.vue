@@ -19,6 +19,11 @@ flowProvider.registerPage('index', Index)
 flowProvider.registerPage('project-page-id', ProjectPage)
 // flowProvider.registerPage('playground', Playground)
 
+const { flowIsHijacked } = useStore()
+watch(flowProvider.flowIsHijacked, (flow) => {
+  flowIsHijacked.value = flow
+})
+
 const matcher = window.matchMedia('(prefers-color-scheme: dark)');
 if (matcher.matches) {
   const els = N.getAll('link.light')

@@ -3,9 +3,11 @@ import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 import { canvasInject } from '~/composables/useCanvas';
+import { useFlowProvider } from '~/waterflow/FlowProvider';
 
 const { vh, vw, scale, mouse } = useStoreView()
 const { firstScroll, landingHeaderScale } = useStoreProject()
+const { flowIsHijacked } = useStore()
 
 export const [provideMainImage, useCanvasMainImageProject] = canvasInject<MainImage>('canvas-main-image-project')
 
@@ -42,7 +44,7 @@ export class MainImage extends CanvasNode {
 
     constructor(gl: any, props: { borderRadius?: number, el?: HTMLElement }) {
         super(gl)
-        N.BM(this, ['update', 'onResize', 'destroy', "onScroll"])
+        N.BM(this, ['update', 'onResize', "onScroll"])
 
         this.pixelPosition = new Vec2(0, 0)
         this.pixelScroll = 0
@@ -116,6 +118,7 @@ export class MainImage extends CanvasNode {
         const tl = useTL()
         watch(firstScroll, (b) => {
             tl.reset()
+            if (flowIsHijacked.value) return
             const from = this.uProgress.value
             const to = +b
             tl.from({
@@ -188,7 +191,13 @@ export class MainImage extends CanvasNode {
             if (b) {
                 this.uniformFromTo[1].intrinsecRatio = (this.tMap2.value.image as HTMLImageElement).width / (this.tMap2.value.image as HTMLImageElement).height
                 this.uniformFromTo[2].intrinsecRatio = (this.tMap2.value.image as HTMLImageElement).width / (this.tMap2.value.image as HTMLImageElement).height
-                this.onResize(useCanvas().size.value)
+
+                this.computeFromTo(0)
+                this.computeFromTo(1)
+                this.computeFromTo(2)
+
+                this.computeUniform()
+
                 useTL().from({
                     d: 300,
                     update: (e) => {
@@ -290,6 +299,7 @@ export class MainImage extends CanvasNode {
         this.bounds = [this.el[0].getBoundingClientRect(), this.el[1].getBoundingClientRect()]
         this.bounds[0].y = this.bounds[0].top + scrollY
         this.bounds[1].y = this.bounds[1].top + scrollY
+        console.log(this.bounds);
 
         this.uniformFromTo[0].size.set(this.bounds[0].width, this.bounds[0].height)
         this.uniformFromTo[1].size.set(this.bounds[1].width, this.bounds[1].height)
