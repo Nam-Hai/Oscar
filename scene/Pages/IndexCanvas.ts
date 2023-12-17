@@ -3,10 +3,9 @@ import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 
 import { CanvasPage } from "../utils/types";
 import type { Camera, OGLRenderingContext, Renderer, Transform } from "ogl";
-import { HomeMedia } from "../Components/HomeMedia";
+import { HomeMedia } from "../Components/Index/HomeMedia";
 import { SteppersWrapper } from "../Components/Index/SteppersWrapper";
 import { Picker } from "../Components/Picker";
-import { providePicker } from "~/composables/useCanvas";
 
 export class IndexCanvas extends CanvasPage {
 

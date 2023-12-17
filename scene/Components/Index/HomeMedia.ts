@@ -1,8 +1,8 @@
 
 import { Mesh, Plane, Program, Texture, Transform } from "ogl";
-import { CanvasNode } from "../utils/types";
+import { CanvasNode } from "../../utils/types";
 import type { RafR, rafEvent } from "~/plugins/core/raf";
-import { useCanvasReactivity } from "../utils/WebGL.utils";
+import { useCanvasReactivity } from "../../utils/WebGL.utils";
 import { Pane } from 'tweakpane'
 
 const { currentIndex } = useStoreStepper()

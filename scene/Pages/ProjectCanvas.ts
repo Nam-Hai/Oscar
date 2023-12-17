@@ -6,6 +6,7 @@ import type { Camera, OGLRenderingContext, Renderer, Transform } from "ogl";
 import { Picker } from "../Components/Picker";
 import { MainImage } from "../Components/Project/MainImage";
 import { Media } from "../Components/Project/Media";
+import { StaticMedia } from "../Components/Project/StaticMedia";
 
 export const [provideProjectCanvas, useProjectCanvas] = canvasInject<ProjectCanvas>('canvas-project-canvas')
 
@@ -58,6 +59,9 @@ export class ProjectCanvas extends CanvasPage {
 
     addMedia(el: HTMLElement) {
         this.add(new Media(this.gl, { el }))
+    }
+    addNextPageMedia(el: HTMLElement) {
+        this.add(new StaticMedia(this.gl, { el }))
     }
 
     resize({ vh, vw, scale, breakpoint }: ResizeEvent) {

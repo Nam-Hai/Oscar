@@ -1,39 +1,41 @@
 <template>
-    <div ref="wrapperRef" class="next-project__wrapper">
-        <div class="next-project-container">
-            <NuxtLink :to="data.link">
-                <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRef"></h1>
-            </NuxtLink>
+    <Teleport to=".over-webGL">
+        <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc">
+            <div class="next-project-container">
+                <NuxtLink :to="data.link">
+                    <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRef"></h1>
+                </NuxtLink>
 
-            <div class="flavor">
-                <div class="flavor-main overflow">
-                    <span class="overflow-content" ref="flavorMainRef">
-                        {{ data.flavorMain }}
-                    </span>
-                </div>
-                <div class="flavor-sub" ref="flavorSubRef">
-                    <div v-for="text in data.flavorSub" class="overflow">
-                        <span class="overflow-content">
-                            {{ text }}
+                <div class="flavor">
+                    <div class="flavor-main overflow">
+                        <span class="overflow-content" ref="flavorMainRef">
+                            {{ data.flavorMain }}
                         </span>
+                    </div>
+                    <div class="flavor-sub" ref="flavorSubRef">
+                        <div v-for="text in data.flavorSub" class="overflow">
+                            <span class="overflow-content">
+                                {{ text }}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </Teleport>
 </template>
 
 <script lang="ts" setup>
+import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 
 // const {propName = fallbackValue} = defineProps<{propName: type}>()
 const { currentIndex, length } = useStoreProject()
-const { homeStore, hideTrail } = useStoreStepper()
-const data = homeStore[(currentIndex.value + 1) % length]
-console.log(data);
+const { homeStore } = useStoreStepper()
+const nextIndex = (currentIndex.value + 1) % length
+const dataSrc = Object.keys(useManifest().textures.home)[nextIndex]
+const data = homeStore[nextIndex]
 // const emits = defineEmits([])
-
-const store = useStore()
 
 const flavorMainRef = ref()
 const flavorSubRef = ref()
@@ -42,9 +44,13 @@ const wrapperRef = ref() as Ref<HTMLElement>
 const titleRef = ref()
 const tl = useTL()
 
+const projectCanvas = useProjectCanvas()
 onFlow(() => {
-    console.log('test');
     titleAnimations()
+
+    const a = wrapperRef.value.getBoundingClientRect()
+    console.log({ a });
+    projectCanvas.addNextPageMedia(wrapperRef.value)
 })
 
 function titleAnimations() {
@@ -91,7 +97,7 @@ onLeave(() => {
 @use "@/styles/shared.scss" as *;
 
 .next-project__wrapper {
-    background-color: white;
+    // background-color: white;
     height: 100vh;
     width: 100vw;
     top: 0;

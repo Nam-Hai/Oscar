@@ -6,7 +6,7 @@ import { useCanvasReactivity } from "../../utils/WebGL.utils";
 
 const { vh, vw, scale, mouse } = useStoreView()
 
-export class Media extends CanvasNode {
+export class StaticMedia extends CanvasNode {
     raf: RafR;
     uBorderRadius: { value: number; };
     uSizePixel: { value: Vec2; };
@@ -17,11 +17,9 @@ export class Media extends CanvasNode {
 
     el!: HTMLElement;
     bounds!: DOMRect;
-    uLoaded: { value: number }
     intrinsecRatio: number
 
     pixelScroll: number;
-    uVelo = { value: 0 }
 
     canvasSize!: { width: number; height: number; };
     on: boolean = false;
@@ -33,7 +31,6 @@ export class Media extends CanvasNode {
 
         this.pixelScroll = 0
         this.pixelPosition = new Vec2(0)
-        this.uLoaded = { value: 0 }
         this.uSizePixel = { value: new Vec2(1, 1) }
 
         this.intrinsecRatio = 1
@@ -84,7 +81,7 @@ export class Media extends CanvasNode {
     }
 
     addEventListener() {
-        const { watch } = useCanvasReactivity(this)
+        // const { watch } = useCanvasReactivity(this)
 
         const { unWatch: resizeUnWatch } = useCanvasSize(this.onResize)
         const lenis = useLenis()
@@ -99,7 +96,6 @@ export class Media extends CanvasNode {
         // if (this.pixelScroll >= 800) return
         const eS = e.animatedScroll
 
-        this.uVelo.value = e.velocity
         this.pixelScroll = eS
 
     }
@@ -109,24 +105,10 @@ export class Media extends CanvasNode {
         this.el = el
 
         const src_1 = N.Ga(this.el, "data-src") || "/Assets/Home3.png"
-
         const manifest = useManifest()
-        const a = manifest.lazyTextures.assets[src_1]
-        this.tMap = { value: a.texture }
+        this.tMap = { value: manifest.textures.home[src_1] }
 
-        const { watch } = useCanvasReactivity(this)
-        watch(a.loaded, b => {
-            if (b) {
-                this.intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
-                this.computeUniform()
-                useTL().from({
-                    d: 300,
-                    update: (e) => {
-                        this.uLoaded.value = e.progE
-                    }
-                }).play()
-            }
-        }, { immediate: true })
+        this.intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
     }
 
     init() {
@@ -152,8 +134,6 @@ export class Media extends CanvasNode {
                 uBorderRadius: this.uBorderRadius,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
-                uVelo: this.uVelo,
-                uLoaded: this.uLoaded,
                 uId: this.uId
             }
         })
@@ -190,6 +170,7 @@ export class Media extends CanvasNode {
 
         this.bounds = this.el.getBoundingClientRect()!
         this.bounds.y = this.bounds.top + scrollY
+        console.log(this.canvasSize, this.el, this.bounds);
 
         this.computeUniform()
 
@@ -235,6 +216,9 @@ export class Media extends CanvasNode {
         const y = vh.value / 2 - this.uSizePixel.value.y / 2 - this.bounds.y
 
         this.pixelPosition.set(x, y)
+
+
+
     }
 }
 
@@ -252,20 +236,9 @@ uniform vec4 uId;
 in vec2 vUv;
 out vec4 FragColor[2];
 
-uniform float uLoaded;
-
-float io2(float t) {
-    float p = 2.0 * t * t;
-    return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
-}
-
 void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
-
-    color = mix(vec4(0.886,0.886,0.886,1.), color, uLoaded);
-    
-
 
     vec2 cornerTopRight = vec2((vUv.x - 1.) * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
     cornerTopRight += uBorderRadius;
@@ -306,17 +279,11 @@ in vec2 uv;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
-uniform float uVelo;
-
 out vec2 vUv;
 
 void main() {
     vUv = uv;
     vec3 p = position;
-    float f = 1000.;
-    p.y += cos(p.x* PI) * clamp(uVelo, -f, f) / f;
-    // p.y += i2(p.x + 0.5) * clamp(uVelo, -f, f) / f;
-    // p.y += sin(p.x + 0.5) * clamp(uVelo, -f, f) / f;
 
     vec4 mvmP = modelViewMatrix * vec4(p, 1.);
 
