@@ -36,31 +36,12 @@ export class StaticMedia extends CanvasNode {
         this.intrinsecRatio = 1
         this.uScaleOffset = {
             value: new Vec2(
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.intrinsecRatio
-                    ? this.uSizePixel.value[0] /
-                    (this.uSizePixel.value[1] * this.intrinsecRatio)
-                    : 1,
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.intrinsecRatio
-                    ? 1
-                    : (this.uSizePixel.value[1] * this.intrinsecRatio) /
-                    this.uSizePixel.value[0],
+                1, 1
             )
         };
         this.uTranslateOffset = {
             value: new Vec2(
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.intrinsecRatio
-                    ? 0.5 *
-                    (1 -
-                        this.uSizePixel.value[0] /
-                        (this.uSizePixel.value[1] * this.intrinsecRatio))
-                    : 0,
-                this.uSizePixel.value[0] / this.uSizePixel.value[1] <=
-                    this.intrinsecRatio
-                    ? 0
-                    : (1 -
-                        (this.uSizePixel.value[1] * this.intrinsecRatio) /
-                        this.uSizePixel.value[0]) *
-                    0.5,
+                0, 0
             )
         };
 

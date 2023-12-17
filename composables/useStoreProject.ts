@@ -1,5 +1,13 @@
+import ProjectSlice1 from "~/components/project/ProjectSlice/1.vue"
+import ProjectSlice2 from "~/components/project/ProjectSlice/2.vue"
+import ProjectSlice3 from "~/components/project/ProjectSlice/3.vue"
+import ProjectSlice4 from "~/components/project/ProjectSlice/4.vue"
+import ProjectSlice5 from "~/components/project/ProjectSlice/5.vue"
+import ProjectSlice6 from "~/components/project/ProjectSlice/6.vue"
+import ProjectSliceNext from "~/components/project/ProjectSlice/NextProject.vue"
+
 export interface ISlice {
-    keyId: string,
+    keyId: any,
     data: { [key: string]: any },
     key: number
 }
@@ -25,7 +33,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         },
         slice: [
             {
-                keyId: "ProjectSlice1",
+                keyId: ProjectSlice1,
                 data: {
                     src_1: "/Assets/Viadomo/2.png",
                     src_2: "/Assets/Viadomo/3.png",
@@ -33,7 +41,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 key: 1
             },
             {
-                keyId: "ProjectSlice2",
+                keyId: ProjectSlice2,
                 data: {
                     src_1: "/Assets/Viadomo/4.png",
                     src_2: "/Assets/Viadomo/5.png",
@@ -41,7 +49,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 key: 2
             },
             {
-                keyId: "ProjectSlice3",
+                keyId: ProjectSlice3,
                 data: {
                     src_1: "/Assets/Viadomo/6.png",
                     src_2: "/Assets/Viadomo/7.png",
@@ -51,7 +59,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 key: 3
             },
             {
-                keyId: "ProjectSliceNextProject",
+                keyId: ProjectSliceNext,
                 data: {},
                 key: 4
             }

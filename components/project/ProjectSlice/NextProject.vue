@@ -47,17 +47,35 @@ const tl = useTL()
 
 const projectCanvas = useProjectCanvas()
 onFlow(async () => {
-    titleAnimations()
-
     await nextTick()
+    console.log('test');
     projectCanvas.addNextPageMedia(wrapperRef.value)
+})
+
+onEnter({
+    el: wrapperRef,
+    eStart: 66,
+    enterCb: () => {
+        titleAnimations()
+    },
+    leaveCb: () => {
+        for (let i = 0; i < tl.arr.length; i++) {
+            const motion = tl.arr[i]
+            motion.play({
+                d: 1000,
+                p: {
+                    y: { newEnd: 100 }
+                },
+                delay: 0
+            })
+        }
+    }
 })
 
 function titleAnimations() {
     tl.reset()
     const title = titleRef.value
 
-    N.Class.remove(title, "leave")
     const subs = N.getAll(".overflow-content", flavorSubRef.value)!
     const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value, ...subs]
 
@@ -76,9 +94,6 @@ function titleAnimations() {
 }
 
 onLeave(() => {
-    const i = currentIndex.value
-    const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
-    const spans = [flavorMainRef.value[i], ...subs]
     for (let i = 0; i < tl.arr.length; i++) {
         const motion = tl.arr[i]
         motion.play({
@@ -161,10 +176,6 @@ h1 {
         color: $yellow;
     }
 
-    &.leave {
-        transition: color 200ms;
-        color: $yellow;
-    }
 }
 </style>
 
