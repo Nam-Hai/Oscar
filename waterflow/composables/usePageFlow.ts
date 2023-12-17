@@ -61,12 +61,14 @@ export function usePageFlow<T>({
     await Promise.all([promiseOut, flowPromise])
     provider.unMountBufferPage()
 
-    next()
+    provider.scrollFlow.resume()
+    provider.scrollFlow.scrollToTop()
+
     if (disablePointerEvent) {
       N.Class.remove(document.body, 'flowIsHijacked')
     }
-    provider.scrollFlow.resume()
-    provider.scrollFlow.scrollToTop()
+
+    next()
   })
 
 

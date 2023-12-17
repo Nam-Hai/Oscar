@@ -216,9 +216,6 @@ export class StaticMedia extends CanvasNode {
         const y = vh.value / 2 - this.uSizePixel.value.y / 2 - this.bounds.y
 
         this.pixelPosition.set(x, y)
-
-
-
     }
 }
 

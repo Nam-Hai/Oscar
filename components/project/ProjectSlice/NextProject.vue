@@ -29,7 +29,7 @@
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 
-// const {propName = fallbackValue} = defineProps<{propName: type}>()
+const { } = defineProps<{ data: {} }>()
 const { currentIndex, length } = useStoreProject()
 const { homeStore } = useStoreStepper()
 const nextIndex = (currentIndex.value + 1) % length
@@ -45,11 +45,10 @@ const titleRef = ref()
 const tl = useTL()
 
 const projectCanvas = useProjectCanvas()
-onFlow(() => {
+onFlow(async () => {
     titleAnimations()
 
-    const a = wrapperRef.value.getBoundingClientRect()
-    console.log({ a });
+    await nextTick()
     projectCanvas.addNextPageMedia(wrapperRef.value)
 })
 
@@ -97,13 +96,15 @@ onLeave(() => {
 @use "@/styles/shared.scss" as *;
 
 .next-project__wrapper {
+    // teleport to .over-webGL with position: relative
+    position: absolute;
+    top: 0;
     // background-color: white;
     height: 100vh;
     width: 100vw;
     top: 0;
     // background-color: black;
     color: $white;
-    position: relative;
 }
 
 .next-project-container {

@@ -66,7 +66,13 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             src_1: "/Assets/Home_2.jpg",
             src_2: "/Assets/Viadomo/6.png",
         },
-        slice: []
+        slice: [
+            {
+                keyId: "ProjectSliceNextProject",
+                data: {},
+                key: 1
+            }
+        ]
     },
     "mucho-matxa": {
         title: 'mucho matxa',
@@ -76,7 +82,13 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             src_1: "/Assets/Home3.png",
             src_2: "/Assets/Viadomo/8.png",
         },
-        slice: []
+        slice: [
+            {
+                keyId: "ProjectSliceNextProject",
+                data: {},
+                key: 1
+            }
+        ]
     }
 
 }

@@ -220,6 +220,8 @@ main {
 }
 
 body.flowIsHijacked {
+  pointer-events: none;
+
   a {
     pointer-events: none;
   }

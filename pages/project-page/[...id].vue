@@ -9,6 +9,7 @@
 import { useFlowProvider } from '~/waterflow/FlowProvider';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { defaultFlowOut, defaultFlowIn, indexIdFlowIn } from '../default.transition';
+import { projectFlowInMap } from "../project.transition"
 
 // const { client } = usePrismic()
 // const { data: media } = await useAsyncData('media', () => client.getAllByType('mediatest'))
@@ -17,9 +18,9 @@ const route = useFlowProvider().getRouteTo()
 const id = route.params.id ? route.params.id[0] : 'viadomo-deco'
 
 
-const { firstScroll, currentIndex, idToIndex, copy } = useStoreProject()
 const wrapperRef = ref() as Ref<HTMLElement>;
 
+const { firstScroll, currentIndex, idToIndex, copy } = useStoreProject()
 currentIndex.value = idToIndex.get(id) || 0
 const COPY = copy[id]
 
@@ -46,7 +47,7 @@ useLenisScroll((e) => {
 usePageFlow({
     props: {},
     flowOut: defaultFlowOut,
-    flowInCrossfade: indexIdFlowIn,
+    flowInCrossfadeMap: projectFlowInMap,
     enableCrossfade: 'BOTTOM'
 })
 
