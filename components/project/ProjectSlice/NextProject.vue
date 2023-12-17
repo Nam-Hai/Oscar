@@ -48,7 +48,6 @@ const tl = useTL()
 const projectCanvas = useProjectCanvas()
 onFlow(async () => {
     await nextTick()
-    console.log('test');
     projectCanvas.addNextPageMedia(wrapperRef.value)
 })
 
