@@ -2,7 +2,7 @@ import type { RafR, rafEvent } from "~/plugins/core/raf";
 import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 
 import { CanvasPage } from "../utils/types";
-import type { Camera, OGLRenderingContext, Renderer, Transform } from "ogl";
+import { Transform, type Camera, type OGLRenderingContext, type Renderer } from "ogl";
 import { HomeMedia } from "../Components/Index/HomeMedia";
 import { SteppersWrapper } from "../Components/Index/SteppersWrapper";
 import { Picker } from "../Components/Picker";
@@ -15,11 +15,14 @@ export class IndexCanvas extends CanvasPage {
     target: any;
     renderer: Renderer;
     camera: Camera;
+    scene: Transform;
 
     constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
         super(gl)
 
-        this.node = options.scene
+        this.scene = options.scene
+        this.node = new Transform()
+        this.node.setParent(this.scene)
 
         // const canvasWatch = plugReactivity(this)
         this.renderer = this.gl.renderer
@@ -62,7 +65,7 @@ export class IndexCanvas extends CanvasPage {
 
     render(e: rafEvent) {
         this.renderer.render({
-            scene: this.node,
+            scene: this.scene,
             camera: this.camera,
         })
     }

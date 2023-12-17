@@ -49,7 +49,7 @@ usePageFlow({
     props: {},
     flowOut: defaultFlowOut,
     flowInCrossfadeMap: projectFlowInMap,
-    enableCrossfade: 'BOTTOM'
+    enableCrossfade: 'TOP'
 })
 
 </script>

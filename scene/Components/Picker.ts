@@ -79,6 +79,10 @@ export class Picker extends CanvasNode {
 
         this.mount()
         this.init()
+
+        canvasNode.onDestroy(() => {
+            this.destroy()
+        })
         return this
     }
 
@@ -116,7 +120,6 @@ export class Picker extends CanvasNode {
             this.gl.UNSIGNED_BYTE,  // type
             dataLumos);             // typed array to hold result
         const indexLumos = (dataLumos[0] * 0.2126 + dataLumos[1] * 0.7152 + dataLumos[2] * 0.0722) / 255;
-        // console.log(indexLumos);
         pickerDark.value = indexLumos >= 0.5;
         // L = 0.2126 * R + 0.7152 * G + 0.0722 * B;
 

@@ -2,7 +2,7 @@ import { RafPriority, type RafR, type rafEvent } from "~/plugins/core/raf";
 import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 
 import { CanvasPage } from "../utils/types";
-import type { Camera, OGLRenderingContext, Renderer, Transform } from "ogl";
+import { Transform, type Camera, type OGLRenderingContext, type Renderer } from "ogl";
 import { Picker } from "../Components/Picker";
 import { MainImage } from "../Components/Project/MainImage";
 import { Media } from "../Components/Project/Media";
@@ -18,12 +18,15 @@ export class ProjectCanvas extends CanvasPage {
     target: any;
     renderer: Renderer;
     camera: Camera;
+    scene: Transform;
 
     constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
         super(gl)
         provideProjectCanvas(this)
 
-        this.node = options.scene
+        this.scene = options.scene
+        this.node = new Transform()
+        this.node.setParent(options.scene)
 
         this.renderer = this.gl.renderer
 
@@ -69,7 +72,7 @@ export class ProjectCanvas extends CanvasPage {
 
     render(e: rafEvent) {
         this.renderer.render({
-            scene: this.node,
+            scene: this.scene,
             camera: this.camera,
         })
     }

@@ -19,9 +19,6 @@ export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps,
     const { currentIndex } = useStoreStepper()
 
 
-
-
-
     const titleContainer = props.titleRefs.value[currentIndex.value]
     const spans = N.getAll('.overflow-content', titleContainer)
     const fontFromTo = {
@@ -46,13 +43,13 @@ export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps,
         e: [.47, -0.43, .45, 1],
     })
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 7; i++) {
         tl.from({
             update: ({ progE }) => {
                 N.T(spans[i] as HTMLElement, 0, 100 * progE)
             },
             d: 400,
-            delay: 850 + i * 50,
+            delay: 750 + i * 50,
             e: 'o4'
         })
     }
@@ -72,7 +69,9 @@ export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps,
 }
 
 export const indexFlowIn: FlowFunction<IndexProps> = ({ }, resolve,) => {
-    resolve()
+    useDelay(500, () => {
+        resolve()
+    })
 }
 
 

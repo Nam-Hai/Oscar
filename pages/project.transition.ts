@@ -15,7 +15,7 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
 
 
 
-    const scene = canvas.index!.node
+    const scene = canvas.scene
 
     const route = provider.getRouteTo()
 
@@ -108,7 +108,7 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
             }
         })
         .from({
-            d: 2100,
+            d: 1500,
             update({ prog, progE }) {
 
             },
@@ -126,7 +126,8 @@ export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = async (props
     const canvas = useCanvas()
     const { vh, vw, scale } = useStoreView()
 
-    const scene = canvas.projectPage!.node
+    // const scene = canvas.projectPage!.node
+    const scene = canvas.scene
 
     const route = provider.getRouteTo()
 
@@ -143,6 +144,8 @@ export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = async (props
     const mainImage = useCanvasMainImageProject()
     const width = mainImage && mainImage.bounds && mainImage.bounds[0].width || 268 * scale.value
     const height = mainImage && mainImage.bounds && mainImage.bounds[0].height || 240 * scale.value
+    const mainImageParent = mainImage.node.parent
+    mainImage.node.setParent(null)
 
     transitionNode.node.setParent(scene)
     transitionNode.uSizePixel.value.set(width, height)
@@ -155,8 +158,11 @@ export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = async (props
     )
     transitionNode.pixelPosition.y = vh.value
 
+    useDelay(750, () => {
+        resolve()
+    })
     tl.from({
-        d: 500,
+        d: 750,
         delay: 500,
         e: 'o2',
         update: ({ progE }) => {
@@ -164,7 +170,8 @@ export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = async (props
             transitionNode.uVelo.value = -(1 - progE) * 200
         },
         cb: async () => {
-            resolve()
+            // resolve()
+            mainImage.node.setParent(mainImageParent)
 
             await nextTick()
             transitionNode.destroy()

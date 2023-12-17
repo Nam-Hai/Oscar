@@ -88,6 +88,10 @@ onFlow(() => {
 onBeforeUnmount(() => {
     tl.pause()
 })
+
+onLeave(() => {
+
+})
 </script>
 
 <style lang="scss" scoped>

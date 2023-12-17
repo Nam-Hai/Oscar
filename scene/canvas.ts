@@ -71,7 +71,10 @@ export default class Canvas {
 
     init(flowProvider: FlowProvider) {
         this.onChange(flowProvider.getRouteFrom())
-        this.currentPage = this.nextPage!
+        // this.currentPage = this.nextPage!
+        // this.currentPage.init()
+
+        this.resolveOnChange()
     }
 
     private resize({ vh, vw, scale }: { vh: number, vw: number, scale: number }) {
@@ -97,7 +100,6 @@ export default class Canvas {
         const routeName = route.name?.toString() || ''
         const createPage = this.map.get(routeName) || this.createFallbackCanvas
         this.nextPage = createPage.bind(this)()
-        this.nextPage.init()
     }
 
     resolveOnChange() {
@@ -106,6 +108,7 @@ export default class Canvas {
             this.currentPage.destroy()
         }
         if (this.nextPage) {
+            this.nextPage.init()
             this.currentPage = this.nextPage
         }
     }
