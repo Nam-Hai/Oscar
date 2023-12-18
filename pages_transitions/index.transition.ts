@@ -1,15 +1,14 @@
 
 import type { FlowFunction } from "~/waterflow/composables/usePageFlow"
-import { defaultFlowOut } from "./default.transition"
-import { TransitionImage } from "~/scene/Components/Project/TransitionImage"
-import { useCanvasMainImageProject } from "~/scene/Components/Project/MainImage"
+import { defaultFlowOut, type defaultTransitionProps } from "./default.transition"
 
-export type IndexProps = {
+export type IndexProps = defaultTransitionProps & {
     titleRefs: Ref<HTMLElement[]>
 }
 
 export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps, resolve, provider) => {
 
+    console.log('index project flow out');
     const tl = useTL()
     const canvas = useCanvas()
 
@@ -68,7 +67,7 @@ export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps,
 
 }
 
-export const indexFlowIn: FlowFunction<IndexProps> = ({ }, resolve,) => {
+export const indexFlowIn: FlowFunction<IndexProps> = (props, resolve,) => {
     useDelay(500, () => {
         resolve()
     })
@@ -77,5 +76,5 @@ export const indexFlowIn: FlowFunction<IndexProps> = ({ }, resolve,) => {
 
 export const indexFlowOutMap = new Map([
     ['default', defaultFlowOut],
-    ["index => project-page-id", indexProjectFlowOut]
+    ['index => project-page-id', indexProjectFlowOut]
 ])

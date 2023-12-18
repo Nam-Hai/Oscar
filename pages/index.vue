@@ -31,7 +31,8 @@
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
-import { indexFlowIn, indexFlowOutMap } from './index.transition';
+import { indexFlowIn, indexFlowOutMap } from '~/pages_transitions/index.transition';
+// import { indexFlowIn} from "~/pages"
 
 let first = false
 function headerMove(e: MouseEvent) {

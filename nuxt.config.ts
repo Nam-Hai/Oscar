@@ -22,7 +22,7 @@ export default defineNuxtConfig({
         ],
     },
     imports: {
-        dirs: ["./pages_transitions"]
+        // dirs: ["./pages_transitions"]
     },
     ignore: [
         '~/pages/ignore/',

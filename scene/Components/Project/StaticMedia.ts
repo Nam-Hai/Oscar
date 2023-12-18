@@ -78,7 +78,6 @@ export class StaticMedia extends CanvasNode {
         const eS = e.animatedScroll
 
         this.pixelScroll = eS
-
     }
 
 

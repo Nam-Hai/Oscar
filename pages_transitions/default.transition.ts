@@ -1,11 +1,9 @@
-import { DefaultTransition } from "~/scene/Components/DefaultTransition"
 import type { FlowFunction } from "~/waterflow/composables/usePageFlow"
 
-export type TemplateTransitionProps = {
+export type defaultTransitionProps = {
 }
 
-export const defaultFlowOut: FlowFunction<TemplateTransitionProps> = (props: {}, resolve, provider) => {
-
+export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, resolve, provider) => {
     const tl = useTL()
     const canvas = useCanvas()
 
@@ -68,13 +66,13 @@ export const defaultFlowOut: FlowFunction<TemplateTransitionProps> = (props: {},
 
 }
 
-export const defaultFlowIn: FlowFunction<TemplateTransitionProps> = ({ }, resolve,) => {
+export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ }, resolve,) => {
     useDelay(500, () => {
         resolve()
     })
 }
 
-export const indexIdFlowIn: FlowFunction<TemplateTransitionProps> = ({ }, resolve,) => {
+export const indexIdFlowIn: FlowFunction<defaultTransitionProps> = ({ }, resolve,) => {
     resolve()
 }
 

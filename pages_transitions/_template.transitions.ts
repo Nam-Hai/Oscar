@@ -8,7 +8,7 @@ const transitionIndexOutDefault: FlowFunction<TemplateTransitionProps> = ({ wrap
   resolve()
 }
 
-export const IndexTransitionOutMap = new Map([
+export const templateTransitionOutMap = new Map([
   ['default', transitionIndexOutDefault]
 ])
 
@@ -16,6 +16,6 @@ const transitionIndexCrossfadeInDefault: FlowFunction<TemplateTransitionProps> =
   resolve()
 }
 
-export const IndexTransitionCrossfadeMap = new Map([
+export const templateTransitionCrossfadeMap = new Map([
   ['default', transitionIndexCrossfadeInDefault]
 ])

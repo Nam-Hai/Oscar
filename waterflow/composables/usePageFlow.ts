@@ -45,6 +45,19 @@ export function usePageFlow<T>({
 
   const router = useRouter()
   const routerGuard = router.beforeEach(async (to, _from, next) => {
+    if (to.name == "project-page-id" && _from.name == "project-page-id") {
+      await new Promise<void>(res => {
+        const lenis = useStoreView().lenis.value
+        if (lenis.animatedScroll != lenis.dimensions.limit.y) {
+          lenis.scrollTo('bottom', { duration: 0.5 })
+          useDelay(500, () => {
+            res()
+          })
+        } else {
+          res()
+        }
+      })
+    }
     if (disablePointerEvent) {
       N.Class.add(document.body, 'flowIsHijacked')
     }

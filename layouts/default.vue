@@ -26,7 +26,8 @@ const lenis = useStoreView().lenis;
 
 useRaf(
   (e) => {
-    !flowProvider.flowIsHijacked.value && lenis.value.raf(e.elapsed);
+    // !flowProvider.flowIsHijacked.value && 
+    lenis.value.raf(e.elapsed);
   },
   RafPriority.FIRST
 );
@@ -42,6 +43,7 @@ flowProvider.registerScrollInterface({
     lenis.value.scrollTo("top", { immediate: true });
   },
 });
+// flowProvider.scrollFlow.scrollToTop = () => lenis.value.scrollTo("top", { immediate: true })
 </script>
 
 <style lang="scss" scoped>
