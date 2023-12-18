@@ -43,7 +43,10 @@ const fs = computed(() => {
     return leave ? true : firstScroll.value;
 })
 let leave = false
-onLeave(() => { leave = true })
+onLeave(() => {
+    leave = true
+    N.Class.add(lowerDesRef.value, "leave")
+})
 const COPY = copy[id]
 
 const wrapperRef = ref()
@@ -89,11 +92,8 @@ onBeforeUnmount(() => {
     tl.pause()
 })
 
-onLeave(() => {
-})
-
-function scrollTop(){
-    useLenis().scrollTo("bottom", {duration: 1})
+function scrollTop() {
+    useLenis().scrollTo("bottom", { duration: 1 })
 }
 </script>
 
@@ -214,6 +214,11 @@ function scrollTop(){
             font-weight: 400;
             line-height: 2.7rem;
             letter-spacing: -.024rem;
+
+            &.leave {
+                opacity: 0;
+                transition: opacity 250ms;
+            }
         }
 
         .project__main-image__next-placeholder {
