@@ -115,6 +115,7 @@ export const useStoreProject = createStore(() => {
         ['mucho-matxa', 2],
     ])
 
+    const nextPageTitleRef = ref() as Ref<HTMLElement>
 
-    return { copy, firstScroll, currentIndex, length, idToIndex, landingHeaderScale }
+    return { copy, firstScroll, currentIndex, length, idToIndex, landingHeaderScale, nextPageTitleRef }
 })

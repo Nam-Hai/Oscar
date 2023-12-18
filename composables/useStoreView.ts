@@ -53,8 +53,8 @@ export const useStoreView = createStore(() => {
       touchMultiplier: 1.7,
       infinite: infinite,
       orientation: direction,
-      duration,
-      lerp
+      // duration,
+      // lerp
     });
     // lenis.value.normalizeWheel
   }

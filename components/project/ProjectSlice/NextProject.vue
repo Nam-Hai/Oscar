@@ -31,7 +31,7 @@ import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 
 const { } = defineProps<{ data: {} }>()
-const { currentIndex, length } = useStoreProject()
+const { currentIndex, length, nextPageTitleRef } = useStoreProject()
 const { homeStore } = useStoreStepper()
 const nextIndex = (currentIndex.value + 1) % length
 const dataSrc = Object.keys(useManifest().textures.home)[nextIndex]
@@ -44,6 +44,9 @@ const wrapperRef = ref() as Ref<HTMLElement>
 
 const titleRef = ref()
 const tl = useTL()
+onMounted(() => {
+    nextPageTitleRef.value = titleRef.value
+})
 
 const projectCanvas = useProjectCanvas()
 onFlow(async () => {
@@ -93,8 +96,9 @@ function titleAnimations() {
 }
 
 onLeave(() => {
-    for (let i = 0; i < tl.arr.length; i++) {
+    for (let i = tl.arr.length - 4; i < tl.arr.length; i++) {
         const motion = tl.arr[i]
+        if (!motion) return
         motion.play({
             d: 1000,
             p: {
