@@ -21,7 +21,9 @@ export default defineNuxtConfig({
             "~/components/project/"
         ],
     },
-
+    imports: {
+        dirs: ["./pages_transitions"]
+    },
     ignore: [
         '~/pages/ignore/',
         '~/pages/ignore/_templatePage.transitions.ts',
