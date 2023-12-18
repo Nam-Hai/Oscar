@@ -1,5 +1,5 @@
 <template>
-    <div ref="wrapperRef" class="stepper__wrapper" @mouseenter="stepperIsHovered = true"
+    <div ref="wrapperRef" class="stepper__wrapper hide" @mouseenter="stepperIsHovered = true"
         @mouseleave="stepperIsHovered = false"
         :style="{ width: stepperIsHovered ? (imageBounds.w + 8) * (length) + 'px' : 'unset' }">
         <div class="left d">
@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import Lenis from '@studio-freight/lenis';
 import { mod } from '~/plugins/core/utils';
-import { onLeave } from '~/waterflow/composables/onFlow';
+import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 
 // const {propName = fallbackValue} = defineProps<{propName: type}>()
 // const emits = defineEmits([])
@@ -29,6 +29,9 @@ const { stepperIsHovered, imageBounds, currentIndex, length } = useStoreStepper(
 const wrapperRef = ref() as Ref<HTMLElement>
 
 let on = true
+onFlow(() => {
+    N.Class.remove(wrapperRef.value, 'hide')
+})
 
 useLenisScroll((e: Lenis) => {
     // console.log('lenis', e.direction, on);

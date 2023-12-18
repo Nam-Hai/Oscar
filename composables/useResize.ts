@@ -3,12 +3,10 @@ export function useRO(callback: (e: { vh: number, vw: number, scale: number, bre
   const ro = new $ROR(callback, triggerCb)
 
   onMounted(() => {
-    console.trace('Resize mount');
     ro.on()
   });
 
   onBeforeUnmount(() => {
-    console.trace('Resize unmount');
     ro.off()
   });
 
