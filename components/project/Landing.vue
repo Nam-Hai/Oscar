@@ -15,7 +15,7 @@
                 <h2>{{ COPY.date }}</h2>
             </div>
             <div class="lower-container">
-                <p ref="lowerDesRef">
+                <p ref="lowerDesRef" @click="scrollTop">
                     VIADOMO©DECO boasts an innovative collection of top-tier furniture, reshaping the definition of luxury
                     and sophistication.
                 </p>
@@ -90,8 +90,11 @@ onBeforeUnmount(() => {
 })
 
 onLeave(() => {
-
 })
+
+function scrollTop(){
+    useLenis().scrollTo("bottom", {duration: 1})
+}
 </script>
 
 <style lang="scss" scoped>
