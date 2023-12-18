@@ -280,15 +280,10 @@ export const projectProjectFlowIn2: FlowFunction<ProjectFlowProps> = (props: Pro
 
             }
         })
-        .from({
-            d: 1500,
-            update({ prog, progE }) {
+    useDelay(400 + 800 + DELAY, () => {
+        resolve()
 
-            },
-            cb: () => {
-                resolve()
-            }
-        })
+    })
     tl.play()
 }
 
@@ -340,14 +335,8 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
             e: 'o4'
         })
     }
-    tl.from({
-        d: 1450,
-        update: () => {
-
-        },
-        cb: () => {
-            resolve()
-        }
+    useDelay(1450, () => {
+        resolve()
     })
 
     tl.play()

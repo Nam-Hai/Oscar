@@ -72,10 +72,12 @@ export function usePageFlow<T>({
     let promiseOut = createFlow<T>(provider, flowOutMap, flowOut, props)
 
     await Promise.all([promiseOut, flowPromise])
+    // swap buffer
     provider.unMountBufferPage()
 
     provider.scrollFlow.resume()
     provider.scrollFlow.scrollToTop()
+
 
     if (disablePointerEvent) {
       N.Class.remove(document.body, 'flowIsHijacked')

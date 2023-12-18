@@ -99,21 +99,19 @@ export const onEnter = ({
 }) => {
   const hasEnter = ref(false);
   let bounds: DOMRect;
-  let isFixed = false
-
   let boundY = 0
 
   const computeBounds = () => {
     bounds = el.value.getBoundingClientRect();
-    boundY = bounds.top + (isFixed ? 0 : scrollY)
+    console.log(bounds);
+    boundY = bounds.top + scrollY
   };
 
   const { vh, vw } = useStoreView();
   useRO(computeBounds);
 
-  onMounted(() => {
-    const elementStyle = window.getComputedStyle(el.value);
-    isFixed = elementStyle.position == 'fixed'
+  onFlow(async () => {
+    await nextTick()
     computeBounds()
   });
 
