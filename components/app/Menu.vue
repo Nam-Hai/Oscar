@@ -37,7 +37,7 @@
       </span>
 
       <span>
-        <NuxtLink to="#" class="info">
+        <NuxtLink to="/info" class="info">
           <span v-cursor-hover>
             info
           </span>

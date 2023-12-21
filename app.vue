@@ -12,6 +12,7 @@ import { FlowProvider, provideFlowProvider } from './waterflow/FlowProvider';
 import Index from './pages/index.vue';
 import ProjectPage from './pages/project-page/[...id].vue';
 import Archive from './pages/archive.vue';
+import Info from './pages/info.vue';
 
 const flowProvider = new FlowProvider()
 provideFlowProvider(flowProvider)
@@ -19,6 +20,7 @@ provideFlowProvider(flowProvider)
 flowProvider.registerPage('index', Index)
 flowProvider.registerPage('project-page-id', ProjectPage)
 flowProvider.registerPage('archive', Archive)
+flowProvider.registerPage('info', Info)
 // flowProvider.registerPage('playground', Playground)
 
 const { flowIsHijacked } = useStore()

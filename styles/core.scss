@@ -263,3 +263,9 @@ $easeText: cubic-bezier(0.48, -0.11, 0.25, 0.99);
 .tp-dfwv {
   z-index: 200000;
 }
+
+a {
+  position: relative;
+  padding: 0.5rem 1rem;
+  margin: -0.5rem -1rem;
+}

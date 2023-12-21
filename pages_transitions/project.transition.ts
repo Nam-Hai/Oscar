@@ -188,7 +188,7 @@ export const projectProjectFlowIn2: FlowFunction<ProjectFlowProps> = (props: Pro
     const from = provider.getRouteFrom()
     const oldId = from.params.id ? from.params.id[0] : 'viadomo-deco'
     if (!isPreviousId(oldId)) {
-        defaultFlowIn({}, resolve, provider)
+        defaultFlowIn(props, resolve, provider)
         return
     }
 
@@ -303,8 +303,7 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
     const to = provider.getRouteTo()
     const newID = to.params.id ? to.params.id[0] : 'viadomo-deco'
     if (!isNextId(newID)) {
-        console.log('flow out !isNext');
-        defaultFlowOut({}, resolve, provider)
+        defaultFlowOut(props, resolve, provider)
         return
     }
 
