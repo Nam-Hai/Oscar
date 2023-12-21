@@ -193,15 +193,20 @@ main {
     }
 }
 
+a {
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
 h1 {
+    position: relative;
     text-transform: uppercase;
     text-align: center;
     font-weight: 500;
     // line-height: 6rem;
     width: max-content;
-    position: absolute;
-    left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
     font-size: 8.8rem;
     letter-spacing: -0.088rem;

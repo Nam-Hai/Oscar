@@ -21,6 +21,20 @@ export const useSplitChar = (ref: Ref<HTMLElement>) => {
     }
   })
 }
+export const useSplitWord = (ref: Ref<HTMLElement>) => {
+  onMounted(() => {
+    const arr = ref.value.innerText.split(' ')
+
+    ref.value.innerHTML = ""
+    for (const char of arr) {
+      const span = N.Cr('span')
+      span.innerText = char + "&nbsp;"
+      const span2 = N.Cr('span')
+      span2.appendChild(span)
+      ref.value.appendChild(span2)
+    }
+  })
+}
 
 export const useSplitLine = {
   ref: (wrapper: Ref<HTMLElement>) => {

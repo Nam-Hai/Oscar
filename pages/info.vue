@@ -10,11 +10,24 @@
 
         <div class="bio__wrapper" :class="{ highlight }">
             <p>
-                <span class="highlight">Oscar Pico</span><br>
-                <span>A </span><span class="highlight">digital designer,</span><span> originally
-                    from
-                </span><span class="highlight">Madrid,</span><span> specialised in </span><span class="highlight">visual
-                    design.</span><span> Also, an art direction and branding lover.</span>
+                <span class="highlight"><span>Oscar&nbsp;</span><span>Pico.</span></span>
+            </p>
+            <p>
+                <span><span>A&nbsp;</span></span>
+                <span class="highlight"><span>digital&nbsp;</span><span>designer,&nbsp;</span></span>
+                <span><span>originally&nbsp;</span></span><span><span>from&nbsp;</span></span><span
+                    class="highlight"><span>Madrid,&nbsp;</span></span><span><span>specialised&nbsp;</span></span><span><span>in&nbsp;</span></span><span
+                    class="highlight"><span>visual&nbsp;</span><span>design.&nbsp;</span></span><span><span>Also,&nbsp;</span></span><span><span>an&nbsp;</span></span><span><span>art&nbsp;</span></span><span><span>direction&nbsp;</span></span><span><span>and&nbsp;</span></span><span><span>branding&nbsp;</span></span><span><span>lover.&nbsp;</span></span>
+                <!-- <span><span>A </span></span>
+                <span class="highlight"><span>digital&nbsp;</span><span>designer,
+                    </span></span>
+                <span><span>originally </span></span><span><span>from </span></span><span class="highlight"><span>Madrid,
+                    </span></span><span><span>specialised </span></span><span><span>in </span></span><span
+                    class="highlight"><span>visual
+                    </span><span>design. </span></span>
+                <span><span>Also, </span></span><span><span>an
+                    </span></span><span><span>art </span></span><span><span>direction </span></span><span><span>and
+                    </span></span><span><span>branding </span></span><span><span>lover. </span></span> -->
             </p>
             <p>
                 <span>Always looking forward to </span><span class="highlight">grow</span><span> my skillset and get
@@ -54,15 +67,12 @@
 import { defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { vCursorHover } from '~/directives/cursorActive';
+import { onFlow } from '~/waterflow/composables/onFlow';
 
 const highlight = ref(false)
 
 onMounted(() => {
-    const spans = N.getAll(".bio__wrapper p .highlight", wrapperRef.value)
-    for (const span of spans) {
-        span.addEventListener("mouseenter", highlightSpan, { passive: true })
-        span.addEventListener("mouseleave", leaveSpan, { passive: true })
-    }
+    highlight.value = false
 })
 onBeforeUnmount(() => {
     const spans = N.getAll(".bio__wrapper p .highlight", wrapperRef.value)
@@ -72,12 +82,41 @@ onBeforeUnmount(() => {
     }
 })
 
+const flow = onFlow(() => {
+    const spans = N.getAll(".bio__wrapper p > span > span")
+    // console.log(spans);
+    const tl = useTL()
+    for (let index = 0; index < spans.length; index++) {
+        const span = spans[index]
+        N.O(span as HTMLElement, 0)
+        N.T(span as HTMLElement, 0, 10, 'rem')
+
+        tl.from({
+            el: span,
+            d: 1000,
+            delay: 50 * index,
+            e: "o4",
+            p: {
+                y: [10, 0, "rem"],
+                o: [0, 1]
+            }
+        })
+    }
+    tl.play()
+
+    const spansh = N.getAll(".bio__wrapper p .highlight", wrapperRef.value)
+    for (const span of spansh) {
+        span.addEventListener("mouseenter", highlightSpan, { passive: true })
+        span.addEventListener("mouseleave", leaveSpan, { passive: true })
+    }
+})
+
 function highlightSpan(e: Event) {
-    // e.stopPropagation()
-    console.log('test');
+    if (!flow.value) return
     highlight.value = true
 }
 function leaveSpan(e: Event) {
+    if (!flow.value) return
     highlight.value = false
 }
 
@@ -92,6 +131,8 @@ usePageFlow({
     enableCrossfade: 'TOP'
 })
 
+// const aRef = ref()
+// useSplitWord(aRef)
 </script>
 
 <style lang="scss" scoped>
@@ -132,11 +173,14 @@ usePageFlow({
 
     &.highlight {
         p>span {
-            opacity: 0;
+            >span {
+                opacity: 0 !important;
+            }
 
             &.highlight:hover {
-                opacity: 1;
-                z-index: 200;
+                >span {
+                    opacity: 1 !important;
+                }
             }
         }
     }
@@ -147,7 +191,13 @@ usePageFlow({
         line-height: 7.6rem;
         letter-spacing: -.072rem;
 
-        text-indent: 9rem;
+        >span:first-child>span:first-child {
+            text-indent: 9rem;
+        }
+
+        &:nth-child(2)>span:first-child>span:first-child {
+            text-indent: 0rem;
+        }
 
         /* Adjust the value according to your preference */
 
@@ -155,8 +205,11 @@ usePageFlow({
             transition: opacity 200ms;
         }
 
-        >span {
+        >span>span {
+            display: inline-block;
             position: relative;
+            transform: translateY(10rem);
+            opacity: 0;
         }
     }
 
