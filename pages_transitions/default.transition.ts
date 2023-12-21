@@ -12,7 +12,6 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
     const overlay = provider.props.overlay
     // 
     canvas.onChange(provider.getRouteTo())
-    const parent = canvas.nextPage!.node.parent
     canvas.nextPage!.node.setParent(null)
     const svg = N.get("path", overlay.value)
 
@@ -27,6 +26,7 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
         },
         cb: () => {
             resolve()
+            console.log(parent);
             canvas.nextPage!.node.setParent(scene)
             canvas.resolveOnChange()
         }

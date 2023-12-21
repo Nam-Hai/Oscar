@@ -47,6 +47,7 @@ export function usePageFlow<T>({
   const router = useRouter()
   const routerGuard = router.beforeEach(async (to, from, next) => {
     await transitionExecption(provider, to, from)
+    console.log('transi ex after');
 
     provider.onChangeRoute(to)
     if (disablePointerEvent) {

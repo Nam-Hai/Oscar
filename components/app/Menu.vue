@@ -45,7 +45,7 @@
       </span>
 
       <span>
-        <NuxtLink to="#" class="archive">
+        <NuxtLink to="/archive" class="archive">
           <span v-cursor-hover>
             archive
           </span>

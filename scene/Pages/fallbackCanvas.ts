@@ -1,23 +1,28 @@
 import type { RafR, rafEvent } from "~/plugins/core/raf"
 import type { ROR, ResizeEvent } from "~/plugins/core/resize"
 import { CanvasPage } from "../utils/types"
-import Callstack from "../utils/Callstack"
+import { Transform, type Camera, type OGLRenderingContext, type Renderer } from "ogl"
 
 export class FallbackCanvas extends CanvasPage {
-  renderer: any
-  scene: any
-  camera: any
 
   ro: ROR
   raf: RafR
+  canvasScene: any
+  target: any;
+  renderer: Renderer;
+  camera: Camera;
+  scene: Transform;
   once: boolean
-  constructor(gl: any, options: { scene: any, camera: any }) {
+
+  constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
     super(gl)
 
     this.renderer = this.gl.renderer
 
-    this.node = options.scene
     this.scene = options.scene
+    this.node = new Transform()
+    this.node.setParent(this.scene)
+
     this.camera = options.camera
 
     N.BM(this, ['render', 'resize'])
@@ -49,7 +54,4 @@ export class FallbackCanvas extends CanvasPage {
     this.once = true
   }
 
-  destroy() {
-    super.destroy()
-  }
 }

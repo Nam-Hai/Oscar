@@ -44,7 +44,7 @@ export default class Canvas {
         this.dom = this.gl.canvas
 
         this.map = new Map([
-            // ['fallback', this.createFallbackCanvas],
+            ['fallback', this.createFallbackCanvas],
             ['index', this.createIndexCanvas],
             ['project-page-id', this.createProjectPage]
         ])
@@ -108,6 +108,7 @@ export default class Canvas {
             this.currentPage.destroy()
         }
         if (this.nextPage) {
+            console.log('next page init', this.nextPage);
             this.nextPage.init()
             this.currentPage = this.nextPage
         }
