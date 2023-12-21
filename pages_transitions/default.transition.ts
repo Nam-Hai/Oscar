@@ -1,6 +1,7 @@
 import type { FlowFunction } from "~/waterflow/composables/usePageFlow"
 
 export type defaultTransitionProps = {
+    wrapperRef: Ref<HTMLElement>
 }
 
 export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, resolve, provider) => {
@@ -66,8 +67,10 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
 
 }
 
-export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ }, resolve,) => {
-    useDelay(500, () => {
+export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef }, resolve,) => {
+    N.O(wrapperRef.value, 0)
+    useDelay(600, () => {
+        N.O(wrapperRef.value, 1)
         resolve()
     })
 }

@@ -1,10 +1,10 @@
 import type { FlowFunction } from "~/waterflow/composables/usePageFlow"
-import { defaultFlowIn, defaultFlowOut } from "./default.transition"
+import { defaultFlowIn, defaultFlowOut, type defaultTransitionProps } from "./default.transition"
 import { TransitionImage } from "~/scene/Components/Project/TransitionImage"
 import { useCanvasMainImageProject } from "~/scene/Components/Project/MainImage"
 import { TransitionMediaTest } from "~/scene/Components/Project/TransitionMediaTest"
 
-export type ProjectFlowProps = {
+export type ProjectFlowProps = defaultTransitionProps & {
 }
 
 export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: ProjectFlowProps, resolve, provider) => {

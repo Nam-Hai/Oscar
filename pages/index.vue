@@ -131,6 +131,7 @@ useResetLenis({
 
 usePageFlow({
     props: {
+        wrapperRef: mainRef,
         titleRefs: titleRefs,
     },
     flowOutMap: indexFlowOutMap,

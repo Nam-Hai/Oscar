@@ -45,7 +45,7 @@ useLenisScroll((e) => {
 })
 
 usePageFlow({
-    props: {},
+    props: {wrapperRef},
     // flowOut: defaultFlowOut,
     flowOutMap: projectFlowOutMap,
     flowInCrossfadeMap: projectFlowInMap,

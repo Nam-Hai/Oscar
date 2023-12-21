@@ -2,6 +2,7 @@ import type { RafR, rafEvent } from "~/plugins/core/raf"
 import type { ROR, ResizeEvent } from "~/plugins/core/resize"
 import { CanvasPage } from "../utils/types"
 import { Transform, type Camera, type OGLRenderingContext, type Renderer } from "ogl"
+import { Picker } from "../Components/Picker"
 
 export class FallbackCanvas extends CanvasPage {
 
@@ -23,6 +24,7 @@ export class FallbackCanvas extends CanvasPage {
     this.node = new Transform()
     this.node.setParent(this.scene)
 
+    this.mount()
     this.camera = options.camera
 
     N.BM(this, ['render', 'resize'])
@@ -37,6 +39,10 @@ export class FallbackCanvas extends CanvasPage {
   init() {
     this.raf.run()
     this.ro.on()
+  }
+  mount(): void {
+    const picker = new Picker(this.gl, { renderTargetRatio: 5 })
+    picker.add(this)
   }
 
   resize({ vh, vw, scale, breakpoint }: ResizeEvent) {
