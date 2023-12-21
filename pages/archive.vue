@@ -21,7 +21,7 @@ useResetLenis()
 const wrapperRef = ref() as Ref<HTMLElement>
 
 usePageFlow({
-    props: {wrapperRef},
+    props: { wrapperRef },
     flowOut: defaultFlowOut,
     flowInCrossfade: defaultFlowIn,
     enableCrossfade: 'TOP'
@@ -36,7 +36,6 @@ usePageFlow({
 
     min-height: 100vh;
     width: 100vw;
-    background-color: $white;
     color: $black;
 }
 
@@ -47,11 +46,15 @@ usePageFlow({
     min-width: 100vw;
     @include mainGrid;
 
-    > div {
+    >div {
         height: 20rem;
         margin-bottom: 2rem;
         width: 100%;
         background-color: $placeholder-grey;
+
+        &:nth-child(2n) {
+            grid-column: span 2;
+        }
     }
 }
 
