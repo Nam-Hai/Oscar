@@ -1,6 +1,7 @@
 import { onMounted, onUnmounted } from "vue";
 import { type FlowProps, FlowProvider, useFlowProvider } from "../FlowProvider";
 import { useRouter } from "vue-router";
+import type { RouteLocationNormalized } from "#vue-router";
 
 export type FlowFunction<T> = (props: T, resolve: () => void, provider: FlowProvider) => void
 
@@ -44,20 +45,10 @@ export function usePageFlow<T>({
   }
 
   const router = useRouter()
-  const routerGuard = router.beforeEach(async (to, _from, next) => {
-    if (to.name == "project-page-id" && _from.name == "project-page-id") {
-      await new Promise<void>(res => {
-        const lenis = useStoreView().lenis.value
-        if (lenis.animatedScroll != lenis.dimensions.limit.y) {
-          lenis.scrollTo('bottom', { duration: 0.5 })
-          useDelay(500, () => {
-            res()
-          })
-        } else {
-          res()
-        }
-      })
-    }
+  const routerGuard = router.beforeEach(async (to, from, next) => {
+    await transitionExecption(provider, to, from)
+
+    provider.onChangeRoute(to)
     if (disablePointerEvent) {
       N.Class.add(document.body, 'flowIsHijacked')
     }
@@ -65,7 +56,6 @@ export function usePageFlow<T>({
 
     let flowPromise = crossfade ? provider.hijackFlow() : null
     // mount next page
-    provider.onChangeRoute(to)
 
     crossfade && provider.setCrossfadeMode(crossfade)
 
@@ -109,4 +99,26 @@ function createFlow<T>(provider: FlowProvider, flowMap: Map<string, FlowFunction
 // getter for FlowFunction between the Map, and fallback function
 function getFlowFunction<T>(key: string, map?: Map<string, FlowFunction<T>>, fallback?: FlowFunction<T>) {
   return map?.get(key) || map?.get('default') || fallback || undefined
+}
+
+
+async function transitionExecption(provider: FlowProvider, to: RouteLocationNormalized, from: RouteLocationNormalized) {
+  if (to.name == "project-page-id" && from.name == "project-page-id") {
+    const newID = to.params.id ? to.params.id[0] : 'viadomo-deco'
+    const { isNextId } = useStoreProject()
+    if (!isNextId(newID)) return
+
+    await new Promise<void>(res => {
+      const lenis = useStoreView().lenis.value
+      if (lenis.animatedScroll != lenis.dimensions.limit.y) {
+        lenis.scrollTo('bottom', { duration: 0.5 })
+        useDelay(500, () => {
+          res()
+        })
+      } else {
+        res()
+      }
+    })
+  }
+
 }

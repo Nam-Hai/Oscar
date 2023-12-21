@@ -16,7 +16,6 @@ import { projectFlowInMap, projectFlowOutMap } from '~/pages_transitions/project
 const route = useFlowProvider().getRouteTo()
 const id = route.params.id ? route.params.id[0] : 'viadomo-deco'
 
-
 const wrapperRef = ref() as Ref<HTMLElement>;
 
 const { firstScroll, currentIndex, idToIndex, copy } = useStoreProject()

@@ -183,15 +183,20 @@ export const projectProjectFlowIn2: FlowFunction<ProjectFlowProps> = (props: Pro
     const tl = useTL()
     const canvas = useCanvas()
     const { vh, vw, scale, lenis } = useStoreView()
+    const { currentIndex, idToIndex, isPreviousId } = useStoreProject()
 
+    const from = provider.getRouteFrom()
+    const oldId = from.params.id ? from.params.id[0] : 'viadomo-deco'
+    if (!isPreviousId(oldId)) {
+        defaultFlowIn({}, resolve, provider)
+        return
+    }
 
 
     const scene = canvas.scene
 
     const route = provider.getRouteTo()
-
     const id = route.params.id ? route.params.id[0] : 'test'
-    const { currentIndex, idToIndex } = useStoreProject()
     const { getTexture } = useStoreStepper()
 
     currentIndex.value = idToIndex.get(id) || 0
@@ -293,7 +298,15 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
     const canvas = useCanvas()
 
 
-    const { nextPageTitleRef } = useStoreProject()
+    const { nextPageTitleRef, isNextId } = useStoreProject()
+
+    const to = provider.getRouteTo()
+    const newID = to.params.id ? to.params.id[0] : 'viadomo-deco'
+    if (!isNextId(newID)) {
+        console.log('flow out !isNext');
+        defaultFlowOut({}, resolve, provider)
+        return
+    }
 
     const { vh, vw, scale, lenis } = useStoreView()
 

@@ -117,5 +117,15 @@ export const useStoreProject = createStore(() => {
 
     const nextPageTitleRef = ref() as Ref<HTMLElement>
 
-    return { copy, firstScroll, currentIndex, length, idToIndex, landingHeaderScale, nextPageTitleRef }
+    function isNextId(id: string) {
+        const index = idToIndex.get(id) || 0
+        return index == currentIndex.value + 1 || (currentIndex.value == (length - 1) && index == 0)
+    }
+
+    function isPreviousId(id: string) {
+        const index = idToIndex.get(id) || 0
+        return index == currentIndex.value - 1 || (currentIndex.value == 0 && index == (length - 1))
+    }
+
+    return { copy, firstScroll, currentIndex, length, idToIndex, landingHeaderScale, nextPageTitleRef, isNextId, isPreviousId }
 })
