@@ -73,7 +73,6 @@ setBounds(placeholderRef)
 // is set to True in preloader at the end of its animation
 watch(preloaderComplete, async () => {
 
-  console.log('complete ?');
   fromPreloader.value = false
 
   canvas.onChange(flowProvider.getRouteTo())

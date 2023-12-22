@@ -12,7 +12,9 @@ const useStore = createStore(() => {
 
   const preloaderComplete = ref(false);
   const flowIsHijacked = ref(false)
-  return { isMobile, pageLoaded, preventScroll, fromPreloader, manifestLoaded, preloaderComplete, flowIsHijacked }
+  const firstRedirect = ref(false)
+
+  return { isMobile, pageLoaded, preventScroll, fromPreloader, manifestLoaded, preloaderComplete, flowIsHijacked, firstRedirect}
 })
 export default useStore
 
@@ -54,7 +56,7 @@ const useCursorStore = createStore(() => {
     useEventListeneer(el, 'mouseup', onMouseUp)
   }
 
-  return { cursorState, toggleHover, onHold, isHolding, isHold, pickerDark }
+  return { cursorState, toggleHover, onHold, isHolding, isHold, pickerDark}
 })
 
 export { useCursorStore }

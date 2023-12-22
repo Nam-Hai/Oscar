@@ -8,7 +8,7 @@
             <NuxtLink to="#?a=insta" v-cursor-hover>Instagram</NuxtLink>
         </div>
 
-        <div class="bio__wrapper" :class="{ highlight }">
+        <div class="bio__wrapper" :class="{ highlight, animationDone }">
             <p>
                 <span class="highlight"><span>Oscar&nbsp;</span><span>Pico.</span></span>
             </p>
@@ -18,25 +18,16 @@
                 <span><span>originally&nbsp;</span></span><span><span>from&nbsp;</span></span><span
                     class="highlight"><span>Madrid,&nbsp;</span></span><span><span>specialised&nbsp;</span></span><span><span>in&nbsp;</span></span><span
                     class="highlight"><span>visual&nbsp;</span><span>design.&nbsp;</span></span><span><span>Also,&nbsp;</span></span><span><span>an&nbsp;</span></span><span><span>art&nbsp;</span></span><span><span>direction&nbsp;</span></span><span><span>and&nbsp;</span></span><span><span>branding&nbsp;</span></span><span><span>lover.&nbsp;</span></span>
-                <!-- <span><span>A </span></span>
-                <span class="highlight"><span>digital&nbsp;</span><span>designer,
-                    </span></span>
-                <span><span>originally </span></span><span><span>from </span></span><span class="highlight"><span>Madrid,
-                    </span></span><span><span>specialised </span></span><span><span>in </span></span><span
-                    class="highlight"><span>visual
-                    </span><span>design. </span></span>
-                <span><span>Also, </span></span><span><span>an
-                    </span></span><span><span>art </span></span><span><span>direction </span></span><span><span>and
-                    </span></span><span><span>branding </span></span><span><span>lover. </span></span> -->
             </p>
             <p>
-                <span>Always looking forward to </span><span class="highlight">grow</span><span> my skillset and get
-                </span><span class="highlight">better.</span><span> Now, polishing </span><span class="highlight">motion
-                    skills</span><span> and getting the hang
-                    of </span><span class="highlight">3D design.</span>
+                <span><span>Always&nbsp;</span></span><span><span>looking&nbsp;</span></span><span><span>forward&nbsp;</span></span><span><span>to&nbsp;</span></span><span
+                    class="highligh"><span>grow&nbsp;</span></span><span><span>my&nbsp;</span></span><span><span>skillset&nbsp;</span></span><span><span>and&nbsp;</span></span><span><span>get&nbsp;</span></span><span
+                    class="highlight"><span>better.&nbsp;</span></span><span><span>Now,&nbsp;</span></span><span><span>polishing&nbsp;</span></span><span
+                    class="highlight"><span>motion&nbsp;</span></span><span><span>skills&nbsp;</span></span><span><span>and&nbsp;</span></span><span><span>getting&nbsp;</span></span><span><span>the&nbsp;</span></span><span><span>hang&nbsp;</span></span><span><span>of&nbsp;</span></span><span
+                    class="highlight"><span>3D&nbsp;</span><span>design.&nbsp;</span></span>
             </p>
             <p>
-                <span>Currently seeking new professional challenges and looking to relocate.</span>
+                <span><span>Currently&nbsp;</span></span><span><span>seeking&nbsp;</span></span><span><span>new&nbsp;</span></span><span><span>professional&nbsp;</span></span><span><span>challenges&nbsp;</span></span><span><span>and&nbsp;</span></span><span><span>looking&nbsp;</span></span><span><span>to&nbsp;</span></span><span><span>relocate.&nbsp;</span></span>
             </p>
         </div>
         <img src="/Assets/info/Oscar_Pico.png" alt="oscar_pico_picture">
@@ -82,6 +73,7 @@ onBeforeUnmount(() => {
     }
 })
 
+const animationDone = ref(false)
 const flow = onFlow(() => {
     const spans = N.getAll(".bio__wrapper p > span > span")
     // console.log(spans);
@@ -94,7 +86,7 @@ const flow = onFlow(() => {
         tl.from({
             el: span,
             d: 1000,
-            delay: 50 * index,
+            delay: 23 * index,
             e: "o4",
             p: {
                 y: [10, 0, "rem"],
@@ -102,6 +94,9 @@ const flow = onFlow(() => {
             }
         })
     }
+    useDelay(spans.length * 20 + 200, () => {
+        animationDone.value = true
+    })
     tl.play()
 
     const spansh = N.getAll(".bio__wrapper p .highlight", wrapperRef.value)
@@ -171,7 +166,7 @@ usePageFlow({
     flex-direction: column;
     // row-gap: 2.4rem;
 
-    &.highlight {
+    &.highlight.animationDone {
         p>span {
             >span {
                 opacity: 0 !important;

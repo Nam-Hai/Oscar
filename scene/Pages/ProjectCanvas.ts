@@ -49,6 +49,7 @@ export class ProjectCanvas extends CanvasPage {
         this.onDestroy(() => this.raf.kill())
     }
     init() {
+        console.log('project canvas');
         this.raf.run()
         this.ro.on()
     }

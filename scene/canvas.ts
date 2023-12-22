@@ -108,7 +108,6 @@ export default class Canvas {
             this.currentPage.destroy()
         }
         if (this.nextPage) {
-            console.log('next page init', this.nextPage);
             this.nextPage.init()
             this.currentPage = this.nextPage
         }

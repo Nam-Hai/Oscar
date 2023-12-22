@@ -27,7 +27,6 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
         },
         cb: () => {
             resolve()
-            console.log(parent);
             canvas.nextPage!.node.setParent(scene)
             canvas.resolveOnChange()
         }

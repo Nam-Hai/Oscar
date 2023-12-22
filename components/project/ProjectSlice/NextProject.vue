@@ -51,6 +51,7 @@ onMounted(() => {
 const projectCanvas = useProjectCanvas()
 onFlow(async () => {
     await nextTick()
+    console.log('onflow next');
     projectCanvas.addNextPageMedia(wrapperRef.value)
 })
 
@@ -160,15 +161,19 @@ onLeave(() => {
     }
 }
 
+a {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
 h1 {
     text-transform: uppercase;
     text-align: center;
     font-weight: 500;
     // line-height: 6rem;
+    position: relative;
     width: max-content;
-    position: absolute;
-    left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
     font-size: 8.8rem;
     letter-spacing: -0.088rem;

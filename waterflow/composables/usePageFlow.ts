@@ -47,7 +47,6 @@ export function usePageFlow<T>({
   const router = useRouter()
   const routerGuard = router.beforeEach(async (to, from, next) => {
     await transitionExecption(provider, to, from)
-    console.log('transi ex after');
 
     provider.onChangeRoute(to)
     if (disablePointerEvent) {
@@ -64,6 +63,7 @@ export function usePageFlow<T>({
 
     await Promise.all([promiseOut, flowPromise])
     // swap buffer
+    console.log('unmount');
     provider.unMountBufferPage()
 
     provider.scrollFlow.resume()

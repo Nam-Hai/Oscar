@@ -1,9 +1,12 @@
 export default defineNuxtRouteMiddleware((to, from) => {
   // const allowedRoutes = ['/']
   // if (!allowedRoutes.includes(to.path)) {
-  //   return navigateTo('/')
+  const { isMobile, firstRedirect } = useStore()
+  if (!firstRedirect.value) {
+    firstRedirect.value = true
+    // return navigateTo('/')
+  }
   // }
-  const { isMobile } = useStore()
 
   const d = from.query.d
   if (!d) return

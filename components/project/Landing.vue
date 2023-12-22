@@ -68,6 +68,7 @@ onFlow(() => {
     const next__el = N.get('.project__main-image__next-placeholder', wrapperRef.value) as HTMLElement
     const mainImage = useCanvasMainImageProject()
     mainImage.mountElement(el, next__el)
+    console.log('onflow landing mount element');
 })
 
 const tl = useTL()

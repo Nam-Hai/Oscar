@@ -45,11 +45,17 @@
       </span>
 
       <span>
-        <NuxtLink to="/archive" class="archive">
+        <NuxtLink to="/archive" class="archive" v-if="router.currentRoute.value.name != 'archive'">
           <span v-cursor-hover>
             archive
           </span>
         </NuxtLink>
+        <NuxtLink to="/project-page/viadomo-deco" class="archive" v-else>
+          <span v-cursor-hover>
+            project
+          </span>
+        </NuxtLink>
+
       </span>
     </div>
 
@@ -98,7 +104,7 @@ console.log(router.currentRoute.value.name);
 
         &:first-child {
           svg {
-            height: 1.6rem!important;
+            height: 1.6rem !important;
           }
         }
       }
@@ -106,6 +112,31 @@ console.log(router.currentRoute.value.name);
       font-size: 1.3rem;
       font-weight: 500;
       line-height: 1.5rem;
+
+      &:first-child a {
+        &::before {
+          display: none;
+        }
+      }
+
+      a {
+        &::before {
+          content: "";
+          height: .4rem;
+          width: .4rem;
+          background-color: currentColor;
+          border-radius: 50%;
+          position: absolute;
+          left: -0.8rem;
+          top: 50%;
+          opacity: 0;
+          transition: opacity 400ms;
+        }
+
+        &:hover::before {
+          opacity: 1;
+        }
+      }
 
       span {
         padding: 1rem 2rem;
@@ -117,7 +148,7 @@ console.log(router.currentRoute.value.name);
         position: relative;
 
         svg {
-          position: absolute;
+          // position: absolute;
           left: 0;
           top: 0;
           height: 0.9rem;
