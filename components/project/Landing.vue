@@ -38,11 +38,9 @@ import { secondScrollEase } from "~/scene/Components/Project/MainImage"
 
 const { id } = defineProps<{ id: string }>()
 
-const { copy, firstScroll, landingHeaderScale } = useStoreProject()
+const { copy, landingHeaderScale } = useStoreProject()
 
-const fs = computed(() => {
-    return leave ? true : firstScroll.value;
-})
+const fs = useCanvasMainImageProject().firstScroll
 let leave = false
 onLeave(() => {
     leave = true
@@ -65,12 +63,12 @@ useLenisScroll((e) => {
     N.T(lowerDesRef.value, 0, e.animatedScroll, 'px');
 })
 
-onFlow(() => {
+onFlow(async () => {
+    await nextTick()
     const el = N.get('.project__main-image', wrapperRef.value) as HTMLElement
     const next__el = N.get('.project__main-image__next-placeholder', wrapperRef.value) as HTMLElement
     const mainImage = useCanvasMainImageProject()
     mainImage.mountElement(el, next__el)
-    console.log('onflow landing mount element');
 })
 
 const tl = useTL()

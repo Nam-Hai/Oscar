@@ -3,7 +3,7 @@ import { type FlowProps, FlowProvider, useFlowProvider } from "../FlowProvider";
 import { useRouter } from "vue-router";
 import type { RouteLocationNormalized } from "#vue-router";
 
-export type FlowFunction<T> = (props: T, resolve: () => void, provider: FlowProvider) => void
+export type FlowFunction<T> = (props: T, resolve: () => void, provider: FlowProvider, options?: any) => void
 
 // TODO cancel animation if a new route is taken early
 type PageFlowOptions<T> = {

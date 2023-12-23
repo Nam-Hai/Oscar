@@ -9,6 +9,7 @@
 import { useFlowProvider } from '~/waterflow/FlowProvider';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { projectFlowInMap, projectFlowOutMap } from '~/pages_transitions/project.transition';
+import { useCanvasMainImageProject } from '~/scene/Components/Project/MainImage';
 
 // const { client } = usePrismic()
 // const { data: media } = await useAsyncData('media', () => client.getAllByType('mediatest'))
@@ -18,17 +19,19 @@ const id = route.params.id ? route.params.id[0] : 'viadomo-deco'
 
 const wrapperRef = ref() as Ref<HTMLElement>;
 
-const { firstScroll, currentIndex, idToIndex, copy } = useStoreProject()
+const { currentIndex, idToIndex, copy } = useStoreProject()
 currentIndex.value = idToIndex.get(id) || 0
 const COPY = copy[id]
 
 
 useResetLenis()
 
-firstScroll.value = false
 
 useLenisScroll((e) => {
     const lenis = useLenis()
+    const mainImage = useCanvasMainImageProject()
+    if (!mainImage) return
+    const firstScroll = mainImage.firstScroll
     if (!firstScroll.value && e.velocity > 0) {
         lenis.stop()
 
@@ -38,7 +41,6 @@ useLenisScroll((e) => {
         })
     }
     if (e.direction < 0 && e.animatedScroll <= 0) {
-        console.log('firstScroll reset');
         firstScroll.value = false
     }
 })

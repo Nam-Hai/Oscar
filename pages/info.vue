@@ -1,7 +1,7 @@
 <template>
     <div ref="wrapperRef" class="info__wrapper">
 
-        <div class="social__wrapper">
+        <div class="social__wrapper" ref="socialsRef">
             <NuxtLink to="#?a=email" v-cursor-hover>Email</NuxtLink>
             <NuxtLink to="#?a=linkedin" v-cursor-hover>Linkedin</NuxtLink>
             <NuxtLink to="#?a=twitter" v-cursor-hover>Twitter</NuxtLink>
@@ -59,8 +59,17 @@ import { defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.trans
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 import { onFlow } from '~/waterflow/composables/onFlow';
+import { T } from '~/plugins/core/utils';
 
 const highlight = ref(false)
+const socialsRef = ref()
+
+usePin({
+    el: socialsRef,
+    start: 100,
+    startRem: 2.4,
+    eStart: 100,
+})
 
 onMounted(() => {
     highlight.value = false
@@ -81,19 +90,36 @@ const flow = onFlow(() => {
     for (let index = 0; index < spans.length; index++) {
         const span = spans[index]
         N.O(span as HTMLElement, 0)
-        N.T(span as HTMLElement, 0, 10, 'rem')
+        N.T(span as HTMLElement, 0, -10, 'rem')
 
         tl.from({
             el: span,
             d: 1000,
-            delay: 23 * index,
+            delay: 15 * index,
             e: "o4",
             p: {
-                y: [10, 0, "rem"],
+                y: [-10, 0, "rem"],
+            }
+        }).from({
+            el: span,
+            d: 1000,
+            delay: 15 * index,
+            p: {
                 o: [0, 1]
             }
+
         })
     }
+    tl.from({
+        el: N.get("img", wrapperRef.value),
+        d: 1000,
+        delay: 15 * spans.length,
+        e: "o4",
+        p: {
+            y: [-10, 0, 'rem'],
+            o: [0, 1]
+        }
+    })
     useDelay(spans.length * 20 + 200, () => {
         animationDone.value = true
     })
@@ -134,7 +160,7 @@ usePageFlow({
 @use "@/styles/shared.scss" as *;
 
 .info__wrapper {
-    min-height: 100vh;
+    height: 100vh;
     width: 100vw;
     color: $black;
     padding-left: 30rem;
@@ -143,8 +169,9 @@ usePageFlow({
 }
 
 .social__wrapper {
-    position: fixed;
+    position: absolute;
     bottom: 2.4rem;
+    // top: calc(100vh - 2.4rem - 1.3rem);
     left: 2.4rem;
     font-size: 1.3rem;
     font-weight: 500;
@@ -180,6 +207,12 @@ usePageFlow({
         }
     }
 
+    &.animationDone {
+        span {
+            transition: opacity 200ms;
+        }
+    }
+
     p {
         font-size: 7.2rem;
         font-weight: 500;
@@ -196,14 +229,11 @@ usePageFlow({
 
         /* Adjust the value according to your preference */
 
-        span {
-            transition: opacity 200ms;
-        }
 
         >span>span {
             display: inline-block;
             position: relative;
-            transform: translateY(10rem);
+            transform: translateY(-10rem);
             opacity: 0;
         }
     }
@@ -212,6 +242,7 @@ usePageFlow({
 }
 
 img {
+    opacity: 0;
     width: 55.3rem;
     height: 63.2rem;
     object-fit: cover;
@@ -221,10 +252,13 @@ img {
 }
 
 .list__wrapper {
-    position: absolute;
-    bottom: 2.4rem;
+    // position: absolute;
+    position: relative;
+    bottom: 5rem;
     left: 0;
     width: 100%;
+
+    height: 2.6rem;
 
     .list__item {
         position: absolute;
@@ -242,19 +276,22 @@ img {
 
 
         &:first-child {
-            left: 30rem;
+            // left: 30rem;
         }
 
         &:nth-child(2) {
-            left: 87rem;
+            left: 57rem;
         }
 
         &:nth-child(3) {
-            left: 101.2rem;
+            left: 71.2rem;
         }
 
         &:nth-child(4) {
-            left: 130.7rem;
+            left: 100.7rem;
+            // justify-content: flex-end;
+            align-items: flex-end;
+
         }
     }
 }

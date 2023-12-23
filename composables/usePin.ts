@@ -3,6 +3,7 @@ import { onFlow } from "~/waterflow/composables/onFlow"
 type usePinOptions = {
   el: Ref<HTMLElement>,
   start?: number,
+  startRem?: number,
   end?: number,
   endPx?: number,
   eStart?: number,
@@ -14,6 +15,7 @@ type usePinOptions = {
 export const usePin = ({
   el,
   start = 0,
+  startRem = 0,
   end = Infinity,
   endPx = 0,
   eStart = 0,
@@ -48,7 +50,7 @@ export const usePin = ({
     if (!on) return
     const screenSize = direction == "vertical" ? vh.value : vw.value
     const scroll = direction == "vertical" ? scrollY : scrollX
-    const dist = scroll - bounds.y + start * screenSize / 100 - bounds.height * eStart / 100
+    const dist = scroll - bounds.y + start * screenSize / 100 - bounds.height * eStart / 100 - startRem * 10 * scale.value
     let offset = N.Clamp(dist, 0, end * screenSize / 100 + endPx)
     if (offset > 0) hasEnter.value = true
 
@@ -65,15 +67,17 @@ export const usePin = ({
     on = true
   })
 
-  const { vh, vw } = useStoreView()
+  const { vh, vw, scale } = useStoreView()
   useRO(resize)
 
-  onMounted(() => {
+  onMounted(async () => {
+    await nextTick()
     computeBounds()
-  })
-  onFlow(() => {
+  });
+  onFlow(async () => {
+    await nextTick()
     computeBounds()
-  })
+  });
 
   watch(hasEnter, () => {
     onEnter()

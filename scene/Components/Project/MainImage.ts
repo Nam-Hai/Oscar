@@ -6,7 +6,6 @@ import { canvasInject } from '~/composables/useCanvas';
 import { useFlowProvider } from '~/waterflow/FlowProvider';
 
 const { vh, vw, scale, mouse } = useStoreView()
-const { firstScroll, landingHeaderScale } = useStoreProject()
 const { flowIsHijacked } = useStore()
 
 export const [provideMainImage, useCanvasMainImageProject] = canvasInject<MainImage>('canvas-main-image-project')
@@ -43,6 +42,7 @@ export class MainImage extends CanvasNode {
     on: boolean = false;
     tMap2: { value: Texture; };
     uLoaded2: { value: number; };
+    firstScroll: globalThis.Ref<boolean>;
 
     constructor(gl: any, props: { borderRadius?: number, el?: HTMLElement }) {
         super(gl)
@@ -118,7 +118,8 @@ export class MainImage extends CanvasNode {
         const { watch } = useCanvasReactivity(this)
 
         const tl = useTL()
-        watch(firstScroll, (b) => {
+        this.firstScroll = ref(false)
+        watch(this.firstScroll, (b) => {
             tl.reset()
             if (flowIsHijacked.value) return
             const from = this.uProgress.value

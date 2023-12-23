@@ -21,7 +21,8 @@ const elRef1 = ref()
 const elRef2 = ref()
 const elRef3 = ref()
 
-onFlow(() => {
+onFlow(async () => {
+    await nextTick()
     projectCanvas.addMedia(elRef1.value)
     projectCanvas.addMedia(elRef2.value)
     projectCanvas.addMedia(elRef3.value)

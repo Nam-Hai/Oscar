@@ -4,8 +4,8 @@ export type defaultTransitionProps = {
     wrapperRef: Ref<HTMLElement>
 }
 
-const DURATION = 1400
-export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, resolve, provider) => {
+export const DURATION = 1400
+export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, resolve, provider, options: { translate: boolean } = { translate: true }) => {
     const tl = useTL()
     const canvas = useCanvas()
 
@@ -31,7 +31,20 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
             canvas.nextPage!.node.setParent(scene)
             canvas.resolveOnChange()
         }
-    }).from({
+    })
+
+    if (options.translate) {
+        tl.from({
+            d: DURATION / 2,
+            e: 'i2',
+            el: props.wrapperRef.value,
+            p: {
+                y: [0, 20, 'rem']
+            }
+        })
+    }
+
+    tl.from({
         d: DURATION / 2,
         delay: DURATION / 2,
         e: 'o2',
@@ -68,6 +81,19 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
 
 export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef }, resolve,) => {
     N.O(wrapperRef.value, 0)
+    N.T(wrapperRef.value, 0, -10, 'rem')
+    useTL().from({
+        el: wrapperRef.value,
+        d: DURATION / 2,
+        delay: DURATION / 2,
+        e: "o2",
+        p: {
+            y: [-20, 0, 'rem']
+        },
+        cb: () => {
+            wrapperRef.value.style.transform = 'unset'
+        }
+    }).play()
     useDelay(DURATION / 2 + 50, () => {
         N.O(wrapperRef.value, 1)
         resolve()

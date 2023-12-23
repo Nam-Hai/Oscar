@@ -2,10 +2,10 @@
     <div ref="wrapperRef" class="archive__wrapper">
         <ArchiveMedia v-for="(data, index) in COPY" :index="index" :data="data" :key="`archive-media-${index}`" />
 
-        <div class="archive__number">12</div>
+        <div class="archive__number" ref="numberRef">12</div>
     </div>
 
-    <div class="archive__display-image">
+    <div class="archive__display-image" ref="displayRef">
         <img :src="copy.src" alt="archive__display-image" v-for="(copy, index) in COPY" :key="`archive-display-${index}`"
             :class="{ show: hoverIndex == index, horizontal: copy.imageDirection }">
     </div>
@@ -30,6 +30,15 @@ const { COPY, hoverCopy, isHover, hoverIndex } = useStoreArchive()
 useResetLenis()
 
 const wrapperRef = ref() as Ref<HTMLElement>
+const numberRef = ref()
+const displayRef = ref()
+
+usePin({
+    el: numberRef,
+    startRem: 2.4,
+    eStart: 100,
+    start: 100
+})
 
 usePageFlow({
     props: { wrapperRef },
@@ -62,8 +71,9 @@ const translate = computed(() => {
 }
 
 .archive__number {
-    position: fixed;
-    bottom: 2.4rem;
+    position: absolute;
+    top: calc(100vh - 2.4rem - 3.2rem);
+    // bottom: 2.4rem;
     right: 2.4rem;
     text-align: right;
     font-size: 3.2rem;

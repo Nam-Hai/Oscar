@@ -15,7 +15,8 @@ const projectCanvas = useProjectCanvas()
 const elRef1 = ref()
 const elRef2 = ref()
 
-onFlow(() => {
+onFlow(async () => {
+    await nextTick()
     projectCanvas.addMedia(elRef1.value)
     projectCanvas.addMedia(elRef2.value)
 })

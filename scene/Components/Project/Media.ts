@@ -192,7 +192,6 @@ export class Media extends CanvasNode {
         this.bounds.y = this.bounds.top + scrollY
 
         this.computeUniform()
-
     }
 
     computeUniform() {

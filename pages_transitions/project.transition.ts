@@ -1,5 +1,5 @@
 import type { FlowFunction } from "~/waterflow/composables/usePageFlow"
-import { defaultFlowIn, defaultFlowOut, type defaultTransitionProps } from "./default.transition"
+import { DURATION, defaultFlowIn, defaultFlowOut, type defaultTransitionProps } from "./default.transition"
 import { TransitionImage } from "~/scene/Components/Project/TransitionImage"
 import { useCanvasMainImageProject } from "~/scene/Components/Project/MainImage"
 import { TransitionMediaTest } from "~/scene/Components/Project/TransitionMediaTest"
@@ -112,10 +112,25 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
         resolve()
 
     })
-
-
 }
 
+export const defaultProjectFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef }, resolve,) => {
+    N.O(wrapperRef.value, 0)
+
+    const mainImage = useCanvasMainImageProject()
+    useTL().from({
+        d: DURATION / 2,
+        delay: DURATION / 2 + 100,
+        e: "o2",
+        update: ({ progE }) => {
+            mainImage.pixelScroll = N.Lerp(200, 0, progE)
+        }
+    }).play()
+    useDelay(DURATION / 2, () => {
+        N.O(wrapperRef.value, 1)
+        resolve()
+    })
+}
 export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: ProjectFlowProps, resolve, provider) => {
     const tl = useTL()
     const canvas = useCanvas()
@@ -125,7 +140,7 @@ export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Proj
     const from = provider.getRouteFrom()
     const oldId = from.params.id ? from.params.id[0] : 'viadomo-deco'
     if (!isPreviousId(oldId)) {
-        defaultFlowIn(props, resolve, provider)
+        defaultProjectFlowIn(props, resolve, provider)
         return
     }
 
@@ -241,11 +256,9 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
     const to = provider.getRouteTo()
     const newID = to.params.id ? to.params.id[0] : 'viadomo-deco'
     if (!isNextId(newID)) {
-        defaultFlowOut(props, resolve, provider)
+        defaultProjectFlowOut(props, resolve, provider)
         return
     }
-
-    const { vh, vw, scale, lenis } = useStoreView()
 
     const titleContainer = nextPageTitleRef.value
     const spans = N.getAll('.overflow-content', titleContainer)
@@ -294,14 +307,15 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
 
     tl.play()
 }
+
+export const defaultProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: ProjectFlowProps, resolve, provider) => {
+    defaultFlowOut(props, resolve, provider, { translate: false })
+}
 export const projectFlowOutMap = new Map([
-    ['default', defaultFlowOut],
+    ['default', defaultProjectFlowOut],
     ["project-page-id => project-page-id", projectProjectFlowOut]
 ])
 export const projectFlowInMap = new Map([
-    // ['default', defaultFlowIn],
     ["index => project-page-id", indexProjectFlowIn],
-    // ["project-page-id => project-page-id", projectProjectFlowIn]
-    // ["project-page-id => project-page-id", projectProjectFlowIn2]
     ["default", projectProjectFlowIn]
 ])

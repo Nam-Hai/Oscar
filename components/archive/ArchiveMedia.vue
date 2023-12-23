@@ -1,6 +1,6 @@
 <template>
     <div ref="wrapperRef" class="archive-media" :data-src="data.src" @mouseover="over()" @mouseleave="leave()"
-        :class="{ hide: hoverIndex != index && isHover }">
+        :class="{ hide: hoverIndex != index && isHover, 'flip-init': !flow}">
 
     </div>
 </template>
@@ -31,7 +31,7 @@ const store = useStore()
 
 const wrapperRef = ref() as Ref<HTMLElement>
 
-onFlow(() => {
+const flow = onFlow(() => {
     // projectCanvas.addMedia(wrapperRef.value)
 })
 </script>
@@ -47,6 +47,13 @@ onFlow(() => {
 
     position: relative;
     z-index: 2;
+
+    &.flip-init {
+        transform: translateY(-50vh);
+    }
+
+    transition: transform 1000ms $easeOutQuart;
+    transform: translateY(0);
 
     &.hide {
         opacity: 0;
