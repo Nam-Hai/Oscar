@@ -51,7 +51,9 @@ export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps,
         })
     }
     tl.from({
-        d: 1450,
+        // d: 1450,
+        // because of the flowIn duration
+        d: 2150,
         update: () => {
 
         },

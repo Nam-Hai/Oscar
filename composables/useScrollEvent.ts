@@ -1,4 +1,4 @@
-import { onFlow } from "~/waterflow/composables/onFlow";
+import { onFlow, onSwap } from "~/waterflow/composables/onFlow";
 
 type useScrollEventOptions = {
   el: Ref<HTMLElement>;
@@ -113,6 +113,10 @@ export const onEnter = ({
     await nextTick()
     computeBounds()
   });
+  onSwap(async () => {
+    await nextTick()
+    computeBounds()
+  })
 
   const flow = ref(false)
 

@@ -99,6 +99,7 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
             update: (e) => {
                 transitionNode.uProgress.value = N.Lerp(0.6, 0, e.progE)
             },
+            // 800 + 900 + 400 === 2100
             cb: () => {
                 node.setParent(parent)
                 transitionNode.destroy()
@@ -221,7 +222,8 @@ export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Proj
 
             }
         })
-    useDelay(400 + 800 + DELAY, () => {
+    useDelay(400 + 800, () => {
+        lenis.value.scrollTo(0, { immediate: true, force: true })
         resolve()
 
     })
@@ -263,6 +265,9 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
             titleContainer.style.transform = `translate(-50%, calc(${N.Lerp(0, 3, progE)}rem - 50%))`
         },
         d: 650,
+        cb: () => {
+            N.O(props.wrapperRef.value, 0)
+        },
         e: [.47, -0.43, .45, 1.24]
     }).from({
         update: ({ progE }) => {
@@ -283,7 +288,7 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
             e: 'o4'
         })
     }
-    useDelay(1450, () => {
+    useDelay(2150, () => {
         resolve()
     })
 
