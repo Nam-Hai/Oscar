@@ -32,7 +32,6 @@ export const usePin = ({
   })
 
   const resize = () => {
-
     N.T(el.value, 0, 0, 'px')
     computeBounds()
   }
@@ -68,16 +67,13 @@ export const usePin = ({
   })
 
   const { vh, vw, scale } = useStoreView()
-  useRO(resize)
 
-  onMounted(async () => {
-    await nextTick()
-    computeBounds()
-  });
   onFlow(async () => {
     await nextTick()
     computeBounds()
   });
+
+  useRO(resize)
 
   watch(hasEnter, () => {
     onEnter()

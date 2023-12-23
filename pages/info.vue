@@ -59,7 +59,6 @@ import { defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.trans
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 import { onFlow } from '~/waterflow/composables/onFlow';
-import { T } from '~/plugins/core/utils';
 
 const highlight = ref(false)
 const socialsRef = ref()

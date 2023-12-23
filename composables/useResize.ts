@@ -2,7 +2,8 @@ export function useRO(callback: (e: { vh: number, vw: number, scale: number, bre
   const { $ROR } = useNuxtApp()
   const ro = new $ROR(callback, triggerCb)
 
-  onMounted(() => {
+  onMounted(async () => {
+    await nextTick()
     ro.on()
   });
 
