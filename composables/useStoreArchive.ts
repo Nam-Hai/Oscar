@@ -1,5 +1,6 @@
 export type ArchiveCopyType = {
     src: string,
+    imageDirection?: "vertical" | "horizontal"
     text: {
         title: string,
         category: string,
@@ -10,7 +11,8 @@ export type ArchiveCopyType = {
 const ARCHIVE_COPY: ArchiveCopyType[] = [
     {
         // src: "/Assets/info/Oscar_Pico.png",
-        src: "",
+        src: "/Assets/Home1.png",
+        imageDirection: "horizontal",
         text: {
             title: "Title",
             category: "Category",
@@ -152,17 +154,19 @@ export const useStoreArchive = createStore(() => {
         }
     }
 
+    const hoverIndex: Ref<number | null> = ref(null)
     const hoverCopy: Ref<ArchiveCopyType> = ref(emptyCopy)
-    function setHoverCopy(copy: ArchiveCopyType | null) {
-        if (copy == null) {
+    function setHoverCopy(index: number | null) {
+        hoverIndex.value = index
+        if (index == null) {
             hoverCopy.value = emptyCopy
             isHover.value = false
             return
         }
-        hoverCopy.value = copy
+        hoverCopy.value = COPY[index]
         isHover.value = true
     }
     const isHover = ref(false)
 
-    return { COPY, hoverCopy, setHoverCopy, isHover }
+    return { COPY, hoverCopy, setHoverCopy, isHover, hoverIndex }
 })

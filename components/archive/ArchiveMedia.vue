@@ -1,5 +1,6 @@
 <template>
-    <div ref="wrapperRef" class="archive-media" :data-src="data.src" @mouseover="over()" @mouseleave="leave()">
+    <div ref="wrapperRef" class="archive-media" :data-src="data.src" @mouseover="over()" @mouseleave="leave()"
+        :class="{ hide: hoverIndex != index && isHover }">
 
     </div>
 </template>
@@ -7,12 +8,12 @@
 <script lang="ts" setup>
 import { onFlow } from '~/waterflow/composables/onFlow';
 
-const { data } = defineProps<{ data: ArchiveCopyType }>()
+const { data, index } = defineProps<{ data: ArchiveCopyType, index: number }>()
 
-const { setHoverCopy } = useStoreArchive()
+const { setHoverCopy, hoverIndex, isHover } = useStoreArchive()
 
 function over() {
-    setHoverCopy(data)
+    setHoverCopy(index)
 }
 function leave() {
     setHoverCopy(null)
@@ -44,9 +45,16 @@ onFlow(() => {
     background-color: $placeholder-grey;
     border-radius: 4px;
 
+    position: relative;
+    z-index: 2;
+
+    &.hide {
+        opacity: 0;
+    }
+
     &:hover {
         background-color: transparent;
-        border: 1px solid rgba(20, 20, 20, 0.20);
+        border: 2px solid rgba(20, 20, 20, 0.20);
     }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="menu__wrapper" :class="{ dark: router.currentRoute.value.name !== 'index' }">
+  <div class="menu__wrapper" :class="{ dark: router.currentRoute.value.name !== 'index', hide: archiveHover }">
     <div class="menu-grid">
       <span>
         <NuxtLink to="/" class="oscarpico">
@@ -64,10 +64,8 @@
 
 <script lang="ts" setup>
 import { vCursorHover } from '~/directives/cursorActive';
-const store = useStore();
-
 const router = useRouter()
-console.log(router.currentRoute.value.name);
+const { isHover: archiveHover } = useStoreArchive()
 </script>
 
 <style lang="scss" scoped>
@@ -86,6 +84,10 @@ console.log(router.currentRoute.value.name);
 
   &.dark {
     color: $black
+  }
+
+  &.hide {
+    opacity: 0;
   }
 
   // margin: 2rem $side-margin;
