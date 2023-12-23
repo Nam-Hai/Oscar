@@ -31,7 +31,8 @@
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
-import { indexFlowIn, indexFlowOutMap } from '~/pages_transitions/index.transition';
+import { indexFlowOutMap } from '~/pages_transitions/index.transition';
+import { defaultFlowIn } from '~/pages_transitions/default.transition';
 // import { indexFlowIn} from "~/pages"
 
 let first = false
@@ -135,7 +136,7 @@ usePageFlow({
         titleRefs: titleRefs,
     },
     flowOutMap: indexFlowOutMap,
-    flowInCrossfade: indexFlowIn,
+    flowInCrossfade: defaultFlowIn,
     enableCrossfade: 'TOP'
 })
 

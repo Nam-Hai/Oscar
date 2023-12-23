@@ -67,13 +67,6 @@ export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps,
 
 }
 
-export const indexFlowIn: FlowFunction<IndexProps> = (props, resolve,) => {
-    useDelay(500, () => {
-        resolve()
-    })
-}
-
-
 export const indexFlowOutMap = new Map([
     ['default', defaultFlowOut],
     ['index => project-page-id', indexProjectFlowOut]
