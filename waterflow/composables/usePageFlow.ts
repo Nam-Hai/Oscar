@@ -46,13 +46,14 @@ export function usePageFlow<T>({
 
   const router = useRouter()
   const routerGuard = router.beforeEach(async (to, from, next) => {
+    provider.scrollFlow.stop()
     await transitionExecption(provider, to, from)
 
-    provider.onChangeRoute(to)
     if (disablePointerEvent) {
       N.Class.add(document.body, 'flowIsHijacked')
     }
-    provider.scrollFlow.stop()
+
+    provider.onChangeRoute(to)
 
     let flowInPromise = crossfade ? provider.hijackFlow() : null
     // mount next page
@@ -111,7 +112,7 @@ async function transitionExecption(provider: FlowProvider, to: RouteLocationNorm
     await new Promise<void>(res => {
       const lenis = useStoreView().lenis.value
       if (lenis.animatedScroll != lenis.dimensions.limit.y) {
-        lenis.scrollTo('bottom', { duration: 0.5 })
+        lenis.scrollTo('bottom', { duration: 0.5, force: true })
         useDelay(500, () => {
           res()
         })

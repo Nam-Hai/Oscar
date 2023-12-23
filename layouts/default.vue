@@ -40,7 +40,7 @@ flowProvider.registerScrollInterface({
     lenis.value.stop();
   },
   scrollToTop: () => {
-    lenis.value.scrollTo("top", { immediate: true });
+    lenis.value.scrollTo("top", { immediate: true, force: true });
   },
 });
 // flowProvider.scrollFlow.scrollToTop = () => lenis.value.scrollTo("top", { immediate: true })

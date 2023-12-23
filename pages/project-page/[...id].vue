@@ -26,7 +26,6 @@ const COPY = copy[id]
 useResetLenis()
 
 firstScroll.value = false
-console.log('new page');
 
 useLenisScroll((e) => {
     const lenis = useLenis()

@@ -69,7 +69,6 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
 export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef }, resolve,) => {
     N.O(wrapperRef.value, 0)
     useDelay(DURATION / 2 + 50, () => {
-        console.log('test fllw in');
         N.O(wrapperRef.value, 1)
         resolve()
     })

@@ -56,6 +56,7 @@ export const useStoreView = createStore(() => {
       // duration,
       // lerp
     });
+    lenis.value.stop()
     // lenis.value.normalizeWheel
   }
 

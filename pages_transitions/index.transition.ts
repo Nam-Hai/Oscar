@@ -7,8 +7,6 @@ export type IndexProps = defaultTransitionProps & {
 }
 
 export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps, resolve, provider) => {
-
-    console.log('index project flow out');
     const tl = useTL()
     const canvas = useCanvas()
 

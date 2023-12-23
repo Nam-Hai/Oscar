@@ -102,7 +102,6 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
             cb: () => {
                 node.setParent(parent)
                 transitionNode.destroy()
-
             }
         })
         .from({
