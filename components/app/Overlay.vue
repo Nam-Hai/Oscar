@@ -30,10 +30,10 @@ flowProvider.addProps("overlay", wrapperRef)
     color: $placeholder-grey;
 
     svg {
-        transform: translateY(-100vh);
+        transform: translateY(-100%);
         // position: relative;
         // display: block;
-        height: 100vh;
+        height: 140vh;
         width: 100vw;
         // transform: scaleY(2);
     }

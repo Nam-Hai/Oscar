@@ -45,12 +45,13 @@ useLenisScroll((e) => {
 })
 
 usePageFlow({
-    props: {wrapperRef},
+    props: { wrapperRef },
     // flowOut: defaultFlowOut,
     flowOutMap: projectFlowOutMap,
     flowInCrossfadeMap: projectFlowInMap,
     enableCrossfade: 'TOP'
 })
+
 
 </script>
 

@@ -119,15 +119,6 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
 
 }
 
-const defaultFlowInProject: FlowFunction<ProjectFlowProps> = ({wrapperRef}, resolve, provider) => {
-    N.O(wrapperRef.value, 0)
-    useDelay(600, () => {
-        console.log('flow in resolve');
-        N.O(wrapperRef.value, 1)
-        resolve()
-    })
-}
-
 export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: ProjectFlowProps, resolve, provider) => {
     const tl = useTL()
     const canvas = useCanvas()
@@ -137,7 +128,7 @@ export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Proj
     const from = provider.getRouteFrom()
     const oldId = from.params.id ? from.params.id[0] : 'viadomo-deco'
     if (!isPreviousId(oldId)) {
-        defaultFlowInProject(props, resolve, provider)
+        defaultFlowIn(props, resolve, provider)
         return
     }
 

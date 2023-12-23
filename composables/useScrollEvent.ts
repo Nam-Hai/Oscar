@@ -103,7 +103,6 @@ export const onEnter = ({
 
   const computeBounds = () => {
     bounds = el.value.getBoundingClientRect();
-    console.log(bounds);
     boundY = bounds.top + scrollY
   };
 

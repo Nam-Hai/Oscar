@@ -4,6 +4,7 @@ export type defaultTransitionProps = {
     wrapperRef: Ref<HTMLElement>
 }
 
+const DURATION = 1400
 export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, resolve, provider) => {
     const tl = useTL()
     const canvas = useCanvas()
@@ -14,16 +15,16 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
     // 
     canvas.onChange(provider.getRouteTo())
     canvas.nextPage!.node.setParent(null)
-    const svg = N.get("path", overlay.value)
+    const path = N.get("path", overlay.value)
 
     const pFrom = "M 0 0 C 6 0 8 0 14 0 L 14 7 C 8 7 6 7 0 7 L 0 0"
     const pTo = "M 0 0 C 6 1 8 1 14 0 L 14 7 C 8 8 6 8 0 7 L 0 0"
 
     tl.from({
-        d: 500,
+        d: DURATION / 2,
         e: 'i2',
         update: ({ progE }) => {
-            overlay.value.style.transform = `scale(1.2) translateY(${progE * 100 - 100}%)`
+            overlay.value.style.transform = `translateY(${N.Lerp(-100, -19, progE)}%)`
         },
         cb: () => {
             resolve()
@@ -31,18 +32,19 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
             canvas.resolveOnChange()
         }
     }).from({
-        d: 500,
-        delay: 500,
+        d: DURATION / 2,
+        delay: DURATION / 2,
         e: 'o2',
         update: ({ progE }) => {
-            overlay.value.style.transform = `scale(1.2) translateY(${progE * 100}%)`
+            // overlay.value.style.transform = `translateY(${progE * 100}%)`
+            overlay.value.style.transform = `translateY(${N.Lerp(-19, 75, progE)}%)`
         },
         cb: () => {
-            overlay.value.style.transform = `translateY(-100vh )`
+            overlay.value.style.transform = `translateY(-100%)`
         }
     }).from({
-        d: 500,
-        el: svg,
+        d: DURATION / 2,
+        el: path,
         e: 'o1',
         svg: {
             type: 'd',
@@ -50,9 +52,9 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
             end: pTo
         }
     }).from({
-        d: 500,
-        el: svg,
-        delay: 550,
+        d: DURATION / 2,
+        el: path,
+        delay: DURATION / 2,
         e: 'o1',
         svg: {
             type: 'd',
@@ -60,15 +62,14 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props: {}, 
             end: pFrom
         }
     })
-    useDelay(100, () => {
-        tl.play()
-    })
+    tl.play()
 
 }
 
 export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef }, resolve,) => {
     N.O(wrapperRef.value, 0)
-    useDelay(600, () => {
+    useDelay(DURATION / 2 + 50, () => {
+        console.log('test fllw in');
         N.O(wrapperRef.value, 1)
         resolve()
     })
