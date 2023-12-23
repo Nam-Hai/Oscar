@@ -104,16 +104,13 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
                 transitionNode.destroy()
             }
         })
-        .from({
-            d: DELAY + 800 + 400,
-            update({ prog, progE }) {
-
-            },
-            cb: () => {
-                resolve()
-            }
-        })
     tl.play()
+
+    // delay for onFlow and the text to appear
+    useDelay(1200, () => {
+        resolve()
+
+    })
 
 
 }

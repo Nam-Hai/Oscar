@@ -82,7 +82,7 @@ console.log(router.currentRoute.value.name);
   z-index: $z-menu;
 
   color: $white;
-  transition: color 300ms;
+  transition: color 500ms;
 
   &.dark {
     color: $black
