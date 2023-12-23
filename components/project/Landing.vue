@@ -34,6 +34,7 @@
 <script lang="ts" setup>
 import { useCanvasMainImageProject } from '~/scene/Components/Project/MainImage';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
+import { secondScrollEase } from "~/scene/Components/Project/MainImage"
 
 const { id } = defineProps<{ id: string }>()
 
@@ -57,7 +58,8 @@ const titleWrapperRef = ref() as Ref<HTMLElement>
 useLenisScroll((e) => {
     const size = 800
     const s = N.Clamp(e.animatedScroll, 0, size);
-    const scale = N.Lerp(1, 0.6, s / size)
+
+    const scale = N.Lerp(1, 0.6, secondScrollEase(s / size))
     landingHeaderScale.value = scale
     titleWrapperRef.value.style.transform = `translateY(${s}px) scale(${scale}) `
     N.T(lowerDesRef.value, 0, e.animatedScroll, 'px');

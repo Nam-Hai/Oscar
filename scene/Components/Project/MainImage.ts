@@ -11,6 +11,8 @@ const { flowIsHijacked } = useStore()
 
 export const [provideMainImage, useCanvasMainImageProject] = canvasInject<MainImage>('canvas-main-image-project')
 
+export const secondScrollEase = N.Ease.io2
+
 const endBounds = computed(() => {
     return {
         height: vh.value - 24 * 2 * scale.value,
@@ -363,23 +365,24 @@ export class MainImage extends CanvasNode {
             const y = vh.value / 2 - this.uSizePixel.value.y / 2 - N.Lerp(this.bounds[0].y, vh.value - 24 * scale.value - this.bounds[1].height, this.uProgress.value)
             this.pixelPosition.set(x, y)
         } else {
+            const t = secondScrollEase(this.uProgress.value - 1)
             this.uSizePixel.value.set(
-                N.Lerp(this.uniformFromTo[1].size.x, this.uniformFromTo[2].size.x, this.uProgress.value - 1),
-                N.Lerp(this.uniformFromTo[1].size.y, this.uniformFromTo[2].size.y, this.uProgress.value - 1),
+                N.Lerp(this.uniformFromTo[1].size.x, this.uniformFromTo[2].size.x, t),
+                N.Lerp(this.uniformFromTo[1].size.y, this.uniformFromTo[2].size.y, t),
             )
             this.uScaleOffset.value.set(
-                N.Lerp(this.uniformFromTo[1].scale.x, this.uniformFromTo[2].scale.x, this.uProgress.value - 1),
-                N.Lerp(this.uniformFromTo[1].scale.y, this.uniformFromTo[2].scale.y, this.uProgress.value - 1),
+                N.Lerp(this.uniformFromTo[1].scale.x, this.uniformFromTo[2].scale.x, t),
+                N.Lerp(this.uniformFromTo[1].scale.y, this.uniformFromTo[2].scale.y, t),
             )
             this.uTranslateOffset.value.set(
-                N.Lerp(this.uniformFromTo[1].translate.x, this.uniformFromTo[2].translate.x, this.uProgress.value - 1),
-                N.Lerp(this.uniformFromTo[1].translate.y, this.uniformFromTo[2].translate.y, this.uProgress.value - 1),
+                N.Lerp(this.uniformFromTo[1].translate.x, this.uniformFromTo[2].translate.x, t),
+                N.Lerp(this.uniformFromTo[1].translate.y, this.uniformFromTo[2].translate.y, t),
             )
 
             if (!this.bounds) return
-            const x = N.Lerp(this.bounds[1].x, 24 * scale.value, this.uProgress.value - 1) + this.uSizePixel.value.x / 2 - vw.value / 2
+            const x = N.Lerp(this.bounds[1].x, 24 * scale.value, t) + this.uSizePixel.value.x / 2 - vw.value / 2
 
-            const y = vh.value / 2 - this.uSizePixel.value.y / 2 - N.Lerp(vh.value - 24 * scale.value - this.bounds[1].height, (vh.value - this.bounds[1].height) * .6 + 12 * scale.value, this.uProgress.value - 1)
+            const y = vh.value / 2 - this.uSizePixel.value.y / 2 - N.Lerp(vh.value - 24 * scale.value - this.bounds[1].height, (vh.value - this.bounds[1].height) * .6 + 12 * scale.value, t)
             // const y = vh.value / 2 - this.uSizePixel.value.y / 2 - (vh.value - 24 * scale.value - this.bounds[1].height) - this.pixelScroll
             this.pixelPosition.set(x, y)
         }
