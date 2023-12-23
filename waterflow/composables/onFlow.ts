@@ -22,6 +22,26 @@ export function onFlow(mountedCallback: () => void) {
   return flow
 }
 
+export function onSwap(callback: () => void) {
+  const flowProvider = useFlowProvider()
+  const flow = ref(false)
+
+  watch(flowProvider.flowSwapping, (swapping) => {
+    if (!swapping && !flow.value) {
+      callback()
+      flow.value = true
+    }
+  })
+  onMounted(() => {
+    if (!flowProvider.flowSwapping.value && !flow.value) {
+      callback()
+      flow.value = true
+    }
+  })
+
+  return flow
+}
+
 
 export function onLeave(callback: () => void) {
   const { flowIsHijacked } = useFlowProvider()

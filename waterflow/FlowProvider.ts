@@ -16,6 +16,7 @@ export class FlowProvider {
   private flowHijackResolver?: () => void;
   private routeTo!: RouteLocationNormalized;
   private routeFrom!: RouteLocationNormalized;
+  flowSwapping = ref(false)
 
   // bufferRouteState?: ShallowRef;
   bufferTopZState?: ShallowRef;
@@ -83,6 +84,8 @@ export class FlowProvider {
     this.bufferPageRef = temp
     this.bufferPageRef.value = undefined
     this.bufferTopZState && (this.bufferTopZState.value = false)
+
+    this.flowSwapping.value = false
   }
 
   public onChangeRoute(routeTo: RouteLocationNormalized) {
@@ -120,6 +123,7 @@ export class FlowProvider {
   }
 
   public hijackFlow() {
+    this.flowSwapping.value = true
     this.flowIsHijacked.value = true
     this.flowHijacked = new Promise<void>((resolve) => {
       this.flowHijackResolver = resolve;

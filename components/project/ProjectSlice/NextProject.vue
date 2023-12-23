@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
-import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
+import { onFlow, onLeave, onSwap } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 
 const { } = defineProps<{ data: {} }>()
@@ -49,9 +49,7 @@ onMounted(() => {
 })
 
 const projectCanvas = useProjectCanvas()
-onFlow(async () => {
-    await nextTick()
-    console.log('onflow next');
+onSwap(async () => {
     projectCanvas.addNextPageMedia(wrapperRef.value)
 })
 
