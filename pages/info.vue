@@ -1,12 +1,12 @@
 <template>
     <div ref="wrapperRef" class="info__wrapper">
-
         <div class="social__wrapper" ref="socialsRef">
             <NuxtLink to="#?a=email" v-cursor-hover>Email</NuxtLink>
             <NuxtLink to="#?a=linkedin" v-cursor-hover>Linkedin</NuxtLink>
             <NuxtLink to="#?a=twitter" v-cursor-hover>Twitter</NuxtLink>
             <NuxtLink to="#?a=insta" v-cursor-hover>Instagram</NuxtLink>
         </div>
+
 
         <div class="bio__wrapper" :class="{ highlight, animationDone }">
             <p>
@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
+import { DURATION, defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 import { onFlow } from '~/waterflow/composables/onFlow';
@@ -63,10 +63,9 @@ import { onFlow } from '~/waterflow/composables/onFlow';
 const highlight = ref(false)
 const socialsRef = ref()
 
-usePin({
+const { computeBounds, resize } = usePin({
     el: socialsRef,
     start: 100,
-    startRem: 2.4,
     eStart: 100,
 })
 
@@ -122,6 +121,7 @@ const flow = onFlow(() => {
     useDelay(spans.length * 20 + 200, () => {
         animationDone.value = true
     })
+    useDelay(DURATION / 2 + 50, resize)
     tl.play()
 
     const spansh = N.getAll(".bio__wrapper p .highlight", wrapperRef.value)
@@ -159,18 +159,20 @@ usePageFlow({
 @use "@/styles/shared.scss" as *;
 
 .info__wrapper {
-    height: 100vh;
     width: 100vw;
     color: $black;
     padding-left: 30rem;
     padding-right: 1rem;
     position: relative;
+    padding-bottom: 2.4rem;
 }
 
 .social__wrapper {
     position: absolute;
-    bottom: 2.4rem;
-    // top: calc(100vh - 2.4rem - 1.3rem);
+    // position: fixed;
+    height: 100vh;
+    padding-bottom: 2.4rem;
+    top: 0;
     left: 2.4rem;
     font-size: 1.3rem;
     font-weight: 500;
@@ -179,6 +181,7 @@ usePageFlow({
 
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     row-gap: .8rem;
 
     z-index: 20;
@@ -253,11 +256,11 @@ img {
 .list__wrapper {
     // position: absolute;
     position: relative;
-    bottom: 5rem;
+    // bottom: 5rem;
     left: 0;
     width: 100%;
 
-    height: 2.6rem;
+    // height: 2.6rem;
 
     .list__item {
         position: absolute;
@@ -275,6 +278,7 @@ img {
 
 
         &:first-child {
+            position: relative;
             // left: 30rem;
         }
 

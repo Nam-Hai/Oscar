@@ -94,7 +94,7 @@ export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef
             wrapperRef.value.style.transform = 'unset'
         }
     }).play()
-    useDelay(DURATION / 2 + 50, () => {
+    useDelay(DURATION / 2, () => {
         N.O(wrapperRef.value, 1)
         resolve()
     })

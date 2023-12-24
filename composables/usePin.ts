@@ -79,5 +79,5 @@ export const usePin = ({
     onEnter()
   })
 
-  return { computeBounds, raf, progress }
+  return { computeBounds, resize, raf, progress }
 }
