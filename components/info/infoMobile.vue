@@ -2,7 +2,9 @@
     <div ref="wrapperRef" class="info__wrapper">
         <div class="bio__wrapper">
             <p>
-                Oscar Pico.<br>
+                Oscar Pico.
+            </p>
+            <p>
                 A digital designer with over 3 years of experience, specialized in visual and interface design.
                 Also, a lover and enthusiast of art direction and all existing forms of design, such as editorial or
                 fashion/clothing design.
@@ -72,6 +74,10 @@ const wrapperRef = ref() as Ref<HTMLElement>
     line-height: 4.4rem;
     letter-spacing: -0.02rem;
     text-indent: 5rem;
+
+    p:nth-child(2) {
+        text-indent: 0rem;
+    }
 }
 
 img {
@@ -118,7 +124,7 @@ img {
 
     .last-row {
         position: relative;
-        margin-left: calc(50% - 3rem);
+        margin-left: calc(50% - 5rem);
         margin-top: 5.6rem;
         display: flex;
         justify-content: space-between;
