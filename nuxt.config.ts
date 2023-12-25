@@ -19,7 +19,8 @@ export default defineNuxtConfig({
             "~/components/app/",
             "~/components/homepage/",
             "~/components/project/",
-            "~/components/archive/"
+            "~/components/archive/",
+            "~/components/info/"
         ],
     },
     imports: {
