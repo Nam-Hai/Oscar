@@ -239,6 +239,7 @@ const wrapperRef = ref() as Ref<HTMLElement>
     position: absolute;
     // position: fixed;
     // height: calc(100vh - 2.4rem);
+    height: 100vh;
     right: 2.4rem;
     top: 0;
     pointer-events: none;
