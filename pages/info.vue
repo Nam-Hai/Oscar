@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main ref="wrapperRef">
         <InfoDesktop v-if="breakpoint == 'desktop'" />
         <InfoMobile v-else />
     </main>
