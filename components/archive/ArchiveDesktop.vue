@@ -2,7 +2,7 @@
     <div ref="wrapperRef" class="archive__wrapper">
         <ArchiveMedia v-for="(data, index) in COPY" :index="index" :data="data" :key="`archive-media-${index}`" />
 
-        <div class="archive__number" ref="numberRef">12</div>
+        <div class="archive__number" ref="numberRef">{{ N.ZL(COPY.length) }}</div>
     </div>
 
     <div class="archive__display-image" ref="displayRef">

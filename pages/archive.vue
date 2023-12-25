@@ -1,6 +1,7 @@
 <template>
     <main ref="wrapperRef">
-        <ArchiveDesktop />
+        <ArchiveDesktop v-if="breakpoint == 'desktop'" />
+        <ArchiveMobile v-else />
     </main>
 </template>
 
@@ -8,6 +9,7 @@
 import { defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 
+const { breakpoint } = useStoreView()
 
 useResetLenis()
 
