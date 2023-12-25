@@ -1,6 +1,7 @@
 <template>
     <main>
-        <InfoDesktop v-if="breakpoint == 'desktop'"/>
+        <InfoDesktop v-if="breakpoint == 'desktop'" />
+        <InfoMobile v-else />
     </main>
 </template>
 
