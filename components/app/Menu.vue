@@ -94,11 +94,29 @@ const { isHover: archiveHover } = useStoreArchive()
   .menu-grid {
 
     margin-top: 2rem;
+
+    @include breakpoint(mobile) {
+      margin-top: 1.6rem;
+      margin-left: 1.6rem;
+      margin-right: 1.6rem;
+      justify-content: unset;
+    }
+
     @include mainGrid();
 
     >span {
       text-transform: capitalize;
       // color: $white;
+
+      @include breakpoint(mobile) {
+        font-size: 1.3rem !important;
+
+        &:first-child {
+          svg {
+            height: 1.0rem !important;
+          }
+        }
+      }
 
       @include breakpoint-width-max(1000px) {
         font-size: 2rem;
@@ -154,17 +172,29 @@ const { isHover: archiveHover } = useStoreArchive()
           left: 0;
           top: 0;
           height: 0.9rem;
+
+          @include breakpoint(mobile) {
+            height: 0.95rem !important;
+          }
         }
 
         grid-column: 1 / 2;
       }
 
       &:nth-child(2) {
+        @include breakpoint(mobile) {
+          grid-column: 3 / 4;
+        }
+
         grid-column: 10 / 11;
         text-align: end;
       }
 
       &:nth-child(3) {
+        @include breakpoint(mobile) {
+          grid-column: 4 / 5;
+        }
+
         grid-column: 12 / 13;
         text-align: end;
       }
