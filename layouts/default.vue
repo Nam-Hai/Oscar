@@ -2,7 +2,7 @@
   <div class="app__wrapper">
     <WebGLScene />
     <Menu />
-    <Cursor />
+    <Cursor v-if="!isMobile"/>
     <!-- <Stat /> -->
     <Overlay />
     <div class="page__wrapper">
@@ -23,6 +23,7 @@ import BufferPage from "~/waterflow/components/BufferPage.vue";
 const flowProvider = useFlowProvider();
 
 const lenis = useStoreView().lenis;
+const { isMobile } = useStore()
 
 useRaf(
   (e) => {
