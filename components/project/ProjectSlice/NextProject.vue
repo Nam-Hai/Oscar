@@ -3,7 +3,7 @@
         <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc">
             <div class="next-project-container">
                 <NuxtLink :to="data.link">
-                    <h1 v-cursor-hover ref="titleRef">
+                    <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
                         <span v-for="(word, index) in words" class="overflow">
                             <span v-for="char in word.split('')" class="overflow-content">
                                 {{ char }}
@@ -28,7 +28,8 @@
                 </div>
             </div>
 
-            <div class="next" :class="{ isTouchable: isMobile }">Next Project</div>
+            <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
+                :style="{ transform: translate }">Next Project</div>
         </div>
     </Teleport>
 </template>
@@ -42,8 +43,13 @@ const { } = defineProps<{ data: {} }>()
 const { currentIndex, length, nextPageTitleRef } = useStoreProject()
 const nextIndex = (currentIndex.value + 1) % length
 const dataSrc = Object.keys(useManifest().textures.home)[nextIndex]
+
+const { pickerDark } = useCursorStore()
 const { homeStore } = useStoreStepper()
 const { isMobile } = useStore()
+const { mouse } = useStoreView()
+const hover = ref(false)
+
 const data = homeStore[nextIndex]
 const words = data.title.split(" ")
 // const emits = defineEmits([])
@@ -61,6 +67,10 @@ onMounted(() => {
 const projectCanvas = useProjectCanvas()
 onSwap(async () => {
     projectCanvas.addNextPageMedia(wrapperRef.value)
+})
+
+const translate = computed(() => {
+    return `translate(calc(${mouse.value.x}px - 50%), ${mouse.value.y}px)`
 })
 
 onEnter({
@@ -131,6 +141,12 @@ onLeave(() => {
     width: 100vw;
     top: 0;
     color: $white;
+
+    &:hover {
+        .next {
+            opacity: 1;
+        }
+    }
 }
 
 .next-project-container {
@@ -212,23 +228,41 @@ h1 {
     }
 
 
+    transition: color 350ms;
+
     &:hover {
-        transition: color 500ms;
         color: $yellow;
     }
 
 }
 
 .next {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: 3rem;
+
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 300ms, color 350ms;
+
+    &.dark {
+        color: black
+    }
+
+    &.yellow {
+        color: $yellow !important;
+    }
 
     &.isTouchable {
         position: absolute;
         bottom: 3.2rem;
+        top: unset;
         color: $yellow;
         font-size: 1.3rem;
         font-weight: 500;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-50%) !important;
     }
 }
 </style>
