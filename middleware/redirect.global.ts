@@ -5,7 +5,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
     // return navigateTo('/')
   }
 
-  return
   const d = from.query.d
   if (d) {
     isMobile.value = d == 'true'
@@ -16,5 +15,5 @@ export default defineNuxtRouteMiddleware((to, from) => {
   // history.pushState(isMobile, '', '')
   // navigateTo({ path: to.path, query: {} })
   to.query = {}
-  navigateTo(to)
+  return navigateTo(to)
 })
