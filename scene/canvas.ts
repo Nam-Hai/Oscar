@@ -32,6 +32,7 @@ export default class Canvas {
     dom: HTMLCanvasElement;
 
     constructor() {
+        console.log("canvas INit");
         this.renderer = new Renderer({
             alpha: true,
             antialias: true,

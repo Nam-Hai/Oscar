@@ -28,35 +28,42 @@ type TabArg = {
     stop: () => void,
     start: (delta: number) => void
 }
-const Tab = new class {
-    arr: TabArg[]
-    pause: number
-    constructor() {
-        this.arr = []
-        this.pause = 0
-        N.BM(this, ["v"])
 
-        document.addEventListener("visibilitychange", this.v)
-    }
-    add(arg: { stop: () => void, start: (delta: number) => void }) {
-        this.arr.push(arg)
-    }
 
-    // calcule le temps entre le moment ou pas visible a visible, puis actionne, tOff() ou tOn(r)
-    v() {
-        var t = performance.now();
-        let dT: number = 0, s: 'stop' | 'start';
-        // s = document.hidden ? (this.pause = t, "stop") : (r = t - this.pause, "start");
+let Tab = {
+    add: (arg: { stop: () => void, start: (delta: number) => void }) => { }
+}
+if (process.client) {
+    Tab = new class {
+        arr: TabArg[]
+        pause: number
+        constructor() {
+            this.arr = []
+            this.pause = 0
+            N.BM(this, ["v"])
 
-        if (document.hidden) {
-            this.pause = t
-            s = 'stop'
-        } else {
-            dT = t - this.pause
-            s = 'start'
+            document.addEventListener("visibilitychange", this.v)
         }
-        for (let index = this.arr.length - 1; 0 <= index; --index) {
-            this.arr[index][s](dT)
+        add(arg: { stop: () => void, start: (delta: number) => void }) {
+            this.arr.push(arg)
+        }
+
+        // calcule le temps entre le moment ou pas visible a visible, puis actionne, tOff() ou tOn(r)
+        v() {
+            var t = performance.now();
+            let dT: number = 0, s: 'stop' | 'start';
+            // s = document.hidden ? (this.pause = t, "stop") : (r = t - this.pause, "start");
+
+            if (document.hidden) {
+                this.pause = t
+                s = 'stop'
+            } else {
+                dT = t - this.pause
+                s = 'start'
+            }
+            for (let index = this.arr.length - 1; 0 <= index; --index) {
+                this.arr[index][s](dT)
+            }
         }
     }
 }
@@ -82,78 +89,84 @@ function binarySearch(arr: { id: number }[], n: number): number {
     return -1
 }
 
-const Raf = new class {
-    arr: [rafItem[], rafItem[], rafItem[], rafItem[]]
-    on: boolean;
-    now: number = 0;
-    constructor() {
-        // 4 stack for low, medium, high priority
-        this.arr = [[], [], [], []]
+let Raf = {
+    add: (rafItem: rafItem, priority: RafPriority) => { },
+    remove: (id: number, priority: RafPriority) => { }
+}
+if (process.client) {
+    Raf = new class {
+        arr: [rafItem[], rafItem[], rafItem[], rafItem[]]
+        on: boolean;
+        now: number = 0;
+        constructor() {
+            // 4 stack for low, medium, high priority
+            this.arr = [[], [], [], []]
 
 
-        this.on = !0
-        BM(this, ['update', 'stop', 'resume'])
-        Tab.add({ stop: this.stop, start: this.resume })
-        this.raf()
-    }
-
-    stop() {
-        this.on = false
-    }
-    resume(delta: number) {
-        for (const arr of this.arr) {
-            for (const el of arr) {
-                el.startTime! += delta
-            }
-        }
-        this.now += delta
-        this.on = true
-    }
-
-    add(rafItem: rafItem, priority: RafPriority) {
-        this.arr[priority].push(rafItem)
-        if (this.arr[2].length > 10000) console.warn("Main Raf congested", this.arr.length)
-    }
-
-    // take advantage to the fact we sorted the rafscallbacks
-    remove(id: number, priority: RafPriority): void {
-        const i = binarySearch(this.arr[priority], id)
-
-        if (i == -1) {
-            console.warn("Raf remove jammed")
-            return
-        }
-        this.arr[priority].splice(i, 1)
-    }
-
-    update(t: number) {
-        let d = t - this.now
-        d = d > 40 ? 40 : d;
-        this.now = t
-        const _arr = this.arr
-
-        if (Math.floor(1 / d * 1000) < 20) {
-            console.debug("frame droped")
+            this.on = !0
+            BM(this, ['update', 'stop', 'resume'])
+            Tab.add({ stop: this.stop, start: this.resume })
+            this.raf()
         }
 
-        if (this.on) {
-            for (const arr of _arr) {
-                for (let index = arr.length - 1; index >= 0; index--) {
-                    const el = arr[index]
-                    if (!el.startTime) {
-                        el.startTime = t
-                    }
-                    const s = t - el.startTime
-                    el.cb({ elapsed: s, delta: d })
+        stop() {
+            this.on = false
+        }
+        resume(delta: number) {
+            for (const arr of this.arr) {
+                for (const el of arr) {
+                    el.startTime! += delta
                 }
             }
+            this.now += delta
+            this.on = true
         }
 
-        this.raf()
-    }
+        add(rafItem: rafItem, priority: RafPriority) {
+            this.arr[priority].push(rafItem)
+            if (this.arr[2].length > 10000) console.warn("Main Raf congested", this.arr.length)
+        }
 
-    raf() {
-        requestAnimationFrame(this.update)
+        // take advantage to the fact we sorted the rafscallbacks
+        remove(id: number, priority: RafPriority): void {
+            const i = binarySearch(this.arr[priority], id)
+
+            if (i == -1) {
+                console.warn("Raf remove jammed")
+                return
+            }
+            this.arr[priority].splice(i, 1)
+        }
+
+        update(t: number) {
+            let d = t - this.now
+            d = d > 40 ? 40 : d;
+            this.now = t
+            const _arr = this.arr
+
+            if (Math.floor(1 / d * 1000) < 20) {
+                console.debug("frame droped")
+            }
+
+            if (this.on) {
+                for (const arr of _arr) {
+                    for (let index = arr.length - 1; index >= 0; index--) {
+                        const el = arr[index]
+                        if (!el.startTime) {
+                            el.startTime = t
+                        }
+                        const s = t - el.startTime
+                        el.cb({ elapsed: s, delta: d })
+                    }
+                }
+            }
+
+            this.raf()
+        }
+
+        raf() {
+            requestAnimationFrame(this.update)
+        }
     }
 }
 

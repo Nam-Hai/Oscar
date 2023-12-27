@@ -1,17 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 export default defineNuxtConfig({
-    ssr: false,
+    ssr: true,
 
     nitro: {
         preset: "vercel",
     },
     css: ["@/styles/core.scss", "@/styles/app/index.scss"],
-    modules: ['@pinia/nuxt'],
-    pinia: {
-        storesDirs: ['./stores/**'],
-    },
-
     components: {
         global: true,
         dirs: [
@@ -47,7 +42,7 @@ export default defineNuxtConfig({
                     content: "#000000",
                 },
             ],
-            title: "Nam-Hai Boilerplate",
+            title: "Oscar",
             link: [
                 {
                     rel: "preload",
