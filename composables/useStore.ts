@@ -64,6 +64,10 @@ export { useCursorStore }
 
 
 export const usePreloaderStore = createStore(() => {
+  // const preloaderBound = {
+  //   w: 268,
+  //   h: 240
+  // }
   let preloaderBounds: Ref<DOMRect>;
   function setBounds(el: Ref<HTMLElement>) {
     preloaderBounds = useBounds(el)
@@ -73,3 +77,13 @@ export const usePreloaderStore = createStore(() => {
   }
   return { getBounds, setBounds }
 })
+// export const useCounterStore = defineStore('counter', () => {
+//   const count = ref(0)
+//   const name = ref('Eduardo')
+//   const doubleCount = computed(() => count.value * 2)
+//   function increment() {
+//     count.value++
+//   }
+
+//   return { count, name, doubleCount, increment }
+// })

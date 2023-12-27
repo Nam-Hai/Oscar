@@ -1,12 +1,9 @@
-import type { ROR } from "~/plugins/core/resize";
-
 export function useRO(callback: (e: { vh: number, vw: number, scale: number, breakpoint: string }) => void, triggerCb?: () => void) {
   const { $ROR } = useNuxtApp()
+  const ro = new $ROR(callback, triggerCb)
 
-  let ro: ROR = undefined as any as ROR;
   onMounted(async () => {
     await nextTick()
-    ro = new $ROR(callback, triggerCb)
     ro.on()
   });
 

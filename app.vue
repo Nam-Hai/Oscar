@@ -1,8 +1,9 @@
 <template>
-  <div id="app" v-if="true">
+  <div id="app" v-if="waitBeforeMount">
     <NuxtLayout>
       <NuxtPage></NuxtPage>
     </NuxtLayout>
+
   </div>
 </template>
 
@@ -27,19 +28,16 @@ watch(flowProvider.flowIsHijacked, (flow) => {
   flowIsHijacked.value = flow
 })
 
-
-if (process.client) {
-  const matcher = window.matchMedia('(prefers-color-scheme: dark)');
-  if (matcher.matches) {
-    const els = N.getAll('link.light')
-    for (const el of els) {
-      el.remove()
-    }
-  } else {
-    const els = N.getAll('link.dark')
-    for (const el of els) {
-      el.remove()
-    }
+const matcher = window.matchMedia('(prefers-color-scheme: dark)');
+if (matcher.matches) {
+  const els = N.getAll('link.light')
+  for (const el of els) {
+    el.remove()
+  }
+} else {
+  const els = N.getAll('link.dark')
+  for (const el of els) {
+    el.remove()
   }
 }
 
@@ -53,7 +51,7 @@ onBeforeMount(() => {
 
 useRO(() => {
   const m = window.matchMedia('(pointer: coarse)').matches
-  const { isMobile } = useStore()
+  const { isMobile, firstRedirect } = useStore()
   isMobile.value = m
 })
 
