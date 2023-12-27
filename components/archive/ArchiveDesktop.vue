@@ -2,7 +2,15 @@
     <div ref="wrapperRef" class="archive__wrapper">
         <ArchiveMedia v-for="(data, index) in COPY" :index="index" :data="data" :key="`archive-media-${index}`" />
 
-        <div class="archive__number" ref="numberRef">{{ N.ZL(COPY.length) }}</div>
+        <div class="archive__number__wrapper">
+
+            <div class="archive__number" ref="numberRef" :class="{ hover: isHover }">
+                <span v-for="char in N.ZL(COPY.length)">{{ char }}</span>
+                <div class="archive__number__buffer">
+                    <span v-for="char in currentIndexDisplay">{{ char }}</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="archive__display-image" ref="displayRef">
@@ -20,7 +28,7 @@
 <script lang="ts" setup>
 import { useStoreArchive } from '~/composables/useStoreArchive';
 
-const { COPY, hoverCopy, isHover, hoverIndex } = useStoreArchive()
+const { COPY, hoverCopy, isHover, hoverIndex, currentIndexDisplay } = useStoreArchive()
 
 // const { client } = usePrismic()
 // const { data: media } = await useAsyncData('media', () => client.getAllByType('mediatest'))
@@ -59,7 +67,7 @@ const translate = computed(() => {
 
 }
 
-.archive__number {
+.archive__number__wrapper {
     position: absolute;
     top: calc(100vh - 2.4rem - 3.2rem);
     // bottom: 2.4rem;
@@ -70,6 +78,77 @@ const translate = computed(() => {
     line-height: 90%;
     letter-spacing: -.032rem;
     text-transform: uppercase;
+
+
+    .archive__number {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        overflow: hidden;
+        display: flex;
+
+        &.hover {
+            .archive__number__buffer {
+                span {
+                    transform: translateY(0%);
+
+                    &:first-child {
+                        transition: transform 400ms 0ms $easeOutQuart;
+                    }
+
+                    &:nth-child(2) {
+                        transition: transform 400ms 100ms $easeOutQuart;
+                    }
+                }
+            }
+
+            >span {
+
+                transform: translateY(-100%);
+
+                &:first-child {
+                    transition: transform 400ms 0ms $easeOutQuart;
+                }
+
+                &:nth-child(2) {
+                    transition: transform 400ms 100ms $easeOutQuart;
+                }
+            }
+        }
+
+        span {
+            display: inline-block;
+            position: relative;
+        }
+
+        >span {
+            transform: translateY(0%);
+
+            &:first-child {
+                transition: transform 150ms 0ms $easeOutQuart;
+            }
+
+            &:nth-child(2) {
+                transition: transform 150ms 50ms $easeOutQuart;
+            }
+        }
+
+        &__buffer {
+            position: absolute;
+
+            span {
+                transform: translateY(100%);
+
+                &:first-child {
+                    transition: transform 150ms 0ms $easeOutQuart;
+                }
+
+                &:nth-child(2) {
+                    transition: transform 150ms 50ms $easeOutQuart;
+                }
+            }
+        }
+    }
 }
 
 .archive__mouse-text__wrapper {

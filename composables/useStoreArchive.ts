@@ -141,6 +141,7 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
 
 export const useStoreArchive = createStore(() => {
     const COPY = ARCHIVE_COPY
+    const currentIndexDisplay = ref(`${N.ZL(COPY.length)}`)
 
 
     const emptyCopy = {
@@ -161,12 +162,14 @@ export const useStoreArchive = createStore(() => {
         if (index == null) {
             hoverCopy.value = emptyCopy
             isHover.value = false
+            // currentIndexDisplay.value = `${N.ZL(COPY.length)}`
             return
         }
         hoverCopy.value = COPY[index]
         isHover.value = true
+        currentIndexDisplay.value = `${N.ZL(index + 1)}`
     }
     const isHover = ref(false)
 
-    return { COPY, hoverCopy, setHoverCopy, isHover, hoverIndex }
+    return { COPY, hoverCopy, setHoverCopy, isHover, hoverIndex, currentIndexDisplay }
 })
