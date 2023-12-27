@@ -48,9 +48,6 @@ let waitBeforeMount = ref(false)
 onBeforeMount(() => {
   useStoreView().init()
 
-  const m = window.matchMedia('(pointer: coarse)').matches
-  const { isMobile } = useStore()
-  isMobile.value = m
   waitBeforeMount.value = true
 })
 
