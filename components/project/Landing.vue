@@ -27,7 +27,7 @@
 
         </div>
     </div>
-    <div class="pin-margin" style="height: calc(800px + 3 * 0.9 * 17.7rem - 6.65 * 2.4rem); width: 20rem;">
+    <div class="pin-margin">
     </div>
 </template>
 
@@ -121,11 +121,24 @@ function scrollTop() {
     transform: translateY(calc(100vh - 17.7rem * 0.8 - 2.4rem * 2));
     transition: transform 1000ms $easeInOutQuart;
 
+    @include breakpoint(mobile) {
+        transform: translateY(calc(100vh - 10.7rem * 0.8 - 2.4rem * 3));
+    }
+
     &.show {
         transform: translateY(0);
 
+        @include breakpoint(mobile) {
+            transform: translateY(2.4rem);
+        }
+
         .title__wrapper {
             transform-origin: top right;
+
+            @include breakpoint(mobile){
+                // prevent pin zoom
+                transform: translate(0)!important;
+            }
 
             h2 {
                 transition: transform 1000ms 100ms $easeInOutQuart;
@@ -167,6 +180,11 @@ function scrollTop() {
                 justify-content: flex-end;
                 display: flex;
 
+                @include breakpoint(mobile) {
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
+
                 >span {
                     letter-spacing: -.177rem;
                 }
@@ -194,6 +212,14 @@ function scrollTop() {
             right: -1rem;
 
             top: -0.5rem;
+
+            @include breakpoint(mobile) {
+                justify-content: center !important;
+                font-size: 6.8rem;
+                font-weight: 500;
+                line-height: 90%;
+                letter-spacing: -0.068rem;
+            }
         }
 
     }
@@ -209,12 +235,22 @@ function scrollTop() {
         transition: transform 1000ms 200ms $easeInOutQuart;
         transform: translateY(7rem);
 
+        @include breakpoint(mobile) {
+            flex-direction: column;
+        }
+
         p {
             width: 46.4rem;
             font-size: 2.4rem;
-            font-weight: 400;
+            font-weight: 500;
             line-height: 2.7rem;
             letter-spacing: -.024rem;
+
+            @include breakpoint(mobile) {
+                width: 100%;
+                // prevent pin
+                transform: translate(0) !important;
+            }
 
             &.leave {
                 opacity: 0;
@@ -227,6 +263,11 @@ function scrollTop() {
             width: 54.6rem;
             // background-color: rgba(255, 0, 0, 0.189);
             border-radius: 4px;
+
+            @include breakpoint(mobile) {
+                width: 100%;
+                height: 32.8rem;
+            }
 
         }
     }
@@ -241,5 +282,15 @@ function scrollTop() {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+}
+
+.pin-margin {
+    height: calc(800px + 3 * 0.9 * 17.7rem - 6.65 * 2.4rem);
+    width: 20rem;
+
+    @include breakpoint(mobile) {
+        display: none;
+    }
 }
 </style>

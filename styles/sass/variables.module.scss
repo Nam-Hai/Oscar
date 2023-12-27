@@ -4,7 +4,7 @@
 // BREAKPOINTS
 // ****************************
 $site-scale: 1;
-$scale-mode: fit; // width, height, fit
+$scale-mode: width; // width, height, fit
 // $scale-mode: fit; // width, height, fit
 
 // height: 932px;
@@ -14,7 +14,7 @@ $design-desktop-width: 1440;
 $design-desktop-height: 820;
 
 $mobile-scale-min: math.div(320, $design-mobile-width);
-$mobile-scale-max: math.div(550, $design-mobile-width);
+$mobile-scale-max: math.div(767, $design-mobile-width);
 $desktop-scale-min: math.div(768, $design-desktop-width);
 
 $breakpoints: (

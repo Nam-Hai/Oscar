@@ -3,9 +3,8 @@ import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 import { canvasInject } from '~/composables/useCanvas';
-import { useFlowProvider } from '~/waterflow/FlowProvider';
 
-const { vh, vw, scale, mouse } = useStoreView()
+const { vh, vw, scale, breakpoint } = useStoreView()
 const { flowIsHijacked } = useStore()
 
 export const [provideMainImage, useCanvasMainImageProject] = canvasInject<MainImage>('canvas-main-image-project')
@@ -156,7 +155,7 @@ export class MainImage extends CanvasNode {
 
     onScroll(e: any) {
         // if (this.pixelScroll >= 800) return
-        const eS = e.animatedScroll
+        let eS = e.animatedScroll
 
 
         if (this.uProgress.value < 1) return
@@ -165,6 +164,11 @@ export class MainImage extends CanvasNode {
         const scale = N.Lerp(1, 0.6, s / size)
 
         this.uProgress.value = 1 + N.iLerp(scale, 1, 0.6);
+
+        if (breakpoint.value == 'mobile') {
+            this.uProgress.value = 2
+            eS += 800
+        }
         this.computeUniform()
         if (this.uProgress.value == 2) {
             this.pixelScroll = eS - 800
@@ -366,6 +370,8 @@ export class MainImage extends CanvasNode {
             const y = vh.value / 2 - this.uSizePixel.value.y / 2 - N.Lerp(this.bounds[0].y, vh.value - 24 * scale.value - this.bounds[1].height, this.uProgress.value)
             this.pixelPosition.set(x, y)
         } else {
+            if (breakpoint.value == 'mobile') return
+
             const t = secondScrollEase(this.uProgress.value - 1)
             this.uSizePixel.value.set(
                 N.Lerp(this.uniformFromTo[1].size.x, this.uniformFromTo[2].size.x, t),
