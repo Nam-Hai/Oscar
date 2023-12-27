@@ -4,6 +4,7 @@ import { Transform, Camera, RenderTarget, Program, type OGLRenderingContext } fr
 import { CanvasNode } from '../utils/types';
 import { EventHandler } from '../utils/WebGL.utils';
 import { providePicker } from '~/composables/useCanvas';
+import type { ResizeEvent } from '~/plugins/core/resize';
 
 const { mouse, vh, vw } = useStoreView()
 const { pickerDark } = useCursorStore()
@@ -19,7 +20,7 @@ export class Picker extends CanvasNode {
     renderTargetRatio: number;
     hoverHandler: EventHandler;
     clickHandler: EventHandler;
-    target: any;
+    target!: RenderTarget;
     constructor(gl: OGLRenderingContext, options?: { camera?: Camera, renderTargetRatio?: number }) {
         super(gl)
         this.camera = options?.camera || useCanvas().camera
@@ -61,10 +62,12 @@ export class Picker extends CanvasNode {
             width: innerWidth * devicePixelRatio / this.renderTargetRatio,
             height: innerHeight * devicePixelRatio / this.renderTargetRatio
         })
+
     }
     init() {
         const ro = useROR(({ vw, vh }) => {
-            this.target.setSize(vw * devicePixelRatio / this.renderTargetRatio, vh * devicePixelRatio / this.renderTargetRatio)
+            this.dpr = devicePixelRatio
+            this.target.setSize(vw * this.dpr / this.renderTargetRatio, vh * this.dpr / this.renderTargetRatio)
         })
         ro.on()
         this.onDestroy(() => ro.off())

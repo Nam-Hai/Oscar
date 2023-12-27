@@ -3,9 +3,8 @@
         <div class="t-c">
             <div class="data-img" :data-src="data.src_1" ref="elRef1"></div>
             <div class="data-img" :data-src="data.src_2" ref="elRef2"></div>
-            <div class="data-img" :data-src="data.src_3" ref="elRef3"></div>
         </div>
-        <div class="data-img" :data-src="data.src_4" ref="elRef4"></div>
+        <div class="data-img" :data-src="data.src_3" ref="elRef3"></div>
     </div>
 </template>
 
@@ -20,14 +19,12 @@ const projectCanvas = useProjectCanvas()
 const elRef1 = ref()
 const elRef2 = ref()
 const elRef3 = ref()
-const elRef4 = ref()
 
 onFlow(async () => {
     await nextTick()
     projectCanvas.addMedia(elRef1.value)
     projectCanvas.addMedia(elRef2.value)
     projectCanvas.addMedia(elRef3.value)
-    projectCanvas.addMedia(elRef4.value)
 })
 
 </script>
@@ -38,16 +35,37 @@ onFlow(async () => {
 .container-3 {
     >div {
         margin: 22.4rem auto;
+        width: 83.8rem;
+
+        @include breakpoint(mobile) {
+            width: 34.3rem;
+            margin: 8.8rem auto;
+        }
     }
 
     .t-c {
         display: flex;
-        column-gap: 15.85rem;
-        justify-content: center;
+        justify-content: space-between;
+
+        height: 81.8rem;
+
+        @include breakpoint(mobile) {
+            height: 26.7rem;
+        }
+
 
         div {
             width: 26.9rem;
             height: 54.5rem;
+
+            @include breakpoint(mobile) {
+                height: 26.7rem;
+                width: 13.2rem;
+            }
+
+            &:nth-child(2) {
+                margin-top: auto;
+            }
         }
     }
 
@@ -55,6 +73,11 @@ onFlow(async () => {
     >.data-img {
         width: 83.8rem;
         height: 48rem;
+
+        @include breakpoint(mobile) {
+            width: 34.3rem;
+            height: 19.4rem;
+        }
     }
 }
 

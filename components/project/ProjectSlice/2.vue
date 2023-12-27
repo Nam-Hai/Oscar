@@ -29,12 +29,26 @@ onFlow(async () => {
     margin: 1.6rem;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    column-gap: 1.6rem;
+    align-items: flex-end;
 
-    div {
-        width: 69.6rem;
-        height: 78.8rem;
+    div:first-child {
+        width: 97.9rem;
+        height: 120rem;
+
+        @include breakpoint(mobile) {
+            width: 20.2rem;
+            height: 29.2rem;
+        }
+    }
+
+    div:nth-child(2) {
+        width: 32.2rem;
+        height: 32.2rem;
+
+        @include breakpoint(mobile) {
+            width: 6.2rem;
+            height: 6.2rem;
+        }
     }
 
 }

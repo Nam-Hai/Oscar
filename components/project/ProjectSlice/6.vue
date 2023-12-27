@@ -1,10 +1,8 @@
 <template>
     <div class="container-6">
-        <div class="data-img" :data-src="data.src_1"></div>
-
         <div class="c-62">
-            <div class="data-img" :data-src="data.src_2"></div>
-            <div class="data-img" :data-src="data.src_3"></div>
+            <div class="data-img" :data-src="data.src_1" ref="elRef1"></div>
+            <div class="data-img" :data-src="data.src_2" ref="elRef2"></div>
 
         </div>
     </div>
@@ -19,13 +17,11 @@ const projectCanvas = useProjectCanvas()
 
 const elRef1 = ref()
 const elRef2 = ref()
-const elRef3 = ref()
 
 onFlow(async () => {
     await nextTick()
     projectCanvas.addMedia(elRef1.value)
     projectCanvas.addMedia(elRef2.value)
-    projectCanvas.addMedia(elRef3.value)
 })
 
 </script>
@@ -36,42 +32,51 @@ onFlow(async () => {
 .container-6 {
     position: relative;
     width: 100%;
-    background-color: $placeholder-grey;
+    margin: 22.4rem 0;
 
-    padding: 20rem 0;
-
-    >.data-img:first-child {
-        margin: 0 auto;
-        width: 83.7rem;
-        height: 47.9rem;
+    @include breakpoint(mobile) {
+        margin: 8.8rem 0;
     }
 
     .c-62 {
-        height: 75rem;
-        width: 112.3rem;
+        width: 100%;
         position: relative;
-        margin: 16rem auto 0;
+        padding: 0 16.2rem;
+        display: flex;
+        flex-direction: column;
+
+        @include breakpoint(mobile) {
+            padding: 0 1.6rem;
+        }
 
         .data-img:first-child {
-            position: absolute;
-            top: 0;
-            right: 0;
             width: 40.9rem;
             height: 40.9rem;
+
+            @include breakpoint(mobile) {
+                width: 13.2rem;
+                height: 13.6rem;
+            }
         }
 
         .data-img:nth-child(2) {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 26.9rem;
-            height: 54.5rem;
+            margin-top: 22.4rem;
+            width: 69.27rem;
+            height: 57.5rem;
+
+            align-self: flex-end;
+
+            @include breakpoint(mobile) {
+                margin-top: 6.4rem;
+                width: 20.1rem;
+                height: 15.6rem;
+            }
         }
     }
 }
 
 .data-img {
-    background-color: $placeholder-grey-2;
+    background-color: $placeholder-grey;
 }
 </style>
 

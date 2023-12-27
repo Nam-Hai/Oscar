@@ -49,6 +49,12 @@ onBeforeMount(() => {
   waitBeforeMount.value = true
 })
 
+useRO(() => {
+  const m = window.matchMedia('(pointer: coarse)').matches
+  const { isMobile, firstRedirect } = useStore()
+  isMobile.value = m
+})
+
 onMounted(() => {
 })
 

@@ -3,7 +3,13 @@
         <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc">
             <div class="next-project-container">
                 <NuxtLink :to="data.link">
-                    <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRef"></h1>
+                    <h1 v-cursor-hover ref="titleRef">
+                        <span v-for="(word, index) in words" class="overflow">
+                            <span v-for="char in word.split('')" class="overflow-content">
+                                {{ char }}
+                            </span>
+                        </span>
+                    </h1>
                 </NuxtLink>
 
                 <div class="flavor">
@@ -21,21 +27,25 @@
                     </div>
                 </div>
             </div>
+
+            <div class="next" :class="{ isTouchable: isMobile }">Next Project</div>
         </div>
     </Teleport>
 </template>
 
 <script lang="ts" setup>
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
-import { onFlow, onLeave, onSwap } from '~/waterflow/composables/onFlow';
+import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 
 const { } = defineProps<{ data: {} }>()
 const { currentIndex, length, nextPageTitleRef } = useStoreProject()
-const { homeStore } = useStoreStepper()
 const nextIndex = (currentIndex.value + 1) % length
 const dataSrc = Object.keys(useManifest().textures.home)[nextIndex]
+const { homeStore } = useStoreStepper()
+const { isMobile } = useStore()
 const data = homeStore[nextIndex]
+const words = data.title.split(" ")
 // const emits = defineEmits([])
 
 const flavorMainRef = ref()
@@ -130,18 +140,33 @@ onLeave(() => {
     position: absolute;
 
     clip-path: inset(0 0 17rem 0);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 2.4rem;
+    justify-content: center;
 }
 
 .flavor {
-    position: absolute;
-    top: calc(50% + 3rem + 2.4rem);
-    left: calc(50% + 2rem);
     font-size: 1.3rem;
+    padding-left: 50vw;
+    width: 100%;
+
+    @include breakpoint(mobile) {
+        padding-left: calc(50vw - 3rem);
+    }
 
     .flavor-main {
         margin-bottom: 3.6rem;
         width: 35rem;
         line-height: 1.6rem;
+
+        @include breakpoint(mobile) {
+            width: 20.3rem;
+            line-height: 1.5rem;
+            margin-bottom: 2.8rem;
+        }
     }
 
     .flavor-sub {
@@ -160,9 +185,7 @@ onLeave(() => {
 }
 
 a {
-    position: absolute;
-    left: 50%;
-    top: 50%;
+    margin-top: 4rem;
 }
 
 h1 {
@@ -172,9 +195,21 @@ h1 {
     // line-height: 6rem;
     position: relative;
     width: max-content;
-    transform: translate(-50%, -50%);
     font-size: 8.8rem;
     letter-spacing: -0.088rem;
+
+    display: flex;
+    justify-content: center;
+    column-gap: 2.7rem;
+
+    @include breakpoint(mobile) {
+        width: 100vw;
+        padding: 0 1.6rem;
+        font-size: 6.8rem;
+        line-height: 90%;
+        letter-spacing: -0.068rem;
+        flex-direction: column;
+    }
 
 
     &:hover {
@@ -182,6 +217,19 @@ h1 {
         color: $yellow;
     }
 
+}
+
+.next {
+
+    &.isTouchable {
+        position: absolute;
+        bottom: 3.2rem;
+        color: $yellow;
+        font-size: 1.3rem;
+        font-weight: 500;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }
 </style>
 

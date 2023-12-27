@@ -136,10 +136,11 @@ export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Proj
     const canvas = useCanvas()
     const { vh, vw, scale, lenis } = useStoreView()
     const { currentIndex, idToIndex, isPreviousId } = useStoreProject()
+    const { breakpoint } = useStoreView()
 
     const from = provider.getRouteFrom()
     const oldId = from.params.id ? from.params.id[0] : 'viadomo-deco'
-    if (!isPreviousId(oldId)) {
+    if (!isPreviousId(oldId) || breakpoint.value == "mobile") {
         defaultProjectFlowIn(props, resolve, provider)
         return
     }
@@ -252,10 +253,11 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
 
 
     const { nextPageTitleRef, isNextId } = useStoreProject()
+    const { breakpoint } = useStoreView()
 
     const to = provider.getRouteTo()
     const newID = to.params.id ? to.params.id[0] : 'viadomo-deco'
-    if (!isNextId(newID)) {
+    if (!isNextId(newID) || breakpoint.value == 'mobile') {
         defaultProjectFlowOut(props, resolve, provider)
         return
     }
@@ -275,7 +277,7 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
             titleContainer.style.fontSize = N.Lerp(fontFromTo.from[0], fontFromTo.to[0], progE) + "rem"
             titleContainer.style.letterSpacing = N.Lerp(fontFromTo.from[1], fontFromTo.to[1], progE) + "rem"
 
-            titleContainer.style.transform = `translate(-50%, calc(${N.Lerp(0, 3, progE)}rem - 50%))`
+            titleContainer.style.transform = `translate(0, calc(${N.Lerp(0, 3, progE)}rem ))`
         },
         d: 650,
         cb: () => {
@@ -284,7 +286,7 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
         e: [.47, -0.43, .45, 1.24]
     }).from({
         update: ({ progE }) => {
-            titleContainer.style.transform = `translate(-50%, calc(${progE * 50}vh + ${3 * (1 - progE)}rem - ${progE * 50}% - 50%))`
+            titleContainer.style.transform = `translate(0, calc(${progE * 50}vh + ${3 * (1 - progE)}rem - ${progE * 50}%))`
         },
         d: 600,
         delay: 650,

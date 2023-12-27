@@ -1,6 +1,6 @@
 const homeStore = [
     {
-        title: "Viadomo©DECO",
+        title: "Viadomo ©DECO",
         titleHTML: '<span class="overflow-content">V</span><span class="overflow-content">i</span><span class="overflow-content">a</span><span class="overflow-content">d</span><span class="overflow-content">o</span><span class="overflow-content">m</span><span class="overflow-content">o</span><span class="overflow-content">©</span><span class="overflow-content">D</span><span class="overflow-content">E</span><span class="overflow-content">C</span><span class="overflow-content">O</span>',
         flavorMain: "An innovative collection of top-tier furniture",
         flavorSub: ["Web design", "Furniture", "11.2023"],

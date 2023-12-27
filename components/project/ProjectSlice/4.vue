@@ -1,6 +1,7 @@
 <template>
-    <div class="container-4">
+    <div class="container-4" :style="{ backgroundImage: `url(${data.bg_src})` }">
         <div class="data-img" :data-src="data.src_1" ref="elRef1"></div>
+        <div class="data-img" :data-src="data.src_2" ref="elRef2"></div>
     </div>
 </template>
 
@@ -12,10 +13,13 @@ const { data } = defineProps<{ data: { [key: string]: string } }>()
 const projectCanvas = useProjectCanvas()
 
 const elRef1 = ref()
+const elRef2 = ref()
 
 onFlow(async () => {
     await nextTick()
+    console.log(data.bg_src, elRef1.value, elRef2.value);
     projectCanvas.addMedia(elRef1.value)
+    projectCanvas.addMedia(elRef2.value)
 })
 
 </script>
@@ -25,13 +29,51 @@ onFlow(async () => {
 
 .container-4 {
     position: relative;
-    width: 100%;
     background-color: $placeholder-grey;
 
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    padding: 25rem 0;
+    margin: 22.4rem 1.6rem;
+    width: calc(100vw - 3.2rem);
+
+    height: 180rem;
+    background-size: cover;
+
+    @include breakpoint(mobile) {
+        margin: 8.8rem 0rem;
+        width: 100vw;
+        height: 86.2rem;
+    }
+
+    >div {
+        position: absolute;
+
+        &:first-child {
+            left: 14.2rem;
+            top: 33.1rem;
+            width: 83.9rem;
+            height: 60.1rem;
+
+            @include breakpoint(mobile) {
+                width: calc(100vw - 3.2rem);
+                height: 24.6rem;
+                top: 8rem;
+                left: 1.6rem;
+            }
+        }
+
+        &:nth-child(2) {
+            right: 14.2rem;
+            bottom: 33.1rem;
+            width: 26.9rem;
+            height: 89.8rem;
+
+            @include breakpoint(mobile) {
+                width: 13.2rem;
+                height: 44rem;
+                bottom: 8rem;
+                right: 1.6rem;
+            }
+        }
+    }
 }
 
 .data-img {

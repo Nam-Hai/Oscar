@@ -123,6 +123,7 @@ function scrollTop() {
 
     @include breakpoint(mobile) {
         transform: translateY(calc(100vh - 10.7rem * 0.8 - 2.4rem * 3));
+        height: calc(100% - 2.4rem);
     }
 
     &.show {
@@ -174,6 +175,10 @@ function scrollTop() {
         h1 {
             justify-content: space-between;
             width: 100%;
+
+            @include breakpoint(mobile){
+                flex-direction: column;
+            }
 
             >span {
                 justify-self: flex-end;

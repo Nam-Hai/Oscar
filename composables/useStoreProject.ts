@@ -9,7 +9,6 @@ import ProjectSliceNext from "~/components/project/ProjectSlice/NextProject.vue"
 export interface ISlice {
     keyId: any,
     data: { [key: string]: any },
-    key: number
 }
 
 type ProjectCopyType = {
@@ -38,7 +37,6 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                     src_1: "/Assets/Viadomo/2.png",
                     src_2: "/Assets/Viadomo/3.png",
                 },
-                key: 1
             },
             {
                 keyId: ProjectSlice2,
@@ -46,7 +44,6 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                     src_1: "/Assets/Viadomo/4.png",
                     src_2: "/Assets/Viadomo/5.png",
                 },
-                key: 2
             },
             {
                 keyId: ProjectSlice3,
@@ -56,19 +53,41 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                     src_3: "/Assets/Viadomo/8.png",
                     src_4: "/Assets/Viadomo/9.png",
                 },
-                key: 3
+            },
+            {
+                keyId: ProjectSlice4,
+                data: {
+                    src_1: "/Assets/Viadomo/9.png",
+                    src_2: "/Assets/Viadomo/9.png",
+                    bg_src: "/Assets/Viadomo/9.png",
+                },
+            },
+            {
+                keyId: ProjectSlice5,
+                data: {
+                    src_1: "/Assets/Viadomo/9.png",
+                    src_2: "/Assets/Viadomo/9.png",
+                    src_3: "/Assets/Viadomo/9.png",
+                },
+            },
+            {
+                keyId: ProjectSlice6,
+                data: {
+                    src_1: "/Assets/Viadomo/9.png",
+                    src_2: "/Assets/Viadomo/9.png",
+                    src_3: "/Assets/Viadomo/9.png",
+                },
             },
             {
                 keyId: ProjectSliceNext,
                 data: {},
-                key: 4
             }
 
         ]
     },
     "avant-garden": {
         title: 'Avant garden',
-        type: "Fourniture",
+        type: "Furniture",
         date: "03.2023",
         main_image: {
             src_1: "/Assets/Home_2.jpg",
@@ -78,13 +97,12 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             {
                 keyId: "ProjectSliceNextProject",
                 data: {},
-                key: 1
             }
         ]
     },
     "mucho-matxa": {
         title: 'mucho matxa',
-        type: "Fourniture",
+        type: "Furniture",
         date: "03.2023",
         main_image: {
             src_1: "/Assets/Home3.png",
@@ -94,7 +112,6 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             {
                 keyId: "ProjectSliceNextProject",
                 data: {},
-                key: 1
             }
         ]
     }

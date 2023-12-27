@@ -79,6 +79,7 @@ export default class Canvas {
 
     private resize({ vh, vw, scale }: { vh: number, vw: number, scale: number }) {
 
+        this.renderer.dpr = devicePixelRatio
         this.renderer.setSize(vw, vh);
 
         this.camera.perspective({
