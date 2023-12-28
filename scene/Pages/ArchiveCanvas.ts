@@ -4,13 +4,14 @@ import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 import { CanvasPage } from "../utils/types";
 import { Transform, type Camera, type OGLRenderingContext, type Renderer } from "ogl";
 import { Picker } from "../Components/Picker";
-import { MainImage } from "../Components/Project/MainImage";
 import { Media } from "../Components/Project/Media";
-import { StaticMedia } from "../Components/Project/StaticMedia";
+import { useCanvasReactivity } from "../utils/WebGL.utils";
 
-export const [provideProjectCanvas, useProjectCanvas] = canvasInject<ProjectCanvas>('canvas-project-canvas')
+export const [provideArchiveCanvas, useArchiveCanvas] = canvasInject<ArchiveCanvas>('canvas-archive-canvas')
 
-export class ProjectCanvas extends CanvasPage {
+const { isHover, hoverIndex } = useStoreArchive()
+
+export class ArchiveCanvas extends CanvasPage {
 
     ro: ROR
     raf: RafR
@@ -19,10 +20,12 @@ export class ProjectCanvas extends CanvasPage {
     renderer: Renderer;
     camera: Camera;
     scene: Transform;
+    medias: Media[];
+    fixedMedias: Media[];
 
     constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
         super(gl)
-        provideProjectCanvas(this)
+        provideArchiveCanvas(this)
 
         this.scene = options.scene
         this.node = new Transform()
@@ -43,6 +46,8 @@ export class ProjectCanvas extends CanvasPage {
         this.raf = useRafR(this.render, RafPriority.LAST)
 
 
+        this.medias = []
+        this.fixedMedias = []
         this.mount()
 
         this.onDestroy(() => this.ro.off())
@@ -51,20 +56,41 @@ export class ProjectCanvas extends CanvasPage {
     init() {
         this.raf.run()
         this.ro.on()
+
+        const { watch } = useCanvasReactivity(this)
+
+        watch(isHover, hover => {
+            for (const m of this.medias) {
+                m.node.setParent(hover ? null : this.node)
+            }
+        })
+        watch(hoverIndex, index => {
+            for (const m of this.fixedMedias) {
+                m.node.setParent(null)
+            }
+            if (index == null) return
+            this.fixedMedias[index].node.setParent(this.node)
+        })
     }
 
     mount() {
         const picker = new Picker(this.gl, { renderTargetRatio: 5 })
         picker.add(this)
-
-        this.add(new MainImage(this.gl, {}))
     }
 
     addMedia(el: HTMLElement) {
-        this.add(new Media(this.gl, { el }))
+        const m = new Media(this.gl, { el });
+        this.medias.push(m)
+        this.add(m)
+        return m
     }
-    addNextPageMedia(el: HTMLElement) {
-        this.add(new StaticMedia(this.gl, { el }))
+
+    addFixedMedia(el: HTMLElement) {
+        const m = new Media(this.gl, { el, fixed: true });
+        this.fixedMedias.push(m)
+        this.add(m)
+        m.node.setParent(null)
+        return m
     }
 
     resize({ vh, vw, scale, breakpoint }: ResizeEvent) {

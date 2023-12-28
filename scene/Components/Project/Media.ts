@@ -26,11 +26,13 @@ export class Media extends CanvasNode {
     canvasSize!: { width: number; height: number; };
     on: boolean = false;
     pixelPosition: Vec2;
+    fixed: boolean;
 
-    constructor(gl: any, props: { borderRadius?: number, el: HTMLElement }) {
+    constructor(gl: any, props: { borderRadius?: number, el: HTMLElement, fixed?: boolean }) {
         super(gl)
         N.BM(this, ['update', 'onResize', 'destroy', "onScroll"])
 
+        this.fixed = props.fixed || false
         this.pixelScroll = 0
         this.pixelPosition = new Vec2(0)
         this.uLoaded = { value: 0 }
@@ -87,12 +89,14 @@ export class Media extends CanvasNode {
         const { watch } = useCanvasReactivity(this)
 
         const { unWatch: resizeUnWatch } = useCanvasSize(this.onResize)
-        const lenis = useLenis()
 
-        const scrollUnsub = lenis.on("scroll", this.onScroll);
+        if (!this.fixed) {
+            const lenis = useLenis()
+            const scrollUnsub = lenis.on("scroll", this.onScroll);
+            this.onDestroy(() => scrollUnsub())
+        }
 
         this.onDestroy(() => resizeUnWatch())
-        this.onDestroy(() => scrollUnsub())
     }
 
     onScroll(e: any) {
@@ -111,7 +115,7 @@ export class Media extends CanvasNode {
         const src_1 = N.Ga(this.el, "data-src") || "/Assets/Home3.png"
 
         const manifest = useManifest()
-        const a = manifest.lazyTextures.assets[src_1]
+        const a = manifest.lazyTextures[src_1]
         this.tMap = { value: a.texture }
 
         const { watch } = useCanvasReactivity(this)
@@ -189,7 +193,9 @@ export class Media extends CanvasNode {
         if (!this.el) return
 
         this.bounds = this.el.getBoundingClientRect()!
-        this.bounds.y = this.bounds.top + scrollY
+
+        this.bounds.y = this.bounds.top
+        this.bounds.y += this.fixed ? 0 : scrollY
 
         this.computeUniform()
     }

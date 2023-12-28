@@ -1,5 +1,6 @@
 <template>
-  <div ref="wrapperSceneRef" class="wrapper-scene" :class='{ TOP: router.currentRoute.value.name == "project-page-id" }'>
+  <div ref="wrapperSceneRef" class="wrapper-scene"
+    :class='{ TOP: router.currentRoute.value.name == "project-page-id" || router.currentRoute.value.name == "archive"}'>
   </div>
 </template>
 

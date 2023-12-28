@@ -34,6 +34,9 @@ const LAZY_MANIFEST = {
     "/Assets/Viadomo/12.png",
     "/Assets/Viadomo/13.png",
   ],
+  info: [
+    "/Assets/info/Oscar_Pico.png"
+  ]
 }
 
 export default class Manifest {
@@ -45,12 +48,11 @@ export default class Manifest {
   textures: {
     [key: string]: { [key: string]: Texture };
   };
+
   lazyTextures: {
-    [key: string]: {
-      [src: string]: {
-        get texture(): Texture,
-        loaded: Ref<boolean>
-      }
+    [src: string]: {
+      get texture(): Texture,
+      loaded: Ref<boolean>
     }
   }
   lazyMap: {
@@ -122,6 +124,12 @@ export default class Manifest {
             texture.image = image;
             // this.textures[keys].push(texture);
             this.textures[keys][src] = texture
+            this.lazyTextures[src] = {
+              loaded: ref(true),
+              get texture() {
+                return texture
+              }
+            }
             this.index.value++;
             res();
           };
@@ -142,10 +150,10 @@ export default class Manifest {
   async lazyLoadManifest() {
     // init Textures
     for (const [keys, m] of Object.entries(LAZY_MANIFEST)) {
-      this.lazyTextures[keys] = {}
+      // this.lazyTextures[keys] = {}
       for (const src of m) {
         const texture = new Texture(this.canvasContext);
-        this.lazyTextures[keys][src] = {
+        this.lazyTextures[src] = {
           loaded: ref(false),
           get texture() {
             if (!this.loaded.value) {
@@ -176,7 +184,7 @@ export default class Manifest {
     for (const [keys, m] of Object.entries(this.lazyTextures)) {
       for (const src of Object.keys(m)) {
         await new Promise<void>((res) => {
-          if (this.lazyTextures[keys][src].loaded.value) {
+          if (this.lazyTextures[src].loaded.value) {
             res()
             return
           }
@@ -185,14 +193,14 @@ export default class Manifest {
           image.crossOrigin = "anonymous";
 
           image.onload = () => {
-            if (this.lazyTextures[keys][src].loaded.value) {
+            if (this.lazyTextures[src].loaded.value) {
               res()
               return
             }
             useDelay(2000, () => {
               console.log("DELAYED SHIT", src);
-              this.lazyTextures[keys][src].loaded.value = true
-              this.lazyTextures[keys][src].texture.image = image;
+              this.lazyTextures[src].loaded.value = true
+              this.lazyTextures[src].texture.image = image;
               res()
             })
           };

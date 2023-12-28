@@ -14,11 +14,13 @@
     </div>
 
     <div class="archive__display-image" ref="displayRef">
-        <img :src="copy.src" alt="archive__display-image" v-for="(copy, index) in COPY" :key="`archive-display-${index}`"
-            :class="{ show: hoverIndex == index, horizontal: copy.imageDirection }">
+        <div :data-src="copy.src" alt="archive__display-image" v-for="(copy, index) in COPY"
+            :key="`archive-display-${index}`" :class="{ show: hoverIndex == index, horizontal: copy.imageDirection }"
+            :style="{ aspectRatio: copy.ratio }" ref="placeholderRefs"></div>
     </div>
 
-    <div class="archive__mouse-text__wrapper" :style="{ transform: translate }" :class="{ show: isHover }">
+    <div class="archive__mouse-text__wrapper" :style="{ transform: translate }"
+        :class="{ show: isHover, dark: pickerDark }">
         <div>{{ hoverCopy.text.title }}</div>
         <div>{{ hoverCopy.text.category }}</div>
         <div>{{ hoverCopy.text.source }}</div>
@@ -27,8 +29,11 @@
 
 <script lang="ts" setup>
 import { useStoreArchive } from '~/composables/useStoreArchive';
+import { useArchiveCanvas } from '~/scene/Pages/ArchiveCanvas';
+import { onFlow } from '~/waterflow/composables/onFlow';
 
 const { COPY, hoverCopy, isHover, hoverIndex, currentIndexDisplay } = useStoreArchive()
+const { pickerDark } = useCursorStore()
 
 // const { client } = usePrismic()
 // const { data: media } = await useAsyncData('media', () => client.getAllByType('mediatest'))
@@ -38,6 +43,16 @@ useResetLenis()
 const wrapperRef = ref() as Ref<HTMLElement>
 const numberRef = ref()
 const displayRef = ref()
+
+const placeholderRefs = ref() as Ref<HTMLElement[]>
+
+onFlow(async () => {
+    await nextTick()
+    const archiveCanvas = useArchiveCanvas()
+    for (const el of placeholderRefs.value) {
+        archiveCanvas.addFixedMedia(el)
+    }
+})
 
 usePin({
     el: numberRef,
@@ -69,7 +84,7 @@ const translate = computed(() => {
 
 .archive__number__wrapper {
     position: absolute;
-    top: calc(100vh - 2.4rem - 3.2rem);
+    top: calc(100vh - 2.4rem);
     // bottom: 2.4rem;
     right: 2.4rem;
     text-align: right;
@@ -86,6 +101,7 @@ const translate = computed(() => {
         right: 0;
         overflow: hidden;
         display: flex;
+        pointer-events: none;
 
         &.hover {
             .archive__number__buffer {
@@ -167,7 +183,11 @@ const translate = computed(() => {
 
     pointer-events: none;
     z-index: 3;
+    color: $white;
 
+    &.dark {
+        color: $black;
+    }
     &.show {
         div {
             opacity: 1;
@@ -190,7 +210,8 @@ const translate = computed(() => {
     pointer-events: none;
     z-index: 1;
 
-    img {
+    img,
+    div {
         opacity: 0;
         position: absolute;
         top: 0;
@@ -208,7 +229,7 @@ const translate = computed(() => {
         }
 
         &.show {
-            opacity: 1;
+            // opacity: 1;
         }
     }
 }

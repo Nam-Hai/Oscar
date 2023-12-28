@@ -1,16 +1,19 @@
 <template>
     <div ref="wrapperRef" class="archive-media" :data-src="data.src" @mouseover="over()" @mouseleave="leave()"
-        :class="{ hide: hoverIndex != index && isHover, 'flip-init': !flow}">
+        :class="{ hide: hoverIndex != index && isHover, 'flip-init': !flow }">
 
     </div>
 </template>
 
 <script lang="ts" setup>
-import { onFlow } from '~/waterflow/composables/onFlow';
+import { useArchiveCanvas } from '~/scene/Pages/ArchiveCanvas';
+import { scaleMatrix } from '~/scene/shaders/matrixRotation';
+import { onFlow, onSwap } from '~/waterflow/composables/onFlow';
 
 const { data, index } = defineProps<{ data: ArchiveCopyType, index: number }>()
 
 const { setHoverCopy, hoverIndex, isHover } = useStoreArchive()
+const { vh } = useStoreView()
 
 function over() {
     setHoverCopy(index)
@@ -24,6 +27,26 @@ onMounted(() => {
         //@ts-ignore
         wrapperRef.value.style[key] = value
     }
+
+})
+
+const flow = onFlow(async () => {
+    await nextTick()
+    const archive = useArchiveCanvas()
+    const m = archive.addMedia(wrapperRef.value)
+
+    const tl = useTL()
+    const pos = m.pixelPosition.y
+    tl.from({
+        d: 1000,
+        e: 'o2',
+        update: ({ progE }) => {
+            m.pixelPosition.y = pos - progE * vh.value * 0.5
+        },
+        cb: () => {
+            m.onResize(m.canvasSize)
+        }
+    }).play()
 })
 // const emits = defineEmits([])
 
@@ -31,9 +54,6 @@ const store = useStore()
 
 const wrapperRef = ref() as Ref<HTMLElement>
 
-const flow = onFlow(() => {
-    // projectCanvas.addMedia(wrapperRef.value)
-})
 </script>
 
 <style lang="scss" scoped>
@@ -42,7 +62,7 @@ const flow = onFlow(() => {
 .archive-media {
     height: 20rem;
     width: 15rem;
-    background-color: $placeholder-grey;
+    // background-color: $placeholder-grey;
     border-radius: 4px;
 
     position: relative;
@@ -55,13 +75,18 @@ const flow = onFlow(() => {
     transition: transform 1000ms $easeOutQuart;
     transform: translateY(0);
 
-    &.hide {
-        opacity: 0;
-    }
+    // &.hide {
+    //     opacity: 0;
+    // }
+    opacity: 0;
+
+    // background-color: transparent;
+    // border: 2px solid rgba(20, 20, 20, 0.20);
+
+    border: 2px solid rgba(20, 20, 20, 0.20);
 
     &:hover {
-        background-color: transparent;
-        border: 2px solid rgba(20, 20, 20, 0.20);
+        opacity: 1;
     }
 }
 </style>

@@ -6,7 +6,8 @@ export type ArchiveCopyType = {
         category: string,
         source: string
     }
-    bounds: { [key: string]: string }
+    bounds: { [key: string]: string },
+    ratio: string
 }
 const ARCHIVE_COPY: ArchiveCopyType[] = [
     {
@@ -23,7 +24,8 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
             "margin-left": "72.8rem",
             width: "27rem",
             height: "36.3rem"
-        }
+        },
+        ratio: "269 / 363",
     },
     {
         src: "/Assets/info/Oscar_Pico.png",
@@ -37,7 +39,8 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
             height: "17.1rem",
             "margin-top": "20.8rem",
             "margin-left": "15.9rem"
-        }
+        },
+        ratio: "269 / 363",
     },
     {
         src: "/Assets/info/Oscar_Pico.png",
@@ -51,7 +54,8 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
             height: "27.6rem",
             "margin-top": "36.7rem",
             "margin-left": "58.6rem"
-        }
+        },
+        ratio: "269 / 363",
     },
     {
         src: "/Assets/info/Oscar_Pico.png",
@@ -65,7 +69,8 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
             height: "30.9rem",
             "margin-top": "28.1rem",
             "margin-left": "115rem"
-        }
+        },
+        ratio: "269 / 363",
     },
     {
         src: "/Assets/info/Oscar_Pico.png",
@@ -79,7 +84,8 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
             width: "12.6rem",
             "margin-top": "-13.1rem",
             "margin-left": "30rem"
-        }
+        },
+        ratio: "269 / 363",
     },
     {
         src: "/Assets/info/Oscar_Pico.png",
@@ -93,7 +99,8 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
             width: "26.8rem",
             "margin-top": "45.3rem",
             "margin-left": "72.9rem"
-        }
+        },
+        ratio: "269 / 363",
     },
     {
         src: "/Assets/info/Oscar_Pico.png",
@@ -107,7 +114,8 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
             width: "27.3rem",
             "margin-top": "28.2rem",
             "margin-left": "2.4rem"
-        }
+        },
+        ratio: "269 / 363",
     },
     {
         src: "/Assets/info/Oscar_Pico.png",
@@ -121,7 +129,8 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
             width: "17.7rem",
             "margin-top": "22.7rem",
             "margin-left": "115.5rem"
-        }
+        },
+        ratio: "269 / 363",
     },
     {
         src: "/Assets/info/Oscar_Pico.png",
@@ -135,7 +144,8 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
             width: "26.8rem",
             "margin-top": "35.3rem",
             "margin-left": "30rem"
-        }
+        },
+        ratio: "269 / 363",
     },
 ]
 
@@ -152,7 +162,8 @@ export const useStoreArchive = createStore(() => {
             source: ""
         },
         bounds: {
-        }
+        },
+        ratio: "1 / 1"
     }
 
     const hoverIndex: Ref<number | null> = ref(null)
