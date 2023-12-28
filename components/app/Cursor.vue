@@ -49,6 +49,7 @@ onMounted(() => {
     }
 
     &.hover {
+        color: $yellow;
         &::after {
             transform: translate(-50%, -50%) scale(0);
             opacity: 0.1;
