@@ -2,9 +2,7 @@
     <div ref="wrapperRef" class="info__wrapper">
         <div class="bio__wrapper">
             <p>
-                Oscar Pico.
-            </p>
-            <p>
+                Oscar Pico.<br>
                 A digital designer with over 3 years of experience, specialized in visual and interface design.
                 Also, a lover and enthusiast of art direction and all existing forms of design, such as editorial or
                 fashion/clothing design.
@@ -50,34 +48,30 @@
 </template>
 
 <script lang="ts" setup>
-// const {propName = fallbackValue} = defineProps<{propName: type}>()
-// const emits = defineEmits([])
-
-const store = useStore()
-
-const wrapperRef = ref() as Ref<HTMLElement>
-
 </script>
 
 <style lang="scss" scoped>
 @use "@/styles/shared.scss" as *;
 
 .info__wrapper {
+    position: relative;
     width: 100vw;
     color: $black;
     padding: 13.5rem 1.6rem 1.6rem;
 }
 
 .bio__wrapper {
+    position: relative;
     font-size: 4rem;
+    // font-size: 2.5rem;
     font-weight: 500;
     line-height: 4.4rem;
     letter-spacing: -0.02rem;
     text-indent: 5rem;
 
-    p:nth-child(2) {
-        text-indent: 0rem;
-    }
+    // p:nth-child(2) {
+    //     text-indent: 0rem;
+    // }
 }
 
 img {
@@ -88,9 +82,10 @@ img {
 }
 
 .list__wrapper {
-    display: flex;
+    // display: flex;
     flex-direction: column;
-    // align-items: center;
+    align-items: center;
+    position: relative;
     font-size: 1.3rem;
     font-weight: 500;
     line-height: 1.5rem;
