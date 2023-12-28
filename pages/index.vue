@@ -60,6 +60,7 @@ function mainMove(e: MouseEvent) {
 
 const mainRef = ref()
 const { homeStore, currentIndex, hideTrail } = useStoreStepper()
+hideTrail.value = true
 const { isMobile } = useStore()
 const flavorMainRef = ref()
 const flavorSubRef = ref()
@@ -86,7 +87,6 @@ function titleAnimations(i: number, old: number) {
     N.Class.remove(title, "leave")
     const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
     const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value[i], ...subs]
-    console.log({ title, spans });
     for (const [index, char] of spans.entries()) {
         tl.from({
             el: char,

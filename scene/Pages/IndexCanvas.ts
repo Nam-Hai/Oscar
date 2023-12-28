@@ -82,8 +82,4 @@ export class IndexCanvas extends CanvasPage {
             camera: this.camera,
         })
     }
-
-    destroy() {
-        super.destroy()
-    }
 }

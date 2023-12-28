@@ -4,7 +4,7 @@ import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 import { BorderImage } from './BorderImage';
 
-const { vh, vw, mouse, breakpoint} = useStoreView()
+const { vh, vw, mouse, breakpoint } = useStoreView()
 const { isHold } = useCursorStore()
 // const m = toRefs(mouse)
 const { getTexture, stack, imageBounds, currentIndex, stepperIsHovered, length, idToIndex } = useStoreStepper()
