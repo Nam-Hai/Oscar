@@ -4,7 +4,7 @@ import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 import { canvasInject } from '~/composables/useCanvas';
 
-const { vh, vw, scale, breakpoint } = useStoreView()
+const { vh, vw, scale, breakpoint, scrollLenis } = useStoreView()
 const { flowIsHijacked } = useStore()
 
 export const [provideMainImage, useCanvasMainImageProject] = canvasInject<MainImage>('canvas-main-image-project')
@@ -304,8 +304,8 @@ export class MainImage extends CanvasNode {
         if (!this.el) return
 
         this.bounds = [this.el[0].getBoundingClientRect(), this.el[1].getBoundingClientRect()]
-        this.bounds[0].y = this.bounds[0].top + scrollY
-        this.bounds[1].y = this.bounds[1].top + scrollY
+        this.bounds[0].y = this.bounds[0].top + scrollLenis.value
+        this.bounds[1].y = this.bounds[1].top + scrollLenis.value
 
         this.uniformFromTo[0].size.set(this.bounds[0].width, this.bounds[0].height)
         this.uniformFromTo[1].size.set(this.bounds[1].width, this.bounds[1].height)

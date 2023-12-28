@@ -17,7 +17,6 @@ const elRef2 = ref()
 
 onFlow(async () => {
     await nextTick()
-    console.log(data.bg_src, elRef1.value, elRef2.value);
     projectCanvas.addMedia(elRef1.value)
     projectCanvas.addMedia(elRef2.value)
 })

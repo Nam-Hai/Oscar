@@ -2,7 +2,7 @@
   <div class="app__wrapper">
     <WebGLScene />
     <Menu />
-    <Cursor v-if="!isMobile"/>
+    <Cursor v-if="!isMobile" />
     <!-- <Stat /> -->
     <Overlay />
     <div class="page__wrapper">
@@ -22,7 +22,7 @@ import BufferPage from "~/waterflow/components/BufferPage.vue";
 
 const flowProvider = useFlowProvider();
 
-const lenis = useStoreView().lenis;
+const { lenis, scrollLenisOn } = useStoreView();
 const { isMobile } = useStore()
 
 useRaf(
@@ -35,9 +35,11 @@ useRaf(
 
 flowProvider.registerScrollInterface({
   resume: () => {
+    scrollLenisOn.value = true
     lenis.value.start();
   },
   stop: () => {
+    scrollLenisOn.value = false
     lenis.value.stop();
   },
   scrollToTop: () => {

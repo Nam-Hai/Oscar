@@ -4,7 +4,7 @@ import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 
-const { vh, vw, scale, mouse } = useStoreView()
+const { vh, vw, scale, mouse, scrollLenis } = useStoreView()
 
 export class StaticMedia extends CanvasNode {
     raf: RafR;
@@ -144,7 +144,7 @@ export class StaticMedia extends CanvasNode {
         if (!this.el) return
 
         this.bounds = this.el.getBoundingClientRect()!
-        this.bounds.y = this.bounds.top + scrollY
+        this.bounds.y = this.bounds.top + scrollLenis.value
 
         this.computeUniform()
 

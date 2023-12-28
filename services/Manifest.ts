@@ -161,12 +161,10 @@ export default class Manifest {
               image.crossOrigin = "anonymous";
 
               image.onload = () => {
-                console.log('delayed getter');
-                useDelay(2000, () => {
-                  console.log('delayed getter onload');
-                  texture.image = image;
-                  this.loaded.value = true
-                })
+                // useDelay(2000, () => {
+                texture.image = image;
+                this.loaded.value = true
+                // })
               };
               image.src = src;
             }

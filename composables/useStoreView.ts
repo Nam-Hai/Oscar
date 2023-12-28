@@ -7,6 +7,8 @@ export const useStoreView = createStore(() => {
   const vw = ref(0);
   const scale = ref(0);
   const breakpoint = ref("");
+  const scrollLenis = ref(0);
+  const scrollLenisOn = ref(true)
 
   const preventScroll = ref(false);
   const lenis = ref() as Ref<Lenis>;
@@ -58,6 +60,14 @@ export const useStoreView = createStore(() => {
     });
     lenis.value.stop()
     // lenis.value.normalizeWheel
+    scrollLenis.value = 0
+    lenis.value.on('scroll', (e: any) => {
+      if (!scrollLenisOn.value) {
+        scrollLenis.value = 0
+        return
+      }
+      scrollLenis.value = e.animatedScroll
+    })
   }
 
 
@@ -70,6 +80,8 @@ export const useStoreView = createStore(() => {
     lenis,
     init,
     preventScroll,
-    resetLenis
+    resetLenis,
+    scrollLenis,
+    scrollLenisOn
   };
 });

@@ -38,25 +38,47 @@ onFlow(async () => {
     .c-53 {
         width: 100%;
         display: flex;
-        
+
         padding: 0 16.2rem;
         justify-content: space-between;
-        
+
+        @include breakpoint(mobile) {
+            flex-wrap: wrap;
+            padding: 0 1.6rem;
+        }
+
         .data-img:nth-child(2) {
             margin-top: 27.3rem;
+
+            @include breakpoint(mobile) {
+                margin-top: 17.8rem;
+            }
         }
+
         .data-img:nth-child(3) {
             margin-top: 57.8rem;
+
+            @include breakpoint(mobile) {
+                margin-top: -10.8rem;
+            }
         }
     }
-
     margin: 22.4rem auto;
+
+    @include breakpoint(mobile) {
+        margin: 8.8rem auto;
+    }
 }
 
 .data-img {
     width: 26.9rem;
     height: 54.5rem;
     // background-color: $placeholder-grey;
+
+    @include breakpoint(mobile) {
+        width: 13.2rem;
+        height: 26.7rem;
+    }
 }
 </style>
 

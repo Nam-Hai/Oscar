@@ -48,6 +48,8 @@ export function usePageFlow<T>({
   const routerGuard = router.beforeEach(async (to, from, next) => {
     provider.scrollFlow.stop()
     await transitionExecption(provider, to, from)
+    const { scrollLenis } = useStoreView()
+    scrollLenis.value = 0
 
     if (disablePointerEvent) {
       N.Class.add(document.body, 'flowIsHijacked')
@@ -107,11 +109,12 @@ async function transitionExecption(provider: FlowProvider, to: RouteLocationNorm
   if (to.name == "project-page-id" && from.name == "project-page-id") {
     const newID = to.params.id ? to.params.id[0] : 'viadomo-deco'
     const { isNextId } = useStoreProject()
-    if (!isNextId(newID)) return
+    const { breakpoint } = useStoreView()
+    if (!isNextId(newID) || breakpoint.value == 'mobile') return
 
     await new Promise<void>(res => {
       const lenis = useStoreView().lenis.value
-      if (lenis.animatedScroll != lenis.dimensions.limit.y) {
+      if (lenis.animatedScroll != lenis.dimensions.limit.y || lenis.animatedScroll != 0) {
         lenis.scrollTo('bottom', { duration: 0.5, force: true })
         useDelay(500, () => {
           res()

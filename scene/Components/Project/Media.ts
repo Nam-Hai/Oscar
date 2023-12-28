@@ -4,7 +4,7 @@ import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 
-const { vh, vw, scale, mouse } = useStoreView()
+const { vh, vw, scale, mouse, scrollLenis} = useStoreView()
 
 export class Media extends CanvasNode {
     raf: RafR;
@@ -195,7 +195,7 @@ export class Media extends CanvasNode {
         this.bounds = this.el.getBoundingClientRect()!
 
         this.bounds.y = this.bounds.top
-        this.bounds.y += this.fixed ? 0 : scrollY
+        this.bounds.y += this.fixed ? 0 : scrollLenis.value
 
         this.computeUniform()
     }
