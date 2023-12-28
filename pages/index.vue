@@ -3,8 +3,14 @@
         <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index"
             :class="{ current: currentIndex == index }">
             <NuxtLink :to="data.link">
-                <h1 v-cursor-hover class="text-anime__wrapper" v-html="data.titleHTML" ref="titleRefs"
-                    @mouseenter="hideTrail = true" @mouseleave="hideTrail = false" @mousemove="headerMove($event)"></h1>
+                <h1 v-cursor-hover ref="titleRefs" @mouseenter="hideTrail = true" @mouseleave="hideTrail = false"
+                    @mousemove="headerMove($event)">
+                    <span v-for="(word, index) in data.title.split(' ')" class="overflow">
+                        <span v-for="char in word.split('')" class="overflow-content">
+                            {{ char }}
+                        </span>
+                    </span>
+                </h1>
             </NuxtLink>
 
             <div class="flavor">
@@ -78,6 +84,7 @@ function titleAnimations(i: number, old: number) {
     N.Class.remove(title, "leave")
     const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
     const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value[i], ...subs]
+    console.log({ title, spans });
     for (const [index, char] of spans.entries()) {
         tl.from({
             el: char,
@@ -154,29 +161,47 @@ main {
 }
 
 .index-container {
-    height: 100%;
-    width: 100%;
     pointer-events: none;
-    top: -3rem;
-    position: absolute;
 
     &.current {
         pointer-events: auto;
     }
 
     clip-path: inset(0 0 17rem 0);
+
+    height: 100%;
+    width: 100%;
+    // top: -3rem;
+    position: absolute;
+
+    clip-path: inset(0 0 17rem 0);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 2.4rem;
+    justify-content: center;
 }
 
 .flavor {
-    position: absolute;
-    top: calc(50% + 3rem + 2.4rem);
-    left: calc(50% + 2rem);
     font-size: 1.3rem;
+    padding-left: 50vw;
+    width: 100%;
+
+    @include breakpoint(mobile) {
+        padding-left: calc(50vw - 3rem);
+    }
 
     .flavor-main {
         margin-bottom: 3.6rem;
         width: 35rem;
         line-height: 1.6rem;
+
+        @include breakpoint(mobile) {
+            width: 20.3rem;
+            line-height: 1.5rem;
+            margin-bottom: 2.8rem;
+        }
     }
 
     .flavor-sub {
@@ -195,23 +220,32 @@ main {
 }
 
 a {
-
-    position: absolute;
-    left: 50%;
-    top: 50%;
+    margin-top: 4rem;
 }
 
 h1 {
-    position: relative;
     text-transform: uppercase;
     text-align: center;
     font-weight: 500;
     // line-height: 6rem;
+    position: relative;
     width: max-content;
-    transform: translate(-50%, -50%);
     font-size: 8.8rem;
     letter-spacing: -0.088rem;
 
+    display: flex;
+    justify-content: center;
+    column-gap: 2.7rem;
+
+
+    @include breakpoint(mobile) {
+        width: 100vw;
+        padding: 0 1.6rem;
+        font-size: 6.8rem;
+        line-height: 90%;
+        letter-spacing: -0.068rem;
+        flex-direction: column;
+    }
 
     &:hover {
         transition: color 500ms;
