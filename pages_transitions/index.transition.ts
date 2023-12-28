@@ -34,13 +34,13 @@ export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps,
             titleContainer.style.fontSize = N.Lerp(fontFromTo.from[0], fontFromTo.to[0], progE) + "rem"
             titleContainer.style.letterSpacing = N.Lerp(fontFromTo.from[1], fontFromTo.to[1], progE) + "rem"
 
-            titleContainer.style.transform = `translate(-50%, calc(${N.Lerp(0, 3, progE)}rem - 50%))`
+            titleContainer.style.transform = `translate(0, calc(${N.Lerp(0, 3, progE)}rem))`
         },
         d: 650,
         e: [.47, -0.43, .45, 1.24]
     }).from({
         update: ({ progE }) => {
-            titleContainer.style.transform = `translate(-50%, calc(${progE * 50}vh + ${3 * (1 - progE)}rem - ${progE * 50}% - 50%))`
+            titleContainer.style.transform = `translate(0%, calc(${progE * 50}vh + ${3 * (1 - progE)}rem - ${progE * 50}%))`
         },
         d: 600,
         delay: 650,
