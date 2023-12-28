@@ -41,9 +41,11 @@ const flow = onFlow(async () => {
         d: 1000,
         e: 'o2',
         update: ({ progE }) => {
+            if (!m) return
             m.pixelPosition.y = pos - progE * vh.value * 0.5
         },
         cb: () => {
+            if (!m) return
             m.onResize(m.canvasSize)
         }
     }).play()

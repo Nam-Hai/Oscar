@@ -49,9 +49,23 @@ const placeholderRefs = ref() as Ref<HTMLElement[]>
 onFlow(async () => {
     await nextTick()
     const archiveCanvas = useArchiveCanvas()
+    archiveCanvas.fixedMedias = []
+
     for (const el of placeholderRefs.value) {
         archiveCanvas.addFixedMedia(el)
     }
+})
+
+onBeforeUnmount(() => {
+    const archiveCanvas = useArchiveCanvas()
+    for (const m of archiveCanvas.fixedMedias) {
+        m.destroy()
+    }
+    archiveCanvas.fixedMedias = []
+    for (const m of archiveCanvas.medias) {
+        m.destroy()
+    }
+    archiveCanvas.medias = []
 })
 
 usePin({
@@ -188,6 +202,7 @@ const translate = computed(() => {
     &.dark {
         color: $black;
     }
+
     &.show {
         div {
             opacity: 1;

@@ -103,8 +103,4 @@ export class ArchiveCanvas extends CanvasPage {
             frustumCull: false
         })
     }
-
-    destroy() {
-        super.destroy()
-    }
 }
