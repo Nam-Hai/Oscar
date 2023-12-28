@@ -18,7 +18,7 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, reso
     const path = N.get("path", overlay.value)
 
     const pFrom = "M 0 0 C 6 0 8 0 14 0 L 14 7 C 8 7 6 7 0 7 L 0 0"
-              //  "M 0 0 C 6 1 8 1 14 0 L 14 7 C 8 8 6 8 0 7 L 0 0" :
+    //  "M 0 0 C 6 1 8 1 14 0 L 14 7 C 8 8 6 8 0 7 L 0 0" :
     const { breakpoint } = useStoreView()
     const pTo = breakpoint.value == 'desktop' ? "M 0 0 C 6 1 8 1 14 0 L 14 7 C 8 8 6 8 0 7 L 0 0" :
         "M 0 0 C 6 0.2 8 0.2 14 0 L 14 7 C 8 7.3 6 7.3 0 7 L 0 0";
@@ -98,6 +98,18 @@ export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef
             wrapperRef.value.style.transform = 'unset'
         }
     }).play()
+    useDelay(DURATION / 2, () => {
+        N.O(wrapperRef.value, 1)
+        resolve()
+    })
+}
+export const archiveFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef }, resolve, provider) => {
+    const { breakpoint } = useStoreView()
+    if (breakpoint.value == 'mobile') {
+        defaultFlowIn({ wrapperRef }, resolve, provider)
+        return
+    }
+    N.O(wrapperRef.value, 0)
     useDelay(DURATION / 2, () => {
         N.O(wrapperRef.value, 1)
         resolve()

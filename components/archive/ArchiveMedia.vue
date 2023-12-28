@@ -31,7 +31,6 @@ onMounted(() => {
 })
 
 const flow = onFlow(async () => {
-    await nextTick()
     const archive = useArchiveCanvas()
     const m = archive.addMedia(wrapperRef.value)
 

@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
+import { archiveFlowIn, defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 
 const { breakpoint } = useStoreView()
@@ -18,7 +18,7 @@ const wrapperRef = ref() as Ref<HTMLElement>
 usePageFlow({
     props: { wrapperRef },
     flowOut: defaultFlowOut,
-    flowInCrossfade: defaultFlowIn,
+    flowInCrossfade: archiveFlowIn,
     enableCrossfade: 'TOP'
 })
 

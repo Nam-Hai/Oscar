@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   if (!firstRedirect.value) {
     firstRedirect.value = true
-    // return navigateTo('/')
+    return navigateTo('/')
   }
 
   // history.pushState(isMobile, '', '')
