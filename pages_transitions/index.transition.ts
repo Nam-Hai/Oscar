@@ -7,6 +7,13 @@ export type IndexProps = defaultTransitionProps & {
 }
 
 export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps, resolve, provider) => {
+
+    const { breakpoint } = useStoreView()
+    if (breakpoint.value == 'mobile') {
+        defaultFlowOut(props, resolve, provider)
+        return
+    }
+
     const tl = useTL()
     const canvas = useCanvas()
 

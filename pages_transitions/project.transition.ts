@@ -8,6 +8,11 @@ export type ProjectFlowProps = defaultTransitionProps & {
 }
 
 export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: ProjectFlowProps, resolve, provider) => {
+    const { breakpoint } = useStoreView()
+    if (breakpoint.value == 'mobile') {
+        defaultProjectFlowIn(props, resolve, provider)
+        return
+    }
 
     const tl = useTL()
     const canvas = useCanvas()

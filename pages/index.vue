@@ -29,7 +29,8 @@
             </div>
         </div>
 
-        <Stepper />
+        <Stepper v-if="!isMobile" />
+        <StepperMobile v-else />
     </main>
 </template>
 
@@ -59,6 +60,7 @@ function mainMove(e: MouseEvent) {
 
 const mainRef = ref()
 const { homeStore, currentIndex, hideTrail } = useStoreStepper()
+const { isMobile } = useStore()
 const flavorMainRef = ref()
 const flavorSubRef = ref()
 
@@ -67,7 +69,7 @@ const titleTls = homeStore.map(() => {
 })
 
 onFlow(() => {
-    titleAnimations(currentIndex.value, currentIndex.value + 1)
+    titleAnimations(currentIndex.value, (currentIndex.value + 1) % homeStore.length)
 })
 
 watch(currentIndex, (i, old) => {

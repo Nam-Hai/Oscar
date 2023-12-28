@@ -6,7 +6,9 @@ import { Transform, type Camera, type OGLRenderingContext, type Renderer } from 
 import { HomeMedia } from "../Components/Index/HomeMedia";
 import { SteppersWrapper } from "../Components/Index/SteppersWrapper";
 import { Picker } from "../Components/Picker";
+import { useCanvasReactivity } from "../utils/WebGL.utils";
 
+const { isMobile } = useStore()
 export class IndexCanvas extends CanvasPage {
 
     ro: ROR
@@ -52,8 +54,19 @@ export class IndexCanvas extends CanvasPage {
         const picker = new Picker(this.gl, { renderTargetRatio: 5 })
         picker.add(this)
 
-        // last is on Top
-        this.add(new SteppersWrapper(this.gl))
+
+        const stepper = new SteppersWrapper(this.gl)
+        const { watch } = useCanvasReactivity(this)
+        watch(isMobile, mobile => {
+            if (!mobile) {
+                stepper.raf.run()
+                this.add(stepper)
+            } else {
+                stepper.node.setParent(null)
+                stepper.raf.stop()
+            }
+        }, { immediate: true })
+
 
         this.add(new HomeMedia(this.gl))
 
