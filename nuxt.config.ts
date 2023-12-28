@@ -19,13 +19,6 @@ export default defineNuxtConfig({
             "~/components/info/"
         ],
     },
-    imports: {
-        // dirs: ["./pages_transitions"]
-    },
-    ignore: [
-        '~/pages/ignore/',
-        '~/pages/ignore/_templatePage.transitions.ts',
-    ],
 
     app: {
         head: {
@@ -40,10 +33,56 @@ export default defineNuxtConfig({
                 },
                 {
                     name: "theme-color",
-                    content: "#000000",
+                    content: "#F7F5F2",
                 },
+                {
+                    key: "description", name: "description",
+                    content: "Oscar Pico's Portfolio"
+                },
+                { key: "og:title", property: "og:title", content: "Oscar Pico" },
+                {
+                    key: "og:url",
+                    property: "og:url",
+                    content: `https://oscar-theta.vercel.app`,
+                },
+                {
+                    key: "og:description",
+                    property: "og:description",
+                    content: "Oscar Pico's Portfolio",
+                },
+                {
+                    key: "og:image",
+                    property: "og:image",
+                    content: `https://oscar-theta.vercel.app/Assets/Home1.png`,
+                },
+                // twitter card
+                {
+                    key: "twitter:title",
+                    name: "twitter:title",
+                    content: "Oscar Pico",
+                },
+                {
+                    key: "twitter:url",
+                    name: "twitter:url",
+                    content: `https://oscar-theta.vercel.app`,
+                },
+                {
+                    key: "twitter:description",
+                    name: "twitter:description",
+                    content: "Oscar Pico's Portfolio",
+                },
+                {
+                    key: "twitter:image",
+                    name: "twitter:image",
+                    content: `https://oscar-theta.vercel.app/Assets/Home1.png`,
+                },
+                {
+                    key: "twitter:card",
+                    name: "twitter:card",
+                    content: "summary_large_image",
+                }
             ],
-            title: "Nam-Hai Boilerplate",
+            title: "Oscar Pico",
             link: [
                 {
                     rel: "preload",
