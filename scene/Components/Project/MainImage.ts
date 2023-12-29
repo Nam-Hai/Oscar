@@ -189,7 +189,7 @@ export class MainImage extends CanvasNode {
         this.tMap.value = manifest.textures.home[src_1]
 
         const a = manifest.lazyTextures[src_2]
-        const t = a.texture
+        const t = a.getTexture()
         this.tMap2.value = t
         this.uniformFromTo[0].intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
 

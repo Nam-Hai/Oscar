@@ -4,7 +4,7 @@ import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 
-const { vh, vw, scale, mouse, scrollLenis} = useStoreView()
+const { vh, vw, scale, mouse, scrollLenis } = useStoreView()
 
 export class Media extends CanvasNode {
     raf: RafR;
@@ -116,7 +116,7 @@ export class Media extends CanvasNode {
 
         const manifest = useManifest()
         const a = manifest.lazyTextures[src_1]
-        this.tMap = { value: a.texture }
+        this.tMap = { value: a.getTexture() }
 
         const { watch } = useCanvasReactivity(this)
         watch(a.loaded, b => {

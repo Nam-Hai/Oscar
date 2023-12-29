@@ -34,48 +34,53 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             {
                 keyId: ProjectSlice1,
                 data: {
-                    src_1: "/Assets/Viadomo/2.png",
-                    src_2: "/Assets/Viadomo/3.png",
+                    src_1: "/Assets/Viadomo/3.jpg",
+                    src_2: "/Assets/Viadomo/3.jpg",
                 },
             },
             {
                 keyId: ProjectSlice2,
                 data: {
-                    src_1: "/Assets/Viadomo/4.png",
-                    src_2: "/Assets/Viadomo/5.png",
+                    src_1: "/Assets/Viadomo/4.jpg",
+                    src_2: "/Assets/Viadomo/5.jpg",
                 },
             },
             {
                 keyId: ProjectSlice3,
                 data: {
-                    src_1: "/Assets/Viadomo/6.png",
-                    src_2: "/Assets/Viadomo/7.png",
-                    src_3: "/Assets/Viadomo/8.png",
-                    src_4: "/Assets/Viadomo/9.png",
+                    src_1: "/Assets/Viadomo/6.jpg",
+                    src_2: "/Assets/Viadomo/7.jpg",
+                    src_3: "/Assets/Viadomo/3.jpg",
                 },
             },
             {
                 keyId: ProjectSlice4,
                 data: {
-                    src_1: "/Assets/Viadomo/9.png",
-                    src_2: "/Assets/Viadomo/9.png",
-                    bg_src: "/Assets/Viadomo/9.png",
+                    src_1: "/Assets/Viadomo/9.jpg",
+                    src_2: "/Assets/Viadomo/10.jpg",
+                    bg_src: "/Assets/Viadomo/9-10-Bg.jpg",
+                },
+            },
+            {
+                keyId: ProjectSlice1,
+                data: {
+                    src_1: "/Assets/Viadomo/3.jpg",
+                    src_2: "/Assets/Viadomo/11.jpg",
                 },
             },
             {
                 keyId: ProjectSlice5,
                 data: {
-                    src_1: "/Assets/Viadomo/9.png",
-                    src_2: "/Assets/Viadomo/9.png",
-                    src_3: "/Assets/Viadomo/9.png",
+                    src_1: "/Assets/Viadomo/13.jpg",
+                    src_2: "/Assets/Viadomo/14.jpg",
+                    src_3: "/Assets/Viadomo/15.jpg",
                 },
             },
             {
                 keyId: ProjectSlice6,
                 data: {
-                    src_1: "/Assets/Viadomo/9.png",
-                    src_2: "/Assets/Viadomo/9.png",
-                    src_3: "/Assets/Viadomo/9.png",
+                    src_1: "/Assets/Viadomo/16.jpg",
+                    src_2: "/Assets/Viadomo/17.jpg",
                 },
             },
             {
@@ -91,7 +96,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         date: "03.2023",
         main_image: {
             src_1: "/Assets/Home_2.jpg",
-            src_2: "/Assets/Viadomo/6.png",
+            src_2: "/Assets/Viadomo/6.jpg",
         },
         slice: [
             {
@@ -106,7 +111,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         date: "03.2023",
         main_image: {
             src_1: "/Assets/Home3.png",
-            src_2: "/Assets/Viadomo/8.png",
+            src_2: "/Assets/Viadomo/8.jpg",
         },
         slice: [
             {

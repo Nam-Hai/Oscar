@@ -13,32 +13,58 @@ const MANIFEST = {
   ]
 };
 const LAZY_MANIFEST = {
-  junk: [
-    "/junk/1.avif",
-    "/junk/2.avif",
-    "/junk/3.avif",
-    "/junk/4.avif",
-  ],
   assets: [
     "/Assets/Viadomo/1.jpg",
-    "/Assets/Viadomo/2.png",
-    "/Assets/Viadomo/3.png",
-    "/Assets/Viadomo/4.png",
-    "/Assets/Viadomo/5.png",
-    "/Assets/Viadomo/6.png",
-    "/Assets/Viadomo/7.png",
-    "/Assets/Viadomo/8.png",
-    "/Assets/Viadomo/9.png",
-    "/Assets/Viadomo/10.png",
-    "/Assets/Viadomo/11.png",
-    "/Assets/Viadomo/12.png",
-    "/Assets/Viadomo/13.png",
+    // "/Assets/Viadomo/2.jpg",
+    "/Assets/Viadomo/3.jpg",
+    "/Assets/Viadomo/4.jpg",
+    "/Assets/Viadomo/5.jpg",
+    "/Assets/Viadomo/6.jpg",
+    "/Assets/Viadomo/7.jpg",
+    // "/Assets/Viadomo/8.jpg",
+    "/Assets/Viadomo/9.jpg",
+    "/Assets/Viadomo/10.jpg",
+    "/Assets/Viadomo/11.jpg",
+    // "/Assets/Viadomo/12.jpg",
+    "/Assets/Viadomo/13.jpg",
+    "/Assets/Viadomo/14.jpg",
+    "/Assets/Viadomo/15.jpg",
+    "/Assets/Viadomo/16.jpg",
+    "/Assets/Viadomo/17.jpg",
   ],
   info: [
     "/Assets/info/Oscar_Pico.png"
   ]
 }
 
+class QLoader {
+  queue: (() => Promise<void>)[] = []
+  on = ref(false)
+  constructor() {
+
+    watch(this.on, b => {
+
+      b && this.load()
+    })
+  }
+  load = async () => {
+    const q = this.queue.shift()
+    if (!q) {
+      this.on.value = false
+      return
+    }
+    await new Promise<void>(async res => {
+      await q()
+      res()
+    })
+    this.load()
+  }
+
+  add(loader: () => Promise<void>) {
+    this.queue.push(loader)
+    this.on.value = true
+  }
+}
 export default class Manifest {
   length: number;
   index: globalThis.Ref<number>;
@@ -51,13 +77,7 @@ export default class Manifest {
 
   lazyTextures: {
     [src: string]: {
-      get texture(): Texture,
-      loaded: Ref<boolean>
-    }
-  }
-  lazyMap: {
-    [src: string]: {
-      get texture(): Texture,
+      getTexture(): Texture,
       loaded: Ref<boolean>
     }
   }
@@ -66,15 +86,13 @@ export default class Manifest {
   canvasContext: any;
   currentBackground: number;
   emptyTexture: Texture;
+  QLoader: QLoader;
 
   constructor(gl: any) {
     this.canvasContext = gl;
     this.textures = {
     }
     this.lazyTextures = {
-    }
-    this.lazyMap = {
-
     }
 
     this.emptyTexture = new Texture(this.canvasContext)
@@ -86,6 +104,8 @@ export default class Manifest {
     this.jsons = {};
 
     this.currentBackground = 0
+
+    this.QLoader = new QLoader()
   }
 
   init() {
@@ -104,7 +124,10 @@ export default class Manifest {
 
       i == this.length && ((manifestLoaded.value = true), unWatch());
     });
+
+
   }
+
 
   async loadManifest() {
     const { manifestLoaded } = useStore();
@@ -126,7 +149,7 @@ export default class Manifest {
             this.textures[keys][src] = texture
             this.lazyTextures[src] = {
               loaded: ref(true),
-              get texture() {
+              getTexture() {
                 return texture
               }
             }
@@ -155,18 +178,20 @@ export default class Manifest {
         const texture = new Texture(this.canvasContext);
         this.lazyTextures[src] = {
           loaded: ref(false),
-          get texture() {
-            if (!this.loaded.value) {
-              const image = new Image();
-              image.crossOrigin = "anonymous";
-
-              image.onload = () => {
-                // useDelay(2000, () => {
-                texture.image = image;
-                this.loaded.value = true
-                // })
-              };
-              image.src = src;
+          getTexture: () => {
+            if (!this.lazyTextures[src].loaded.value) {
+              this.QLoader.add(() => {
+                return new Promise<void>(res => {
+                  const image = new Image();
+                  image.crossOrigin = "anonymous";
+                  image.onload = () => {
+                    texture.image = image;
+                    this.lazyTextures[src].loaded.value = true
+                    res()
+                  };
+                  image.src = src;
+                })
+              })
             }
             return texture;
           }
@@ -179,32 +204,29 @@ export default class Manifest {
     return false
     // start loading auto
 
-    for (const [keys, m] of Object.entries(this.lazyTextures)) {
-      for (const src of Object.keys(m)) {
-        await new Promise<void>((res) => {
+    for (const [src, m] of Object.entries(this.lazyTextures)) {
+      await new Promise<void>((res) => {
+        if (this.lazyTextures[src].loaded.value) {
+          res()
+          return
+        }
+
+        const image = new Image();
+        image.crossOrigin = "anonymous";
+
+        image.onload = () => {
           if (this.lazyTextures[src].loaded.value) {
             res()
             return
           }
-
-          const image = new Image();
-          image.crossOrigin = "anonymous";
-
-          image.onload = () => {
-            if (this.lazyTextures[src].loaded.value) {
-              res()
-              return
-            }
-            useDelay(2000, () => {
-              console.log("DELAYED SHIT", src);
-              this.lazyTextures[src].loaded.value = true
-              this.lazyTextures[src].texture.image = image;
-              res()
-            })
-          };
-          image.src = src;
-        });
-      }
+          // useDelay(2000, () => {
+          this.lazyTextures[src].loaded.value = true
+          this.lazyTextures[src].getTexture().image = image;
+          res()
+          // })
+        };
+        image.src = src;
+      });
     }
 
     console.log(this.lazyTextures);
