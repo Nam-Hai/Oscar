@@ -34,7 +34,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             {
                 keyId: ProjectSlice1,
                 data: {
-                    src_1: "/Assets/Viadomo/3.jpg",
+                    src_1: "/Assets/Viadomo/2.mp4",
                     src_2: "/Assets/Viadomo/3.jpg",
                 },
             },
@@ -50,7 +50,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 data: {
                     src_1: "/Assets/Viadomo/6.jpg",
                     src_2: "/Assets/Viadomo/7.jpg",
-                    src_3: "/Assets/Viadomo/3.jpg",
+                    src_3: "/Assets/Viadomo/8.mp4",
                 },
             },
             {
@@ -64,8 +64,8 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             {
                 keyId: ProjectSlice1,
                 data: {
-                    src_1: "/Assets/Viadomo/3.jpg",
-                    src_2: "/Assets/Viadomo/11.jpg",
+                    src_1: "/Assets/Viadomo/11.jpg",
+                    src_2: "/Assets/Viadomo/12.mp4",
                 },
             },
             {

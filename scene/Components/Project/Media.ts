@@ -27,6 +27,7 @@ export class Media extends CanvasNode {
     on: boolean = false;
     pixelPosition: Vec2;
     fixed: boolean;
+    isVideo: boolean = false;
 
     constructor(gl: any, props: { borderRadius?: number, el: HTMLElement, fixed?: boolean }) {
         super(gl)
@@ -113,6 +114,7 @@ export class Media extends CanvasNode {
         this.el = el
 
         const src_1 = N.Ga(this.el, "data-src") || "/Assets/Home3.png"
+        this.isVideo = src_1.slice(src_1.length - 3, src_1.length) == "mp4"
 
         const manifest = useManifest()
         const a = manifest.lazyTextures[src_1]
@@ -122,6 +124,7 @@ export class Media extends CanvasNode {
         watch(a.loaded, b => {
             if (b) {
                 this.intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
+                this.isVideo && console.log(this.intrinsecRatio, this.tMap.value.image, (this.tMap.value.image as HTMLVideoElement).height);
                 this.computeUniform()
                 useTL().from({
                     d: 300,
@@ -150,6 +153,7 @@ export class Media extends CanvasNode {
             transparent: true,
             depthTest: false,
             depthWrite: false,
+            cullFace: false,
             uniforms: {
                 tMap: this.tMap,
                 uSizePixel: this.uSizePixel,
@@ -173,6 +177,10 @@ export class Media extends CanvasNode {
     update(e: rafEvent) {
         if (this.on) {
             // this.pixelScroll = scrollY
+        }
+        if (this.isVideo) {
+            console.log(this.isVideo, this.uLoaded.value);
+            this.uLoaded.value && (this.tMap.value.needsUpdate = true)
         }
 
         this.node.position.set(

@@ -97,7 +97,7 @@ export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef
             y: [-20, 0, 'rem']
         },
         cb: () => {
-    wrapperRef.value.style.contain = "unset"
+            wrapperRef.value.style.contain = "unset"
             wrapperRef.value.style.transform = 'unset'
             wrapperRef.value.style.willChange = 'unset'
         }

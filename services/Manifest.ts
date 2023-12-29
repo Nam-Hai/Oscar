@@ -15,17 +15,17 @@ const MANIFEST = {
 const LAZY_MANIFEST = {
   assets: [
     "/Assets/Viadomo/1.jpg",
-    // "/Assets/Viadomo/2.jpg",
+    "/Assets/Viadomo/2.mp4",
     "/Assets/Viadomo/3.jpg",
     "/Assets/Viadomo/4.jpg",
     "/Assets/Viadomo/5.jpg",
     "/Assets/Viadomo/6.jpg",
     "/Assets/Viadomo/7.jpg",
-    // "/Assets/Viadomo/8.jpg",
+    "/Assets/Viadomo/8.mp4",
     "/Assets/Viadomo/9.jpg",
     "/Assets/Viadomo/10.jpg",
     "/Assets/Viadomo/11.jpg",
-    // "/Assets/Viadomo/12.jpg",
+    "/Assets/Viadomo/12.mp4",
     "/Assets/Viadomo/13.jpg",
     "/Assets/Viadomo/14.jpg",
     "/Assets/Viadomo/15.jpg",
@@ -182,15 +182,45 @@ export default class Manifest {
             if (!this.lazyTextures[src].loaded.value) {
               this.QLoader.add(() => {
                 return new Promise<void>(res => {
-                  const image = new Image();
-                  image.crossOrigin = "anonymous";
-                  image.onload = () => {
-                    texture.image = image;
-                    this.lazyTextures[src].loaded.value = true
-                    res()
-                  };
-                  image.src = src;
+
+                  console.log(src);
+                  if (src.slice(src.length - 3, src.length) == 'mp4') {
+                    console.log(src);
+                    const video = document.createElement('video');
+                    video.src = src;
+                    // Disclaimer: video autoplay is a confusing, constantly-changing browser feature.
+                    // The best approach is to never assume that it will work, and therefore prepare for a fallback.
+                    video.loop = true;
+                    video.muted = true;
+                    video.setAttribute('playsinline', 'playsinline');
+                    video.play();
+                    const load = () => {
+                      if (video.readyState >= video.HAVE_ENOUGH_DATA) {
+                        video.width = video.videoWidth
+                        video.height = video.videoHeight
+                        texture.image = video;
+                        this.lazyTextures[src].loaded.value = true
+                        texture.needsUpdate = true;
+                        res()
+                      } else {
+                        requestAnimationFrame(load);
+                      }
+                    }
+                    load()
+                  } else {
+                    const image = new Image();
+                    console.log('image');
+                    image.crossOrigin = "anonymous";
+                    image.onload = () => {
+                      texture.image = image;
+                      this.lazyTextures[src].loaded.value = true
+                      res()
+                    };
+                    image.src = src;
+                  }
                 })
+
+
               })
             }
             return texture;
