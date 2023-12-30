@@ -111,7 +111,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         date: "03.2023",
         main_image: {
             src_1: "/Assets/Home3.png",
-            src_2: "/Assets/Viadomo/8.jpg",
+            src_2: "/Assets/Viadomo/3.jpg",
         },
         slice: [
             {
