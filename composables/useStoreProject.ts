@@ -119,6 +119,22 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 data: {},
             }
         ]
+    },
+
+    "mapfre-salud": {
+        title: 'mapfre salud',
+        type: "App design",
+        date: "11.2022",
+        main_image: {
+            src_1: "/Assets/Home4.png",
+            src_2: "/Assets/Viadomo/3.jpg",
+        },
+        slice: [
+            {
+                keyId: "ProjectSliceNextProject",
+                data: {},
+            }
+        ]
     }
 
 }
@@ -134,6 +150,7 @@ export const useStoreProject = createStore(() => {
         ['viadomo-deco', 0],
         ['avant-garden', 1],
         ['mucho-matxa', 2],
+        ['mapfre-salud', 3],
     ])
 
     const nextPageTitleRef = ref() as Ref<HTMLElement>

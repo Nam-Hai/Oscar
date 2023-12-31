@@ -48,6 +48,7 @@ export const useStoreStepper = createStore(() => {
     stack[0].renderOrder++
 
     function getTexture(id: number) {
+        console.log(id, currentIndex.value);
         const homeTextures = Object.values(useManifest().textures.home)
         return homeTextures[id]
     }
