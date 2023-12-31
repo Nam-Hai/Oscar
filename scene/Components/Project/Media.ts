@@ -98,6 +98,7 @@ export class Media extends CanvasNode {
         }
 
         this.onDestroy(() => resizeUnWatch())
+        
     }
 
     onScroll(e: any) {

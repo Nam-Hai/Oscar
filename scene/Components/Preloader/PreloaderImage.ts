@@ -138,8 +138,8 @@ export class PreloaderImage extends CanvasNode {
             const tl = useTL()
             this.uDeform.value = 1
             tl.from({
-                d: 700,
-                e: 'o1',
+                d: 1200,
+                e: 'o4',
                 update: (e) => {
                     this.progress = e.progE
                     this.uSizePixel.value.set(
@@ -205,7 +205,7 @@ export class PreloaderImage extends CanvasNode {
                 }
             })
                 .from({
-                    d: 400,
+                    d: 500,
                     e: "io1",
                     delay: 400 + DELAY,
                     update: (e) => {
@@ -213,9 +213,9 @@ export class PreloaderImage extends CanvasNode {
                     }
                 })
                 .from({
-                    d: 400,
+                    d: 600,
                     e: "o2",
-                    delay: 800 + DELAY,
+                    delay: 400 + 500 + DELAY,
                     update: (e) => {
                         this.uDeform.value = N.Lerp(-1, 0, e.progE)
                     },
@@ -353,7 +353,7 @@ void main() {
 
     vec4 mvmP = modelViewMatrix * vec4(p, 1.);
 
-    mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 1. * uDeform;
+    mvmP.z += (cos(d / dMax * 3.1415 )  - 1. )* 0.8 * uDeform;
 
     gl_Position = projectionMatrix * mvmP;
 }`;

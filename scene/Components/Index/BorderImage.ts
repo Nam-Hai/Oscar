@@ -236,7 +236,7 @@ void main() {
     color = mix(color, vec4(0.), uHide);
 
     color = mix(color, vec4(0.), uFake);
-    vec4 borderColor = mix(color, vec4(1.), uTransparency);
+    vec4 borderColor = mix(color, vec4(0.98,1.,0., 1.), uTransparency);
     float borderWidth = 1.;
 
     float xPixel = vUv.x * uSizePixel.x;

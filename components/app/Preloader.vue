@@ -91,6 +91,14 @@ onMounted(() => {
 
   manifest.init()
 
+  useTL().from({
+    el: N.getAll(".overflow-content", wrapperRef.value),
+    p: {
+      y: [-100, 0]
+    },
+    d: 500
+  }).play()
+
   const percentage = manifest.percentage
   watch(percentage, (next, old) => {
     percentageRef.value = next
@@ -107,7 +115,9 @@ onMounted(() => {
 function endLoading() {
   canvas.preloader()
 
-  N.Class.add(wrapperRef.value, 'hide')
+  useDelay(3700, () => {
+    if (wrapperRef.value) N.Class.add(wrapperRef.value, 'hide')
+  })
 }
 
 </script>
@@ -130,7 +140,8 @@ function endLoading() {
   &.hide {
 
     .overflow-content {
-      transform: translateY(105%);
+      transform: translateY(105%) !important;
+      transition: transform 500ms;
     }
   }
 
@@ -170,7 +181,6 @@ function endLoading() {
 
   .overflow-content {
     transform: translateY(0%);
-    transition: transform 1000ms $easeOutQuart;
   }
 }
 
