@@ -232,7 +232,7 @@ export class SteppersWrapper extends CanvasNode {
                     y: -size.value.height / 2 + (imageBounds.h / 2 + 30) * size.value.height / vh.value
                 }
                 el.tl.reset()
-                const delay = immediate ? 0 : 150 * (el.index)
+                const delay = immediate ? 0 : 70 * (el.index)
                 if (immediate) posI.copy(el.node.position)
                 el.tl.from({
                     d: delay,
