@@ -125,7 +125,6 @@ export class Media extends CanvasNode {
         watch(a.loaded, b => {
             if (b) {
                 this.intrinsecRatio = (this.tMap.value.image as HTMLImageElement).width / (this.tMap.value.image as HTMLImageElement).height
-                this.isVideo && console.log(this.intrinsecRatio, this.tMap.value.image, (this.tMap.value.image as HTMLVideoElement).height);
                 this.computeUniform()
                 useTL().from({
                     d: 300,
@@ -180,7 +179,6 @@ export class Media extends CanvasNode {
             // this.pixelScroll = scrollY
         }
         if (this.isVideo) {
-            console.log(this.isVideo, this.uLoaded.value);
             this.uLoaded.value && (this.tMap.value.needsUpdate = true)
         }
 

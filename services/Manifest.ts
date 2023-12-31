@@ -96,7 +96,7 @@ export default class Manifest {
     this.lazyTextures = {
     }
 
-    this.emptyTexture = new Texture(this.canvasContext)
+    this.emptyTexture = new Texture(this.canvasContext, {format: this.canvasContext.RGB})
 
     this.index = ref(0);
     this.percentage = ref(0);
@@ -176,7 +176,7 @@ export default class Manifest {
     for (const [keys, m] of Object.entries(LAZY_MANIFEST)) {
       // this.lazyTextures[keys] = {}
       for (const src of m) {
-        const texture = new Texture(this.canvasContext);
+        const texture = new Texture(this.canvasContext, {format: this.canvasContext.RGB});
         this.lazyTextures[src] = {
           loaded: ref(false),
           getTexture: () => {
@@ -186,7 +186,6 @@ export default class Manifest {
 
                   console.log(src);
                   if (src.slice(src.length - 3, src.length) == 'mp4') {
-                    console.log(src);
                     const video = document.createElement('video');
                     video.src = src;
                     // Disclaimer: video autoplay is a confusing, constantly-changing browser feature.
@@ -202,7 +201,9 @@ export default class Manifest {
                         texture.image = video;
                         this.lazyTextures[src].loaded.value = true
                         texture.needsUpdate = true;
-                        res()
+                        useDelay(30, () => {
+                          res()
+                        })
                       } else {
                         requestAnimationFrame(load);
                       }
@@ -215,7 +216,10 @@ export default class Manifest {
                     image.onload = () => {
                       texture.image = image;
                       this.lazyTextures[src].loaded.value = true
-                      res()
+                      // prevent too big chunk of memory allocation
+                      useDelay(100, () => {
+                        res()
+                      })
                     };
                     image.src = src;
                   }
