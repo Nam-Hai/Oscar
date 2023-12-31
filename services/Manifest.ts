@@ -96,7 +96,7 @@ export default class Manifest {
     this.lazyTextures = {
     }
 
-    this.emptyTexture = new Texture(this.canvasContext, {format: this.canvasContext.RGB})
+    this.emptyTexture = new Texture(this.canvasContext)
 
     this.index = ref(0);
     this.percentage = ref(0);
@@ -140,7 +140,7 @@ export default class Manifest {
       this.textures[keys] = {}
       for (const src of m) {
         await new Promise<void>((res) => {
-          const texture = new Texture(this.canvasContext);
+          const texture = new Texture(this.canvasContext, { format: this.canvasContext.RGB });
           const image = new Image();
           image.crossOrigin = "anonymous";
 
@@ -176,7 +176,7 @@ export default class Manifest {
     for (const [keys, m] of Object.entries(LAZY_MANIFEST)) {
       // this.lazyTextures[keys] = {}
       for (const src of m) {
-        const texture = new Texture(this.canvasContext, {format: this.canvasContext.RGB});
+        const texture = new Texture(this.canvasContext, { format: this.canvasContext.RGB });
         this.lazyTextures[src] = {
           loaded: ref(false),
           getTexture: () => {
