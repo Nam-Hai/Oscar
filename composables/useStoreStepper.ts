@@ -9,7 +9,6 @@ const homeStore = [
     },
     {
         title: "Avant garden",
-        titleHTML: '<span class="overflow-content">A</span><span class="overflow-content">v</span><span class="overflow-content">a</span><span class="overflow-content">n</span><span class="overflow-content">t</span><span class="overflow-content">&nbsp;</span><span class="overflow-content">g</span><span class="overflow-content">a</span><span class="overflow-content">r</span><span class="overflow-content">d</span><span class="overflow-content">e</span><span class="overflow-content">n</span>',
         flavorMain: "Fashion clothing from the future.",
         flavorSub: ["Web design", "Fashion", "03.2023"],
         link: "/project-page/avant-garden",
@@ -17,16 +16,22 @@ const homeStore = [
     },
     {
         title: "MUCHO MATXA",
-        titleHTML: '<span class="overflow-content">M</span><span class="overflow-content">U</span><span class="overflow-content">C</span><span class="overflow-content">H</span><span class="overflow-content">O</span><span class="overflow-content">&nbsp;</span><span class="overflow-content">M</span><span class="overflow-content">A</span><span class="overflow-content">T</span><span class="overflow-content">X</span><span class="overflow-content">A</span>',
         flavorMain: "Lorem ipsum dolor sit amet consectetur.",
         flavorSub: ["Type", "Field", "Date"],
         link: "/project-page/mucho-matxa",
         mini: "/Assets/Minia/home_mini_3.jpg",
+    },
+    {
+        title: "MAPFRE SALUD",
+        flavorMain: "An online and face-to-face health app.",
+        flavorSub: ["App Design", "Health", "11.2022"],
+        link: "/project-page/mapfre-salud",
+        mini: "/Assets/Minia/home_mini_4.jpg",
     }
 ]
 
 export const useStoreStepper = createStore(() => {
-    const LERP = [0.15, 0.11, 0.09]
+    const LERP = [0.15, 0.11, 0.09, 0.077]
     const imageBounds = { w: 100, h: 60 }
     const length = homeStore.length
     const currentIndex = ref(0)
@@ -34,9 +39,10 @@ export const useStoreStepper = createStore(() => {
     const idToIndex = new Map<number, number>()
 
     const stack = N.Arr.create(length).map((el, index) => {
+        const i = N.mod(index - 1, length)
         return {
-            lerp: LERP[index],
-            renderOrder: length - 1 - index,
+            lerp: LERP[i],
+            renderOrder: length - 1 - i,
         }
     })
     stack[0].renderOrder++

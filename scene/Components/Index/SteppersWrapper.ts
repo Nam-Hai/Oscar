@@ -94,7 +94,9 @@ export class SteppersWrapper extends CanvasNode {
                 } else {
                     dir = index - curr
                 }
-                const c = this.child[dir == -1 ? 0 : length - 1]
+
+                const i = dir == 1 ? 0 : 1
+                const c = this.child[i]
                 const from = c.positionTarget.y
                 const fromX = c.positionTarget.x
                 scrollTL.from({
@@ -105,7 +107,7 @@ export class SteppersWrapper extends CanvasNode {
                         c.positionTarget.x = N.Lerp(fromX + 0.2, fromX, e.progE)
                     }
                 }).from({
-                    d: 150,
+                    d: 200,
                     update: () => {
 
                     },
@@ -114,6 +116,7 @@ export class SteppersWrapper extends CanvasNode {
                             e.setRenderOrder(stack[i].renderOrder)
                             e.lerp = stack[i].lerp
                         }
+                        this.child[0].setRenderOrder(0)
                     },
                 })
                     .play()
@@ -122,10 +125,11 @@ export class SteppersWrapper extends CanvasNode {
                     e.setRenderOrder(stack[i].renderOrder)
                     e.lerp = stack[i].lerp
                 }
+                this.child[0].setRenderOrder(0)
             }
             click = false
 
-            this.onStepperHover(stepperIsHovered.value, true)
+            this.onStepperHover(stepperIsHovered.value, { immediate: true, setOrder: false })
         })
 
     }
@@ -211,13 +215,15 @@ export class SteppersWrapper extends CanvasNode {
         }
     }
 
-    onStepperHover(h: boolean, immediate = false) {
+    onStepperHover(h: boolean, { immediate = false, setOrder = true }) {
         for (const el of [...this.child, this.fakeImage]) {
             if (currentIndex.value == el.index && !el.fake) {
                 el.raf.run()
                 continue
             }
             if (h) {
+
+                this.child[0].setRenderOrder(200)
                 const { size } = useCanvas()
                 const posI = new Vec3(0)
 
@@ -253,6 +259,15 @@ export class SteppersWrapper extends CanvasNode {
                 }).play()
             } else {
                 el.tl.reset()
+
+                if (setOrder) {
+                    for (const [i, e] of this.child.entries()) {
+                        e.setRenderOrder(stack[i].renderOrder)
+                        e.lerp = stack[i].lerp
+                    }
+                    this.child[0].setRenderOrder(0)
+                }
+
                 if (el.fake) {
                     el.tl.from({
                         d: 500,

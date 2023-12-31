@@ -7,6 +7,7 @@ const MANIFEST = {
     "/Assets/Home1.png",
     "/Assets/Home_2.jpg",
     "/Assets/Home3.png",
+    "/Assets/Home4.png",
   ],
   assets: [
 
