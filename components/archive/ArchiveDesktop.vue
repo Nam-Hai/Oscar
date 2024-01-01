@@ -15,7 +15,7 @@
 
     <div class="archive__display-image" ref="displayRef">
         <div :data-src="copy.src" alt="archive__display-image" v-for="(copy, index) in COPY"
-            :key="`archive-display-${index}`" :class="{ show: hoverIndex == index, horizontal: copy.imageDirection }"
+            :key="`archive-display-${index}`" :class="{ show: hoverIndex == index, horizontal: copy.imageDirection == 'horizontal' }"
             :style="{ aspectRatio: copy.ratio }" ref="placeholderRefs"></div>
     </div>
 
@@ -232,7 +232,7 @@ const translate = computed(() => {
         top: 0;
         left: 0;
         height: 100%;
-        max-height: 100%;
+        // max-height: 100%;
         max-width: 100%;
         object-fit: cover;
         background-color: $placeholder-grey;

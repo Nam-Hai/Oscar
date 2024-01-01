@@ -13,11 +13,11 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
     {
         // src: "/Assets/info/Oscar_Pico.png",
         src: "/Assets/Home1.png",
-        imageDirection: "horizontal",
+        imageDirection: "vertical",
         text: {
-            title: "Title",
+            title: "Title 1",
             category: "Category",
-            source: "img source"
+            source: "Img Source"
         },
         bounds: {
             "margin-top": "0rem",
@@ -29,6 +29,7 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
     },
     {
         src: "/Assets/info/Oscar_Pico.png",
+        imageDirection: "horizontal",
         text: {
             title: "Title",
             category: "Category",
@@ -40,7 +41,7 @@ const ARCHIVE_COPY: ArchiveCopyType[] = [
             "margin-top": "20.8rem",
             "margin-left": "15.9rem"
         },
-        ratio: "269 / 363",
+        ratio: "268 / 171",
     },
     {
         src: "/Assets/info/Oscar_Pico.png",
