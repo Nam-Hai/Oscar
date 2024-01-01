@@ -155,7 +155,7 @@ usePageFlow({
 @use "@/styles/shared.scss" as *;
 
 main {
-    height: 100vh;
+    height: var(--100vh);
     width: 100vw;
     top: 0;
     // background-color: black;

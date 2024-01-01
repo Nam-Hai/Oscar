@@ -13,8 +13,9 @@ export const secondScrollEase = N.Ease.io2
 
 const endBounds = computed(() => {
     return {
-        height: vh.value - 24 * 2 * scale.value,
-        width: vw.value - 24 * 2 * scale.value,
+        // height: vh.value - 24 * 2 * scale.value,
+        height: 1220 * scale.value,
+        width: vw.value - 16 * 2 * scale.value,
     }
 })
 export class MainImage extends CanvasNode {
@@ -387,7 +388,7 @@ export class MainImage extends CanvasNode {
             )
 
             if (!this.bounds) return
-            const x = N.Lerp(this.bounds[1].x, 24 * scale.value, t) + this.uSizePixel.value.x / 2 - vw.value / 2
+            const x = N.Lerp(this.bounds[1].x, 16 * scale.value, t) + this.uSizePixel.value.x / 2 - vw.value / 2
 
             const y = vh.value / 2 - this.uSizePixel.value.y / 2 - N.Lerp(vh.value - 24 * scale.value - this.bounds[1].height, (vh.value - this.bounds[1].height) * .6 + 12 * scale.value, t)
             // const y = vh.value / 2 - this.uSizePixel.value.y / 2 - (vh.value - 24 * scale.value - this.bounds[1].height) - this.pixelScroll

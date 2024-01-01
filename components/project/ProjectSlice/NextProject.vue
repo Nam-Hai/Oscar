@@ -243,6 +243,7 @@ h1 {
     left: 0;
     margin-top: 3rem;
 
+    line-height: 100%;
     pointer-events: none;
     // opacity: 0;
     transition: opacity 300ms, color 350ms;

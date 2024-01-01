@@ -30,8 +30,8 @@ onFlow(async () => {
     position: relative;
     background-color: $placeholder-grey;
 
-    margin: 22.4rem 1.6rem;
-    width: calc(100vw - 3.2rem);
+    margin: 22.4rem 0;
+    width: 100vw;
 
     height: 180rem;
     background-size: cover;

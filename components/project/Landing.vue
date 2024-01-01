@@ -291,7 +291,8 @@ function scrollTop() {
 }
 
 .pin-margin {
-    height: calc(800px + 3 * 0.9 * 17.7rem - 6.65 * 2.4rem);
+    // height: calc(800px + 3 * 0.9 * 17.7rem - 6.65 * 2.4rem + 122rem - 100vh);
+    height: calc(800px + 3 * 0.9 * 17.7rem - 4.65 * 2.4rem + 122rem - 100vh);
     width: 20rem;
 
     @include breakpoint(mobile) {

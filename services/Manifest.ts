@@ -184,7 +184,6 @@ export default class Manifest {
               this.QLoader.add(() => {
                 return new Promise<void>(res => {
 
-                  console.log(src);
                   if (src.slice(src.length - 3, src.length) == 'mp4') {
                     const video = document.createElement('video');
                     video.src = src;
@@ -211,7 +210,6 @@ export default class Manifest {
                     load()
                   } else {
                     const image = new Image();
-                    console.log('image');
                     image.crossOrigin = "anonymous";
                     image.onload = () => {
                       texture.image = image;
@@ -263,8 +261,6 @@ export default class Manifest {
         image.src = src;
       });
     }
-
-    console.log(this.lazyTextures);
   }
 
   getBackground() {
