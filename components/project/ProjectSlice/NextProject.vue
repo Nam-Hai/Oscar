@@ -46,8 +46,6 @@ const dataSrc = Object.keys(useManifest().textures.home)[nextIndex]
 
 const { pickerDark } = useCursorStore()
 const { homeStore } = useStoreStepper()
-const { isMobile } = useStore()
-const { mouse } = useStoreView()
 const hover = ref(false)
 
 const data = homeStore[nextIndex]
@@ -69,6 +67,8 @@ onSwap(async () => {
     projectCanvas.addNextPageMedia(wrapperRef.value)
 })
 
+const { isMobile } = useStore()
+const { mouse } = useStoreView()
 const translate = computed(() => {
     return `translate(calc(${mouse.value.x}px - 50%), ${mouse.value.y}px)`
 })
@@ -141,6 +141,7 @@ onLeave(() => {
     width: 100vw;
     top: 0;
     color: $white;
+    clip-path: inset(0 0 0 0);
 
     &:hover {
         .next {
@@ -243,7 +244,7 @@ h1 {
     margin-top: 3rem;
 
     pointer-events: none;
-    opacity: 0;
+    // opacity: 0;
     transition: opacity 300ms, color 350ms;
 
     &.dark {

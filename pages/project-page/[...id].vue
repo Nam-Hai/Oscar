@@ -1,5 +1,8 @@
 <template>
     <main class="project__wrapper" ref="wrapperRef">
+        <div class="scroll-display" :class="{ dark: pickerDark }" :style="{ transform: translate }" v-if="isMobile != true">
+            100
+        </div>
         <Landing :id="id" />
         <component v-for="(slice, index) of COPY.slice" :is="slice.keyId" :data="slice.data"
             :key="'project-slice-' + index" />
@@ -14,6 +17,13 @@ import { useCanvasMainImageProject } from '~/scene/Components/Project/MainImage'
 
 // const { client } = usePrismic()
 // const { data: media } = await useAsyncData('media', () => client.getAllByType('mediatest'))
+
+const { pickerDark } = useCursorStore()
+const { isMobile } = useStore()
+const { mouse } = useStoreView()
+const translate = computed(() => {
+    return `translate(calc(${mouse.value.x}px - 50%), ${mouse.value.y}px)`
+})
 
 const route = useFlowProvider().getRouteTo()
 const id = route.params.id ? route.params.id[0] : 'viadomo-deco'
@@ -69,5 +79,25 @@ usePageFlow({
     width: 100vw;
 
     // overflow: hidden;
+}
+
+.scroll-display {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: 3rem;
+    line-height: 100%;
+    font-size: 1.1rem;
+    pointer-events: none;
+    // opacity: 0;
+    transition: opacity 300ms, color 350ms;
+
+    &.dark {
+        color: black
+    }
+
+    &.yellow {
+        color: $yellow !important;
+    }
 }
 </style>
