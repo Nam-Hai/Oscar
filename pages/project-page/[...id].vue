@@ -1,12 +1,14 @@
 <template>
     <main class="project__wrapper" ref="wrapperRef">
-
         <Teleport to=".app__wrapper">
+          <div class="scroll-display-f__wrapper" :style="{clipPath: `inset(0 0 ${clipPercentage * 100}% 0)`}">
             <div class="scroll-display-f" :class="{ dark: pickerDark, show: scrollDisplayShow }" :style="{ transform: translate }"
                 v-if="isMobile != true">
                 {{ scrollPercent }}
             </div>
+          </div>
         </Teleport>
+
         <Landing :id="id" />
         <component v-for="(slice, index) of COPY.slice" :is="slice.keyId" :data="slice.data"
             :key="'project-slice-' + index" />
@@ -25,7 +27,7 @@ import { onFlow } from '~/waterflow/composables/onFlow';
 
 const { pickerDark } = useCursorStore()
 const { isMobile } = useStore()
-const { mouse, vh } = useStoreView()
+const { mouse, vh, scrollLenis } = useStoreView()
 const translate = computed(() => {
     return `translate(calc(${mouse.value.x}px - 50%), ${mouse.value.y}px)`
 })
@@ -53,6 +55,7 @@ onFlow(() => {
     scrollDisplayShow.value = true
 })
 
+const clipPercentage = ref(0)
 useLenisScroll((e) => {
     const lenis = useLenis()
     const mainImage = useCanvasMainImageProject()
@@ -60,6 +63,8 @@ useLenisScroll((e) => {
     const firstScroll = mainImage.firstScroll
     if (firstScroll) {
         scrollPercent.value = ZL(Math.min(e.animatedScroll / (e.dimensions.scrollHeight - 2 * vh.value) * 100, 100))
+        const h = e.dimensions.scrollHeight
+        clipPercentage.value = N.iLerp(e.animatedScroll, h - 2*vh.value, h - vh.value)
     }
     if (!firstScroll.value && e.velocity > 0) {
         lenis.stop()
@@ -99,18 +104,24 @@ usePageFlow({
     // overflow: hidden;
 }
 
-.scroll-display-f {
+.scroll-display-f__wrapper {
     position: fixed;
+    height: 100vh;
+    width: 100vw;
     top: 0;
     left: 0;
-    margin-top: 3rem;
+    z-index: 200;
+    pointer-events: none;
+}
+.scroll-display-f {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: calc(16px + 0.6rem);
     line-height: 100%;
     font-size: 1.1rem;
-    pointer-events: none;
     opacity: 0;
     transition: opacity 300ms, color 350ms;
-
-    z-index: 2000;
     color: white;
 
     &.show {

@@ -241,7 +241,8 @@ h1 {
     position: fixed;
     top: 0;
     left: 0;
-    margin-top: 3rem;
+
+    margin-top: calc(16px + 0.6rem);
 
     line-height: 100%;
     pointer-events: none;
