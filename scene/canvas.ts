@@ -18,7 +18,6 @@ export default class Canvas {
     camera: Camera;
     scene: Transform;
 
-    ro: any;
 
     nextPage: CanvasPage | undefined;
     currentPage!: CanvasPage;
@@ -32,6 +31,7 @@ export default class Canvas {
 
     dom: HTMLCanvasElement;
     archive?: ArchiveCanvas;
+    ro: ROR;
 
     constructor() {
         this.renderer = new Renderer({

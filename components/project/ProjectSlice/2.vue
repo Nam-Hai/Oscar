@@ -18,7 +18,7 @@ const elRef2 = ref()
 onFlow(async () => {
     await nextTick()
     projectCanvas.addMedia(elRef1.value)
-    projectCanvas.addMedia(elRef2.value)
+    projectCanvas.addMedia(elRef2.value, 0.3)
 })
 </script>
 

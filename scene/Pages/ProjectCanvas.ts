@@ -2,83 +2,90 @@ import { RafPriority, type RafR, type rafEvent } from "~/plugins/core/raf";
 import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 
 import { CanvasPage } from "../utils/types";
-import { Transform, type Camera, type OGLRenderingContext, type Renderer } from "ogl";
+import {
+	Transform,
+	type Camera,
+	type OGLRenderingContext,
+	type Renderer,
+} from "ogl";
 import { Picker } from "../Components/Picker";
 import { MainImage } from "../Components/Project/MainImage";
 import { Media } from "../Components/Project/Media";
 import { StaticMedia } from "../Components/Project/StaticMedia";
 
-export const [provideProjectCanvas, useProjectCanvas] = canvasInject<ProjectCanvas>('canvas-project-canvas')
+export const [provideProjectCanvas, useProjectCanvas] =
+	canvasInject<ProjectCanvas>("canvas-project-canvas");
 
 export class ProjectCanvas extends CanvasPage {
+	ro: ROR;
+	raf: RafR;
+	renderer: Renderer;
+	camera: Camera;
+	scene: Transform;
 
-    ro: ROR
-    raf: RafR
-    canvasScene: any
-    target: any;
-    renderer: Renderer;
-    camera: Camera;
-    scene: Transform;
+	constructor(
+		gl: OGLRenderingContext,
+		options: { scene: Transform; camera: Camera },
+	) {
+		super(gl);
+		provideProjectCanvas(this);
 
-    constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
-        super(gl)
-        provideProjectCanvas(this)
+		this.scene = options.scene;
+		this.node = new Transform();
+		this.node.setParent(options.scene);
 
-        this.scene = options.scene
-        this.node = new Transform()
-        this.node.setParent(options.scene)
+		this.renderer = this.gl.renderer;
 
-        this.renderer = this.gl.renderer
+		this.camera = options.camera;
 
-        this.camera = options.camera
+		this.onDestroy(() => {
+			this.node.setParent(null);
+		});
 
+		N.BM(this, ["render", "resize", "init", "destroy"]);
 
-        this.onDestroy(() => {
-            this.node.setParent(null);
-        })
+		this.ro = useROR(this.resize);
+		this.raf = useRafR(this.render, RafPriority.LAST);
 
-        N.BM(this, ["render", "resize", "init", "destroy"]);
+		this.mount();
 
-        this.ro = useROR(this.resize)
-        this.raf = useRafR(this.render, RafPriority.LAST)
+		this.onDestroy(() => this.ro.off());
+		this.onDestroy(() => this.raf.kill());
+	}
+	init() {
+		this.raf.run();
+		this.ro.on();
+	}
 
+	mount() {
+		const picker = new Picker(this.gl, { renderTargetRatio: 5 });
+		picker.add(this);
 
-        this.mount()
+		this.add(new MainImage(this.gl, {}));
+	}
 
-        this.onDestroy(() => this.ro.off())
-        this.onDestroy(() => this.raf.kill())
-    }
-    init() {
-        this.raf.run()
-        this.ro.on()
-    }
+  // Media with deform
+	addMedia(el: HTMLElement, parallaxForce = 0) {
+		this.add(new Media(this.gl, { el, parallaxForce}));
+	}
 
-    mount() {
-        const picker = new Picker(this.gl, { renderTargetRatio: 5 })
-        picker.add(this)
+  // Next Section
+	addNextPageMedia(el: HTMLElement) {
+		this.add(new StaticMedia(this.gl, { el }));
+	}
 
-        this.add(new MainImage(this.gl, {}))
-    }
+	resize({ vh, vw, scale, breakpoint }: ResizeEvent) {}
 
-    addMedia(el: HTMLElement) {
-        this.add(new Media(this.gl, { el }))
-    }
-    addNextPageMedia(el: HTMLElement) {
-        this.add(new StaticMedia(this.gl, { el }))
-    }
+	render(e: rafEvent) {
+		this.renderer.render({
+			scene: this.scene,
+			camera: this.camera,
+			frustumCull: false,
+		});
+	}
 
-    resize({ vh, vw, scale, breakpoint }: ResizeEvent) {
-    }
-
-    render(e: rafEvent) {
-        this.renderer.render({
-            scene: this.scene,
-            camera: this.camera,
-            frustumCull: false
-        })
-    }
-
-    destroy() {
-        super.destroy()
-    }
+	destroy() {
+		super.destroy();
+	}
 }
+

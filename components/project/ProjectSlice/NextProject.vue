@@ -28,15 +28,14 @@
                 </div>
             </div>
 
-            <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
-                :style="{ transform: translate }">Next Project</div>
+            <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }" :style="{ transform: translate }">Next Project</div>
         </div>
     </Teleport>
 </template>
 
 <script lang="ts" setup>
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
-import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
+  import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 
 const { } = defineProps<{ data: {} }>()

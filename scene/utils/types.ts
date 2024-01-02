@@ -1,75 +1,69 @@
 import Callstack from "./Callstack";
-import { type OGLRenderingContext, type Transform } from 'ogl'
+import { type OGLRenderingContext, type Transform } from "ogl";
 import { getUId } from "./WebGL.utils";
 
 export class CanvasNode {
-  gl: OGLRenderingContext;
-  destroyStack: Callstack;
-  killed: boolean = false;
+	gl: OGLRenderingContext;
+	destroyStack: Callstack;
+	killed = false;
 
-  declare node: Transform;
-  id: number;
-  uId: { value: [number, number, number, number]; };
+	declare node: Transform;
+	id: number;
+	uId: { value: [number, number, number, number] };
 
-  constructor(gl: any) {
-    this.gl = gl
-    const { id, uId } = getUId()
-    this.id = id
-    this.uId = { value: uId }
+	constructor(gl: OGLRenderingContext) {
+		this.gl = gl;
+		const { id, uId } = getUId();
+		this.id = id;
+		this.uId = { value: uId };
 
-    // N.BM(this, ["mount"])
-    this.destroyStack = new Callstack()
+		// N.BM(this, ["mount"])
+		this.destroyStack = new Callstack();
+	}
 
-  }
+	mount() {
+		// place where you add new CanvasNode
+		// this.add(
+		//   new Welcome(this.gl)
+		// )
+	}
+	init() { }
 
-  mount() {
-    // place where you add new CanvasNode
-    // this.add(
-    //   new Welcome(this.gl)
-    // )
+	add(canvasNode: CanvasNode | CanvasNode[]) {
+		if (Array.isArray(canvasNode)) {
+			for (const canvasN of canvasNode) {
+				canvasN.node.setParent(this.node);
 
-  }
-  init() {
-  }
+				this.onDestroy(() => {
+					canvasN.destroy();
+				});
+			}
+		} else {
+			canvasNode.node.setParent(this.node);
+			this.onDestroy(() => {
+				canvasNode.destroy();
+			});
+		}
 
-  add(canvasNode: CanvasNode | CanvasNode[]) {
-    if (Array.isArray(canvasNode)) {
-      for (const canvasN of canvasNode) {
+		return this;
+	}
 
-        canvasN.node.setParent(this.node)
+	onDestroy(callback: () => void) {
+		this.destroyStack.add(callback);
+	}
 
-        this.onDestroy(() => {
-
-          canvasN.destroy()
-        })
-      }
-    } else {
-      canvasNode.node.setParent(this.node)
-      this.onDestroy(() => {
-        canvasNode.destroy()
-      })
-    }
-
-    return this
-  }
-
-  onDestroy(callback: () => void) {
-    this.destroyStack.add(callback)
-  }
-
-  destroy() {
-    if (this.killed) return
-    this.killed = true
-    this.node.setParent(null)
-    this.destroyStack.call()
-  }
+	destroy() {
+		if (this.killed) return;
+		this.killed = true;
+		this.node.setParent(null);
+		this.destroyStack.call();
+	}
 }
 
 export class CanvasPage extends CanvasNode {
-
-  destroy() {
-    if (this.killed) return
-    this.killed = true
-    this.destroyStack.call()
-  }
+	destroy() {
+		if (this.killed) return;
+		this.killed = true;
+		this.destroyStack.call();
+	}
 }
