@@ -42,6 +42,10 @@ import { indexFlowOutMap } from '~/pages_transitions/index.transition';
 import { defaultFlowIn } from '~/pages_transitions/default.transition';
 // import { indexFlowIn} from "~/pages"
 
+useResetLenis({
+    infinite: true,
+})
+
 let first = false
 function headerMove(e: MouseEvent) {
     if (!first) {
@@ -135,9 +139,6 @@ onLeave(() => {
     }
 })
 
-useResetLenis({
-    infinite: true,
-})
 
 usePageFlow({
     props: {

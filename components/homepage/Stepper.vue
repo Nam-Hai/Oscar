@@ -35,28 +35,29 @@ onFlow(() => {
 
 useLenisScroll((e: Lenis) => {
     // console.log('lenis', e.direction, on);
-    if (!on) return
-    if (Math.abs(e.velocity) == 0) return
+  return
+  if (!on) return
+  if (Math.abs(e.velocity) == 0) return
 
-    on = false
-    const direction = e.direction
-    const i = currentIndex.value
-    currentIndex.value = mod(i + direction, length)
+  on = false
+  const direction = e.direction
+  const i = currentIndex.value
+  currentIndex.value = mod(i + direction, length)
 
-    const lenis = useLenis()
-    lenis.stop()
-    lenis.targetScroll = lenis.animatedScroll
+  const lenis = useLenis()
+  lenis.stop()
+  lenis.targetScroll = lenis.animatedScroll
 
-    useDelay(1500, () => {
-        console.log("300");
-        lenis.start()
-        on = true
-    })
+  useDelay(1500, () => {
+    console.log("300");
+    lenis.start()
+    on = true
+  })
 })
 
 
 onLeave(() => {
-    N.Class.add(wrapperRef.value, 'hide')
+  N.Class.add(wrapperRef.value, 'hide')
 })
 </script>
 
@@ -64,56 +65,56 @@ onLeave(() => {
 @use "@/styles/shared.scss" as *;
 
 .stepper__wrapper {
-    position: absolute;
-    bottom: 5.2rem;
-    left: 50%;
-    transform: translateX(-50%);
+  position: absolute;
+  bottom: 5.2rem;
+  left: 50%;
+  transform: translateX(-50%);
 
+  display: flex;
+  column-gap: 16px;
+  align-items: baseline;
+  justify-content: center;
+  @include user-select(none);
+
+  padding: 5rem 5rem 3rem;
+  margin: -5rem -0rem -3rem;
+  transition: opacity 300ms;
+
+  &.hide {
+    transition: opacity 500ms;
+    opacity: 0;
+  }
+
+  &:hover {
+    opacity: 0;
+  }
+
+  .d {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 0;
+  }
+
+  .step__wrapper {
     display: flex;
-    column-gap: 16px;
-    align-items: baseline;
-    justify-content: center;
-    @include user-select(none);
+    column-gap: 4px;
 
-    padding: 5rem 5rem 3rem;
-    margin: -5rem -0rem -3rem;
-    transition: opacity 300ms;
+    .step {
+      height: 8px;
+      border: 1px solid $white;
+      border-left-width: 0px;
+      width: 0px;
+      // background-color: $white;
+      transform-origin: bottom;
+      transition: width 500ms $easeOutQuart, border-left-width 100ms 400ms $easeInQuart;
 
-    &.hide {
-        transition: opacity 500ms;
-        opacity: 0;
+      &.active {
+        transition: width 500ms $easeOutQuart, border-left-width 300ms 0ms $easeInQuart;
+        width: 12px;
+        border: 1px solid $yellow;
+      }
+
     }
-
-    &:hover {
-        opacity: 0;
-    }
-
-    .d {
-        font-size: 11px;
-        font-weight: 400;
-        line-height: 0;
-    }
-
-    .step__wrapper {
-        display: flex;
-        column-gap: 4px;
-
-        .step {
-            height: 8px;
-            border: 1px solid $white;
-            border-left-width: 0px;
-            width: 0px;
-            // background-color: $white;
-            transform-origin: bottom;
-            transition: width 500ms $easeOutQuart, border-left-width 100ms 400ms $easeInQuart;
-
-            &.active {
-                transition: width 500ms $easeOutQuart, border-left-width 300ms 0ms $easeInQuart;
-                width: 12px;
-                border: 1px solid $yellow;
-            }
-
-        }
-    }
+  }
 }
 </style>

@@ -4,6 +4,7 @@ export const useResetLenis = ({ wrapper, content, target, infinite, direction, l
     const store = useStoreView()
 
     store.resetLenis({ wrapper, content, target, infinite, direction, lerp, duration })
+    console.log("resetLenis")
     onFlow(() => {
         store.lenis.value.scrollTo('top', { immediate: true })
     })

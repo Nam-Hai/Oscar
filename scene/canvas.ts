@@ -1,143 +1,155 @@
-import type { RouteLocationNormalized } from 'vue-router';
-import { Renderer, Camera, Transform, type OGLRenderingContext } from 'ogl'
+import type { RouteLocationNormalized } from "vue-router";
+import { Renderer, Camera, Transform, type OGLRenderingContext } from "ogl";
 
-import { FallbackCanvas } from './Pages/fallbackCanvas';
-import { ROR } from '~/plugins/core/resize';
-import { FlowProvider } from '~/waterflow/FlowProvider';
-import { PreloaderCanvas } from './Pages/PreloaderCanvas';
-import type { CanvasPage } from './utils/types';
-import { IndexCanvas } from './Pages/IndexCanvas';
-import { ProjectCanvas } from './Pages/ProjectCanvas';
-import { ArchiveCanvas } from './Pages/ArchiveCanvas';
+import { FallbackCanvas } from "./Pages/fallbackCanvas";
+import { ROR } from "~/plugins/core/resize";
+import { FlowProvider } from "~/waterflow/FlowProvider";
+import { PreloaderCanvas } from "./Pages/PreloaderCanvas";
+import type { CanvasPage } from "./utils/types";
+import { IndexCanvas } from "./Pages/IndexCanvas";
+import { ProjectCanvas } from "./Pages/ProjectCanvas";
+import { ArchiveCanvas } from "./Pages/ArchiveCanvas";
 
-type routeMapType = 'index' | 'project-page-id' | 'archive'
+type routeMapType = "index" | "project-page-id" | "archive";
 
 export default class Canvas {
-    renderer: Renderer;
-    gl: OGLRenderingContext;
-    camera: Camera;
-    scene: Transform;
+	renderer: Renderer;
+	gl: OGLRenderingContext;
+	camera: Camera;
+	scene: Transform;
 
+	nextPage: CanvasPage | undefined;
+	currentPage!: CanvasPage;
 
-    nextPage: CanvasPage | undefined;
-    currentPage!: CanvasPage;
+	map: Map<string, () => CanvasPage>;
+	on?: boolean;
+	size: Ref<{ width: number; height: number }>;
+	fallback?: FallbackCanvas;
+	index?: IndexCanvas;
+	projectPage?: ProjectCanvas;
 
-    map: Map<string, () => CanvasPage>;
-    on?: boolean;
-    size: Ref<{ width: number; height: number; }>;
-    fallback?: FallbackCanvas;
-    index?: IndexCanvas;
-    projectPage?: ProjectCanvas;
+	dom: HTMLCanvasElement;
+	archive?: ArchiveCanvas;
+	ro: ROR;
 
-    dom: HTMLCanvasElement;
-    archive?: ArchiveCanvas;
-    ro: ROR;
+	constructor() {
+		this.renderer = new Renderer({
+			alpha: true,
+			antialias: true,
+			premultipliedAlpha: true,
+			dpr: devicePixelRatio,
+		});
+		this.gl = this.renderer.gl;
+		this.gl.clearColor(0.945, 0.945, 0.945, 0);
+		// this.gl.clearColor(0, 0, 0, 0)
+		this.dom = this.gl.canvas;
 
-    constructor() {
-        this.renderer = new Renderer({
-            alpha: true,
-            antialias: true,
-            premultipliedAlpha: true,
-            dpr: devicePixelRatio,
-        });
-        this.gl = this.renderer.gl
-        this.gl.clearColor(0.945, 0.945, 0.945, 0)
-        // this.gl.clearColor(0, 0, 0, 0)
-        this.dom = this.gl.canvas
+		this.map = new Map([
+			["fallback", this.createFallbackCanvas],
+			["index", this.createIndexCanvas],
+			["project-page-id", this.createProjectPage],
+			["archive", this.createArchiveCanvas],
+		]);
 
-        this.map = new Map([
-            ['fallback', this.createFallbackCanvas],
-            ['index', this.createIndexCanvas],
-            ['project-page-id', this.createProjectPage],
-            ['archive', this.createArchiveCanvas]
-        ])
+		this.camera = new Camera(this.gl);
+		this.camera.position.z = 5;
 
-        this.camera = new Camera(this.gl);
-        this.camera.position.z = 5;
+		this.scene = new Transform();
+		N.BM(this, ["resize"]);
 
-        this.scene = new Transform();
-        N.BM(this, ["resize"]);
+		this.size = ref({ width: 0, height: 0 });
 
+		this.on = true;
 
-        this.size = ref({ width: 0, height: 0 })
+		this.ro = new ROR(this.resize);
+		this.ro.on();
+	}
 
-        this.on = true
+	preloader() {
+		const preloader = new PreloaderCanvas(this.gl, {
+			scene: this.scene,
+			camera: this.camera,
+		});
+		preloader.init();
+	}
 
-        this.ro = new ROR(this.resize)
-        this.ro.on();
-    }
+	init(flowProvider: FlowProvider) {
+		this.onChange(flowProvider.getRouteFrom());
+		// this.currentPage = this.nextPage!
+		// this.currentPage.init()
 
-    preloader() {
-        const preloader = new PreloaderCanvas(this.gl, { scene: this.scene, camera: this.camera })
-        preloader.init()
-    }
+		this.resolveOnChange();
+	}
 
-    init(flowProvider: FlowProvider) {
-        this.onChange(flowProvider.getRouteFrom())
-        // this.currentPage = this.nextPage!
-        // this.currentPage.init()
+	private resize({ vh, vw, scale }: { vh: number; vw: number; scale: number }) {
+		this.renderer.dpr = devicePixelRatio;
+		this.renderer.setSize(vw, vh);
 
-        this.resolveOnChange()
-    }
+		this.camera.perspective({
+			aspect: vw / vh,
+		});
+		const fov = (this.camera.fov * Math.PI) / 180;
 
-    private resize({ vh, vw, scale }: { vh: number, vw: number, scale: number }) {
+		const height = 2 * Math.tan(fov / 2) * this.camera.position.z;
 
-        this.renderer.dpr = devicePixelRatio
-        this.renderer.setSize(vw, vh);
+		this.size.value = {
+			height,
+			width: height * this.camera.aspect,
+		};
+	}
 
-        this.camera.perspective({
-            aspect: vw / vh
-        });
-        const fov = (this.camera.fov * Math.PI) / 180;
+	onChange(route: RouteLocationNormalized) {
+		// if (isMobile.value) return
+		if (!this.on) return;
+		const routeName = route.name?.toString() || "";
+		const createPage = this.map.get(routeName) || this.createFallbackCanvas;
+		this.nextPage = createPage.bind(this)();
+	}
 
-        const height = 2 * Math.tan(fov / 2) * this.camera.position.z;
+	resolveOnChange() {
+		if (!this.on) return;
+		if (this.currentPage) {
+			this.currentPage.destroy();
+		}
+		if (this.nextPage) {
+			this.nextPage.init();
+			this.currentPage = this.nextPage;
+		}
+	}
 
-        this.size.value = {
-            height,
-            width: height * this.camera.aspect
-        }
-    }
+	createIndexCanvas() {
+		this.index = new IndexCanvas(this.gl, {
+			camera: this.camera,
+			scene: this.scene,
+		});
+		return this.index;
+	}
+	createProjectPage() {
+		this.projectPage = new ProjectCanvas(this.gl, {
+			camera: this.camera,
+			scene: this.scene,
+		});
+		return this.projectPage;
+	}
 
-    onChange(route: RouteLocationNormalized) {
-        // if (isMobile.value) return
-        if (!this.on) return
-        const routeName = route.name?.toString() || ''
-        const createPage = this.map.get(routeName) || this.createFallbackCanvas
-        this.nextPage = createPage.bind(this)()
-    }
+	createArchiveCanvas() {
+		this.archive = new ArchiveCanvas(this.gl, {
+			camera: this.camera,
+			scene: this.scene,
+		});
+		return this.archive;
+	}
 
-    resolveOnChange() {
-        if (!this.on) return
-        if (this.currentPage) {
-            this.currentPage.destroy()
-        }
-        if (this.nextPage) {
-            this.nextPage.init()
-            this.currentPage = this.nextPage
-        }
-    }
+	createFallbackCanvas() {
+		// this.fallback = new FallbackCanvas({ gl: this.gl, scene: this.scene, camera: this.camera })
+		this.fallback = new FallbackCanvas(this.gl, {
+			camera: this.camera,
+			scene: this.scene,
+		});
+		return this.fallback;
+	}
 
-    createIndexCanvas() {
-        this.index = new IndexCanvas(this.gl, { camera: this.camera, scene: this.scene })
-        return this.index
-    }
-    createProjectPage() {
-        this.projectPage = new ProjectCanvas(this.gl, { camera: this.camera, scene: this.scene })
-        return this.projectPage
-    }
-
-    createArchiveCanvas() {
-        this.archive = new ArchiveCanvas(this.gl, { camera: this.camera, scene: this.scene })
-        return this.archive
-    }
-    
-    createFallbackCanvas() {
-        // this.fallback = new FallbackCanvas({ gl: this.gl, scene: this.scene, camera: this.camera })
-        this.fallback = new FallbackCanvas(this.gl, { camera: this.camera, scene: this.scene })
-        return this.fallback
-    }
-
-    destroy() {
-        this.ro.off()
-    }
+	destroy() {
+		this.ro.off();
+	}
 }
