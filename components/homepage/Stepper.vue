@@ -66,7 +66,7 @@ onLeave(() => {
 
 .stepper__wrapper {
   position: absolute;
-  bottom: 5.2rem;
+  bottom: min(5.2rem, 52px);
   left: 50%;
   transform: translateX(-50%);
 

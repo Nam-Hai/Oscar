@@ -5,7 +5,12 @@
             <NuxtLink :to="data.link">
                 <h1 v-cursor-hover ref="titleRefs" @mouseenter="hideTrail = true" @mouseleave="hideTrail = false"
                     @mousemove="headerMove($event)">
-                    <span v-for="(word, index) in data.title.split(' ')" class="overflow">
+                    <span v-for="(word, index) in data.title.split(' ')" class="overflow" v-if="breakpoint == 'desktop'">
+                        <span v-for="char in word.split('')" class="overflow-content">
+                            {{ char }}
+                        </span>
+                    </span>
+                    <span v-for="(word, index) in data.titleMobile.split(' ')" class="overflow" v-else>
                         <span v-for="char in word.split('')" class="overflow-content">
                             {{ char }}
                         </span>
@@ -63,6 +68,7 @@ function mainMove(e: MouseEvent) {
 }
 
 const mainRef = ref()
+const { breakpoint } = useStoreView()
 const { homeStore, currentIndex, hideTrail } = useStoreStepper()
 hideTrail.value = true
 const { isMobile } = useStore()
@@ -84,70 +90,82 @@ watch(currentIndex, (i, old) => {
 
 const titleRefs = ref()
 
+watch(breakpoint, async (b)=>{
+  await nextTick()
+  console.log(b)
+  const i = currentIndex.value
+  const title = titleRefs.value[i]
+
+  const spans = N.getAll(".overflow-content", title)!
+
+  for (const [index, char] of spans.entries()) {
+    (char as HTMLElement).style.transform = "translateY(0)"
+  }
+})
 function titleAnimations(i: number, old: number) {
-    const tl = titleTls[i]
-    tl.reset()
-    const title = titleRefs.value[i]
-    N.Class.remove(title, "leave")
-    const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
-    const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value[i], ...subs]
-    for (const [index, char] of spans.entries()) {
-        tl.from({
-            el: char,
-            d: 1000,
-            delay: 40 * index,
-            e: 'o4',
-            p: {
-                y: [-100, 0]
-            }
-        })
-    }
-    tl.play()
-
-    const oldTL = titleTls[old]
-    const oldTitle = titleRefs.value[old]
-
-    N.Class.add(oldTitle, "leave")
-    oldTL.play({
-        d: 1000,
-        p: {
-            y: { newEnd: 100 }
-        },
-        delay: 0
+  const tl = titleTls[i]
+  tl.reset()
+  const title = titleRefs.value[i]
+  N.Class.remove(title, "leave")
+  const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
+  const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value[i], ...subs]
+  for (const [index, char] of spans.entries()) {
+    tl.from({
+      el: char,
+      d: 1000,
+      delay: 40 * index,
+      e: 'o4',
+      p: {
+        y: [-100, 0]
+      }
     })
+  }
+  tl.play()
+
+  const oldTL = titleTls[old]
+  const oldTitle = titleRefs.value[old]
+
+  N.Class.add(oldTitle, "leave")
+  oldTL.play({
+    d: 1000,
+    p: {
+      y: { newEnd: 100 }
+    },
+    delay: 0
+  })
 }
 
 onLeave(() => {
-    const i = currentIndex.value
-    const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
-    const spans = [flavorMainRef.value[i], ...subs]
-    const tl = titleTls[i]
-    // tl.reset()
-    console.error("onLeave");
-    let a = 0
-    for (let i = tl.arr.length - 4; i < tl.arr.length; i++) {
+  const i = currentIndex.value
+  const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
+  const spans = [flavorMainRef.value[i], ...subs]
+  const tl = titleTls[i]
+  // tl.reset()
+  console.error("onLeave");
+  let a = 0
+  for (let i = tl.arr.length - 4; i < tl.arr.length; i++) {
 
-        const motion = tl.arr[i]
-        motion.play({
-            d: 1000,
-            p: {
-                y: { newEnd: 100 }
-            },
-            delay: a * 40
-        })
-        a++;
-    }
+    const motion = tl.arr[i]
+    motion.play({
+      d: 1000,
+      p: {
+        y: { newEnd: 100 }
+      },
+      delay: a * 40
+    })
+    a++;
+  }
 })
 
 
 usePageFlow({
-    props: {
-        wrapperRef: mainRef,
-        titleRefs: titleRefs,
-    },
-    flowOutMap: indexFlowOutMap,
-    flowInCrossfade: defaultFlowIn,
-    enableCrossfade: 'TOP'
+  props: {
+    wrapperRef: mainRef,
+    titleRefs: titleRefs,
+  },
+  flowOutMap: indexFlowOutMap,
+  flowInCrossfade: defaultFlowIn,
+  enableCrossfade: 'TOP'
 })
 
 </script>
@@ -156,109 +174,114 @@ usePageFlow({
 @use "@/styles/shared.scss" as *;
 
 main {
-    height: var(--100vh);
-    width: 100vw;
-    top: 0;
-    // background-color: black;
-    color: $white;
+  height: var(--100vh);
+  width: 100vw;
+  top: 0;
+  // background-color: black;
+  color: $white;
 }
 
 .index-container {
-    pointer-events: none;
+  pointer-events: none;
 
-    &.current {
-        pointer-events: auto;
-    }
+  &.current {
+    pointer-events: auto;
+  }
 
-    clip-path: inset(0 0 17rem 0);
+  clip-path: inset(0 0 17rem 0);
 
-    height: 100%;
-    width: 100%;
-    // top: -3rem;
-    position: absolute;
+  height: 100%;
+  width: 100%;
+  // top: -3rem;
+  position: absolute;
 
-    clip-path: inset(0 0 17rem 0);
+  clip-path: inset(0 0 17rem 0);
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 2.4rem;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 2.4rem;
+  justify-content: center;
 }
 
 .flavor {
-    font-size: 1.3rem;
-    padding-left: 50vw;
-    width: 100%;
+  font-size: 1.3rem;
+  padding-left: 50vw;
+  width: 100%;
+
+  @include breakpoint(mobile) {
+    padding-left: calc(50vw - 3rem);
+  }
+
+  .flavor-main {
+    margin-bottom: 3.6rem;
+    width: 35rem;
+    line-height: 1.6rem;
 
     @include breakpoint(mobile) {
-        padding-left: calc(50vw - 3rem);
+      width: 20.3rem;
+      line-height: 1.5rem;
+      margin-bottom: 2.8rem;
     }
+  }
 
-    .flavor-main {
-        margin-bottom: 3.6rem;
-        width: 35rem;
-        line-height: 1.6rem;
+  .flavor-sub {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.8rem;
+    position: relative;
+    top: 0.45rem;
 
-        @include breakpoint(mobile) {
-            width: 20.3rem;
-            line-height: 1.5rem;
-            margin-bottom: 2.8rem;
-        }
+    >div {
+      line-height: 100%;
+      // height: 0.9rem;
+      top: 0;
     }
-
-    .flavor-sub {
-        display: flex;
-        flex-direction: column;
-        row-gap: 0.8rem;
-        position: relative;
-        top: 0.45rem;
-
-        >div {
-            line-height: 100%;
-            // height: 0.9rem;
-            top: 0;
-        }
-    }
+  }
 }
 
 a {
-    margin-top: 4rem;
+  margin-top: 4rem;
 }
 
 h1 {
-    text-transform: uppercase;
-    text-align: center;
-    font-weight: 500;
-    // line-height: 6rem;
-    position: relative;
-    width: max-content;
-    font-size: 8.8rem;
-    letter-spacing: -0.088rem;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 500;
+  // line-height: 6rem;
+  position: relative;
+  width: max-content;
+  font-size: 8.8rem;
+  letter-spacing: -0.088rem;
 
-    display: flex;
-    justify-content: center;
-    column-gap: 2.7rem;
+  display: flex;
+  justify-content: center;
+  column-gap: 2.7rem;
 
 
-    @include breakpoint(mobile) {
-        width: 100vw;
-        padding: 0 1.6rem;
-        font-size: 6.8rem;
-        line-height: 90%;
-        letter-spacing: -0.068rem;
-        flex-direction: column;
-    }
+  @include breakpoint(mobile) {
+    width: 100vw;
+    padding: 0 1.6rem;
+    font-size: 6.8rem;
+    line-height: 90%;
+    letter-spacing: -0.068rem;
+    flex-direction: column;
+  }
 
-    &:hover {
-        transition: color 500ms;
-        color: $yellow;
-    }
+  &:hover {
+    transition: color 500ms;
+    color: $yellow;
+  }
 
-    &.leave {
-        transition: color 200ms;
-        color: $yellow;
-    }
+  &.leave {
+    transition: color 200ms;
+    color: $yellow;
+  }
+}
+
+span.overflow {
+  display: flex;
+  justify-content: center;
 }
 </style>
 

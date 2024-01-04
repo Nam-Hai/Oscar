@@ -1,6 +1,7 @@
 const homeStore = [
     {
-        title: "Viadomo ©DECO",
+        title: "Viadomo©DECO",
+        titleMobile: "Viadomo ©DECO",
         titleHTML: '<span class="overflow-content">V</span><span class="overflow-content">i</span><span class="overflow-content">a</span><span class="overflow-content">d</span><span class="overflow-content">o</span><span class="overflow-content">m</span><span class="overflow-content">o</span><span class="overflow-content">©</span><span class="overflow-content">D</span><span class="overflow-content">E</span><span class="overflow-content">C</span><span class="overflow-content">O</span>',
         flavorMain: "An innovative collection of top-tier furniture",
         flavorSub: ["Web design", "Furniture", "11.2023"],
@@ -9,6 +10,7 @@ const homeStore = [
     },
     {
         title: "Avant garden",
+        titleMobile: "Avant garden",
         flavorMain: "Fashion clothing from the future.",
         flavorSub: ["Web design", "Fashion", "03.2023"],
         link: "/project-page/avant-garden",
@@ -16,6 +18,7 @@ const homeStore = [
     },
     {
         title: "MUCHO MATXA",
+        titleMobile: "MUCHO MATXA",
         flavorMain: "Lorem ipsum dolor sit amet consectetur.",
         flavorSub: ["Type", "Field", "Date"],
         link: "/project-page/mucho-matxa",
@@ -23,6 +26,7 @@ const homeStore = [
     },
     {
         title: "MAPFRE SALUD",
+        titleMobile: "MAPFRE SALUD",
         flavorMain: "An online and face-to-face health app.",
         flavorSub: ["App Design", "Health", "11.2022"],
         link: "/project-page/mapfre-salud",
