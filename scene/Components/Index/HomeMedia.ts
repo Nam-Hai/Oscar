@@ -39,6 +39,7 @@ export class HomeMedia extends CanvasNode {
 	scrollStart = 0;
 	scrollDistance = 0;
 	waitAnimation: boolean;
+	scrollResetTL: import("/Users/namhai/Documents/Code/Oscar/plugins/core/motion").Timeline;
 	constructor(gl: OGLRenderingContext, options?: null) {
 		super(gl);
 
@@ -89,10 +90,22 @@ export class HomeMedia extends CanvasNode {
 
 		this.onChangeImmediate = false;
 		this.scrollOn = false;
+		this.scrollResetTL = useTL();
 		this.scrollTimer = useTimer(() => {
 			this.scrollOn = false;
-			this.scrollDistance = 0;
-		}, 500);
+			this.scrollResetTL.reset();
+			const distFrom = this.scrollDistance;
+
+			this.scrollResetTL
+				.from({
+					e: "io3",
+					d: 800,
+					update: ({ progE }) => {
+						this.scrollDistance = distFrom * (1 - progE);
+					},
+				})
+				.play();
+		}, 180);
 		this.waitAnimation = false;
 
 		this.raf = useRafR(this.update);
@@ -132,14 +145,18 @@ export class HomeMedia extends CanvasNode {
 		this.onDestroy(() => scrollUnsub());
 	}
 
-	onScroll(e: { animatedScroll: number }) {
+	onScroll(e: {
+		velocity: number;
+		animatedScroll: number;
+	}) {
 		if (!this.scrollOn) {
 			this.scrollOn = true;
-			this.scrollStart = e.animatedScroll;
-			this.scrollDistance = 0;
+			this.scrollStart = e.animatedScroll - this.scrollDistance;
+			this.scrollResetTL.reset();
 			return;
 		}
 		this.scrollDistance = e.animatedScroll - this.scrollStart;
+
 		this.scrollTimer.tick();
 	}
 	onChange(nextId: number) {
@@ -261,14 +278,14 @@ export class HomeMedia extends CanvasNode {
 	update(e: rafEvent) {
 		const currentMesh = this.currentMesh;
 
-		const distTrigger = 4000;
+		const distTrigger = 3300;
 		const f =
 			Math.min(Math.abs(this.scrollDistance), distTrigger) / distTrigger;
 
 		currentMesh.program.uniforms.uOutProgress.value = f;
-		if (f >= 0.3 && !this.waitAnimation) {
+		if (f >= 0.4 && !this.waitAnimation) {
 			this.onChangeImmediate = true;
-      const dir = this.scrollDistance > 0 ? 1 : -1
+			const dir = this.scrollDistance > 0 ? 1 : -1;
 			currentIndex.value = N.mod(currentIndex.value + dir, length);
 		}
 	}
