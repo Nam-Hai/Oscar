@@ -4,7 +4,7 @@ import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 
-const { vh, vw, scale, mouse, scrollLenis } = useStoreView();
+const { vh, vw, scale, breakpoint, mouse, scrollLenis } = useStoreView();
 
 export class Media extends CanvasNode {
 	raf: RafR;
@@ -202,10 +202,8 @@ export class Media extends CanvasNode {
 		let screenPos = 0;
 		if (this.bounds) {
 			screenPos =
-				(this.pixelPosition.y +
-					this.pixelScroll +
-					this.bounds.height / 2) /
-				(vh.value);
+				(this.pixelPosition.y + this.pixelScroll + this.bounds.height / 2) /
+				vh.value;
 		}
 		screenPos = N.Clamp(screenPos, 0, 1);
 
@@ -214,7 +212,10 @@ export class Media extends CanvasNode {
 			(this.canvasSize.height *
 				(this.pixelPosition.y +
 					this.pixelScroll +
-					screenPos * vh.value * this.parallaxForce)) /
+					screenPos *
+						vh.value *
+						this.parallaxForce *
+						+(breakpoint.value === "desktop"))) /
 				vh.value,
 			0,
 		);
