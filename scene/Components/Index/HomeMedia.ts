@@ -3,7 +3,7 @@ import type { OGLRenderingContext } from "ogl";
 import { CanvasNode } from "../../utils/types";
 import type { RafR, Timer, rafEvent } from "~/plugins/core/raf";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
-import { Pane } from "tweakpane";
+// import { Pane } from "tweakpane";
 
 const { currentIndex, length } = useStoreStepper();
 

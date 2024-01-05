@@ -10,7 +10,6 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "1.0.2",
-    "@tweakpane/core": "^2.0.1",
     "@types/node": "^20.3.1",
     "eslint": "^8.42.0",
     "nuxt": "^3.8.1",
