@@ -80,5 +80,11 @@ const wrapperRef = ref() as Ref<HTMLElement>
             transform: translateX(calc(200% + 2 * 1.2rem));
         }
     }
+
+    &[data-current="3"] {
+        .project-display__wrapper:first-child::after {
+            transform: translateX(calc(300% + 3 * 1.2rem));
+        }
+    }
 }
 </style>

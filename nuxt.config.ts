@@ -37,9 +37,9 @@ export default defineNuxtConfig({
                 },
                 {
                     key: "description", name: "description",
-                    content: "Oscar Pico's Portfolio"
+                    content: "A digital designer with over 3 years of experience, specialised in visual and interface design. Also, a lover and enthusiast of art direction and all existing forms of design. Always looking towards the future to learn new skills, like motion or 3D design."
                 },
-                { key: "og:title", property: "og:title", content: "Oscar Pico" },
+                { key: "og:title", property: "og:title", content: "Oscar Pico — Digital Designer" },
                 {
                     key: "og:url",
                     property: "og:url",
@@ -48,7 +48,7 @@ export default defineNuxtConfig({
                 {
                     key: "og:description",
                     property: "og:description",
-                    content: "Oscar Pico's Portfolio",
+                    content: "A digital designer with over 3 years of experience, specialised in visual and interface design. Also, a lover and enthusiast of art direction and all existing forms of design. Always looking towards the future to learn new skills, like motion or 3D design.",
                 },
                 {
                     key: "og:image",
@@ -59,7 +59,7 @@ export default defineNuxtConfig({
                 {
                     key: "twitter:title",
                     name: "twitter:title",
-                    content: "Oscar Pico",
+                    content: "Oscar Pico — Digital Designer",
                 },
                 {
                     key: "twitter:url",
@@ -69,7 +69,7 @@ export default defineNuxtConfig({
                 {
                     key: "twitter:description",
                     name: "twitter:description",
-                    content: "Oscar Pico's Portfolio",
+                    content: "Oscar Pico — Digital Designer",
                 },
                 {
                     key: "twitter:image",
@@ -82,7 +82,7 @@ export default defineNuxtConfig({
                     content: "summary_large_image",
                 }
             ],
-            title: "Oscar Pico",
+            title: "Oscar Pico — Digital Designer",
             link: [
                 {
                     rel: "preload",

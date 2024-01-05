@@ -4,10 +4,10 @@ import { Texture } from "ogl";
 const MANIFEST = {
   home: [
     // "Asset"
-    "/Assets/Home1.png",
-    "/Assets/Home_2.jpg",
-    "/Assets/Home3.png",
-    "/Assets/Home4.png",
+    "/Assets/Home/1.jpg",
+    "/Assets/Home/2.jpg",
+    "/Assets/Home/3.jpg",
+    "/Assets/Home/4.jpg",
   ],
   assets: [
 
@@ -15,11 +15,11 @@ const MANIFEST = {
 };
 const LAZY_MANIFEST = {
   assets: [
-    "/Assets/Viadomo/1.jpg",
+    "/Assets/Viadomo/1_1.jpg",
     "/Assets/Viadomo/2.mp4",
     "/Assets/Viadomo/3.jpg",
-    "/Assets/Viadomo/4.jpg",
-    "/Assets/Viadomo/5.jpg",
+    "/Assets/Viadomo/4_1.jpg",
+    "/Assets/Viadomo/5_1.jpg",
     "/Assets/Viadomo/6.jpg",
     "/Assets/Viadomo/7.jpg",
     "/Assets/Viadomo/8.mp4",

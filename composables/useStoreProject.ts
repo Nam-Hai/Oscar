@@ -27,8 +27,8 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         type: "Furniture",
         date: "03.2023",
         main_image: {
-            src_1: "/Assets/Home1.png",
-            src_2: "/Assets/Viadomo/1.jpg",
+            src_1: "/Assets/Home/1.jpg",
+            src_2: "/Assets/Viadomo/1_1.jpg",
         },
         slice: [
             {
@@ -41,8 +41,8 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             {
                 keyId: ProjectSlice2,
                 data: {
-                    src_1: "/Assets/Viadomo/4.jpg",
-                    src_2: "/Assets/Viadomo/5.jpg",
+                    src_1: "/Assets/Viadomo/4_1.jpg",
+                    src_2: "/Assets/Viadomo/5_1.jpg",
                 },
             },
             {
@@ -58,7 +58,8 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 data: {
                     src_1: "/Assets/Viadomo/9.jpg",
                     src_2: "/Assets/Viadomo/10.jpg",
-                    bg_src: "/Assets/Viadomo/9-10-Bg.jpg",
+                    // bg_src: "/Assets/Viadomo/9-10-Bg.jpg",
+                    bg_src: "/Assets/Viadomo/9_10_Bg_2.jpg",
                 },
             },
             {
@@ -95,7 +96,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         type: "Furniture",
         date: "03.2023",
         main_image: {
-            src_1: "/Assets/Home_2.jpg",
+            src_1: "/Assets/Home/2.jpg",
             src_2: "/Assets/Viadomo/6.jpg",
         },
         slice: [
@@ -110,7 +111,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         type: "Furniture",
         date: "03.2023",
         main_image: {
-            src_1: "/Assets/Home3.png",
+            src_1: "/Assets/Home/3.jpg",
             src_2: "/Assets/Viadomo/3.jpg",
         },
         slice: [
@@ -126,7 +127,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         type: "App design",
         date: "11.2022",
         main_image: {
-            src_1: "/Assets/Home4.png",
+            src_1: "/Assets/Home/4.jpg",
             src_2: "/Assets/Viadomo/3.jpg",
         },
         slice: [
