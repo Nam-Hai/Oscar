@@ -296,7 +296,7 @@ function scrollTop() {
 
     // background-color: rgba(128, 128, 128, 0.224);
     position: absolute;
-    top: 50vh;
+    top: calc(50vh - 5rem);
     left: 50%;
     transform: translate(-50%, -50%);
 }
