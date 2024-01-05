@@ -94,6 +94,8 @@ const { isHover: archiveHover } = useStoreArchive()
   .menu-grid {
 
     margin-top: 2rem;
+    margin-left: 2.4rem;
+    margin-right: 2.4rem;
 
     @include breakpoint(mobile) {
       margin-top: 1.6rem;
@@ -101,10 +103,10 @@ const { isHover: archiveHover } = useStoreArchive()
       margin-right: 1.6rem;
       justify-content: unset;
     }
-
-    @include mainGrid();
+    position: relative;
 
     >span {
+      position: absolute;
       text-transform: capitalize;
       // color: $white;
 
@@ -165,6 +167,8 @@ const { isHover: archiveHover } = useStoreArchive()
 
 
       &:first-child {
+        left: 0;
+        top: 0;
         position: relative;
 
         svg {
@@ -178,24 +182,23 @@ const { isHover: archiveHover } = useStoreArchive()
           }
         }
 
-        grid-column: 1 / 2;
       }
 
       &:nth-child(2) {
         @include breakpoint(mobile) {
-          grid-column: 3 / 4;
+          left: 22.7rem;
         }
+        left: 115.5rem;
 
-        grid-column: 10 / 11;
         text-align: end;
       }
 
       &:nth-child(3) {
         @include breakpoint(mobile) {
-          grid-column: 4 / 5;
+          right: 1.6rem;
         }
 
-        grid-column: 12 / 13;
+        right: 0;
         text-align: end;
       }
     }
