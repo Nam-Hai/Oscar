@@ -107,6 +107,9 @@ function scrollTop() {
 
     position: relative;
 
+    @include breakpoint(mobile){
+        height: unset;
+    }
     // overflow: hidden;
 }
 
@@ -122,8 +125,9 @@ function scrollTop() {
     transition: transform 1000ms $easeInOutQuart;
 
     @include breakpoint(mobile) {
-        transform: translateY(calc(100vh - 10.7rem * 0.8 - 2.4rem * 3));
-        height: calc(100% - 2.4rem);
+        padding: 1.6rem;
+        transform: translateY(calc(100vh - 10.7rem * 0.8 - 1.6rem * 3));
+        height: calc(100% - 1.6rem);
     }
 
     &.show {
@@ -242,6 +246,9 @@ function scrollTop() {
 
         @include breakpoint(mobile) {
             flex-direction: column;
+            justify-content: unset;
+            row-gap: 3.2rem;
+            height: unset;
         }
 
         p {
@@ -282,12 +289,16 @@ function scrollTop() {
 .project__main-image {
     height: 24rem;
     width: 26.8rem;
+
+    // min-height: 240px;
+    // min-width: 268px;
+    // max-width: 300px;
+
     // background-color: rgba(128, 128, 128, 0.224);
     position: absolute;
-    top: 50%;
+    top: 50vh;
     left: 50%;
     transform: translate(-50%, -50%);
-
 }
 
 .pin-margin {

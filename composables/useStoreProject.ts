@@ -23,7 +23,7 @@ type ProjectCopyType = {
 }
 const projectCopy: { [key: string]: ProjectCopyType } = {
     "viadomo-deco": {
-        title: 'VIADOMO©DECO',
+        title: 'VIADOMO ©DECO',
         type: "Furniture",
         date: "03.2023",
         main_image: {

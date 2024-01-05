@@ -19,9 +19,7 @@
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.16",
-    "ogl": "1.0.3",
-    "stats.js": "^0.17.0",
-    "tweakpane": "^4.0.1"
+    "ogl": "1.0.3"
   },
   "overrides": {
     "vue": "latest"

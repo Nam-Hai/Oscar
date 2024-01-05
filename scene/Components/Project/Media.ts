@@ -43,7 +43,6 @@ export class Media extends CanvasNode {
 		N.BM(this, ["update", "onResize", "destroy", "onScroll"]);
 
 		this.parallaxForce = props.parallaxForce || 0;
-		console.log(this.parallaxForce);
 		this.fixed = props.fixed || false;
 		this.pixelScroll = 0;
 		this.pixelPosition = new Vec2(0);

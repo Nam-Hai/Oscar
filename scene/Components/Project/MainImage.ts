@@ -66,28 +66,28 @@ export class MainImage extends CanvasNode {
 			value: new Vec2(
 				this.uSizePixel.value[0] / this.uSizePixel.value[1] < uIntrinsecRatio
 					? this.uSizePixel.value[0] /
-					  (this.uSizePixel.value[1] * uIntrinsecRatio)
+					(this.uSizePixel.value[1] * uIntrinsecRatio)
 					: 1,
 				this.uSizePixel.value[0] / this.uSizePixel.value[1] < uIntrinsecRatio
 					? 1
 					: (this.uSizePixel.value[1] * uIntrinsecRatio) /
-					  this.uSizePixel.value[0],
+					this.uSizePixel.value[0],
 			),
 		};
 		this.uTranslateOffset = {
 			value: new Vec2(
 				this.uSizePixel.value[0] / this.uSizePixel.value[1] < uIntrinsecRatio
 					? 0.5 *
-					  (1 -
-							this.uSizePixel.value[0] /
-								(this.uSizePixel.value[1] * uIntrinsecRatio))
+					(1 -
+						this.uSizePixel.value[0] /
+						(this.uSizePixel.value[1] * uIntrinsecRatio))
 					: 0,
 				this.uSizePixel.value[0] / this.uSizePixel.value[1] <= uIntrinsecRatio
 					? 0
 					: (1 -
-							(this.uSizePixel.value[1] * uIntrinsecRatio) /
-								this.uSizePixel.value[0]) *
-					  0.5,
+						(this.uSizePixel.value[1] * uIntrinsecRatio) /
+						this.uSizePixel.value[0]) *
+					0.5,
 			),
 		};
 
@@ -140,6 +140,15 @@ export class MainImage extends CanvasNode {
 		this.mount();
 		this.init();
 
+		watch(breakpoint, (b) => {
+			console.log(b, this.uProgress.value);
+			//    if (b === "mobile" && this.uProgress.value >= 1) {
+			// 	this.uProgress.value = 1;
+			// 	this.computeUniform();
+			// 	this.uProgress.value = 2;
+			// }
+		});
+
 		const { unWatch: resizeUnWatch } = useCanvasSize(this.onResize);
 
 		provideMainImage(this);
@@ -156,7 +165,7 @@ export class MainImage extends CanvasNode {
 		this.onDestroy(() => scrollUnsub());
 	}
 
-	onScroll(e) {
+	onScroll(e: { animatedScroll: any; }) {
 		// if (this.pixelScroll >= 800) return
 		let eS = e.animatedScroll;
 
@@ -300,7 +309,7 @@ export class MainImage extends CanvasNode {
 		this.node.position.set(
 			(this.canvasSize.width * this.pixelPosition.x) / vw.value,
 			(this.canvasSize.height * (this.pixelPosition.y + this.pixelScroll)) /
-				vh.value,
+			vh.value,
 			0,
 		);
 
@@ -333,41 +342,52 @@ export class MainImage extends CanvasNode {
 		this.computeFromTo(1);
 		this.computeFromTo(2);
 
+		if (breakpoint.value === "mobile") {
+			if (this.uProgress.value >= 1) {
+				this.uProgress.value = 2;
+			} else {
+				this.bounds[1].y -= vh.value + (- 85.6 - 48 + 24 + 24 ) * scale.value
+			}
+			this.onScroll({animatedScroll: this.pixelScroll - 800})
+		} else {
+			this.onScroll({animatedScroll: this.pixelScroll - 800})
+		}
+
 		this.computeUniform();
 	}
 
 	computeFromTo(i: number) {
 		this.uniformFromTo[i].scale.set(
 			this.uniformFromTo[i].size[0] / this.uniformFromTo[i].size[1] <
-			this.uniformFromTo[i].intrinsecRatio
+				this.uniformFromTo[i].intrinsecRatio
 				? this.uniformFromTo[i].size[0] /
-				  (this.uniformFromTo[i].size[1] * this.uniformFromTo[i].intrinsecRatio)
+				(this.uniformFromTo[i].size[1] * this.uniformFromTo[i].intrinsecRatio)
 				: 1,
 			this.uniformFromTo[i].size[0] / this.uniformFromTo[i].size[1] <
-			this.uniformFromTo[i].intrinsecRatio
+				this.uniformFromTo[i].intrinsecRatio
 				? 1
 				: (this.uniformFromTo[i].size[1] *
-						this.uniformFromTo[i].intrinsecRatio) /
-				  this.uniformFromTo[i].size[0],
+					this.uniformFromTo[i].intrinsecRatio) /
+				this.uniformFromTo[i].size[0],
 		);
 
 		this.uniformFromTo[i].translate.set(
 			this.uniformFromTo[i].size[0] / this.uniformFromTo[i].size[1] <
-			this.uniformFromTo[i].intrinsecRatio
+				this.uniformFromTo[i].intrinsecRatio
 				? 0.5 *
-				  (1 -
-						this.uniformFromTo[i].size[0] /
-							(this.uniformFromTo[i].size[1] *
-								this.uniformFromTo[i].intrinsecRatio))
+				(1 -
+					this.uniformFromTo[i].size[0] /
+					(this.uniformFromTo[i].size[1] *
+						this.uniformFromTo[i].intrinsecRatio))
 				: 0,
 			this.uniformFromTo[i].size[0] / this.uniformFromTo[i].size[1] <=
-			this.uniformFromTo[i].intrinsecRatio
+				this.uniformFromTo[i].intrinsecRatio
 				? 0
 				: (1 -
-						(this.uniformFromTo[i].size[1] *
-							this.uniformFromTo[i].intrinsecRatio) /
-							this.uniformFromTo[i].size[0]) *
-				  0.5,
+					(this.uniformFromTo[i].size[1] *
+						this.uniformFromTo[i].intrinsecRatio) /
+					this.uniformFromTo[i].size[0]) *
+				0.5,
 		);
 	}
 
@@ -416,17 +436,37 @@ export class MainImage extends CanvasNode {
 				N.Lerp(this.bounds[0].x, this.bounds[1].x, this.uProgress.value) +
 				this.uSizePixel.value.x / 2 -
 				vw.value / 2;
+
+			const to =
+				breakpoint.value === "desktop"
+					? vh.value - 24 * scale.value - this.bounds[1].height
+					: this.bounds[1].top
 			const y =
 				vh.value / 2 -
 				this.uSizePixel.value.y / 2 -
-				N.Lerp(
-					this.bounds[0].y,
-					vh.value - 24 * scale.value - this.bounds[1].height,
-					this.uProgress.value,
-				);
+				N.Lerp(this.bounds[0].y, to, this.uProgress.value);
 			this.pixelPosition.set(x, y);
 		} else {
-			if (breakpoint.value == "mobile") return;
+			if (breakpoint.value === "mobile") {
+				this.uSizePixel.value.set(
+					this.uniformFromTo[1].size.x,
+					this.uniformFromTo[1].size.y,
+				);
+				this.uScaleOffset.value.set(
+					this.uniformFromTo[1].scale.x,
+					this.uniformFromTo[1].scale.y,
+				);
+				this.uTranslateOffset.value.set(
+					this.uniformFromTo[1].translate.x,
+					this.uniformFromTo[1].translate.y,
+				);
+				if (!this.bounds) return;
+				const x = this.bounds[1].x + this.uSizePixel.value.x / 2 - vw.value / 2;
+				const y = vh.value / 2 - this.uSizePixel.value.y / 2 - (this.bounds[1].top)
+				this.pixelPosition.set(x, y)
+
+				return;
+			}
 
 			const t = secondScrollEase(this.uProgress.value - 1);
 			this.uSizePixel.value.set(
@@ -456,11 +496,15 @@ export class MainImage extends CanvasNode {
 				this.uSizePixel.value.x / 2 -
 				vw.value / 2;
 
+			const from =
+				breakpoint.value === "desktop"
+					? vh.value - 24 * scale.value - this.bounds[1].height
+					: this.bounds[1].y + -vh.value + (107 * 0.8 + 16) * scale.value;
 			const y =
 				vh.value / 2 -
 				this.uSizePixel.value.y / 2 -
 				N.Lerp(
-					vh.value - 24 * scale.value - this.bounds[1].height,
+					from,
 					(vh.value - this.bounds[1].height) * 0.6 + 12 * scale.value,
 					t,
 				);

@@ -18,8 +18,8 @@ $mobile-scale-max: math.div(767, $design-mobile-width);
 $desktop-scale-min: math.div(768, $design-desktop-width);
 
 $breakpoints: (
-  mobile: (width: 320, design-width: $design-mobile-width, design-height: $design-mobile-height, scale-min: 0.5, scale-max: 1.5),
-  desktop: (width: 768, design-width: $design-desktop-width, design-height: $design-desktop-height, scale-min: 0.5, scale-max: 3)
+  mobile: (width: 320, design-width: $design-mobile-width, design-height: $design-mobile-height, scale-min: 0.5, scale-max: 1.0),
+  desktop: (width: 768, design-width: $design-desktop-width, design-height: $design-desktop-height, scale-min: 0.5, scale-max: 1.2)
 );
 
 
