@@ -129,7 +129,7 @@ function titleAnimations(i: number, old: number) {
   oldTL.play({
     d: 1000,
     p: {
-      y: { newEnd: 100 }
+      y: { newEnd: 105 }
     },
     delay: 0
   })
