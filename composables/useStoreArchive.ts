@@ -12,7 +12,7 @@ export type ArchiveCopyType = {
 const ARCHIVE_COPY: ArchiveCopyType[] = [
     {
         // src: "/Assets/info/Oscar_Pico.png",
-        src: "/Assets/Home1.png",
+        src: "/Assets/Home/1.png",
         imageDirection: "vertical",
         text: {
             title: "Title 1",

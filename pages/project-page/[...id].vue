@@ -100,6 +100,7 @@ usePageFlow({
   min-height: 100vh;
   height: 100%;
   width: 100vw;
+  color: $black;
 
   // overflow: hidden;
 }
