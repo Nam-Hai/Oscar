@@ -37,15 +37,21 @@
       </span>
 
       <span>
-        <NuxtLink to="/info" class="info">
+        <NuxtLink to="/info" class="info" v-if="router.currentRoute.value.name != 'info'">
           <span v-cursor-hover>
             info
           </span>
         </NuxtLink>
+        <NuxtLink to="/archive" class="archive" v-else>
+          <span v-cursor-hover>
+            archive
+          </span>
+        </NuxtLink>
+
       </span>
 
       <span>
-        <NuxtLink to="/archive" class="archive" v-if="router.currentRoute.value.name != 'archive'">
+        <NuxtLink to="/archive" class="archive" v-if="router.currentRoute.value.name != 'archive' && router.currentRoute.value.name != 'info'">
           <span v-cursor-hover>
             archive
           </span>
@@ -151,6 +157,7 @@ const { isHover: archiveHover } = useStoreArchive()
           position: absolute;
           left: -0.8rem;
           top: 50%;
+          transform: translateY(-50%);
           opacity: 0;
           transition: opacity 400ms;
         }
