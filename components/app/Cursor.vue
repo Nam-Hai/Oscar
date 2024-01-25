@@ -2,11 +2,15 @@
     <div :style="{ transform: translate }" :class="{ hover: cursorState == 'hover', hold: isHolding, dark: pickerDark }"
         class="cursor__wrapper" ref="wrapperRef">
 
-        <div class="hold-border">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.1 -1.1 2.2 2.2">
-                <path d="M 0 1 A 1 1 0 0 0 0 -1 A 1 1 0 0 0 0 1" stroke="currentColor" stroke-width="0.05" fill="none" />
-            </svg>
+        <div class="point" :style="{ transform: `translate(calc(${diff.x}px - 50%), calc(${diff.y}px - 50%) )` }">
+
         </div>
+        <!-- <div class="hold-border">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.1 -1.1 2.2 2.2">
+                <path d="M 0 1 A 1 1 0 0 0 0 -1 A 1 1 0 0 0 0 1" stroke="currentColor" stroke-width="0.05" fill="none"
+                     />
+            </svg>
+        </div> -->
     </div>
 </template>
 
@@ -15,19 +19,32 @@
 const { mouse } = useStoreView()
 const { cursorState, isHolding, pickerDark } = useCursorStore()
 
+const mouseLag = ref({ x: 0, y: 0 })
+const diff = ref({ x: 0, y: 0 })
 const translate = computed(() => {
-    return `translate(${mouse.value.x}px, ${mouse.value.y}px)`
+    return `translate(${mouse.value.x - diff.value.x}px, ${mouse.value.y - diff.value.y}px)`
 })
 
 const wrapperRef = ref() as Ref<HTMLElement>
 onMounted(() => {
-    const p = N.get('path', wrapperRef.value)! as HTMLElement
-    const l = N.Svg.getLength(p)
+    // const p = N.get('path', wrapperRef.value)! as HTMLElement
+    // const l = N.Svg.getLength(p)
 
-    p.style.strokeDasharray = l + "px"
-    p.style.strokeDashoffset = l + "px"
+    // p.style.strokeDasharray = l + "px"
+    // p.style.strokeDashoffset = l + "px"
 })
 
+useRaf(() => {
+    mouseLag.value = {
+        x: N.Clamp( N.Lerp(mouseLag.value.x, mouse.value.x, 0.5), mouse.value.x - 6, mouse.value.x + 6),
+        y: N.Clamp( N.Lerp(mouseLag.value.y, mouse.value.y, 0.5), mouse.value.y - 6, mouse.value.y + 6),
+    }
+
+    diff.value = {
+        x: mouse.value.x - mouseLag.value.x,
+        y: mouse.value.y - mouseLag.value.y
+    }
+})
 
 
 </script>
@@ -50,12 +67,13 @@ onMounted(() => {
 
     &.hover {
         color: $yellow;
+
         &::after {
             transform: translate(-50%, -50%) scale(0);
             opacity: 0.1;
         }
 
-        &::before {
+        .point {
             min-width: 4px;
             min-height: 4px;
         }
@@ -115,8 +133,7 @@ onMounted(() => {
         transition-timing-function: $easeOutQuad;
     }
 
-    &::before {
-        content: '';
+    .point {
         position: absolute;
         width: 0.2rem;
         height: 0.2rem;
