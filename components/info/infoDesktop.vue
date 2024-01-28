@@ -1,10 +1,10 @@
 <template>
     <div ref="wrapperRef" class="info__wrapper">
-        <div class="social__wrapper" ref="socialsRef">
-            <NuxtLink to="#?a=email" v-cursor-hover>Email</NuxtLink>
-            <NuxtLink to="#?a=linkedin" v-cursor-hover>Linkedin</NuxtLink>
-            <NuxtLink to="#?a=twitter" v-cursor-hover>Twitter</NuxtLink>
-            <NuxtLink to="#?a=insta" v-cursor-hover>Instagram</NuxtLink>
+        <div class="social__wrapper" ref="socialsRef" :data-link="socialHoverNum">
+            <NuxtLink to="#?a=email" v-cursor-hover @mouseenter="socialHoverNum = 1" @mouseleave="socialHoverNum = 0">Email</NuxtLink>
+            <NuxtLink to="#?a=linkedin" v-cursor-hover @mouseenter="socialHoverNum = 2" @mouseleave="socialHoverNum = 0">Linkedin</NuxtLink>
+            <NuxtLink to="#?a=twitter" v-cursor-hover @mouseenter="socialHoverNum = 3" @mouseleave="socialHoverNum = 0">Twitter</NuxtLink>
+            <NuxtLink to="#?a=insta" v-cursor-hover @mouseenter="socialHoverNum = 4" @mouseleave="socialHoverNum = 0">Instagram</NuxtLink>
         </div>
 
 
@@ -143,6 +143,7 @@ function leaveSpan(e: Event) {
 
 const wrapperRef = ref() as Ref<HTMLElement>
 
+const socialHoverNum = ref(0)
 // const aRef = ref()
 // useSplitWord(aRef)
 </script>
@@ -157,6 +158,11 @@ const wrapperRef = ref() as Ref<HTMLElement>
     padding-right: 1rem;
     position: relative;
     padding-bottom: 2.4rem;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .social__wrapper {
@@ -177,6 +183,48 @@ const wrapperRef = ref() as Ref<HTMLElement>
     row-gap: .8rem;
 
     z-index: 20;
+
+    &[data-link="0"] a {
+        opacity: 1;
+    }
+
+    &[data-link="1"] {
+        a {
+            opacity: 0;
+        }
+        a:nth-child(1) {
+            opacity: 1;
+        }
+    }
+
+    &[data-link="2"] {
+        a {
+            opacity: 0;
+        }
+        a:nth-child(2) {
+            opacity: 1;
+        }
+    }
+    &[data-link="3"] {
+        a {
+            opacity: 0;
+        }
+        a:nth-child(3) {
+            opacity: 1;
+        }
+    }
+    &[data-link="4"] {
+        a {
+            opacity: 0;
+        }
+        a:nth-child(4) {
+            opacity: 1;
+        }
+    }
+
+    a {
+        transition: opacity 200ms;
+    }
 }
 
 .bio__wrapper {
