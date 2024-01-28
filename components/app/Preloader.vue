@@ -140,7 +140,7 @@ function endLoading() {
   &.hide {
 
     .overflow-content {
-      transform: translateY(105%) !important;
+      transform: translateY(115%) !important;
       transition: transform 500ms;
     }
   }

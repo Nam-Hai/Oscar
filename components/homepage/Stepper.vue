@@ -33,27 +33,27 @@ onFlow(() => {
     N.Class.remove(wrapperRef.value, 'hide')
 })
 
-useLenisScroll((e: Lenis) => {
-    // console.log('lenis', e.direction, on);
-  return
-  if (!on) return
-  if (Math.abs(e.velocity) == 0) return
+// useLenisScroll((e: Lenis) => {
+//     // console.log('lenis', e.direction, on);
+//   return
+//   if (!on) return
+//   if (Math.abs(e.velocity) == 0) return
 
-  on = false
-  const direction = e.direction
-  const i = currentIndex.value
-  currentIndex.value = mod(i + direction, length)
+//   on = false
+//   const direction = e.direction
+//   const i = currentIndex.value
+//   currentIndex.value = mod(i + direction, length)
 
-  const lenis = useLenis()
-  lenis.stop()
-  lenis.targetScroll = lenis.animatedScroll
+//   const lenis = useLenis()
+//   lenis.stop()
+//   lenis.targetScroll = lenis.animatedScroll
 
-  useDelay(1500, () => {
-    console.log("300");
-    lenis.start()
-    on = true
-  })
-})
+//   useDelay(1500, () => {
+//     console.log("300");
+//     lenis.start()
+//     on = true
+//   })
+// })
 
 
 onLeave(() => {

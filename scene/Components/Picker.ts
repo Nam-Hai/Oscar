@@ -101,7 +101,7 @@ export class Picker extends CanvasNode {
     }
 
     private pick() {
-        this.gl.clearColor(0.945, 0.945, 0.945, 0);
+        this.gl.clearColor(0.969, 0.961, 0.949, 0);
         this.gl.renderer.render({
             scene: this.node,
             camera: this.camera,
