@@ -65,7 +65,7 @@ export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps,
 
         },
         cb: () => {
-            // resolve()
+            resolve()
         }
     })
 
