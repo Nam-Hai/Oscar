@@ -104,7 +104,7 @@ const translate = computed(() => {
     text-align: right;
     font-size: 3.2rem;
     font-weight: 400;
-    line-height: 90%;
+    line-height: 100%;
     letter-spacing: -.032rem;
     text-transform: uppercase;
 
