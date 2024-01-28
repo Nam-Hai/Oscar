@@ -71,9 +71,9 @@ export class PreloaderCanvas extends CanvasPage {
 
   async preloaderAnimation() {
     // DEBUG, skip preloader animation
-    useStore().preloaderComplete.value = true;
-    this.destroy();
-    return false;
+    // useStore().preloaderComplete.value = true;
+    // this.destroy();
+    // return false;
 
     const promise = []
     for (let i = 0; i < this.nodes.length; i++) {
