@@ -40,7 +40,7 @@ export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps,
         e: [.47, -0.43, .45, 1.24]
     }).from({
         update: ({ progE }) => {
-            titleContainer.style.transform = `translate(0%, calc(${progE * 50}vh + ${3 * (1 - progE)}rem - ${progE * 50}%))`
+            titleContainer.style.transform = `translate(0%, calc(${progE * 50}vh + ${3 * (1 - progE)}rem - ${progE * 0}%))`
         },
         d: 600,
         delay: 650,
@@ -65,7 +65,7 @@ export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps,
 
         },
         cb: () => {
-            resolve()
+            // resolve()
         }
     })
 
