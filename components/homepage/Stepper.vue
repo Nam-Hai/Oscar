@@ -17,12 +17,8 @@
 </template>
 
 <script lang="ts" setup>
-import Lenis from '@studio-freight/lenis';
-import { mod } from '~/plugins/core/utils';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 
-// const {propName = fallbackValue} = defineProps<{propName: type}>()
-// const emits = defineEmits([])
 
 const { stepperIsHovered, imageBounds, currentIndex, length } = useStoreStepper()
 
@@ -32,29 +28,6 @@ let on = true
 onFlow(() => {
     N.Class.remove(wrapperRef.value, 'hide')
 })
-
-// useLenisScroll((e: Lenis) => {
-//     // console.log('lenis', e.direction, on);
-//   return
-//   if (!on) return
-//   if (Math.abs(e.velocity) == 0) return
-
-//   on = false
-//   const direction = e.direction
-//   const i = currentIndex.value
-//   currentIndex.value = mod(i + direction, length)
-
-//   const lenis = useLenis()
-//   lenis.stop()
-//   lenis.targetScroll = lenis.animatedScroll
-
-//   useDelay(1500, () => {
-//     console.log("300");
-//     lenis.start()
-//     on = true
-//   })
-// })
-
 
 onLeave(() => {
   N.Class.add(wrapperRef.value, 'hide')

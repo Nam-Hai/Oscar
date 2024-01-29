@@ -1,21 +1,37 @@
 <template>
     <div ref="wrapperRef" class="stepper-mobile__wrapper" :data-current="currentIndex">
 
-        <div class="project-display__wrapper" v-for="(data, index) in homeStore"
-            :class="{ current: currentIndex == index }">
+        <div class="project-display__wrapper" v-for="(data, index) in homeStore" :class="{ current: currentIndex == index }"
+            ref="stepperRef">
             <img :src="data.mini" :alt="`home_mini-${data.title}`" @click="currentIndex = index">
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-// const {propName = fallbackValue} = defineProps<{propName: type}>()
-// const emits = defineEmits([])
+import { onFlow } from '~/waterflow/composables/onFlow';
 
 const { homeStore, currentIndex } = useStoreStepper()
 
 const wrapperRef = ref() as Ref<HTMLElement>
-
+const stepperRef = ref() as Ref<HTMLElement[]>
+onFlow(() => {
+    const tl = useTL()
+    for (let i = 0; i < stepperRef.value.length; i++) {
+        const el = stepperRef.value[i]
+        console.log(el, i)
+        tl.from({
+            el,
+            p: {
+                y: [200, 0]
+            },
+            d: 2000,
+            delay: i * 100,
+            e: 'io4'
+        })
+    }
+    tl.play()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -32,6 +48,7 @@ const wrapperRef = ref() as Ref<HTMLElement>
 
     .project-display__wrapper {
 
+        transform: translateY(200%);
         &.current {
             img {
                 opacity: 0;
