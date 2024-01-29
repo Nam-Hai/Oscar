@@ -56,7 +56,7 @@ export const useStoreView = createStore(() => {
 			smoothTouch: false,
 			syncTouch: true,
 			wheelMultiplier: 0.82,
-			touchMultiplier: 1.7,
+			touchMultiplier: 1.0,
 			infinite: infinite,
 			orientation: direction,
 			// duration,
