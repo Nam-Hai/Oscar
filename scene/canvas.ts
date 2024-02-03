@@ -40,8 +40,9 @@ export default class Canvas {
 			dpr: devicePixelRatio,
 		});
 		this.gl = this.renderer.gl;
-		this.gl.clearColor(0.969,0.961,0.949, 0);
-		// this.gl.clearColor(0, 0, 0, 0)
+		this.gl.clearColor(0.969, 0.961, 0.949, 0);
+
+
 		this.dom = this.gl.canvas;
 
 		this.map = new Map([
@@ -70,6 +71,7 @@ export default class Canvas {
 			scene: this.scene,
 			camera: this.camera,
 		});
+
 		preloader.init();
 	}
 
@@ -77,6 +79,7 @@ export default class Canvas {
 		this.onChange(flowProvider.getRouteFrom());
 		// this.currentPage = this.nextPage!
 		// this.currentPage.init()
+
 
 		this.resolveOnChange();
 	}

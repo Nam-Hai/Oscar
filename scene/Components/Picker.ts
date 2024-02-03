@@ -6,7 +6,7 @@ import { EventHandler } from '../utils/WebGL.utils';
 import { providePicker } from '~/composables/useCanvas';
 import type { ResizeEvent } from '~/plugins/core/resize';
 
-const { mouse, vh, vw } = useStoreView()
+const { mouse, vh, vw, canvasBg } = useStoreView()
 const { pickerDark } = useCursorStore()
 
 // Drop frames with mousemove after 300 meshes
@@ -101,7 +101,7 @@ export class Picker extends CanvasNode {
     }
 
     private pick() {
-        this.gl.clearColor(0.969, 0.961, 0.949, 0);
+        this.gl.clearColor(canvasBg.value[0], canvasBg.value[1], canvasBg.value[2], canvasBg.value[3]);
         this.gl.renderer.render({
             scene: this.node,
             camera: this.camera,

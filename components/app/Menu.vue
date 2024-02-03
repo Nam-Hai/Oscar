@@ -1,5 +1,5 @@
 <template>
-  <div class="menu__wrapper" :class="{ dark: router.currentRoute.value.name !== 'index', hide: archiveHover }">
+  <div class="menu__wrapper" :class="{ dark: router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info', hide: archiveHover }">
     <div class="menu-grid">
       <span>
         <NuxtLink to="/" class="oscarpico">
@@ -56,7 +56,7 @@
             archive
           </span>
         </NuxtLink>
-        <NuxtLink to="/project-page/viadomo-deco" class="archive" v-else>
+        <NuxtLink to="/" class="archive" v-else>
           <span v-cursor-hover>
             project
           </span>

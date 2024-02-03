@@ -1,4 +1,5 @@
 import Lenis from "@studio-freight/lenis";
+import { RefSymbol } from "@vue/reactivity";
 
 export const useStoreView = createStore(() => {
 	const mouse = ref({ x: 0, y: 0 });
@@ -12,6 +13,8 @@ export const useStoreView = createStore(() => {
 
 	const preventScroll = ref(false);
 	const lenis = ref() as Ref<Lenis>;
+
+	const canvasBg = shallowRef([0, 0, 0, 0])
 
 	function init() {
 		lenis.value = new Lenis();
@@ -29,6 +32,17 @@ export const useStoreView = createStore(() => {
 			mouse.value = { x: evt.clientX, y: evt.clientY };
 		};
 		document.addEventListener("mousemove", updateMouse);
+
+
+		const router = useRouter()
+
+		watch(router.currentRoute, route => {
+			if (route.name === 'info') {
+				canvasBg.value = [0, 0, 0, 0]
+			} else {
+				canvasBg.value = [0.969, 0.961, 0.949, 0]
+			}
+		})
 	}
 	function resetLenis({
 		wrapper,
@@ -77,6 +91,7 @@ export const useStoreView = createStore(() => {
 	return {
 		mouse,
 		vw,
+		canvasBg,
 		vh,
 		scale,
 		breakpoint,

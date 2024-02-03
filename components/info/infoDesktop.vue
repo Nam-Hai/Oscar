@@ -1,10 +1,14 @@
 <template>
     <div ref="wrapperRef" class="info__wrapper">
         <div class="social__wrapper" ref="socialsRef" :data-link="socialHoverNum">
-            <NuxtLink to="#?a=email" v-cursor-hover @mouseenter="socialHoverNum = 1" @mouseleave="socialHoverNum = 0">Email</NuxtLink>
-            <NuxtLink to="#?a=linkedin" v-cursor-hover @mouseenter="socialHoverNum = 2" @mouseleave="socialHoverNum = 0">Linkedin</NuxtLink>
-            <NuxtLink to="#?a=twitter" v-cursor-hover @mouseenter="socialHoverNum = 3" @mouseleave="socialHoverNum = 0">Twitter</NuxtLink>
-            <NuxtLink to="#?a=insta" v-cursor-hover @mouseenter="socialHoverNum = 4" @mouseleave="socialHoverNum = 0">Instagram</NuxtLink>
+            <NuxtLink to="#?a=email" v-cursor-hover @mouseenter="socialHoverNum = 1" @mouseleave="socialHoverNum = 0">Email
+            </NuxtLink>
+            <NuxtLink to="#?a=linkedin" v-cursor-hover @mouseenter="socialHoverNum = 2" @mouseleave="socialHoverNum = 0">
+                Linkedin</NuxtLink>
+            <NuxtLink to="#?a=twitter" v-cursor-hover @mouseenter="socialHoverNum = 3" @mouseleave="socialHoverNum = 0">
+                Twitter</NuxtLink>
+            <NuxtLink to="#?a=insta" v-cursor-hover @mouseenter="socialHoverNum = 4" @mouseleave="socialHoverNum = 0">
+                Instagram</NuxtLink>
         </div>
 
 
@@ -153,7 +157,8 @@ const socialHoverNum = ref(0)
 
 .info__wrapper {
     width: 100vw;
-    color: $black;
+    color: $white;
+    background-color: $black;
     padding-left: 30rem;
     padding-right: 1rem;
     position: relative;
@@ -192,6 +197,7 @@ const socialHoverNum = ref(0)
         a {
             opacity: 0;
         }
+
         a:nth-child(1) {
             opacity: 1;
         }
@@ -201,22 +207,27 @@ const socialHoverNum = ref(0)
         a {
             opacity: 0;
         }
+
         a:nth-child(2) {
             opacity: 1;
         }
     }
+
     &[data-link="3"] {
         a {
             opacity: 0;
         }
+
         a:nth-child(3) {
             opacity: 1;
         }
     }
+
     &[data-link="4"] {
         a {
             opacity: 0;
         }
+
         a:nth-child(4) {
             opacity: 1;
         }
@@ -235,6 +246,11 @@ const socialHoverNum = ref(0)
     flex-direction: column;
     // row-gap: 2.4rem;
 
+    p .highlight {
+        color: $yellow;
+        transition: color 300ms;
+    }
+
     &.highlight.animationDone {
         p>span {
             >span {
@@ -244,6 +260,7 @@ const socialHoverNum = ref(0)
             &.highlight:hover {
                 >span {
                     opacity: 1 !important;
+                    color: $white;
                 }
             }
         }
@@ -366,6 +383,5 @@ const socialHoverNum = ref(0)
 
         }
     }
-}
-</style>
+}</style>
 
