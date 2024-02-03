@@ -58,7 +58,7 @@ export class PreloaderCanvas extends CanvasPage {
 
     this.group.position.set(0, 0, -.5)
 
-    this.nodes = N.Arr.create(3).map((index) => {
+    this.nodes = N.Arr.create(4).map((index) => {
       const image = new PreloaderImage(this.gl, { texture: textures[index] })
       const node = image.node
 
@@ -80,9 +80,7 @@ export class PreloaderCanvas extends CanvasPage {
       const p = new Promise<void>((res) => {
         useDelay(200 * i, () => {
           const node = this.nodes[i]
-          // console.log(node);
           node.growAnimation().then(() => {
-            console.log('PRomise');
             res()
           })
         })
