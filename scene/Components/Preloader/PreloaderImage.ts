@@ -166,12 +166,14 @@ export class PreloaderImage extends CanvasNode {
 
     growToHome() {
         const DELAY = 200
+        const force = 0.4
+        const f = 0.4
         return new Promise<void>((res) => {
             const tl = useTL()
             tl.from({
                 d: 1000,
                 // e: 'o1',
-                e: [.49, -0.48, .58, 1],
+                e: [0.76, -0.34, 0.24, 1],
                 update: (e) => {
                     this.uSizePixel.value.set(
                         N.Lerp(this.targetSize.width, vw.value, e.progE),
@@ -185,14 +187,14 @@ export class PreloaderImage extends CanvasNode {
                 d: 150,
                 e: 'o2',
                 update: (e) => {
-                    this.uDeform.value = e.progE * -0.4
+                    this.uDeform.value = e.progE * (-force)
                 }
             }).from({
                 d: 150,
                 delay: 150,
                 e: 'i2',
                 update: (e) => {
-                    this.uDeform.value = (1 - e.progE) * -0.4
+                    this.uDeform.value = (1 - e.progE) * (- force)
                 }
             })
 
@@ -201,7 +203,7 @@ export class PreloaderImage extends CanvasNode {
                 delay: DELAY,
                 e: "o2",
                 update: (e) => {
-                    this.uDeform.value = N.Lerp(0, 1, e.progE)
+                    this.uDeform.value = N.Lerp(0, 1, e.progE) * f
                 }
             })
                 .from({
@@ -209,7 +211,7 @@ export class PreloaderImage extends CanvasNode {
                     e: "io1",
                     delay: 400 + DELAY,
                     update: (e) => {
-                        this.uDeform.value = N.Lerp(1, -0.8, e.progE)
+                        this.uDeform.value = N.Lerp(1, -0.8, e.progE) * f
                     }
                 })
                 .from({
@@ -217,7 +219,7 @@ export class PreloaderImage extends CanvasNode {
                     e: "o2",
                     delay: 400 + 500 + DELAY,
                     update: (e) => {
-                        this.uDeform.value = N.Lerp(-1, 0, e.progE)
+                        this.uDeform.value = N.Lerp(-1, 0, e.progE) * f
                     },
                     cb: () => {
                         res()

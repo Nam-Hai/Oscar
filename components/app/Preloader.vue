@@ -94,8 +94,9 @@ onMounted(() => {
   useTL().from({
     el: N.getAll(".overflow-content", wrapperRef.value),
     p: {
-      y: [-100, 0]
+      y: [100, 0]
     },
+    e: 'io3',
     d: 500
   }).play()
 
@@ -114,6 +115,9 @@ onMounted(() => {
 
 function endLoading() {
   canvas.preloader()
+
+  N.Class.add(N.get('.counter .overflow-content')!, 'hide')
+
 
   useDelay(3700, () => {
     if (wrapperRef.value) N.Class.add(wrapperRef.value, 'hide')
@@ -164,6 +168,12 @@ function endLoading() {
     left: 2.4rem;
     top: 50%;
     transform: translateY(-50%);
+
+    @include breakpoint(mobile) {
+      left: 50%;
+      top: 2.4rem;
+      transform: translateX(-50%);
+    }
   }
 
   .right {
@@ -177,6 +187,14 @@ function endLoading() {
     right: 2.4rem;
     top: 50%;
     transform: translateY(-50%);
+
+    @include breakpoint(mobile) {
+      left: 50%;
+      top: unset;
+      right: unset;
+      bottom: 2.4rem;
+      transform: translateX(-50%);
+    }
   }
 
   .overflow-content {
