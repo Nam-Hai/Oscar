@@ -5,19 +5,19 @@
         <div class="point" :style="{ transform: `translate(calc(${diff.x}px - 50%), calc(${diff.y}px - 50%) )` }">
 
         </div>
-        <!-- <div class="hold-border">
+        <div class="hold-border">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.1 -1.1 2.2 2.2">
                 <path d="M 0 1 A 1 1 0 0 0 0 -1 A 1 1 0 0 0 0 1" stroke="currentColor" stroke-width="0.05" fill="none"
                      />
             </svg>
-        </div> -->
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
 
 const { mouse } = useStoreView()
-const { cursorState, isHolding, pickerDark } = useCursorStore()
+const { cursorState, progress, isHolding, pickerDark } = useCursorStore()
 
 const mouseLag = ref({ x: 0, y: 0 })
 const diff = ref({ x: 0, y: 0 })
@@ -26,12 +26,20 @@ const translate = computed(() => {
 })
 
 const wrapperRef = ref() as Ref<HTMLElement>
-onMounted(() => {
-    // const p = N.get('path', wrapperRef.value)! as HTMLElement
-    // const l = N.Svg.getLength(p)
 
-    // p.style.strokeDasharray = l + "px"
-    // p.style.strokeDashoffset = l + "px"
+watch(progress, prog=>{
+    const p = N.get('path', wrapperRef.value)! as HTMLElement
+    const l = N.Svg.getLength(p) * (1 - prog)
+    console.log(prog);
+
+    p.style.strokeDashoffset = l + "px"
+})
+onMounted(() => {
+    const p = N.get('path', wrapperRef.value)! as HTMLElement
+    const l = N.Svg.getLength(p)
+
+    p.style.strokeDasharray = l + "px"
+    p.style.strokeDashoffset = l + "px"
 })
 
 useRaf(() => {
