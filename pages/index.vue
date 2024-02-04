@@ -205,7 +205,8 @@ main {
 }
 
 .flavor {
-  font-size: 1.3rem;
+  // font-size: 1.3rem;
+  font-size: 11px;
   padding-left: 50vw;
   width: 100%;
 
