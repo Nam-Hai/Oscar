@@ -295,8 +295,8 @@ class Motion {
         this.delay = new Delay(this.initRaf, this.v.delay)
     }
 
-    initRaf() {
-        this.raf.run()
+    initRaf(lateToDelay: number = 0) {
+        this.raf.run({elapsed: lateToDelay})
     }
 
     run(e: rafEvent) {
