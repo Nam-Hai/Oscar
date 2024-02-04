@@ -59,7 +59,6 @@ const flowProvider = useFlowProvider()
 const wrapperRef = ref()
 const counter = ref('00')
 
-const manifestLoaded = ref(false)
 const { preloaderComplete, fromPreloader } = useStore()
 const killPreloader = ref(false)
 const percentageRef = ref(0)
@@ -107,7 +106,6 @@ onMounted(() => {
   })
 
   manifest.loadManifest().then(() => {
-    manifestLoaded.value = true
     endLoading()
   })
   // if (manifest.length == 0) return endPreloader()
