@@ -627,7 +627,7 @@ vec2 coord = vec2(mix(-1.1, 1.1, uProgress), mix(0.3, -0.4, uProgress));
 
 float radius = mix(0.6, 1.3, t);
 float d = sqrt((vP.x - coord.x) * (vP.x - coord.x) + (vP.y - coord.y) * (vP.y - coord.y));
-float z = (1. - io2(d / radius)) * step(d, radius);
+float z = (1. - io2(d / radius)) * step(d, radius) * 0.5;
 
 vec4 mvmP = modelViewMatrix * vec4(position, 1.);
 mvmP.z += z * 1.9;
