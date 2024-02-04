@@ -290,6 +290,11 @@ function scrollTop() {
     height: 24rem;
     width: 26.8rem;
 
+    @include breakpoint(mobile){
+        height: 15rem;
+        width: 16rem;
+    }
+
     // min-height: 240px;
     // min-width: 268px;
     // max-width: 300px;
