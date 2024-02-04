@@ -59,7 +59,7 @@ useLenisScroll((e) => {
 
     const scale = N.Lerp(1, 0.6, secondScrollEase(s / size))
     landingHeaderScale.value = scale
-    titleWrapperRef.value.style.transform = `translateY(${s}px) scale(${scale}) `
+    titleWrapperRef.value.style.transform = `translateY(${e.animatedScroll}px) scale(${scale}) `
     N.T(lowerDesRef.value, 0, e.animatedScroll, 'px');
 })
 

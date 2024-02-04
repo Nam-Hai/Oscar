@@ -356,7 +356,7 @@ void main() {
   vUv = uv;
   vec3 p = position;
   float f = 1000.;
-  float fsize = clamp(2. * uSizePixel.x / uSize, 0., 1.);
+  float fsize = clamp(2. * uSizePixel.x / uSize, 0., 1.) * 0.35;
   p.y += cos(p.x* PI) * clamp(uVelo, -f, f) / f * fsize;
 
   vec4 mvmP = modelViewMatrix * vec4(p, 1.);

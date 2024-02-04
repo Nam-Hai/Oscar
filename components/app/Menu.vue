@@ -1,6 +1,6 @@
 <template>
   <div class="menu__wrapper"
-    :class="{ dark: router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info', hide: archiveHover }"
+    :class="{ dark: (router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info') && !atEnd, hide: archiveHover, init}"
     ref="wrapperRef">
     <div class="menu-grid">
       <span>
@@ -87,11 +87,13 @@ import { vCursorHover } from '~/directives/cursorActive';
 import { onFlow } from '~/waterflow/composables/onFlow';
 const router = useRouter()
 const { isHover: archiveHover } = useStoreArchive()
+const { atEnd } = useStoreProject()
 // const { preloaderComplete } = useStore()
 const { manifestLoaded } = useStore();
 
 const wrapperRef = ref()
 
+const init = ref(false)
 watch(manifestLoaded, b => {
   const content = N.getAll('.overflow-content', wrapperRef.value)
   const tl = useTL()
@@ -109,6 +111,7 @@ watch(manifestLoaded, b => {
       }
     })
   }
+  useDelay(6300, ()=> init.value = true)
   tl.play()
 })
 
@@ -125,6 +128,9 @@ svg.overflow-content {
 }
 
 .menu__wrapper {
+  &.init .overflow-content {
+    transform: translateY(0)!important;
+  }
   position: fixed;
   top: 0;
   left: 0;

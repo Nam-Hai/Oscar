@@ -42,7 +42,7 @@ export const useStoreView = createStore(() => {
 			} else {
 				canvasBg.value = [0.969, 0.961, 0.949, 0]
 			}
-		})
+		}, {immediate: true})
 	}
 	function resetLenis({
 		wrapper,

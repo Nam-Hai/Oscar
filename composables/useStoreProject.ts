@@ -146,6 +146,7 @@ export const useStoreProject = createStore(() => {
 
     const currentIndex = ref(0);
     const length = Object.values(copy).length
+    const atEnd = ref(false)
 
     const idToIndex = new Map<string, number>([
         ['viadomo-deco', 0],
@@ -166,5 +167,5 @@ export const useStoreProject = createStore(() => {
         return index == currentIndex.value - 1 || (currentIndex.value == 0 && index == (length - 1))
     }
 
-    return { copy, currentIndex, length, idToIndex, landingHeaderScale, nextPageTitleRef, isNextId, isPreviousId }
+    return { copy, currentIndex, length, idToIndex, landingHeaderScale, nextPageTitleRef, isNextId, isPreviousId, atEnd}
 })
