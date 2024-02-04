@@ -278,7 +278,7 @@ export class HomeMedia extends CanvasNode {
 	update(e: rafEvent) {
 		const currentMesh = this.currentMesh;
 
-		const distTrigger = 3300;
+		const distTrigger = 2000;
 		const f =
 			Math.min(Math.abs(this.scrollDistance), distTrigger) / distTrigger;
 
@@ -375,7 +375,7 @@ void main() {
     float d = sqrt(coord.x * coord.x + coord.y * coord.y);
     // float limit = dMax * mix(0.25, 1., uInProgress);
 
-    newP.z += cos(d / dMax * 3.1415 ) * 2. * uOutProgress;
+    newP.z += cos(d / dMax * 3.1415 ) * 1.2 * uOutProgress;
     // newP.z += cos()
 
     // gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
