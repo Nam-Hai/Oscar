@@ -6,6 +6,7 @@ import { useCanvasReactivity } from "../../utils/WebGL.utils";
 // import { Pane } from "tweakpane";
 
 const { currentIndex, length } = useStoreStepper();
+const { progress } = useCursorStore()
 
 const uReach = { value: 2 };
 const uForce = { value: 0.6 };
@@ -53,38 +54,38 @@ export class HomeMedia extends CanvasNode {
 		this.uSizeCanvas = { value: [1, 1] };
 		this.uIntrinsecRatio = this.textures[0].image
 			? (this.textures[0].image as HTMLImageElement).width /
-			  (this.textures[0].image as HTMLImageElement).height
+			(this.textures[0].image as HTMLImageElement).height
 			: 1;
 		this.uScaleOffset = {
 			value: [
 				this.uSizeCanvas.value[0] / this.uSizeCanvas.value[1] <
-				this.uIntrinsecRatio
+					this.uIntrinsecRatio
 					? this.uSizeCanvas.value[0] /
-					  (this.uSizeCanvas.value[1] * this.uIntrinsecRatio)
+					(this.uSizeCanvas.value[1] * this.uIntrinsecRatio)
 					: 1,
 				this.uSizeCanvas.value[0] / this.uSizeCanvas.value[1] <
-				this.uIntrinsecRatio
+					this.uIntrinsecRatio
 					? 1
 					: (this.uSizeCanvas.value[1] * this.uIntrinsecRatio) /
-					  this.uSizeCanvas.value[0],
+					this.uSizeCanvas.value[0],
 			],
 		};
 		this.uTranslateOffset = {
 			value: [
 				this.uSizeCanvas.value[0] / this.uSizeCanvas.value[1] <
-				this.uIntrinsecRatio
+					this.uIntrinsecRatio
 					? 0.5 *
-					  (1 -
-							this.uSizeCanvas.value[0] /
-								(this.uSizeCanvas.value[1] * this.uIntrinsecRatio))
+					(1 -
+						this.uSizeCanvas.value[0] /
+						(this.uSizeCanvas.value[1] * this.uIntrinsecRatio))
 					: 0,
 				this.uSizeCanvas.value[0] / this.uSizeCanvas.value[1] <=
-				this.uIntrinsecRatio
+					this.uIntrinsecRatio
 					? 0
 					: (1 -
-							(this.uSizeCanvas.value[1] * this.uIntrinsecRatio) /
-								this.uSizeCanvas.value[0]) *
-					  0.5,
+						(this.uSizeCanvas.value[1] * this.uIntrinsecRatio) /
+						this.uSizeCanvas.value[0]) *
+					0.5,
 			],
 		};
 
@@ -160,49 +161,49 @@ export class HomeMedia extends CanvasNode {
 		this.scrollTimer.tick();
 	}
 	onChange(nextId: number) {
-		const immediate = this.onChangeImmediate;
-		this.onChangeImmediate = false;
-		const oldMesh = this.currentMesh;
-		const currentMesh = this.createPlane(nextId);
-		let added = false;
+		const oldMesh = this.currentMesh
+		const currentMesh = this.createPlane(nextId)
+		this.currentMesh = currentMesh
+		let added = false
 
-		const DURATION = 800;
-		const DELAY_IN = immediate ? 0 : 250;
+		const DURATION = 800
+		const DELAY_IN = this.onChangeImmediate ? 0 : 250
 
-		this.waitAnimation = true;
-
-		const tl = useTL();
-		if (!immediate) {
+		const tl = useTL()
+		if (!this.onChangeImmediate) {
 			tl.from({
 				d: 600,
-				e: "i2",
+				e: 'i2',
 				update: ({ progE }) => {
-					oldMesh.program.uniforms.uOutProgress.value = progE;
+					oldMesh.program.uniforms.uOutProgress.value = progE
 				},
-				cb: () => {},
-			});
+				cb: () => {
+				},
+			})
 		}
+
 		tl.from({
 			d: DURATION,
 			delay: DELAY_IN,
 			e: "o2",
 			update: ({ progE }) => {
 				if (!added) {
-					currentMesh.setParent(this.node);
-					added = true;
+					currentMesh.setParent(this.node)
+					added = true
 				}
-				currentMesh.program.uniforms.uInProgress.value = progE;
+				currentMesh.program.uniforms.uInProgress.value = progE
 			},
 			cb: () => {
+
 				this.waitAnimation = false;
-				this.currentMesh = currentMesh;
+				this.onChangeImmediate = false;
 
 				this.scrollOn = false;
 				this.scrollDistance = 0;
 				this.scrollTimer.stop();
-				oldMesh.setParent(null);
-			},
-		}).play();
+				oldMesh.setParent(null)
+			}
+		}).play()
 	}
 	createPlane(idTexture: number) {
 		const program = new Program(this.gl, {
@@ -245,31 +246,31 @@ export class HomeMedia extends CanvasNode {
 
 		this.uScaleOffset.value = [
 			this.uSizeCanvas.value[0] / this.uSizeCanvas.value[1] <
-			this.uIntrinsecRatio
+				this.uIntrinsecRatio
 				? this.uSizeCanvas.value[0] /
-				  (this.uSizeCanvas.value[1] * this.uIntrinsecRatio)
+				(this.uSizeCanvas.value[1] * this.uIntrinsecRatio)
 				: 1,
 			this.uSizeCanvas.value[0] / this.uSizeCanvas.value[1] <
-			this.uIntrinsecRatio
+				this.uIntrinsecRatio
 				? 1
 				: (this.uSizeCanvas.value[1] * this.uIntrinsecRatio) /
-				  this.uSizeCanvas.value[0],
+				this.uSizeCanvas.value[0],
 		];
 		this.uTranslateOffset.value = [
 			this.uSizeCanvas.value[0] / this.uSizeCanvas.value[1] <
-			this.uIntrinsecRatio
+				this.uIntrinsecRatio
 				? 0.5 *
-				  (1 -
-						this.uSizeCanvas.value[0] /
-							(this.uSizeCanvas.value[1] * this.uIntrinsecRatio))
+				(1 -
+					this.uSizeCanvas.value[0] /
+					(this.uSizeCanvas.value[1] * this.uIntrinsecRatio))
 				: 0,
 			this.uSizeCanvas.value[0] / this.uSizeCanvas.value[1] <=
-			this.uIntrinsecRatio
+				this.uIntrinsecRatio
 				? 0
 				: (1 -
-						(this.uSizeCanvas.value[1] * this.uIntrinsecRatio) /
-							this.uSizeCanvas.value[0]) *
-				  0.5,
+					(this.uSizeCanvas.value[1] * this.uIntrinsecRatio) /
+					this.uSizeCanvas.value[0]) *
+				0.5,
 		];
 
 		this.node.scale.set(width, height, 1);
@@ -281,9 +282,13 @@ export class HomeMedia extends CanvasNode {
 		const distTrigger = 2000;
 		const f =
 			Math.min(Math.abs(this.scrollDistance), distTrigger) / distTrigger;
+		progress.value = N.Clamp(f, 0, 0.4) / 0.4
 
-		currentMesh.program.uniforms.uOutProgress.value = f;
+		if (!this.waitAnimation) {
+			currentMesh.program.uniforms.uOutProgress.value = f;
+		}
 		if (f >= 0.4 && !this.waitAnimation) {
+			this.waitAnimation = true
 			this.onChangeImmediate = true;
 			const dir = this.scrollDistance > 0 ? 1 : -1;
 			currentIndex.value = N.mod(currentIndex.value + dir, length);
