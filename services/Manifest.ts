@@ -161,12 +161,13 @@ export default class Manifest {
         });
       }
     }
-
     for (const [keys, values] of Object.entries(this.jsons)) {
       const font = await (await fetch(keys)).json();
       this.jsons[keys] = font;
       this.index.value += 1;
     }
+
+    manifestLoaded.value = true
 
     this.lazyLoadManifest()
   }
