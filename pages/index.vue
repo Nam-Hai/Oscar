@@ -113,7 +113,7 @@ function titleAnimations(i: number, old: number) {
     tl.from({
       el: char,
       d: 1000,
-      delay: 40 * index,
+      delay: 50 * index,
       e: 'o4',
       p: {
         y: [-100, 0]

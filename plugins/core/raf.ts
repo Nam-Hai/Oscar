@@ -174,12 +174,19 @@ class RafR {
         this.priority = priority
     }
 
-    run() {
+    run(options?: { elapsed?: number }) {
         if (this.on || this.killed) return
         this.on = true
         RafId++
         this.id = RafId
-        Raf.add({ id: this.id, cb: this.cb }, this.priority)
+        const arg: rafItem = {
+            id: this.id, 
+            cb: this.cb,
+        }
+        if(options?.elapsed) {
+            arg.startTime = Raf.now - options.elapsed
+        }
+        Raf.add(arg, this.priority)
     }
     stop() {
         if (!this.on) return
@@ -193,8 +200,21 @@ class RafR {
     }
 }
 
+class debugClock {
+    last: number;
+    constructor() {
+        this.last = performance.now()
+    }
+    tick() {
+        const t = performance.now()
+        console.log("delta : ", t - this.last)
+        this.last = t
+    }
+}
+const DEBUG = new debugClock()
+
 class Delay {
-    cb: () => void;
+    cb: (late?: number) => void;
     delay: number;
     raf: RafR;
     constructor(callback: () => void, delay: number) {
@@ -218,7 +238,12 @@ class Delay {
         let t = e.elapsed
         t = Clamp(t, 0, this.delay)
 
-        1 === Clamp(t / this.delay, 0, 1) && (this.stop(), this.cb())
+        if (t / this.delay >= 1) {
+            this.stop()
+            const late = e.elapsed - this.delay
+            this.cb(late)
+        }
+        // 1 === Clamp(t / this.delay, 0, 1) && ()
     }
 }
 
