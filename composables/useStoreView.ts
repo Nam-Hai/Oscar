@@ -3,6 +3,7 @@ import { RefSymbol } from "@vue/reactivity";
 
 export const useStoreView = createStore(() => {
 	const mouse = ref({ x: 0, y: 0 });
+	const firstMove = ref(false)
 
 	const vh = ref(0);
 	const vw = ref(0);
@@ -29,10 +30,10 @@ export const useStoreView = createStore(() => {
 		ro.trigger();
 
 		const updateMouse = (evt: MouseEvent) => {
+			if (!firstMove.value) firstMove.value = true
 			mouse.value = { x: evt.clientX, y: evt.clientY };
 		};
 		document.addEventListener("mousemove", updateMouse);
-
 
 		const router = useRouter()
 
@@ -42,7 +43,7 @@ export const useStoreView = createStore(() => {
 			} else {
 				canvasBg.value = [0.969, 0.961, 0.949, 0]
 			}
-		}, {immediate: true})
+		}, { immediate: true })
 	}
 	function resetLenis({
 		wrapper,
@@ -90,6 +91,7 @@ export const useStoreView = createStore(() => {
 
 	return {
 		mouse,
+		firstMove,
 		vw,
 		canvasBg,
 		vh,

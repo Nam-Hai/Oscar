@@ -15,8 +15,12 @@
 
 <script lang="ts" setup>
 
-const { mouse } = useStoreView()
+const { mouse, firstMove } = useStoreView()
 const { overhide, target, cursorState, progress, isHolding, pickerDark } = useCursorStore()
+
+watch(firstMove, ()=>{
+    trailingMouse.value = mouse.value
+})
 
 const mouseLag = ref({ x: 0, y: 0 })
 const diff = ref({ x: 0, y: 0 })
