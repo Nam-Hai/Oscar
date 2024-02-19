@@ -19,9 +19,11 @@
       </NuxtLink>
 
       <div class="flavor">
-        <div class="flavor-main overflow">
-          <span class="overflow-content" ref="flavorMainRef">
-            {{ data.flavorMain }}
+        <div class="flavor-main" ref="flavorMainRef">
+          <span class="overflow" v-for="word in data.flavorMain.split(' ')">
+            <span class="overflow-content">
+              {{ word }}&nbsp;
+            </span>
           </span>
         </div>
         <div class="flavor-sub" ref="flavorSubRef">
@@ -109,7 +111,7 @@ function titleAnimations(i: number, old: number) {
   const title = titleRefs.value[i]
   N.Class.remove(title, "leave")
   const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
-  const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value[i], ...subs]
+  const spans = [...N.getAll(".overflow-content", title)!, ...N.getAll(".overflow-content", flavorMainRef.value[i]), ...subs]
   for (const [index, char] of spans.entries()) {
     tl.from({
       el: char,
@@ -201,16 +203,15 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 2.4rem;
+  row-gap: 1.4rem;
   justify-content: center;
 }
 
 .flavor {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   // font-size: 11px;
   padding-left: 50vw;
   width: 100%;
-  text-transform: uppercase;
 
   @include breakpoint(mobile) {
     padding-left: calc(50vw - 3rem);
@@ -219,7 +220,10 @@ main {
   .flavor-main {
     margin-bottom: 3.6rem;
     width: 26rem;
-    line-height: 1.6rem;
+    line-height: 1.8rem;
+    span.overflow {
+      display: inline-block;
+    }
 
     @include breakpoint(mobile) {
       width: 20.3rem;
@@ -229,6 +233,9 @@ main {
   }
 
   .flavor-sub {
+
+    font-size: 1.2rem;
+    text-transform: uppercase;
     display: flex;
     flex-direction: column;
     row-gap: 0.8rem;
@@ -240,7 +247,7 @@ main {
       // height: 0.9rem;
       top: 0;
 
-      > span:first-child {
+      >span:first-child {
         width: 5rem;
       }
     }
@@ -248,7 +255,7 @@ main {
 }
 
 a {
-  margin-top: 4rem;
+  margin-top: 3rem;
 }
 
 h1 {
