@@ -3,23 +3,33 @@
     :class="{ dark: (router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info') && !atEnd, hide: archiveHover, init }"
     ref="wrapperRef">
     <div class="home">
-      <NuxtLink to="/">
-        Oscar Pico
+      <NuxtLink to="/" @mouseenter="hoverMenu($event, 'home')" @mouseleave="leave()" v-cursor-hover>
+        <span ref="homeRef">
+          {{ "Oscar Pico" }}
+        </span>
       </NuxtLink>
     </div>
     <div class="menu-grid">
-      <NuxtLink to="/info" :class="{ currentRoute: router.currentRoute.value.name == 'info' }" v-cursor-hover>
-        Info
+      <NuxtLink to="/info" :class="{ currentRoute: router.currentRoute.value.name == 'info' }" v-cursor-hover
+        @mouseenter="hoverMenu($event, 'info')" @mouseleave="leave()">
+        <span ref="infoRef">
+          {{ "info" }}
+        </span>
       </NuxtLink>
       ,
       <NuxtLink to="/"
         :class="{ currentRoute: router.currentRoute.value.name === 'index' || router.currentRoute.value.name === 'project-page-id' }"
-        v-cursor-hover>
-        Projects
+        v-cursor-hover @mouseenter="hoverMenu($event, 'projects')" @mouseleave="leave()">
+        <span ref="projectsRef">
+          {{ "Projects" }}
+        </span>
       </NuxtLink>
       ,
-      <NuxtLink to="/playground" :class="{ currentRoute: router.currentRoute.value.name == 'playground' }" v-cursor-hover>
-        Playground
+      <NuxtLink to="/playground" :class="{ currentRoute: router.currentRoute.value.name == 'playground' }" v-cursor-hover
+        @mouseenter="hoverMenu($event, 'playground')" @mouseleave="leave()">
+        <span ref="playgroundRef">
+          {{ "Playground" }}
+        </span>
       </NuxtLink>
     </div>
 
@@ -31,11 +41,42 @@ import { vCursorHover } from '~/directives/cursorActive';
 import { onFlow } from '~/waterflow/composables/onFlow';
 const router = useRouter()
 const { isHover: archiveHover } = useStoreArchive()
+const { overhide, target } = useCursorStore()
 const { atEnd } = useStoreProject()
 // const { preloaderComplete } = useStore()
 const { manifestLoaded } = useStore();
 
 const wrapperRef = ref()
+const infoRef = ref() as Ref<HTMLElement>
+const projectsRef = ref()
+const playgroundRef = ref()
+const homeRef = ref()
+const bounds = {
+  info: { x: 0, y: 0, width: 0, height: 0 },
+  home: { x: 0, y: 0, width: 0, height: 0 },
+  playground: { x: 0, y: 0, width: 0, height: 0 },
+  projects: { x: 0, y: 0, width: 0, height: 0 },
+
+}
+
+useRO(() => {
+  bounds.info = infoRef.value.getBoundingClientRect()
+  bounds.home = homeRef.value.getBoundingClientRect()
+  bounds.projects = projectsRef.value.getBoundingClientRect()
+  bounds.playground = playgroundRef.value.getBoundingClientRect()
+})
+
+function hoverMenu(e: MouseEvent, to: "info" | "home" | "playground" | "projects") {
+  overhide.value = true
+
+  console.log(to, bounds);
+  const b = bounds[to]
+  target.value.x = b.x + b.width / 2
+  target.value.y = b.y + b.height / 2
+}
+function leave() {
+  overhide.value = false
+}
 
 onMounted(() => {
   console.log(router.currentRoute.value.name);
@@ -120,7 +161,7 @@ a {
 
   padding: 2rem $side-margin;
 
-  .menu-grid {
+  .menu-grid, .home {
 
     position: relative;
 
@@ -138,23 +179,23 @@ a {
       // color: red;
       color: transparent;
 
-      &:before {
-        opacity: 1;
-      }
+      // &:before {
+      //   opacity: 1;
+      // }
     }
 
-    a:before {
-      content: '';
-      opacity: 0;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      transition: opacity 250ms;
-    }
+    // a:before {
+    //   content: '';
+    //   opacity: 0;
+    //   width: 4px;
+    //   height: 4px;
+    //   border-radius: 50%;
+    //   position: absolute;
+    //   left: 50%;
+    //   top: 50%;
+    //   transform: translate(-50%, -50%);
+    //   transition: opacity 250ms;
+    // }
 
     a.currentRoute {
       &::after {

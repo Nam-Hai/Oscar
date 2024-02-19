@@ -14,7 +14,7 @@ const useStore = createStore(() => {
   const flowIsHijacked = ref(false)
   const firstRedirect = ref(false)
 
-  return { isMobile, pageLoaded, preventScroll, fromPreloader, manifestLoaded, preloaderComplete, flowIsHijacked, firstRedirect}
+  return { isMobile, pageLoaded, preventScroll, fromPreloader, manifestLoaded, preloaderComplete, flowIsHijacked, firstRedirect }
 })
 export default useStore
 
@@ -24,6 +24,9 @@ const useCursorStore = createStore(() => {
   const isHolding = ref(false)
   const isHold = ref(false)
   const pickerDark = ref(false)
+
+  const overhide = ref(false)
+  const target = ref({ x: 0, y: 0 })
 
   const progress = ref(0)
 
@@ -58,7 +61,7 @@ const useCursorStore = createStore(() => {
     useEventListeneer(el, 'mouseup', onMouseUp)
   }
 
-  return { cursorState, toggleHover, onHold, isHolding, isHold, pickerDark, progress}
+  return { target, overhide, cursorState, toggleHover, onHold, isHolding, isHold, pickerDark, progress }
 })
 
 export { useCursorStore }
