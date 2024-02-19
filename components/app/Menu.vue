@@ -69,7 +69,6 @@ useRO(() => {
 function hoverMenu(e: MouseEvent, to: "info" | "home" | "playground" | "projects") {
   overhide.value = true
 
-  console.log(to, bounds);
   const b = bounds[to]
   target.value.x = b.x + b.width / 2
   target.value.y = b.y + b.height / 2
@@ -78,18 +77,12 @@ function leave() {
   overhide.value = false
 }
 
-onMounted(() => {
-  console.log(router.currentRoute.value.name);
-})
-
 const init = ref(false)
 watch(manifestLoaded, b => {
   const content = N.getAll('.overflow-content', wrapperRef.value)
   const tl = useTL()
-  console.error('test');
   for (let index = 0; index < content.length; index++) {
     const el = content[index]
-    console.log(el)
     tl.from({
       el,
       d: 1000,
