@@ -5,6 +5,7 @@ const homeStore = [
         titleHTML: '<span class="overflow-content">V</span><span class="overflow-content">i</span><span class="overflow-content">a</span><span class="overflow-content">d</span><span class="overflow-content">o</span><span class="overflow-content">m</span><span class="overflow-content">o</span><span class="overflow-content">©</span><span class="overflow-content">D</span><span class="overflow-content">E</span><span class="overflow-content">C</span><span class="overflow-content">O</span>',
         flavorMain: "An innovative collection of top-tier furniture",
         flavorSub: ["Web design", "Furniture", "11.2023"],
+        flavorTitle: ["Type", "Field", "Date"],
         link: "/project-page/viadomo-deco",
         mini: "/Assets/Minia/1_mini.jpg"
     },
@@ -13,6 +14,7 @@ const homeStore = [
         titleMobile: "Avant garden",
         flavorMain: "Fashion clothing from the future.",
         flavorSub: ["Web design", "Fashion", "03.2023"],
+        flavorTitle: ["Type", "Field", "Date"],
         link: "/project-page/avant-garden",
         mini: "/Assets/Minia/2_mini.jpg",
     },
@@ -21,6 +23,7 @@ const homeStore = [
         titleMobile: "MUCHO MATXA",
         flavorMain: "Lorem ipsum dolor sit amet consectetur.",
         flavorSub: ["Type", "Field", "Date"],
+        flavorTitle: ["Type", "Field", "Date"],
         link: "/project-page/mucho-matxa",
         mini: "/Assets/Minia/3_mini.jpg",
     },
@@ -29,6 +32,7 @@ const homeStore = [
         titleMobile: "MAPFRE SALUD",
         flavorMain: "An online and face-to-face health app.",
         flavorSub: ["App Design", "Health", "11.2022"],
+        flavorTitle: ["Type", "Field", "Date"],
         link: "/project-page/mapfre-salud",
         mini: "/Assets/Minia/4_mini.jpg",
     }
