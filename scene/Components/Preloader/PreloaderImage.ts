@@ -13,6 +13,7 @@ export class PreloaderImage extends CanvasNode {
     uIntrinsecRatio: number;
     uScaleOffset: { value: number[]; };
     uTranslateOffset: { value: number[]; };
+    uZoom = { value: 1 }
     tMap: { value: Texture; };
     targetSize: { width: number; height: number; };
     canvasSize!: { width: number; height: number; };
@@ -97,6 +98,7 @@ export class PreloaderImage extends CanvasNode {
                 uSizePixel: this.uSizePixel,
                 uScaleOffset: this.uScaleOffset,
                 uTranslateOffset: this.uTranslateOffset,
+                uZoom: this.uZoom,
                 uId: this.uId,
 
                 uDeform: this.uDeform,
@@ -181,7 +183,7 @@ export class PreloaderImage extends CanvasNode {
                     )
                     // this.mesh.position.set(0, 0, .5)
                     this.zRatio = e.progE
-                    this.computeUniforms()
+                    this.computeUniforms(N.Lerp(0.8, 1, N.Ease.o2(e.prog)))
                 },
             }).from({
                 d: 150,
@@ -220,6 +222,8 @@ export class PreloaderImage extends CanvasNode {
                     delay: 400 + 500 + DELAY,
                     update: (e) => {
                         this.uDeform.value = N.Lerp(-1, 0, e.progE) * f
+
+
                     },
                     cb: () => {
                         res()
@@ -244,7 +248,7 @@ export class PreloaderImage extends CanvasNode {
 
         this.computeUniforms()
     }
-    computeUniforms() {
+    computeUniforms(zoom: number = 1) {
 
         this.uScaleOffset.value = [
             this.uSizePixel.value[0] / this.uSizePixel.value[1] < this.uIntrinsecRatio
@@ -271,6 +275,12 @@ export class PreloaderImage extends CanvasNode {
                     this.uSizePixel.value[0]) *
                 0.5,
         ];
+
+        this.uScaleOffset.value[0] *= zoom
+        this.uScaleOffset.value[1] *= zoom
+
+        this.uTranslateOffset.value[0] = (1 - this.uScaleOffset.value[0]) * 0.5
+        this.uTranslateOffset.value[1] = (1 - this.uScaleOffset.value[1]) * 0.5
 
         // this.targetSize.width = this.canvasSize.width * this.uSizePixel.value.x / vw.value
         // this.targetSize.height = this.canvasSize.height * this.uSizePixel.value.y / vh.value

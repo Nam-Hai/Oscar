@@ -89,7 +89,6 @@ export class PreloaderCanvas extends CanvasPage {
     }
 
     await Promise.all(promise)
-    console.log('Grow animation DONE');
 
 
     this.nodes[1].node.rotation.set(-Math.PI * 0.5, 0, 0)
@@ -108,6 +107,7 @@ export class PreloaderCanvas extends CanvasPage {
       },
       cb: () => {
         this.nodes[0].node.rotation.set(-Math.PI * 1, 0, 0)
+        this.nodes[0].computeUniforms(0.8)
       },
     }).from({
       d: 1000,

@@ -63,17 +63,18 @@ onLeave(() => {
   }
 
   .d {
-    font-size: 11px;
+    // font-size: 11px;
+    font-size: 1.3rem;
     font-weight: 400;
     line-height: 0;
   }
 
   .step__wrapper {
     display: flex;
-    column-gap: 4px;
+    column-gap: .4rem;
 
     .step {
-      height: 8px;
+      height: .8rem;
       border: 1px solid $white;
       border-left-width: 0px;
       width: 0px;

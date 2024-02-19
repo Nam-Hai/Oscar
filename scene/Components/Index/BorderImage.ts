@@ -6,7 +6,7 @@ import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 import type { Timeline } from "~/plugins/core/motion";
 
-const { vh, vw, mouse } = useStoreView()
+const { vh, vw, mouse, firstMove } = useStoreView()
 const { isHold } = useCursorStore()
 // const m = toRefs(mouse)
 const { idToIndex, stack, imageBounds, currentIndex, hideTrail } = useStoreStepper()
@@ -93,6 +93,16 @@ export class BorderImage extends CanvasNode {
 
         const { watch } = useCanvasReactivity(this)
         watch(mouse, this.onMouseMove)
+        watch(firstMove, () => {
+
+            const { size } = useCanvas()
+            this.positionTarget.set(
+                (mouse.value.x - vw.value / 2 + imageBounds.w * 0.5 + 18) * size.value.width / vw.value,
+                (vh.value / 2 - mouse.value.y + imageBounds.h * 0.5 + 18) * size.value.height / vh.value,
+                0
+            )
+            this.node.position.set(this.positionTarget)
+        })
         const tl = useTL()
         watch(hideTrail, (b) => {
             const from = this.uHide.value

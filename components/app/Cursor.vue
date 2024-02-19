@@ -7,8 +7,7 @@
         </div>
         <div class="hold-border">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.1 -1.1 2.2 2.2">
-                <path d="M 0 1 A 1 1 0 0 0 0 -1 A 1 1 0 0 0 0 1" stroke="currentColor" stroke-width="0.05" fill="none"
-                     />
+                <path d="M 0 1 A 1 1 0 0 0 0 -1 A 1 1 0 0 0 0 1" stroke="currentColor" stroke-width="0.05" fill="none" />
             </svg>
         </div>
     </div>
@@ -16,22 +15,25 @@
 
 <script lang="ts" setup>
 
-const { mouse } = useStoreView()
-const { cursorState, progress, isHolding, pickerDark } = useCursorStore()
+const { mouse, firstMove } = useStoreView()
+const { overhide, target, cursorState, progress, isHolding, pickerDark } = useCursorStore()
+
+watch(firstMove, ()=>{
+    trailingMouse.value = mouse.value
+})
 
 const mouseLag = ref({ x: 0, y: 0 })
 const diff = ref({ x: 0, y: 0 })
+const trailingMouse = ref({ x: 0, y: 0 })
 const translate = computed(() => {
-    return `translate(${mouse.value.x - diff.value.x}px, ${mouse.value.y - diff.value.y}px)`
+    return `translate(${trailingMouse.value.x - diff.value.x}px, ${trailingMouse.value.y - diff.value.y}px)`
 })
 
 const wrapperRef = ref() as Ref<HTMLElement>
 
-watch(progress, prog=>{
+watch(progress, prog => {
     const p = N.get('path', wrapperRef.value)! as HTMLElement
     const l = N.Svg.getLength(p) * (1 - prog)
-    console.log(prog);
-
     p.style.strokeDashoffset = l + "px"
 })
 onMounted(() => {
@@ -43,14 +45,25 @@ onMounted(() => {
 })
 
 useRaf(() => {
+    if (!overhide.value) {
+        trailingMouse.value = {
+            x: N.Lerp(trailingMouse.value.x, mouse.value.x, 0.2),
+            y: N.Lerp(trailingMouse.value.y, mouse.value.y, 0.2),
+        }
+    } else {
+        trailingMouse.value = {
+            x: N.Lerp(trailingMouse.value.x, target.value.x, 0.2),
+            y: N.Lerp(trailingMouse.value.y, target.value.y, 0.2),
+        }
+    }
     mouseLag.value = {
-        x: N.Clamp( N.Lerp(mouseLag.value.x, mouse.value.x, 0.5), mouse.value.x - 6, mouse.value.x + 6),
-        y: N.Clamp( N.Lerp(mouseLag.value.y, mouse.value.y, 0.5), mouse.value.y - 6, mouse.value.y + 6),
+        x: N.Clamp(N.Lerp(mouseLag.value.x, trailingMouse.value.x, 0.5), trailingMouse.value.x - 6, trailingMouse.value.x + 6),
+        y: N.Clamp(N.Lerp(mouseLag.value.y, trailingMouse.value.y, 0.5), trailingMouse.value.y - 6, trailingMouse.value.y + 6),
     }
 
     diff.value = {
-        x: mouse.value.x - mouseLag.value.x,
-        y: mouse.value.y - mouseLag.value.y
+        x: trailingMouse.value.x - mouseLag.value.x,
+        y: trailingMouse.value.y - mouseLag.value.y
     }
 })
 

@@ -273,6 +273,7 @@ export class SteppersWrapper extends CanvasNode {
                         d: 500,
                         e: 'o4',
                         update: ({ progE }) => {
+                            if(immediate) return
                             el.uTransparency.value = 1 - progE
                         }
                     }).play()
