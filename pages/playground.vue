@@ -1,7 +1,5 @@
 <template>
     <main ref="wrapperRef">
-        <ArchiveDesktop v-if="breakpoint == 'desktop'" />
-        <ArchiveMobile v-else />
     </main>
 </template>
 

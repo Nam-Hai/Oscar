@@ -66,7 +66,7 @@ useRO(() => {
   bounds.playground = playgroundRef.value.getBoundingClientRect()
 })
 
-function hoverMenu(e: MouseEvent, to: "info" | "home" | "playground" | "projects") {
+function hoverMenu(e: MouseEvent, to: keyof typeof bounds) {
   overhide.value = true
 
   const b = bounds[to]
@@ -154,7 +154,12 @@ a {
 
   padding: 2rem $side-margin;
 
-  .menu-grid, .home {
+  @include breakpoint(mobile) {
+    padding: 2rem $side-margin-mobile;
+  }
+
+  .menu-grid,
+  .home {
 
     position: relative;
 
@@ -169,26 +174,8 @@ a {
     }
 
     a:hover {
-      // color: red;
       color: transparent;
-
-      // &:before {
-      //   opacity: 1;
-      // }
     }
-
-    // a:before {
-    //   content: '';
-    //   opacity: 0;
-    //   width: 4px;
-    //   height: 4px;
-    //   border-radius: 50%;
-    //   position: absolute;
-    //   left: 50%;
-    //   top: 50%;
-    //   transform: translate(-50%, -50%);
-    //   transition: opacity 250ms;
-    // }
 
     a.currentRoute {
       &::after {
