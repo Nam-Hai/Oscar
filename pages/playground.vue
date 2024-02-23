@@ -4,11 +4,12 @@
             playground
             (24)
         </h1>
+        <div class="placeholder-container"></div>
     </main>
 </template>
 
 <script lang="ts" setup>
-import { archiveFlowIn, defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
+import { archiveFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 
 const { breakpoint } = useStoreView()
@@ -38,6 +39,33 @@ h1 {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: -1rem;
+}
+
+.placeholder-container {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    column-gap: 1.6rem;
+
+    &::before,
+    &::after {
+        content: "";
+        width: 25rem;
+        height: 10rem;
+        background-color: red;
+    }
+
+    @include breakpoint(mobile) {
+        padding: 0 1.6rem;
+        column-gap: .6rem;
+
+        &::after,
+        &::before {
+            width: 100%;
+        }
+
+    }
 }
 </style>
 
