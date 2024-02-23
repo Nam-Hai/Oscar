@@ -13,14 +13,17 @@ export class PlaygroundMedia extends CanvasNode {
 
     on = false;
     intrinsecRatio: number = 1;
+    src: string;
 
     constructor(
         gl: OGLRenderingContext,
-        props?: {
+        props: {
+            src: string
         }
     ) {
         super(gl);
         N.BM(this, ["update", "onResize", "destroy"]);
+        this.src = props.src
         this.uLoaded = { value: 0 };
 
         this.raf = useRafR(this.update);
@@ -34,7 +37,7 @@ export class PlaygroundMedia extends CanvasNode {
     loadTexture() {
         const { watch } = useCanvasReactivity(this);
         const { textures, lazyTextures } = useManifest()
-        const textureManager = lazyTextures["/Assets/Viadomo/3.jpg"];
+        const textureManager = lazyTextures[this.src];
         this.tMap = { value: textureManager.getTexture() }
         watch(
             textureManager.loaded,
@@ -90,7 +93,8 @@ export class PlaygroundMedia extends CanvasNode {
         this.computeScale()
     }
     computeScale() {
-        this.node.scale.set(this.intrinsecRatio, 1, 1)
+        if (!this.node) return
+        this.node.scale.set(1, 1 / this.intrinsecRatio, 1)
     }
 
     update(e: rafEvent) {

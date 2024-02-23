@@ -64,7 +64,10 @@ export class PlaygroundCanvas extends CanvasPage {
         picker.add(this)
 
 
-        this.add(new PlaygroundMedia(this.gl))
+        const { src } = useStorePlayground()
+        for (const s of src) {
+            this.add(new PlaygroundMedia(this.gl, { src: s }))
+        }
     }
 
 

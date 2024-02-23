@@ -6,7 +6,6 @@ export function onFlow(mountedCallback: () => void) {
   const flowProvider = useFlowProvider()
   const flow = ref(false)
 
-  console.log(flowProvider);
   watch(flowProvider.flowIsHijacked, (isHijacked) => {
     if (!isHijacked && !flow.value) {
       mountedCallback()
