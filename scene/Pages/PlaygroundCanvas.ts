@@ -6,6 +6,7 @@ import { Transform, type Camera, type OGLRenderingContext, type Renderer } from 
 import { Picker } from "../Components/Picker";
 import { Media } from "../Components/Project/Media";
 import { useCanvasReactivity } from "../utils/WebGL.utils";
+import { PlaygroundMedia } from "../Components/Playground/PlaygroundMedia";
 
 export const [providePlaygroundCanvas, usePlaygroundCanvas] = canvasInject<PlaygroundCanvas>('playground-archive-canvas')
 
@@ -55,13 +56,15 @@ export class PlaygroundCanvas extends CanvasPage {
         this.raf.run()
         this.ro.on()
 
-        console.log("playground canvas");
         const { watch } = useCanvasReactivity(this)
     }
 
     mount() {
         const picker = new Picker(this.gl, { renderTargetRatio: 5 })
         picker.add(this)
+
+
+        this.add(new PlaygroundMedia(this.gl))
     }
 
 

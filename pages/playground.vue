@@ -55,7 +55,7 @@ h1 {
         width: 25rem;
         height: 10rem;
         pointer-events: none;
-        // background-color: red;
+        background-color: red;
     }
 
     @include breakpoint(mobile) {
