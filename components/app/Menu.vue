@@ -1,6 +1,6 @@
 <template>
   <div class="menu__wrapper"
-    :class="{ dark: (router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info') && !atEnd, hide: archiveHover, init }"
+    :class="{ dark: (router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info') && !atEnd, init }"
     ref="wrapperRef">
     <div class="home">
       <NuxtLink to="/" @mouseenter="hoverMenu($event, 'home')" @mouseleave="leave()" v-cursor-hover>
@@ -40,7 +40,7 @@
 import { vCursorHover } from '~/directives/cursorActive';
 import { onFlow } from '~/waterflow/composables/onFlow';
 const router = useRouter()
-const { isHover: archiveHover } = useStoreArchive()
+// const { isHover: archiveHover } = useStoreArchive()
 const { overhide, target } = useCursorStore()
 const { atEnd } = useStoreProject()
 // const { preloaderComplete } = useStore()

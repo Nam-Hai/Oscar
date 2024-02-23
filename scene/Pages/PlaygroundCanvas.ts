@@ -7,11 +7,9 @@ import { Picker } from "../Components/Picker";
 import { Media } from "../Components/Project/Media";
 import { useCanvasReactivity } from "../utils/WebGL.utils";
 
-export const [provideArchiveCanvas, useArchiveCanvas] = canvasInject<ArchiveCanvas>('canvas-archive-canvas')
+export const [providePlaygroundCanvas, usePlaygroundCanvas] = canvasInject<PlaygroundCanvas>('playground-archive-canvas')
 
-const { isHover, hoverIndex } = useStoreArchive()
-
-export class ArchiveCanvas extends CanvasPage {
+export class PlaygroundCanvas extends CanvasPage {
 
     ro: ROR
     raf: RafR
@@ -25,7 +23,7 @@ export class ArchiveCanvas extends CanvasPage {
 
     constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
         super(gl)
-        provideArchiveCanvas(this)
+        providePlaygroundCanvas(this)
 
         this.scene = options.scene
         this.node = new Transform()
@@ -57,20 +55,8 @@ export class ArchiveCanvas extends CanvasPage {
         this.raf.run()
         this.ro.on()
 
+        console.log("playground canvas");
         const { watch } = useCanvasReactivity(this)
-
-        watch(isHover, hover => {
-            for (const m of this.medias) {
-                m.node.setParent(hover ? null : this.node)
-            }
-        })
-        watch(hoverIndex, index => {
-            for (const m of this.fixedMedias) {
-                m.node.setParent(null)
-            }
-            if (index == null) return
-            this.fixedMedias[index].node.setParent(this.node)
-        })
     }
 
     mount() {
@@ -78,20 +64,6 @@ export class ArchiveCanvas extends CanvasPage {
         picker.add(this)
     }
 
-    addMedia(el: HTMLElement) {
-        const m = new Media(this.gl, { el });
-        this.medias.push(m)
-        this.add(m)
-        return m
-    }
-
-    addFixedMedia(el: HTMLElement) {
-        const m = new Media(this.gl, { el, fixed: true });
-        this.fixedMedias.push(m)
-        this.add(m)
-        m.node.setParent(null)
-        return m
-    }
 
     resize({ vh, vw, scale, breakpoint }: ResizeEvent) {
     }

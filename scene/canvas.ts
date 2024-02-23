@@ -8,9 +8,9 @@ import { PreloaderCanvas } from "./Pages/PreloaderCanvas";
 import type { CanvasPage } from "./utils/types";
 import { IndexCanvas } from "./Pages/IndexCanvas";
 import { ProjectCanvas } from "./Pages/ProjectCanvas";
-import { ArchiveCanvas } from "./Pages/ArchiveCanvas";
+import { PlaygroundCanvas } from "./Pages/PlaygroundCanvas";
 
-type routeMapType = "index" | "project-page-id" | "archive";
+type routeMapType = "index" | "project-page-id" | "playground";
 
 export default class Canvas {
 	renderer: Renderer;
@@ -29,7 +29,7 @@ export default class Canvas {
 	projectPage?: ProjectCanvas;
 
 	dom: HTMLCanvasElement;
-	archive?: ArchiveCanvas;
+	playground?: PlaygroundCanvas;
 	ro: ROR;
 
 	constructor() {
@@ -49,7 +49,7 @@ export default class Canvas {
 			["fallback", this.createFallbackCanvas],
 			["index", this.createIndexCanvas],
 			["project-page-id", this.createProjectPage],
-			["archive", this.createArchiveCanvas],
+			["playground", this.createPlaygroundCanvas],
 		]);
 
 		this.camera = new Camera(this.gl);
@@ -135,12 +135,12 @@ export default class Canvas {
 		return this.projectPage;
 	}
 
-	createArchiveCanvas() {
-		this.archive = new ArchiveCanvas(this.gl, {
+	createPlaygroundCanvas() {
+		this.playground = new PlaygroundCanvas(this.gl, {
 			camera: this.camera,
 			scene: this.scene,
 		});
-		return this.archive;
+		return this.playground;
 	}
 
 	createFallbackCanvas() {

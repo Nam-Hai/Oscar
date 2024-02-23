@@ -4,7 +4,10 @@
             playground
             (24)
         </h1>
-        <div class="placeholder-container"></div>
+        <div class="placeholder-container">
+            <div class="placeholder"></div>
+            <div class="placeholder"></div>
+        </div>
     </main>
 </template>
 
@@ -48,20 +51,19 @@ h1 {
     justify-content: center;
     column-gap: 1.6rem;
 
-    &::before,
-    &::after {
-        content: "";
+    .placeholder {
         width: 25rem;
         height: 10rem;
-        background-color: red;
+        pointer-events: none;
+        // background-color: red;
     }
 
     @include breakpoint(mobile) {
         padding: 0 1.6rem;
         column-gap: .6rem;
 
-        &::after,
-        &::before {
+
+        .placeholder {
             width: 100%;
         }
 

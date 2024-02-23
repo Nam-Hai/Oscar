@@ -140,21 +140,24 @@ function titleAnimations(i: number, old: number) {
 
 onLeave(() => {
   const i = currentIndex.value
-  const subs = N.getAll(".overflow-content", flavorSubRef.value[i])!
-  const spans = [flavorMainRef.value[i], ...subs]
   const tl = titleTls[i]
+
+  const title = titleRefs.value[i]
+  const span = N.getAll(".overflow-content", title)
+  console.log(span);
   // tl.reset()
   console.error("onLeave");
   let a = 0
-  for (let i = tl.arr.length - 4; i < tl.arr.length; i++) {
+  console.log(tl.arr.length, span.length);
+  for (let i = span.length; i < tl.arr.length; i++) {
 
     const motion = tl.arr[i]
     motion.play({
-      d: 1000,
+      d: 750,
       p: {
         y: { newEnd: 100 }
       },
-      delay: a * 40
+      delay: a * 10
     })
     a++;
   }
@@ -221,6 +224,7 @@ main {
     margin-bottom: 3.6rem;
     width: 26rem;
     line-height: 1.8rem;
+
     span.overflow {
       display: inline-block;
     }
