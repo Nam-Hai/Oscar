@@ -15,6 +15,7 @@ export class PlaygroundMedia extends CanvasNode {
     intrinsecRatio: number = 1;
     src: string;
     index: number;
+    width: number = 1;
 
     constructor(
         gl: OGLRenderingContext,
@@ -104,10 +105,10 @@ export class PlaygroundMedia extends CanvasNode {
         });
         this.computeScale()
     }
-    computeScale(width: number = 1) {
+    computeScale() {
         if (!this.node) return
 
-        this.node.scale.set(width, width / this.intrinsecRatio, 1)
+        this.node.scale.set(this.width, this.width / this.intrinsecRatio, 1)
     }
 
     update(e: rafEvent) {
@@ -116,7 +117,8 @@ export class PlaygroundMedia extends CanvasNode {
     onResize(canvasSize: { width: number; height: number }) {
         const { mediaBoundsPixel } = useStorePlayground()
         const width = mediaBoundsPixel.value.width * canvasSize.width / vw.value
-        this.computeScale(width)
+        this.width = width
+        this.computeScale()
     }
 }
 

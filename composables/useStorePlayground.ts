@@ -2,6 +2,7 @@
 const PLAYGROUND__TEXTURE = [
     "/Assets/Home/1.jpg",
     "/Assets/Home/2.jpg",
+    "/Assets/info/Oscar_Pico.png",
     "/Assets/Home/3.jpg",
     "/Assets/Home/4.jpg",
     "/Assets/Home/1.jpg",

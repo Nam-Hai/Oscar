@@ -6,7 +6,7 @@
         </h1>
         <div class="placeholder-container">
             <div class="placeholder" ref="placeholderRef"></div>
-            <!-- <div class="placeholder"></div> -->
+            <div class="placeholder"></div>
         </div>
     </main>
 </template>
@@ -67,7 +67,7 @@ h1 {
         width: 25rem;
         height: 10rem;
         pointer-events: none;
-        background-color: red;
+        // background-color: red;
     }
 
     @include breakpoint(mobile) {
