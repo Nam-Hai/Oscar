@@ -88,7 +88,6 @@ export class PlaygroundMedia extends CanvasNode {
         this.scrollPosition = e.animatedScroll
         const velo = Math.min(Math.abs(e.velocity), 50) / 50
         this.uVelo.value = N.Lerp(this.uVelo.value, velo, 0.1)
-        console.log(this.uVelo.value, e.velocity);
         // this.offset = Math.floor((this.scrollPosition + this.positionEl.y + vh.value / 2) / vh.value) * vh.value
         // console.log(this.offset, this.scrollPosition, this.positionEl.y);
         this.computeCoord()
@@ -141,7 +140,7 @@ export class PlaygroundMedia extends CanvasNode {
 
     computeCoord() {
         this.node.position.set(
-            this.positionEl.x * this.canvasSize.width / vw.value,
+            (this.positionEl.x * N.Ease.i4(1 - this.uVelo.value)) * this.canvasSize.width / vw.value,
             (this.positionEl.y + this.scrollPosition - this.offset) * this.canvasSize.height / vh.value,
             0
         )
