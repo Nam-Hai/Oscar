@@ -5,8 +5,8 @@
             (24)
         </h1>
         <div class="placeholder-container">
-            <div class="placeholder" ref="placeholderRef"></div>
-            <div class="placeholder"></div>
+            <div class="placeholder" v-for="i in 10">
+            </div>
         </div>
     </main>
 </template>
@@ -22,13 +22,13 @@ const { mediaBoundsPixel } = useStorePlayground()
 const placeholderRef = htmlRef()
 
 useRO(({ breakpoint, scale }) => {
-    mediaBoundsPixel.value = {
-        gap: breakpoint === "desktop" ? 16 * scale : 0,
-        width: placeholderRef.value.getBoundingClientRect().width
-    }
+    // mediaBoundsPixel.value = {
+    //     gap: breakpoint === "desktop" ? 16 * scale : 0,
+    //     width: placeholderRef.value.getBoundingClientRect().width
+    // }
 })
 
-useResetLenis()
+useResetLenis({ infinite: true })
 
 const wrapperRef = ref() as Ref<HTMLElement>
 
@@ -38,6 +38,7 @@ usePageFlow({
     flowInCrossfade: archiveFlowIn,
     enableCrossfade: 'TOP'
 })
+
 
 </script>
 
@@ -59,15 +60,27 @@ h1 {
     position: fixed;
     inset: 0;
     display: flex;
-    justify-content: center;
-    column-gap: 1.6rem;
-    top: 50%;
+    flex-direction: column;
+    // justify-content: center;
+    width: calc(50rem + 1.6rem);
+    row-gap: 1.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    // top: 50%;
 
     .placeholder {
         width: 25rem;
-        height: 10rem;
+        height: 20rem;
         pointer-events: none;
-        // background-color: red;
+        background-color: red;
+
+        &:nth-child(2n) {
+            align-self: flex-end;
+        }
+
+        &:nth-child(2n + 1) {
+            align-self: flex-start;
+        }
     }
 
     @include breakpoint(mobile) {

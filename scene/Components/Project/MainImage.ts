@@ -161,11 +161,11 @@ export class MainImage extends CanvasNode {
 		const lenis = useLenis();
 
 		const scrollUnsub = lenis.on("scroll", this.onScroll);
-
 		this.onDestroy(() => scrollUnsub());
 	}
 
 	onScroll(e: { animatedScroll: any; }) {
+		console.log(e);
 		// if (this.pixelScroll >= 800) return
 		let eS = e.animatedScroll;
 

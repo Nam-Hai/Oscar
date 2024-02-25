@@ -5,7 +5,7 @@ import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 
 const { vh, vw, scale, breakpoint, mouse, scrollLenis } = useStoreView();
-const { mediaBoundsPixel, placeMediaEvent } = useStorePlayground()
+const { mediaBoundsPixel } = useStorePlayground()
 
 export class PlaygroundMedia extends CanvasNode {
     raf: RafR;
@@ -18,22 +18,23 @@ export class PlaygroundMedia extends CanvasNode {
     index: number;
     width: number = 1;
     height: number = 1;
-    lastMedia: boolean;
+    canvasSize!: { width: number; height: number; };
+    el: HTMLElement;
 
     constructor(
         gl: OGLRenderingContext,
         props: {
             index: number,
-            last: boolean
+            el: HTMLElement
         }
     ) {
         super(gl);
         N.BM(this, ["update", "onResize", "destroy"]);
         this.index = props.index
-        const { src } = useStorePlayground()
-        this.src = src[this.index]
+        this.el = props.el
+
+        this.src = N.Ga(this.el, "data-src") || "/Assets/Home/1.jpg"
         this.uLoaded = { value: 0 };
-        this.lastMedia = props.last
 
         this.raf = useRafR(this.update);
 
@@ -120,12 +121,12 @@ export class PlaygroundMedia extends CanvasNode {
     }
 
     onResize(canvasSize: { width: number; height: number }) {
+        this.canvasSize = canvasSize
         const width = mediaBoundsPixel.value.width * canvasSize.width / vw.value
         this.width = width
         this.height = width / this.intrinsecRatio
         this.computeScale()
 
-        this.lastMedia && placeMediaEvent.emit({})
     }
 }
 
@@ -142,7 +143,7 @@ uniform float uLoaded;
 
 void main() {
 
-    vec4 color = texture(tMap, vUv);
+    vec4 color = mix(vec4(0.1), texture(tMap, vUv), uLoaded);
     FragColor[0] = vec4(color.rgb,1.);
     FragColor[1] = uId;
 }

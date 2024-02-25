@@ -14,10 +14,10 @@ export const useStorePlayground = createStore(() => {
     const src = PLAYGROUND__TEXTURE
     const mediaBoundsPixel = shallowRef({
         width: 100,
-        gap: 10
+        gap: 16
     })
 
-    const placeMediaEvent = new EventEmitter()
+    const placeMediaEvent = new EventEmitter<any>()
 
-    return { src, mediaBoundsPixel, placeMediaEvent }
+    return { src, mediaBoundsPixel }
 })

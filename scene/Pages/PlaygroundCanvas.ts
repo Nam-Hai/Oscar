@@ -9,17 +9,20 @@ import { PlaygroundMedia } from "../Components/Playground/PlaygroundMedia";
 
 export const [providePlaygroundCanvas, usePlaygroundCanvas] = canvasInject<PlaygroundCanvas>('playground-archive-canvas')
 
-const { mediaBoundsPixel, placeMediaEvent } = useStorePlayground()
+const { mediaBoundsPixel } = useStorePlayground()
 const { vw } = useStoreView()
 export class PlaygroundCanvas extends CanvasPage {
 
-    ro: ROR
+    // ro: ROR
     raf: RafR
     target: any;
     renderer: Renderer;
     camera: Camera;
     scene: Transform;
     medias: PlaygroundMedia[];
+    groupHeight: number = 1;
+    canvasSize!: { width: number; height: number; };
+    placed: boolean = false;
 
     constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
         super(gl)
@@ -38,45 +41,47 @@ export class PlaygroundCanvas extends CanvasPage {
             this.node.setParent(null);
         })
 
-        N.BM(this, ["render", "resize", "init", "destroy"]);
+        N.BM(this, ["render", "resize", "init", "destroy", "onScroll"]);
 
-        this.ro = useROR(this.resize)
+        // this.ro = useROR(this.resize)
         this.raf = useRafR(this.render, RafPriority.LAST)
 
 
         this.medias = []
         this.mount()
 
-        this.onDestroy(() => this.ro.off())
+        // this.onDestroy(() => this.ro.off())
         this.onDestroy(() => this.raf.kill())
     }
     init() {
         this.raf.run()
-        this.ro.on()
+        // this.ro.on()
 
-        placeMediaEvent.on(this.placeMedia.bind(this))
+        const { unWatch: resizeUnWatch, trigger } = useCanvasSize(this.resize);
 
+        const lenis = useLenis();
+        const scrollUnsub = lenis.on("scroll", this.onScroll);
+        this.onDestroy(() => scrollUnsub());
+        this.onDestroy(() => resizeUnWatch())
     }
 
     mount() {
         const picker = new Picker(this.gl, { renderTargetRatio: 5 })
         picker.add(this)
-
-        const { src } = useStorePlayground()
-        for (let index = 0; index < src.length; index++) {
-            const media = new PlaygroundMedia(this.gl, { index, last: index === src.length - 1 })
-            this.medias.push(media)
-            this.add(media)
-        }
     }
 
-    resize({ vh, vw, scale, breakpoint }: ResizeEvent) {
-        // console.log("plauyground canvas");
+    resize(canvasSize: { width: number, height: number }) {
+        this.canvasSize = canvasSize
     }
 
-    placeMedia() {
+    addMedia(el: HTMLElement) {
+        const media = new PlaygroundMedia(this.gl, { index: this.medias.length, el })
+        this.medias.push(media)
+    }
 
-        console.log('MEdia');
+    onScroll(e: any) {
+        console.log('onscroll', e);
+        this.node.position.y = e.animatedScroll / 500
     }
 
     render(e: rafEvent) {
