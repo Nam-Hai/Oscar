@@ -19,7 +19,7 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, reso
 
     const pFrom = "M 0 0 C 6 0 8 0 14 0 L 14 7 C 8 7 6 7 0 7 L 0 0"
     //  "M 0 0 C 6 1 8 1 14 0 L 14 7 C 8 8 6 8 0 7 L 0 0" :
-    const { breakpoint } = useStoreView()
+    const { breakpoint, scale, vh } = useStoreView()
     const pTo = breakpoint.value == 'desktop' ? "M 0 0 C 6 1 8 1 14 0 L 14 7 C 8 8 6 8 0 7 L 0 0" :
         "M 0 0 C 6 0.2 8 0.2 14 0 L 14 7 C 8 7.3 6 7.3 0 7 L 0 0";
 
@@ -28,6 +28,7 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, reso
         e: 'i2',
         update: ({ progE }) => {
             overlay.value.style.transform = `translateY(${N.Lerp(-100, -19, progE)}%)`
+            canvas.currentPage.node.position.y = -progE * 300 * scale.value * canvas.size.value.height / vh.value
         },
         cb: () => {
             resolve()

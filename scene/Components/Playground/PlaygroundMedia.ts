@@ -84,7 +84,22 @@ export class PlaygroundMedia extends CanvasNode {
         watch(containerHeight, () => {
             trigger()
         })
-        useLenisGL(this, this.onScroll)
+
+        useTL().from({
+            d: 1000,
+            delay: 500,
+            // e: 'o4',
+            update: ({ progE }) => {
+                this.node.position.set(
+                    (this.positionEl.x * N.Ease.o3(progE)) * this.canvasSize.width / vw.value,
+                    (this.positionEl.y + this.scrollPosition + this.offset) * this.canvasSize.height / vh.value,
+                    0
+                )
+            },
+            cb: () => {
+                useLenisGL(this, this.onScroll)
+            }
+        }).play()
         this.onDestroy(() => resizeUnWatch())
         this.raf.run();
     }
