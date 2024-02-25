@@ -4,23 +4,22 @@ import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 import { CanvasPage } from "../utils/types";
 import { Transform, type Camera, type OGLRenderingContext, type Renderer } from "ogl";
 import { Picker } from "../Components/Picker";
-import { Media } from "../Components/Project/Media";
 import { useCanvasReactivity } from "../utils/WebGL.utils";
 import { PlaygroundMedia } from "../Components/Playground/PlaygroundMedia";
 
 export const [providePlaygroundCanvas, usePlaygroundCanvas] = canvasInject<PlaygroundCanvas>('playground-archive-canvas')
 
+const { mediaBoundsPixel } = useStorePlayground()
+const { vw } = useStoreView()
 export class PlaygroundCanvas extends CanvasPage {
 
     ro: ROR
     raf: RafR
-    canvasScene: any
     target: any;
     renderer: Renderer;
     camera: Camera;
     scene: Transform;
-    medias: Media[];
-    fixedMedias: Media[];
+    medias: PlaygroundMedia[];
 
     constructor(gl: OGLRenderingContext, options: { scene: Transform, camera: Camera }) {
         super(gl)
@@ -46,7 +45,6 @@ export class PlaygroundCanvas extends CanvasPage {
 
 
         this.medias = []
-        this.fixedMedias = []
         this.mount()
 
         this.onDestroy(() => this.ro.off())
@@ -56,20 +54,19 @@ export class PlaygroundCanvas extends CanvasPage {
         this.raf.run()
         this.ro.on()
 
-        const { watch } = useCanvasReactivity(this)
     }
 
     mount() {
         const picker = new Picker(this.gl, { renderTargetRatio: 5 })
         picker.add(this)
 
-
         const { src } = useStorePlayground()
-        for (const s of src) {
-            this.add(new PlaygroundMedia(this.gl, { src: s }))
+        for (let index = 0; index < src.length; index++) {
+            const media = new PlaygroundMedia(this.gl, { index })
+            this.medias.push(media)
+            this.add(media)
         }
     }
-
 
     resize({ vh, vw, scale, breakpoint }: ResizeEvent) {
     }

@@ -14,16 +14,19 @@ export class PlaygroundMedia extends CanvasNode {
     on = false;
     intrinsecRatio: number = 1;
     src: string;
+    index: number;
 
     constructor(
         gl: OGLRenderingContext,
         props: {
-            src: string
+            index: number
         }
     ) {
         super(gl);
         N.BM(this, ["update", "onResize", "destroy"]);
-        this.src = props.src
+        this.index = props.index
+        const { src } = useStorePlayground()
+        this.src = src[this.index]
         this.uLoaded = { value: 0 };
 
         this.raf = useRafR(this.update);
@@ -63,6 +66,15 @@ export class PlaygroundMedia extends CanvasNode {
     }
 
     init() {
+        const { watch } = useCanvasReactivity(this);
+
+        const { mediaBoundsPixel } = useStorePlayground()
+        watch(mediaBoundsPixel, (bounds) => {
+            trigger()
+        })
+
+        const { unWatch: resizeUnWatch, trigger } = useCanvasSize(this.onResize);
+        this.onDestroy(() => resizeUnWatch())
         this.raf.run();
     }
 
@@ -92,15 +104,19 @@ export class PlaygroundMedia extends CanvasNode {
         });
         this.computeScale()
     }
-    computeScale() {
+    computeScale(width: number = 1) {
         if (!this.node) return
-        this.node.scale.set(1, 1 / this.intrinsecRatio, 1)
+
+        this.node.scale.set(width, width / this.intrinsecRatio, 1)
     }
 
     update(e: rafEvent) {
     }
 
     onResize(canvasSize: { width: number; height: number }) {
+        const { mediaBoundsPixel } = useStorePlayground()
+        const width = mediaBoundsPixel.value.width * canvasSize.width / vw.value
+        this.computeScale(width)
     }
 }
 

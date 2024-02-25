@@ -5,17 +5,28 @@
             (24)
         </h1>
         <div class="placeholder-container">
-            <div class="placeholder"></div>
-            <div class="placeholder"></div>
+            <div class="placeholder" ref="placeholderRef"></div>
+            <!-- <div class="placeholder"></div> -->
         </div>
     </main>
 </template>
 
 <script lang="ts" setup>
 import { archiveFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
+import { htmlRef } from '~/utils/utils';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 
 const { breakpoint } = useStoreView()
+const { mediaBoundsPixel } = useStorePlayground()
+
+const placeholderRef = htmlRef()
+
+useRO(({ breakpoint, scale }) => {
+    mediaBoundsPixel.value = {
+        gap: breakpoint === "desktop" ? 16 * scale : 0,
+        width: placeholderRef.value.getBoundingClientRect().width
+    }
+})
 
 useResetLenis()
 
@@ -50,6 +61,7 @@ h1 {
     display: flex;
     justify-content: center;
     column-gap: 1.6rem;
+    top: 50%;
 
     .placeholder {
         width: 25rem;
