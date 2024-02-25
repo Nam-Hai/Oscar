@@ -4,7 +4,8 @@
 
         <div class="project__landing__wrapper" :class="{ show: fs }">
             <div class="title__wrapper" ref="titleWrapperRef">
-                <h1 :style="{ justifyContent: (COPY.title.split(' ').length == 1) ? 'flex-end' : 'space-between' }">
+                <h1
+                    :style="{ justifyContent: (COPY.title.split(' ').length == 1) ? 'flex-end' : 'space-between', width: titleWidth }">
                     <span v-for="word in COPY.title.split(' ')" class="overflow">
                         <span v-for="char in word.split('')" class="overflow-content">
                             {{ char }}
@@ -15,7 +16,7 @@
                 <h2>{{ COPY.date }}</h2>
             </div>
             <div class="lower-container">
-                <p ref="lowerDesRef" @click="scrollTop">
+                <p ref="lowerDesRef">
                     VIADOMO©DECO boasts an innovative collection of top-tier furniture, reshaping the definition of luxury
                     and sophistication.
                 </p>
@@ -39,6 +40,7 @@ import { secondScrollEase } from "~/scene/Components/Project/MainImage"
 const { id } = defineProps<{ id: string }>()
 
 const { copy, landingHeaderScale } = useStoreProject()
+const { breakpoint } = useStoreView()
 
 const fs = useCanvasMainImageProject().firstScroll
 let leave = false
@@ -57,7 +59,12 @@ useLenisScroll((e) => {
     const size = 800
     const s = N.Clamp(e.animatedScroll, 0, size);
 
-    const scale = N.Lerp(1, 0.6, secondScrollEase(s / size))
+    const ease = secondScrollEase(s / size)
+    const scale = N.Lerp(1, 0.6, ease)
+
+    if (breakpoint.value === "desktop") {
+        titleWidth.value = `calc(100vw - 2.8rem - ${neutralGap * ease / 10}rem)`
+    }
     landingHeaderScale.value = scale
     titleWrapperRef.value.style.transform = `translateY(${e.animatedScroll}px) scale(${scale}) `
     N.T(lowerDesRef.value, 0, e.animatedScroll, 'px');
@@ -93,9 +100,14 @@ onBeforeUnmount(() => {
     tl.pause()
 })
 
-function scrollTop() {
-    useLenis().scrollTo("bottom", { duration: 1 })
-}
+const titleWidth = ref("calc(100vw - 2.8rem)")
+let neutralGap = 1
+useRO(({ scale }) => {
+    const spans = N.getAll(".title__wrapper .overflow")
+    if (spans.length === 2) {
+        neutralGap = (spans[1].getBoundingClientRect().left - spans[0].getBoundingClientRect().right - 40) / scale
+    }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -107,9 +119,10 @@ function scrollTop() {
 
     position: relative;
 
-    @include breakpoint(mobile){
+    @include breakpoint(mobile) {
         height: unset;
     }
+
     // overflow: hidden;
 }
 
@@ -140,9 +153,9 @@ function scrollTop() {
         .title__wrapper {
             transform-origin: top right;
 
-            @include breakpoint(mobile){
+            @include breakpoint(mobile) {
                 // prevent pin zoom
-                transform: translate(0)!important;
+                transform: translate(0) !important;
             }
 
             h2 {
@@ -180,7 +193,7 @@ function scrollTop() {
             justify-content: space-between;
             width: 100%;
 
-            @include breakpoint(mobile){
+            @include breakpoint(mobile) {
                 flex-direction: column;
             }
 
@@ -290,7 +303,7 @@ function scrollTop() {
     height: 24rem;
     width: 26.8rem;
 
-    @include breakpoint(mobile){
+    @include breakpoint(mobile) {
         height: 15rem;
         width: 16rem;
     }
