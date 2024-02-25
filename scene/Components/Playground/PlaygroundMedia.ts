@@ -80,6 +80,10 @@ export class PlaygroundMedia extends CanvasNode {
 
 
         const { unWatch: resizeUnWatch, trigger } = useCanvasSize(this.onResize);
+        resizeUnWatch()
+        watch(containerHeight, () => {
+            trigger()
+        })
         useLenisGL(this, this.onScroll)
         this.onDestroy(() => resizeUnWatch())
         this.raf.run();
@@ -144,7 +148,7 @@ export class PlaygroundMedia extends CanvasNode {
         )
         this.offset = 0
 
-        this.offset = Math.floor((this.scrollPosition + this.positionEl.y + vh.value / 2) / vh.value) * containerHeight.value
+        this.offset = -Math.floor((this.scrollPosition + this.positionEl.y + containerHeight.value / 2) / containerHeight.value) * containerHeight.value
         this.computeCoord()
     }
 
