@@ -9,7 +9,7 @@ import { PlaygroundMedia } from "../Components/Playground/PlaygroundMedia";
 
 export const [providePlaygroundCanvas, usePlaygroundCanvas] = canvasInject<PlaygroundCanvas>('playground-archive-canvas')
 
-const { mediaBoundsPixel } = useStorePlayground()
+const { mediaBoundsPixel, placeMediaEvent } = useStorePlayground()
 const { vw } = useStoreView()
 export class PlaygroundCanvas extends CanvasPage {
 
@@ -54,6 +54,8 @@ export class PlaygroundCanvas extends CanvasPage {
         this.raf.run()
         this.ro.on()
 
+        placeMediaEvent.on(this.placeMedia.bind(this))
+
     }
 
     mount() {
@@ -62,13 +64,19 @@ export class PlaygroundCanvas extends CanvasPage {
 
         const { src } = useStorePlayground()
         for (let index = 0; index < src.length; index++) {
-            const media = new PlaygroundMedia(this.gl, { index })
+            const media = new PlaygroundMedia(this.gl, { index, last: index === src.length - 1 })
             this.medias.push(media)
             this.add(media)
         }
     }
 
     resize({ vh, vw, scale, breakpoint }: ResizeEvent) {
+        // console.log("plauyground canvas");
+    }
+
+    placeMedia() {
+
+        console.log('MEdia');
     }
 
     render(e: rafEvent) {

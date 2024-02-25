@@ -5,6 +5,7 @@ import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 
 const { vh, vw, scale, breakpoint, mouse, scrollLenis } = useStoreView();
+const { mediaBoundsPixel, placeMediaEvent } = useStorePlayground()
 
 export class PlaygroundMedia extends CanvasNode {
     raf: RafR;
@@ -16,11 +17,14 @@ export class PlaygroundMedia extends CanvasNode {
     src: string;
     index: number;
     width: number = 1;
+    height: number = 1;
+    lastMedia: boolean;
 
     constructor(
         gl: OGLRenderingContext,
         props: {
-            index: number
+            index: number,
+            last: boolean
         }
     ) {
         super(gl);
@@ -29,6 +33,7 @@ export class PlaygroundMedia extends CanvasNode {
         const { src } = useStorePlayground()
         this.src = src[this.index]
         this.uLoaded = { value: 0 };
+        this.lastMedia = props.last
 
         this.raf = useRafR(this.update);
 
@@ -69,12 +74,12 @@ export class PlaygroundMedia extends CanvasNode {
     init() {
         const { watch } = useCanvasReactivity(this);
 
-        const { mediaBoundsPixel } = useStorePlayground()
         watch(mediaBoundsPixel, (bounds) => {
             trigger()
         })
 
         const { unWatch: resizeUnWatch, trigger } = useCanvasSize(this.onResize);
+        resizeUnWatch()
         this.onDestroy(() => resizeUnWatch())
         this.raf.run();
     }
@@ -108,17 +113,19 @@ export class PlaygroundMedia extends CanvasNode {
     computeScale() {
         if (!this.node) return
 
-        this.node.scale.set(this.width, this.width / this.intrinsecRatio, 1)
+        this.node.scale.set(this.width, this.height, 1)
     }
 
     update(e: rafEvent) {
     }
 
     onResize(canvasSize: { width: number; height: number }) {
-        const { mediaBoundsPixel } = useStorePlayground()
         const width = mediaBoundsPixel.value.width * canvasSize.width / vw.value
         this.width = width
+        this.height = width / this.intrinsecRatio
         this.computeScale()
+
+        this.lastMedia && placeMediaEvent.emit({})
     }
 }
 

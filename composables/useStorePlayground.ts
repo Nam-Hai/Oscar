@@ -1,3 +1,4 @@
+import { EventEmitter, EventHandler } from "~/scene/utils/WebGL.utils"
 
 const PLAYGROUND__TEXTURE = [
     "/Assets/Home/1.jpg",
@@ -16,5 +17,7 @@ export const useStorePlayground = createStore(() => {
         gap: 10
     })
 
-    return { src, mediaBoundsPixel }
+    const placeMediaEvent = new EventEmitter()
+
+    return { src, mediaBoundsPixel, placeMediaEvent }
 })
