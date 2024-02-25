@@ -140,14 +140,13 @@ export class MainImage extends CanvasNode {
 		this.mount();
 		this.init();
 
-		watch(breakpoint, (b) => {
-			console.log(b, this.uProgress.value);
-			//    if (b === "mobile" && this.uProgress.value >= 1) {
-			// 	this.uProgress.value = 1;
-			// 	this.computeUniform();
-			// 	this.uProgress.value = 2;
-			// }
-		});
+		// watch(breakpoint, (b) => {
+		// 	//    if (b === "mobile" && this.uProgress.value >= 1) {
+		// 	// 	this.uProgress.value = 1;
+		// 	// 	this.computeUniform();
+		// 	// 	this.uProgress.value = 2;
+		// 	// }
+		// });
 
 		const { unWatch: resizeUnWatch } = useCanvasSize(this.onResize);
 
@@ -165,7 +164,6 @@ export class MainImage extends CanvasNode {
 	}
 
 	onScroll(e: { animatedScroll: any; }) {
-		console.log(e);
 		// if (this.pixelScroll >= 800) return
 		let eS = e.animatedScroll;
 

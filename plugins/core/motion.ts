@@ -303,7 +303,6 @@ class Motion {
         let t = e.elapsed
 
         this.v.elapsed = Clamp(t, 0, this.v.d.curr)
-        // console.log("0", this.v.d.curr, this.v.d.curr == 0);
         if (this.v.d.curr == 0) {
             this.v.prog = 1
         } else {

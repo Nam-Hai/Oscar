@@ -233,7 +233,6 @@ export default class Manifest {
       }
     }
 
-    console.log("LAZY LOAD ==============> ", this.lazyTextures);
 
     return false
     // start loading auto

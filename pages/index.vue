@@ -95,7 +95,6 @@ const titleRefs = ref()
 
 watch(breakpoint, async (b) => {
   await nextTick()
-  console.log(b)
   const i = currentIndex.value
   const title = titleRefs.value[i]
 
@@ -144,11 +143,8 @@ onLeave(() => {
 
   const title = titleRefs.value[i]
   const span = N.getAll(".overflow-content", title)
-  console.log(span);
   // tl.reset()
-  console.error("onLeave");
   let a = 0
-  console.log(tl.arr.length, span.length);
   for (let i = span.length; i < tl.arr.length; i++) {
 
     const motion = tl.arr[i]
