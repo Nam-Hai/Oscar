@@ -1,6 +1,6 @@
 <template>
   <div ref="wrapperSceneRef" class="wrapper-scene"
-    :class='{ TOP: router.currentRoute.value.name == "project-page-id"}'>
+    :class='{ TOP: router.currentRoute.value.name === "project-page-id" || router.currentRoute.value.name === "playground"}'>
   </div>
 </template>
 
@@ -13,7 +13,6 @@ const canvas = useCanvas()
 onMounted(() => {
   sceneRef.value = canvas
   wrapperSceneRef.value.appendChild(canvas.gl.canvas)
-
 })
 
 const flowProvider = useFlowProvider()

@@ -43,9 +43,9 @@
 <script lang="ts" setup>
 import { vCursorHover } from '~/directives/cursorActive';
 import { defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
+import { onFlow } from '~/waterflow/composables/onFlow';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 
-const { breakpoint } = useStoreView()
 const emailRef = ref() as Ref<HTMLElement>
 const linkedinRef = ref()
 const twitterRef = ref()
@@ -65,10 +65,18 @@ useRO(() => {
     bounds.twitter = twitterRef.value.getBoundingClientRect()
     bounds.insta = instaRef.value.getBoundingClientRect()
     bounds.nam = namRef.value.getBoundingClientRect()
-    console.log(bounds, emailRef.value);
+})
+onFlow(async () => {
+    await nextTick()
+    useDelay(700, () => {
+        bounds.email = emailRef.value.getBoundingClientRect()
+        bounds.linkedin = linkedinRef.value.getBoundingClientRect()
+        bounds.twitter = twitterRef.value.getBoundingClientRect()
+        bounds.insta = instaRef.value.getBoundingClientRect()
+        bounds.nam = namRef.value.getBoundingClientRect()
+    })
 })
 
-const { isHover: archiveHover } = useStoreArchive()
 const { overhide, target } = useCursorStore()
 function hoverMenu(e: MouseEvent, to: keyof typeof bounds) {
     overhide.value = true
@@ -159,7 +167,7 @@ main {
             @include breakpoint(mobile) {
                 display: flex;
                 justify-content: space-between;
-                align-items: end;
+                align-items: flex-end;
             }
 
             >div {

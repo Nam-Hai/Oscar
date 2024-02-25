@@ -76,8 +76,8 @@ watch(preloaderComplete, async () => {
 
   canvas.onChange(flowProvider.getRouteTo())
   canvas.resolveOnChange()
-
   await nextTick()
+
 
   killPreloader.value = true
   // useDelay(1000, () => {

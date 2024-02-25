@@ -21,7 +21,6 @@ flowProvider.registerPage('index', Index)
 flowProvider.registerPage('project-page-id', ProjectPage)
 flowProvider.registerPage('playground', Playground)
 flowProvider.registerPage('info', Info)
-// flowProvider.registerPage('playground', Playground)
 
 const { flowIsHijacked } = useStore()
 watch(flowProvider.flowIsHijacked, (flow) => {
@@ -54,9 +53,5 @@ useRO(() => {
   const { isMobile, firstRedirect } = useStore()
   isMobile.value = m
 })
-
-onMounted(() => {
-})
-
 
 </script>

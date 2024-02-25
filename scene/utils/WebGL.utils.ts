@@ -22,14 +22,14 @@ export function getUId() {
     return { id, uId }
 }
 
-import type { CanvasNode, CanvasPage } from './types'
+import { CanvasNode, type CanvasPage } from './types'
 import type { WatchSource, WatchCallback, ComputedGetter, DebuggerOptions } from 'nuxt/dist/app/compat/capi'
 import type { MultiWatchSources } from 'nuxt/dist/app/composables/asyncData'
 
 
 let EventID = 0
 export class EventHandler {
-     cbs: Map<number, Array<(e: any) => void>>
+    cbs: Map<number, Array<(e: any) => void>>
     constructor() {
         this.cbs = new Map()
     }
@@ -58,14 +58,61 @@ export class EventHandler {
     }
 }
 
+export class EventEmitter<T> {
+    array: { id: number, callback: (e: any) => void }[]
+    idCounter: number
+    constructor() {
+        this.idCounter = 0
+        this.array = []
+    }
+    on(callback: (e: T) => void) {
+        const id = this.idCounter
+        this.array.push({ id, callback })
+
+        const unSub = () => {
+            for (let index = 0; index < this.array.length; index++) {
+                const el = this.array[index]
+                if (el.id === id) {
+                    this.array.splice(index, 1)
+                }
+            }
+        }
+        return unSub
+    }
+    emit(e: T) {
+        for (const el of this.array) {
+            el.callback(e)
+        }
+    }
+    stop() {
+        this.array = []
+    }
+}
+
 
 export function useCanvasReactivity(ctx: CanvasNode) {
-    function canvasWatch(ref: MultiWatchSources | WatchSource | WatchCallback, callback: WatchCallback, options?: {immediate: boolean}) {
+    function canvasWatch(ref: MultiWatchSources | WatchSource | WatchCallback, callback: WatchCallback, options?: { immediate: boolean }) {
         const unWatch = watch(ref, callback, options)
         ctx.onDestroy(() => unWatch())
     }
 
     return {
         watch: canvasWatch
+    }
+}
+
+export type LenisEvent = {
+    animatedScroll: number,
+    direction: number,
+    velocity: number
+}
+export function useLenisGL(ctx: CanvasNode, callback: (e: LenisEvent) => void) {
+
+    const lenis = useLenis();
+    const unWatch = lenis.on("scroll", callback);
+    ctx.onDestroy(() => unWatch());
+
+    return {
+        unWatch
     }
 }
