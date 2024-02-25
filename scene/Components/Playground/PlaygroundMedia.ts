@@ -140,7 +140,7 @@ export class PlaygroundMedia extends CanvasNode {
 
     computeCoord() {
         this.node.position.set(
-            (this.positionEl.x * N.Ease.i4(1 - this.uVelo.value)) * this.canvasSize.width / vw.value,
+            (this.positionEl.x * N.Ease.i3(1 - this.uVelo.value)) * this.canvasSize.width / vw.value,
             (this.positionEl.y + this.scrollPosition - this.offset) * this.canvasSize.height / vh.value,
             0
         )

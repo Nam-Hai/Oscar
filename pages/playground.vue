@@ -21,7 +21,7 @@ import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 const { breakpoint } = useStoreView()
 const { copy } = useStorePlayground()
 
-useResetLenis({ infinite: true, duration: 2 })
+useResetLenis({ infinite: true, duration: 1 })
 
 const playgroundCanvas = usePlaygroundCanvas()
 const placeholderRefs = ref() as Ref<HTMLElement[]>
