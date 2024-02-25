@@ -5,7 +5,8 @@
             (24)
         </h1>
         <div class="placeholder-container">
-            <div class="placeholder" v-for="i in 10">
+            <div class="placeholder" v-for="{ src, ratio } in copy" :data-src="src" :style="{ aspectRatio: ratio }"
+                ref="placeholderRefs">
             </div>
         </div>
     </main>
@@ -13,22 +14,22 @@
 
 <script lang="ts" setup>
 import { archiveFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
+import { usePlaygroundCanvas } from '~/scene/Pages/PlaygroundCanvas';
 import { htmlRef } from '~/utils/utils';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 
 const { breakpoint } = useStoreView()
-const { mediaBoundsPixel } = useStorePlayground()
+const { copy } = useStorePlayground()
 
-const placeholderRef = htmlRef()
+useResetLenis({ infinite: true, duration: 2 })
 
-useRO(({ breakpoint, scale }) => {
-    // mediaBoundsPixel.value = {
-    //     gap: breakpoint === "desktop" ? 16 * scale : 0,
-    //     width: placeholderRef.value.getBoundingClientRect().width
-    // }
+const playgroundCanvas = usePlaygroundCanvas()
+const placeholderRefs = ref() as Ref<HTMLElement[]>
+onMounted(() => {
+    for (const el of placeholderRefs.value) {
+        playgroundCanvas.addMedia(el)
+    }
 })
-
-useResetLenis({ infinite: true })
 
 const wrapperRef = ref() as Ref<HTMLElement>
 
@@ -58,7 +59,9 @@ h1 {
 
 .placeholder-container {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     flex-direction: column;
     // justify-content: center;
@@ -66,13 +69,12 @@ h1 {
     row-gap: 1.6rem;
     left: 50%;
     transform: translateX(-50%);
-    // top: 50%;
 
     .placeholder {
         width: 25rem;
-        height: 20rem;
+        // height: 20rem;
         pointer-events: none;
-        background-color: red;
+        // background-color: #E5E5E5;
 
         &:nth-child(2n) {
             align-self: flex-end;
@@ -86,10 +88,11 @@ h1 {
     @include breakpoint(mobile) {
         padding: 0 1.6rem;
         column-gap: .6rem;
+        width: 100%;
 
 
         .placeholder {
-            width: 100%;
+            width: 50%;
         }
 
     }

@@ -22,7 +22,7 @@ export function getUId() {
     return { id, uId }
 }
 
-import type { CanvasNode, CanvasPage } from './types'
+import { CanvasNode, type CanvasPage } from './types'
 import type { WatchSource, WatchCallback, ComputedGetter, DebuggerOptions } from 'nuxt/dist/app/compat/capi'
 import type { MultiWatchSources } from 'nuxt/dist/app/composables/asyncData'
 
@@ -98,5 +98,21 @@ export function useCanvasReactivity(ctx: CanvasNode) {
 
     return {
         watch: canvasWatch
+    }
+}
+
+export type LenisEvent = {
+    animatedScroll: number,
+    direction: number,
+    velocity: number
+}
+export function useLenisGL(ctx: CanvasNode, callback: (e: LenisEvent) => void) {
+
+    const lenis = useLenis();
+    const unWatch = lenis.on("scroll", callback);
+    ctx.onDestroy(() => unWatch());
+
+    return {
+        unWatch
     }
 }

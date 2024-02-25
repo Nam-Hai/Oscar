@@ -74,7 +74,7 @@ export const useStoreView = createStore(() => {
 			touchMultiplier: 1.0,
 			infinite: infinite,
 			orientation: direction,
-			// duration,
+			duration,
 			// lerp
 		});
 		lenis.value.stop();

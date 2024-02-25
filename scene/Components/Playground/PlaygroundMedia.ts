@@ -2,10 +2,9 @@ import { Vec2, Program, Mesh, Texture, Plane, Vec3, Transform } from "ogl";
 import type { OGLRenderingContext } from "ogl";
 import type { RafR, rafEvent } from "~/plugins/core/raf";
 import { CanvasNode } from "../../utils/types";
-import { useCanvasReactivity } from "../../utils/WebGL.utils";
+import { useCanvasReactivity, useLenisGL, type LenisEvent } from "../../utils/WebGL.utils";
 
 const { vh, vw, scale, breakpoint, mouse, scrollLenis } = useStoreView();
-const { mediaBoundsPixel } = useStorePlayground()
 
 export class PlaygroundMedia extends CanvasNode {
     raf: RafR;
@@ -20,6 +19,10 @@ export class PlaygroundMedia extends CanvasNode {
     height: number = 1;
     canvasSize!: { width: number; height: number; };
     el: HTMLElement;
+    positionEl = { x: 0, y: 0 }
+    scrollPosition: number = 0;
+    offset: number = 0;
+    uVelo: { value: number; } = { value: 0 };
 
     constructor(
         gl: OGLRenderingContext,
@@ -29,7 +32,7 @@ export class PlaygroundMedia extends CanvasNode {
         }
     ) {
         super(gl);
-        N.BM(this, ["update", "onResize", "destroy"]);
+        N.BM(this, ["update", "onResize", "destroy", "onScroll"]);
         this.index = props.index
         this.el = props.el
 
@@ -57,7 +60,6 @@ export class PlaygroundMedia extends CanvasNode {
                         (this.tMap.value.image as HTMLImageElement).width /
                         (this.tMap.value.image as HTMLImageElement).height;
 
-                    this.computeScale()
                     useTL()
                         .from({
                             d: 300,
@@ -75,14 +77,21 @@ export class PlaygroundMedia extends CanvasNode {
     init() {
         const { watch } = useCanvasReactivity(this);
 
-        watch(mediaBoundsPixel, (bounds) => {
-            trigger()
-        })
 
         const { unWatch: resizeUnWatch, trigger } = useCanvasSize(this.onResize);
-        resizeUnWatch()
+        useLenisGL(this, this.onScroll)
         this.onDestroy(() => resizeUnWatch())
         this.raf.run();
+    }
+
+    onScroll(e: LenisEvent) {
+        this.scrollPosition = e.animatedScroll
+        const velo = Math.min(Math.abs(e.velocity), 50) / 50
+        this.uVelo.value = N.Lerp(this.uVelo.value, velo, 0.1)
+        console.log(this.uVelo.value, e.velocity);
+        // this.offset = Math.floor((this.scrollPosition + this.positionEl.y + vh.value / 2) / vh.value) * vh.value
+        // console.log(this.offset, this.scrollPosition, this.positionEl.y);
+        this.computeCoord()
     }
 
     mount() {
@@ -102,6 +111,7 @@ export class PlaygroundMedia extends CanvasNode {
                 tMap: this.tMap,
                 uLoaded: this.uLoaded,
                 uId: this.uId,
+                uVelo: this.uVelo
             },
         });
 
@@ -109,12 +119,6 @@ export class PlaygroundMedia extends CanvasNode {
             geometry,
             program,
         });
-        this.computeScale()
-    }
-    computeScale() {
-        if (!this.node) return
-
-        this.node.scale.set(this.width, this.height, 1)
     }
 
     update(e: rafEvent) {
@@ -122,10 +126,25 @@ export class PlaygroundMedia extends CanvasNode {
 
     onResize(canvasSize: { width: number; height: number }) {
         this.canvasSize = canvasSize
-        const width = mediaBoundsPixel.value.width * canvasSize.width / vw.value
-        this.width = width
-        this.height = width / this.intrinsecRatio
-        this.computeScale()
+        const bounds = this.el.getBoundingClientRect()
+        this.positionEl = {
+            x: bounds.left + bounds.width / 2 - vw.value / 2,
+            y: vh.value / 2 - bounds.top - bounds.height / 2,
+        }
+        this.node.scale.set(
+            bounds.width * canvasSize.width / vw.value,
+            bounds.height * canvasSize.height / vh.value,
+            1
+        )
+        this.computeCoord()
+    }
+
+    computeCoord() {
+        this.node.position.set(
+            this.positionEl.x * this.canvasSize.width / vw.value,
+            (this.positionEl.y + this.scrollPosition - this.offset) * this.canvasSize.height / vh.value,
+            0
+        )
 
     }
 }
@@ -143,11 +162,13 @@ uniform float uLoaded;
 
 void main() {
 
-    vec4 color = mix(vec4(0.1), texture(tMap, vUv), uLoaded);
+    vec4 color = texture(tMap, vUv);
+    color = mix(vec4(0.886,0.886,0.886,1.), color, uLoaded);
     FragColor[0] = vec4(color.rgb,1.);
     FragColor[1] = uId;
 }
 `;
+
 const vertex = /* glsl */ `#version 300 es
 precision highp float;
 #define PI 3.1415926
@@ -158,6 +179,8 @@ in vec2 uv;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
+uniform float uVelo;
+
 out vec2 vUv;
 
 void main() {
@@ -165,6 +188,8 @@ void main() {
   vec3 p = position;
 
   vec4 mvmP = modelViewMatrix * vec4(p, 1.);
+
+  mvmP.z += cos(mvmP.y * .5) * uVelo * 0.9;
 
   gl_Position = projectionMatrix * mvmP;
 }`;

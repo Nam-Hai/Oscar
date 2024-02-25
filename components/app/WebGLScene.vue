@@ -13,7 +13,6 @@ const canvas = useCanvas()
 onMounted(() => {
   sceneRef.value = canvas
   wrapperSceneRef.value.appendChild(canvas.gl.canvas)
-
 })
 
 const flowProvider = useFlowProvider()

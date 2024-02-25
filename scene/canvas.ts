@@ -45,12 +45,11 @@ export default class Canvas {
 
 		this.dom = this.gl.canvas;
 
-		this.map = new Map([
-			["fallback", this.createFallbackCanvas],
-			["index", this.createIndexCanvas],
-			["project-page-id", this.createProjectPage],
-			["playground", this.createPlaygroundCanvas],
-		]);
+		this.map = new Map();
+		this.map.set('playground', this.createPlaygroundCanvas)
+		this.map.set('project-page-id', this.createProjectPage)
+		this.map.set('index', this.createIndexCanvas)
+		this.map.set('fallback', this.createFallbackCanvas)
 
 		this.camera = new Camera(this.gl);
 		this.camera.position.z = 5;

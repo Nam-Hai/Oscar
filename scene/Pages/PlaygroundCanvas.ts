@@ -4,13 +4,12 @@ import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 import { CanvasPage } from "../utils/types";
 import { Transform, type Camera, type OGLRenderingContext, type Renderer } from "ogl";
 import { Picker } from "../Components/Picker";
-import { useCanvasReactivity } from "../utils/WebGL.utils";
+import { useCanvasReactivity, useLenisGL } from "../utils/WebGL.utils";
 import { PlaygroundMedia } from "../Components/Playground/PlaygroundMedia";
 
 export const [providePlaygroundCanvas, usePlaygroundCanvas] = canvasInject<PlaygroundCanvas>('playground-archive-canvas')
 
-const { mediaBoundsPixel } = useStorePlayground()
-const { vw } = useStoreView()
+const { vw, vh } = useStoreView()
 export class PlaygroundCanvas extends CanvasPage {
 
     // ro: ROR
@@ -59,9 +58,8 @@ export class PlaygroundCanvas extends CanvasPage {
 
         const { unWatch: resizeUnWatch, trigger } = useCanvasSize(this.resize);
 
-        const lenis = useLenis();
-        const scrollUnsub = lenis.on("scroll", this.onScroll);
-        this.onDestroy(() => scrollUnsub());
+        // useLenisGL(this, this.onScroll)
+
         this.onDestroy(() => resizeUnWatch())
     }
 
@@ -77,11 +75,11 @@ export class PlaygroundCanvas extends CanvasPage {
     addMedia(el: HTMLElement) {
         const media = new PlaygroundMedia(this.gl, { index: this.medias.length, el })
         this.medias.push(media)
+        this.add(media)
     }
 
     onScroll(e: any) {
-        console.log('onscroll', e);
-        this.node.position.y = e.animatedScroll / 500
+        // this.node.position.y = e.animatedScroll * this.canvasSize.height / vh.value
     }
 
     render(e: rafEvent) {
