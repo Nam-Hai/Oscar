@@ -100,7 +100,6 @@ export class PlaygroundMedia extends CanvasNode {
             this.offset += containerHeight.value
         }
 
-        // console.log(this.offset, this.scrollPosition, this.positionEl.y);
         this.computeCoord()
     }
 

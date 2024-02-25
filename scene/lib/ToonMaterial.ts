@@ -14,7 +14,6 @@ export class ToonMaterial extends Program {
   constructor(gl: any, options: Partial<{ palette: PaletteType, lightPosition: [number, number, number] }> = {}) {
     const palette = options.palette || [{ x: 0, hex: '#000000' }]
     const uLightPosition = ref(options.lightPosition || [15, 15, 15])
-    console.log(palette, uLightPosition.value);
     const ramp = new RampMap(palette)
 
     const texture = {

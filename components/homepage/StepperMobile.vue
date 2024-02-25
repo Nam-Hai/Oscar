@@ -19,7 +19,6 @@ onFlow(() => {
     const tl = useTL()
     for (let i = 0; i < stepperRef.value.length; i++) {
         const el = stepperRef.value[i]
-        console.log(el, i)
         tl.from({
             el,
             p: {

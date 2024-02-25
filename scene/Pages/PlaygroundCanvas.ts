@@ -40,7 +40,7 @@ export class PlaygroundCanvas extends CanvasPage {
             this.node.setParent(null);
         })
 
-        N.BM(this, ["render", "resize", "init", "destroy", "onScroll"]);
+        N.BM(this, ["render", "resize", "init", "destroy"]);
 
         // this.ro = useROR(this.resize)
         this.raf = useRafR(this.render, RafPriority.LAST)
@@ -49,16 +49,13 @@ export class PlaygroundCanvas extends CanvasPage {
         this.medias = []
         this.mount()
 
-        // this.onDestroy(() => this.ro.off())
         this.onDestroy(() => this.raf.kill())
     }
     init() {
         this.raf.run()
-        // this.ro.on()
 
         const { unWatch: resizeUnWatch, trigger } = useCanvasSize(this.resize);
 
-        // useLenisGL(this, this.onScroll)
 
         this.onDestroy(() => resizeUnWatch())
     }
@@ -76,10 +73,6 @@ export class PlaygroundCanvas extends CanvasPage {
         const media = new PlaygroundMedia(this.gl, { index: this.medias.length, el })
         this.medias.push(media)
         this.add(media)
-    }
-
-    onScroll(e: any) {
-        // this.node.position.y = e.animatedScroll * this.canvasSize.height / vh.value
     }
 
     render(e: rafEvent) {
