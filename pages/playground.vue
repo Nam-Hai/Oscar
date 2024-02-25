@@ -4,7 +4,7 @@
             playground
             (24)
         </h1>
-        <div class="placeholder-container">
+        <div class="placeholder-container" ref="placeholderContainerRef">
             <div class="placeholder" v-for="{ src, ratio } in copy" :data-src="src" :style="{ aspectRatio: ratio }"
                 ref="placeholderRefs">
             </div>
@@ -19,16 +19,21 @@ import { htmlRef } from '~/utils/utils';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 
 const { breakpoint } = useStoreView()
-const { copy } = useStorePlayground()
+const { copy, containerHeight } = useStorePlayground()
 
 useResetLenis({ infinite: true, duration: 1 })
 
 const playgroundCanvas = usePlaygroundCanvas()
 const placeholderRefs = ref() as Ref<HTMLElement[]>
+const placeholderContainerRef = ref() as Ref<HTMLElement>
 onMounted(() => {
     for (const el of placeholderRefs.value) {
         playgroundCanvas.addMedia(el)
     }
+})
+
+useRO(({ scale }) => {
+    containerHeight.value = placeholderContainerRef.value.getBoundingClientRect().height + 16 * scale
 })
 
 const wrapperRef = ref() as Ref<HTMLElement>
@@ -55,6 +60,13 @@ h1 {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: -1rem;
+    line-height: 90%;
+
+    @include breakpoint(mobile) {
+        font-size: 5.79rem;
+        letter-spacing: -0.1rem;
+        line-height: 90%;
+    }
 }
 
 .placeholder-container {

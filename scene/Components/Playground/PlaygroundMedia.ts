@@ -5,6 +5,7 @@ import { CanvasNode } from "../../utils/types";
 import { useCanvasReactivity, useLenisGL, type LenisEvent } from "../../utils/WebGL.utils";
 
 const { vh, vw, scale, breakpoint, mouse, scrollLenis } = useStoreView();
+const { containerHeight } = useStorePlayground()
 
 export class PlaygroundMedia extends CanvasNode {
     raf: RafR;
@@ -79,6 +80,10 @@ export class PlaygroundMedia extends CanvasNode {
 
 
         const { unWatch: resizeUnWatch, trigger } = useCanvasSize(this.onResize);
+        resizeUnWatch()
+        watch(containerHeight, () => {
+            trigger()
+        })
         useLenisGL(this, this.onScroll)
         this.onDestroy(() => resizeUnWatch())
         this.raf.run();
@@ -88,7 +93,13 @@ export class PlaygroundMedia extends CanvasNode {
         this.scrollPosition = e.animatedScroll
         const velo = Math.min(Math.abs(e.velocity), 50) / 50
         this.uVelo.value = N.Lerp(this.uVelo.value, velo, 0.1)
-        // this.offset = Math.floor((this.scrollPosition + this.positionEl.y + vh.value / 2) / vh.value) * vh.value
+
+        if (this.scrollPosition + this.positionEl.y + this.offset > vh.value) {
+            this.offset -= containerHeight.value
+        } else if (this.scrollPosition + this.positionEl.y + this.offset < -vh.value) {
+            this.offset += containerHeight.value
+        }
+
         // console.log(this.offset, this.scrollPosition, this.positionEl.y);
         this.computeCoord()
     }
@@ -135,13 +146,16 @@ export class PlaygroundMedia extends CanvasNode {
             bounds.height * canvasSize.height / vh.value,
             1
         )
+        this.offset = 0
+
+        this.offset = -Math.floor((this.scrollPosition + this.positionEl.y + containerHeight.value / 2) / containerHeight.value) * containerHeight.value
         this.computeCoord()
     }
 
     computeCoord() {
         this.node.position.set(
             (this.positionEl.x * N.Ease.i3(1 - this.uVelo.value)) * this.canvasSize.width / vw.value,
-            (this.positionEl.y + this.scrollPosition - this.offset) * this.canvasSize.height / vh.value,
+            (this.positionEl.y + this.scrollPosition + this.offset) * this.canvasSize.height / vh.value,
             0
         )
 
