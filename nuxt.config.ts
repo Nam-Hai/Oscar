@@ -3,9 +3,9 @@
 export default defineNuxtConfig({
     ssr: false,
 
-    nitro: {
-        preset: "vercel",
-    },
+    // nitro: {
+    //     preset: "vercel",
+    // },
     css: ["@/styles/core.scss", "@/styles/app/index.scss"],
 
     components: {
