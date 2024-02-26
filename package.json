@@ -1,6 +1,7 @@
 {
   "name": "nuxt-app",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -12,15 +13,13 @@
     "@nuxt/devtools": "1.0.2",
     "@types/node": "^20.3.1",
     "eslint": "^8.42.0",
-    "nuxt": "^3.8.1",
     "prettier": "3.1.0",
     "sass": "^1.63.4"
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.16",
-    "ogl": "1.0.3"
-  },
-  "overrides": {
-    "vue": "latest"
+    "ogl": "1.0.3",
+    "nuxt": "^3.10.3"
   }
+  
 }

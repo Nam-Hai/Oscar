@@ -6,13 +6,7 @@ export default defineNuxtConfig({
     // nitro: {
     //     preset: "vercel",
     // },
-    nitro: {
-        awsAmplify: {
-            // catchAllStaticFallback: true,
-            // imageOptimization: { "/_image", cacheControl: "public, max-age=3600, immutable" },
-            // imageSettings: { ... },
-        }
-    },
+   
     css: ["@/styles/core.scss", "@/styles/app/index.scss"],
 
     components: {
