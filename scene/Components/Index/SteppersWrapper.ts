@@ -56,14 +56,14 @@ export class SteppersWrapper extends CanvasNode {
             })
 
             const { hover } = useHover(el.id)
-            watch(hover, h => {
+            watch(hover, (h: boolean) => {
                 toggleHover(h && (stepperIsHovered.value))
             })
         }
 
         const scrollTL = useTL()
 
-        watch(currentIndex, (newIndex, oldIndex) => {
+        watch(currentIndex, (newIndex: number, oldIndex: number) => {
             const curr = oldIndex
             const index = newIndex
 
@@ -273,7 +273,7 @@ export class SteppersWrapper extends CanvasNode {
                         d: 500,
                         e: 'o4',
                         update: ({ progE }) => {
-                            if(immediate) return
+                            if (immediate) return
                             el.uTransparency.value = 1 - progE
                         }
                     }).play()
