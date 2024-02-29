@@ -55,7 +55,7 @@ export class PlaygroundMedia extends CanvasNode {
         this.tMap = { value: textureManager.getTexture() }
         watch(
             textureManager.loaded,
-            (loaded) => {
+            (loaded: boolean) => {
                 if (loaded) {
                     this.intrinsecRatio =
                         (this.tMap.value.image as HTMLImageElement).width /
