@@ -15,6 +15,7 @@ type ProjectCopyType = {
     title: string,
     type: string,
     date: string,
+    description: string,
     main_image: {
         src_1: string,
         src_2: string,
@@ -23,9 +24,10 @@ type ProjectCopyType = {
 }
 const projectCopy: { [key: string]: ProjectCopyType } = {
     "viadomo-deco": {
-        title: 'VIADOMO ©DECO',
+        title: 'VIADOMO DECO',
         type: "Furniture",
         date: "03.2023",
+        description: "VIADOMO©DECO boasts an innovative collection of top-tier furniture, reshaping the definition of luxury and sophistication.",
         main_image: {
             src_1: "/Assets/Home/1.jpg",
             src_2: "/Assets/Viadomo/1_1.jpg",
@@ -95,6 +97,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         title: 'Avant garden',
         type: "Furniture",
         date: "03.2023",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
         main_image: {
             src_1: "/Assets/Home/2.jpg",
             src_2: "/Assets/Viadomo/6.jpg",
@@ -110,6 +113,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         title: 'mucho matxa',
         type: "Furniture",
         date: "03.2023",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
         main_image: {
             src_1: "/Assets/Home/3.jpg",
             src_2: "/Assets/Viadomo/3.jpg",
@@ -121,11 +125,11 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             }
         ]
     },
-
     "mapfre-salud": {
         title: 'mapfre salud',
         type: "App design",
         date: "11.2022",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
         main_image: {
             src_1: "/Assets/Home/4.jpg",
             src_2: "/Assets/Viadomo/3.jpg",
@@ -167,5 +171,5 @@ export const useStoreProject = createStore(() => {
         return index == currentIndex.value - 1 || (currentIndex.value == 0 && index == (length - 1))
     }
 
-    return { copy, currentIndex, length, idToIndex, landingHeaderScale, nextPageTitleRef, isNextId, isPreviousId, atEnd}
+    return { copy, currentIndex, length, idToIndex, landingHeaderScale, nextPageTitleRef, isNextId, isPreviousId, atEnd }
 })

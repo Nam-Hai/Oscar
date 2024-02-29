@@ -17,8 +17,7 @@
             </div>
             <div class="lower-container">
                 <p ref="lowerDesRef">
-                    VIADOMO©DECO boasts an innovative collection of top-tier furniture, reshaping the definition of luxury
-                    and sophistication.
+                    {{ COPY.description }}
                 </p>
 
                 <div class="project__main-image__next-placeholder" :data-src="COPY.main_image.src_2">
