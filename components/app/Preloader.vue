@@ -105,8 +105,9 @@ onMounted(() => {
   })
 
 
+  const routeName = useRoute().name
   const minDuration = new Promise<void>(res => {
-    useDelay(1000, () => {
+    useDelay(routeName === "index" ? 0 : 800, () => {
       res()
     })
   })
@@ -114,8 +115,8 @@ onMounted(() => {
   Promise.all([minDuration, manifestPromise]).then(() => {
     endLoading()
   })
-  // if (manifest.length == 0) return endPreloader()
 })
+
 
 function endLoading() {
   canvas.preloader()
