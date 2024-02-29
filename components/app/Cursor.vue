@@ -1,5 +1,5 @@
 <template>
-    <div :style="{ transform: translate }" :class="{ hover: cursorState == 'hover', hold: isHolding, dark: pickerDark }"
+    <div :style="{ transform: translate }" :class="{ hover: cursorState == 'hover', hold: isHolding, dark: pickerDark, hide: !firstMove }"
         class="cursor__wrapper" ref="wrapperRef">
 
         <div class="point" :style="{ transform: `translate(calc(${diff.x}px - 50%), calc(${diff.y}px - 50%) )` }">
@@ -80,10 +80,13 @@ useRaf(() => {
     position: fixed;
     z-index: 200;
     color: $white;
-    transition: color 350ms;
+    transition: color 350ms, opacity 250ms;
 
     &.dark {
         color: $black;
+    }
+    &.hide {
+        opacity: 0;
     }
 
     &.hover {
