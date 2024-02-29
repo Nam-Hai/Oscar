@@ -5,10 +5,10 @@ export default defineNuxtRouteMiddleware((to, from) => {
     isMobile.value = d === 'true'
   }
 
-  if (!firstRedirect.value) {
-    firstRedirect.value = true
+  // if (!firstRedirect.value) {
+    // firstRedirect.value = true
     // return navigateTo('/')
-  }
+  // }
 
   // history.pushState(isMobile, '', '')
   // navigateTo({ path: to.path, query: {} })
