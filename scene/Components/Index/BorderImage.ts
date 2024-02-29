@@ -91,30 +91,6 @@ export class BorderImage extends CanvasNode {
         this.uResolution = { value: [innerWidth, innerHeight] }
 
 
-        const { watch } = useCanvasReactivity(this)
-        watch(mouse, this.onMouseMove)
-        watch(firstMove, () => {
-
-            const { size } = useCanvas()
-            this.positionTarget.set(
-                (mouse.value.x - vw.value / 2 + imageBounds.w * 0.5 + 18) * size.value.width / vw.value,
-                (vh.value / 2 - mouse.value.y + imageBounds.h * 0.5 + 18) * size.value.height / vh.value,
-                0
-            )
-            this.node.position.set(this.positionTarget)
-        })
-        const tl = useTL()
-        watch(hideTrail, (b) => {
-            const from = this.uHide.value
-            const to = b;
-            tl.reset()
-            tl.from({
-                d: 200,
-                update: (e) => {
-                    this.uHide.value = N.Lerp(from, to, e.progE)
-                }
-            }).play()
-        })
         this.mount()
         this.init()
 
@@ -132,6 +108,33 @@ export class BorderImage extends CanvasNode {
     }
 
     addEventListener() {
+        const { watch } = useCanvasReactivity(this)
+        watch(mouse, this.onMouseMove)
+
+        watch(firstMove, (b: boolean) => {
+            if (!b) return
+            const { size } = useCanvas()
+            this.positionTarget.set(
+                (mouse.value.x - vw.value / 2 + imageBounds.w * 0.5 + 18) * size.value.width / vw.value,
+                (vh.value / 2 - mouse.value.y + imageBounds.h * 0.5 + 18) * size.value.height / vh.value,
+                0
+            )
+            this.node.position.set(this.positionTarget)
+        }, { immediate: true })
+
+
+        const tl = useTL()
+        watch(hideTrail, (b: boolean) => {
+            const from = this.uHide.value
+            const to = +b;
+            tl.reset()
+            tl.from({
+                d: 200,
+                update: (e) => {
+                    this.uHide.value = N.Lerp(from, to, e.progE)
+                }
+            }).play()
+        })
     }
 
 

@@ -58,7 +58,7 @@ export class IndexCanvas extends CanvasPage {
 		const { watch } = useCanvasReactivity(this);
 		watch(
 			isMobile,
-			(mobile) => {
+			(mobile: boolean) => {
 				if (!mobile) {
 					stepper.raf.run();
 					this.add(stepper);
