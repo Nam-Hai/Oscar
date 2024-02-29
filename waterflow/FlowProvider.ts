@@ -131,5 +131,16 @@ export class FlowProvider {
     return this.flowHijacked
   }
 }
+export const [provideFlowProvider, useFlowProvider] = (() => {
+  let flowProvider: FlowProvider;
+  const provider = () => {
+    flowProvider = new FlowProvider()
+  }
+  const inject = () => {
+    return flowProvider
+  }
 
-export const [provideFlowProvider, useFlowProvider] = createContext<FlowProvider>('flow-provider');
+  return [provider, inject]
+})()
+
+// export const [provideFlowProvider, useFlowProvider] = createContext<FlowProvider>('flow-provider');

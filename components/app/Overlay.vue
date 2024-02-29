@@ -12,6 +12,7 @@ import { useFlowProvider } from '~/waterflow/FlowProvider';
 const wrapperRef = ref()
 const flowProvider = useFlowProvider()
 flowProvider.addProps("overlay", wrapperRef)
+console.log('test');
 
 </script>
 <style lang="scss" scoped>

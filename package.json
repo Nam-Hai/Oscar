@@ -12,12 +12,12 @@
     "@nuxt/devtools": "1.0.2",
     "@types/node": "^20.3.1",
     "eslint": "^8.42.0",
-    "nuxt": "^3.8.1",
     "prettier": "3.1.0",
     "sass": "^1.63.4"
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.16",
+    "nuxt": "^3.8.1",
     "ogl": "1.0.3"
   },
   "overrides": {

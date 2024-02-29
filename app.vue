@@ -8,14 +8,15 @@
 </template>
 
 <script setup lang="ts">
-import { FlowProvider, provideFlowProvider } from './waterflow/FlowProvider';
+import { FlowProvider, provideFlowProvider, useFlowProvider } from './waterflow/FlowProvider';
 import Index from './pages/index.vue';
 import ProjectPage from './pages/project-page/[...id].vue';
 import Info from './pages/info.vue';
 import Playground from './pages/playground.vue';
 
-const flowProvider = new FlowProvider()
-provideFlowProvider(flowProvider)
+provideFlowProvider()
+const flowProvider = useFlowProvider()
+console.log(flowProvider);
 
 flowProvider.registerPage('index', Index)
 flowProvider.registerPage('project-page-id', ProjectPage)

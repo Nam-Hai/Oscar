@@ -84,17 +84,24 @@ export class PlaygroundMedia extends CanvasNode {
         watch(containerHeight, () => {
             trigger()
         })
-
         useTL().from({
+            d: 500,
+
+            update: ({ progE }) => {
+                this.node.position.x = 0
+            }
+        }).from({
+            d: 1200,
+            e: 'o4',
+            update: ({ progE }) => {
+                this.node.position.y = (this.positionEl.y + this.scrollPosition + this.offset + 400 * (1 - progE)) * this.canvasSize.height / vh.value
+            }
+        }).from({
             d: 1000,
             delay: 500,
             // e: 'o4',
             update: ({ progE }) => {
-                this.node.position.set(
-                    (this.positionEl.x * N.Ease.o3(progE)) * this.canvasSize.width / vw.value,
-                    (this.positionEl.y + this.scrollPosition + this.offset) * this.canvasSize.height / vh.value,
-                    0
-                )
+                this.node.position.x = (this.positionEl.x * N.Ease.o3(progE)) * this.canvasSize.width / vw.value
             },
             cb: () => {
                 useLenisGL(this, this.onScroll)

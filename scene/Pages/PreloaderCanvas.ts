@@ -6,6 +6,8 @@ import type { ROR, ResizeEvent } from "~/plugins/core/resize";
 import { Camera, Renderer, Transform, type OGLRenderingContext } from "ogl";
 import { CanvasPage } from "../utils/types";
 import { PreloaderImage } from "../Components/Preloader/PreloaderImage";
+import { useFlowProvider } from "~/waterflow/FlowProvider";
+import { DURATION } from "~/pages_transitions/default.transition";
 
 
 export class PreloaderCanvas extends CanvasPage {
@@ -70,67 +72,125 @@ export class PreloaderCanvas extends CanvasPage {
   }
 
   async preloaderAnimation() {
-    // DEBUG, skip preloader animation
     useStore().preloaderComplete.value = true;
     this.destroy();
     return false;
+    // DEBUG, skip preloader animation
 
-    const promise = []
-    for (let i = 0; i < this.nodes.length; i++) {
-      const p = new Promise<void>((res) => {
-        useDelay(200 * i, () => {
-          const node = this.nodes[i]
-          node.growAnimation().then(() => {
-            res()
-          })
-        })
+    const provider = useFlowProvider()
+    if (provider.getRouteTo().name !== "index") {
+      const overlay = provider.props.overlay
+
+      const { breakpoint, scale, vh } = useStoreView()
+      const pFrom = "M 0 0 C 6 0 8 0 14 0 L 14 7 C 8 7 6 7 0 7 L 0 0"
+      const pTo = breakpoint.value == 'desktop' ? "M 0 0 C 6 1 8 1 14 0 L 14 7 C 8 8 6 8 0 7 L 0 0" :
+        "M 0 0 C 6 0.2 8 0.2 14 0 L 14 7 C 8 7.3 6 7.3 0 7 L 0 0";
+
+      const path = N.get("path", overlay.value)
+      const tl = useTL()
+      const ooo = 200
+      tl.from({
+        d: DURATION / 2,
+        e: 'i2',
+        update: ({ progE }) => {
+          overlay.value.style.transform = `translateY(${N.Lerp(-100, -19, progE)}%)`
+          // canvas.currentPage.node.position.y = -progE * 300 * scale.value * canvas.size.value.height / vh.value
+        },
       })
-      promise.push(p)
-    }
-
-    await Promise.all(promise)
-
-
-    this.nodes[1].node.rotation.set(-Math.PI * 0.5, 0, 0)
-
-    const tl = useTL()
-    tl.from({
-      d: 1000,
-      e: "io3",
-      update: ({ progE, prog }) => {
-
-        this.group.rotation.set(progE * Math.PI * 0.5, 0, 0)
-        // this.nodes[1].mesh.program.uniforms.uMorph.value = N.Ease.io4(prog)
-
-        this.nodes[1].mesh.program.uniforms.uMorph.value = progE
-
-      },
-      cb: () => {
-        this.nodes[0].node.rotation.set(-Math.PI * 1, 0, 0)
-        this.nodes[0].computeUniforms(0.8)
-      },
-    }).from({
-      d: 1000,
-      e: "io3",
-      delay: 1000,
-      update: ({ progE, prog }) => {
-        this.group.rotation.set((1 + progE) * Math.PI * 0.5, 0, 0)
-        this.nodes[0].mesh.program.uniforms.uMorph.value = progE
-      },
-      cb: () => {
-        this.nodes[0].growToHome().then(() => {
+      tl.from({
+        d: DURATION / 2,
+        delay: DURATION / 2 + ooo,
+        e: 'o2',
+        update: ({ progE }) => {
+          // overlay.value.style.transform = `translateY(${progE * 100}%)`
+          overlay.value.style.transform = `translateY(${N.Lerp(-19, 75, progE)}%)`
+        },
+        cb: () => {
+          overlay.value.style.transform = `translateY(-100%)`
+        }
+      }).from({
+        d: DURATION / 2,
+        el: path,
+        e: 'o1',
+        svg: {
+          type: 'd',
+          start: pFrom,
+          end: pTo
+        },
+        cb: () => {
           useStore().preloaderComplete.value = true
           this.destroy()
+        },
+      }).from({
+        d: DURATION / 2,
+        el: path,
+        delay: DURATION / 2 + ooo,
+        e: 'o1',
+        svg: {
+          type: 'd',
+          start: pTo,
+          end: pFrom
+        },
+
+      }).play()
+    } else {
+
+
+      const promise = []
+      for (let i = 0; i < this.nodes.length; i++) {
+        const p = new Promise<void>((res) => {
+          useDelay(200 * i, () => {
+            const node = this.nodes[i]
+            node.growAnimation().then(() => {
+              res()
+            })
+          })
         })
-      },
-    }).play()
+        promise.push(p)
+      }
+
+      await Promise.all(promise)
 
 
-    // const { getBounds } = usePreloaderStore()
-    // const bounds = getBounds()
-    // console.log("prelaoder bounds", getBounds());
+      this.nodes[1].node.rotation.set(-Math.PI * 0.5, 0, 0)
+
+      const tl = useTL()
+      tl.from({
+        d: 1000,
+        e: "io3",
+        update: ({ progE, prog }) => {
+
+          this.group.rotation.set(progE * Math.PI * 0.5, 0, 0)
+          // this.nodes[1].mesh.program.uniforms.uMorph.value = N.Ease.io4(prog)
+
+          this.nodes[1].mesh.program.uniforms.uMorph.value = progE
+
+        },
+        cb: () => {
+          this.nodes[0].node.rotation.set(-Math.PI * 1, 0, 0)
+          this.nodes[0].computeUniforms(0.8)
+        },
+      }).from({
+        d: 1000,
+        e: "io3",
+        delay: 1000,
+        update: ({ progE, prog }) => {
+          this.group.rotation.set((1 + progE) * Math.PI * 0.5, 0, 0)
+          this.nodes[0].mesh.program.uniforms.uMorph.value = progE
+        },
+        cb: () => {
+          this.nodes[0].growToHome().then(() => {
+            useStore().preloaderComplete.value = true
+            this.destroy()
+          })
+        },
+      }).play()
 
 
+      // const { getBounds } = usePreloaderStore()
+      // const bounds = getBounds()
+      // console.log("prelaoder bounds", getBounds());
+    }
   }
 
   resize({ vh, vw, scale, breakpoint }: ResizeEvent) { }

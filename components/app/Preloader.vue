@@ -74,14 +74,13 @@ watch(preloaderComplete, async () => {
 
   fromPreloader.value = false
 
-  canvas.onChange(flowProvider.getRouteTo())
+  const to = flowProvider.getRouteTo()
+  canvas.onChange(to)
   canvas.resolveOnChange()
   await nextTick()
 
 
   killPreloader.value = true
-  // useDelay(1000, () => {
-  // }).run()
 })
 
 
@@ -105,7 +104,14 @@ onMounted(() => {
     counter.value = N.ZL(Math.floor(next * 100))
   })
 
-  manifest.loadManifest().then(() => {
+
+  const minDuration = new Promise<void>(res => {
+    useDelay(1000, () => {
+      res()
+    })
+  })
+  const manifestPromise = manifest.loadManifest()
+  Promise.all([minDuration, manifestPromise]).then(() => {
     endLoading()
   })
   // if (manifest.length == 0) return endPreloader()
