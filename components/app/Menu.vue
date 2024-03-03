@@ -1,6 +1,6 @@
 <template>
   <div class="menu__wrapper"
-    :class="{ dark: (router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info') && !atEnd, init }"
+    :class="{ dark: (router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info') && !atEnd, init, hide: menuHide }"
     ref="wrapperRef">
     <div class="home">
       <NuxtLink to="/" @mouseenter="hoverMenu($event, 'home')" @mouseleave="leave()" v-cursor-hover>
@@ -44,7 +44,7 @@ const router = useRouter()
 const { overhide, target } = useCursorStore()
 const { atEnd } = useStoreProject()
 // const { preloaderComplete } = useStore()
-const { manifestLoaded } = useStore();
+const { manifestLoaded, menuHide } = useStore();
 
 const wrapperRef = ref()
 const infoRef = ref() as Ref<HTMLElement>
