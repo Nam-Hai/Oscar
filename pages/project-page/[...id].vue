@@ -27,9 +27,9 @@ import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 
 const { pickerDark } = useCursorStore()
 const { isMobile } = useStore()
-const { mouse, vh } = useStoreView()
+const { mouseLag, vh } = useStoreView()
 const translate = computed(() => {
-  return `translate(calc(${mouse.value.x}px - 50%), ${mouse.value.y}px)`
+  return `translate(calc(${mouseLag.value.x}px - 50%), ${mouseLag.value.y}px)`
 })
 
 const route = useFlowProvider().getRouteTo()

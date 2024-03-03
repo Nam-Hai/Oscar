@@ -1,17 +1,21 @@
 <template>
     <main ref="wrapperRef">
+        <div class="archive-display-f" :style="{ transform: translate }" v-if="isMobile != true"
+            :class="{ dark: pickerDark, show: showMore !== -1 }">
+            {{ showMore !== -1 ? showMore : '' }}
+        </div>
         <h1>
             playground
             (24)
         </h1>
         <div class="placeholder__fixed-media__container">
-            <div class="placeholder__fixed-media" v-for="( { src, ratio, height, width }, index) in copy" :data-src="src"
-                :key="index" :style='{ aspectRatio: ratio, height, width }' ref="placeholderFixedRefs">
+            <div class="placeholder__fixed-media" v-for="( { src, ratio, height, width }, index) in copy"
+                :data-src="src" :key="index" :style='{ aspectRatio: ratio, height, width }' ref="placeholderFixedRefs">
             </div>
         </div>
         <div class="placeholder-container" ref="placeholderContainerRef">
-            <div class="placeholder" v-for="  { src, ratio }   in   copy  " :data-src="src" :style="{ aspectRatio: ratio }"
-                ref="placeholderRefs">
+            <div class="placeholder" v-for="  { src, ratio }   in   copy  " :data-src="src"
+                :style="{ aspectRatio: ratio }" ref="placeholderRefs">
             </div>
         </div>
     </main>
@@ -22,8 +26,16 @@ import { archiveFlowIn, defaultFlowOut } from '~/pages_transitions/default.trans
 import { usePlaygroundCanvas } from '~/scene/Pages/PlaygroundCanvas';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 
-const { breakpoint } = useStoreView()
 const { copy, containerHeight } = useStorePlayground()
+
+const { mouseLag, vh } = useStoreView()
+const { isMobile } = useStore()
+const { pickerDark } = useCursorStore()
+const { showMore } = useStorePlayground()
+
+const translate = computed(() => {
+    return `translate(calc(${mouseLag.value.x}px - 50%), ${mouseLag.value.y}px)`
+})
 
 useResetLenis({ infinite: true, duration: 1 })
 
@@ -134,10 +146,30 @@ h1 {
     max-height: 100%;
     pointer-events: none;
 
-    @include breakpoint(mobile){
-        width: 100%!important;
-        height: unset!important;
+    @include breakpoint(mobile) {
+        width: 100% !important;
+        height: unset !important;
+    }
+}
+
+.archive-display-f {
+    position: absolute;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: calc(16px + 0.6rem);
+    line-height: 100%;
+    font-size: 1.1rem;
+    opacity: 0;
+    transition: opacity 300ms, color 350ms;
+    color: white;
+
+    &.show {
+        opacity: 1;
+    }
+
+    &.dark {
+        color: black
     }
 }
 </style>
-

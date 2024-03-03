@@ -16,6 +16,7 @@ export const useStoreView = createStore(() => {
 	const lenis = ref() as Ref<Lenis>;
 
 	const canvasBg = shallowRef([0, 0, 0, 0])
+	const mouseLag = shallowRef({ x: 0, y: 0 })
 
 	function init() {
 		lenis.value = new Lenis();
@@ -92,6 +93,7 @@ export const useStoreView = createStore(() => {
 	return {
 		mouse,
 		firstMove,
+		mouseLag,
 		vw,
 		canvasBg,
 		vh,

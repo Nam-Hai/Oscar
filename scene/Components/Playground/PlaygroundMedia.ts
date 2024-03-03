@@ -142,24 +142,13 @@ export class PlaygroundMedia extends CanvasNode {
         const { watch } = useCanvasReactivity(this)
         const hover = picker.useHover(this.id)
         const uHover = { value: 0 }
-        let motion: Motion;
         const uShow = { value: 0 }
         watch(hover, h => {
-            showMore.value = h ? this.id : -1
+            showMore.value = h ? this.index : -1
             uHover.value = h
-            // const from = uHover.value
-            // const to = +h
-            // motion?.pause();
-            // motion = new Motion({
-            //     d: 100,
-            //     update: (e) => {
-            //         uHover.value = N.Lerp(from, to, e.progE)
-            //     },
-            // });
-            // motion.play()
         }, { immediate: true })
         watch(showMore, b => {
-            uShow.value = b === this.id || b === -1 ? 1 : 0
+            uShow.value = b === this.index || b === -1 ? 1 : 0
         }, { immediate: true })
 
         const program = new Program(this.gl, {
