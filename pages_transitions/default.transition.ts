@@ -3,7 +3,6 @@ import type { FlowFunction } from "~/waterflow/composables/usePageFlow"
 export type defaultTransitionProps = {
     wrapperRef: Ref<HTMLElement>
 }
-
 export const DURATION = 1400
 export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, resolve, provider, options: { translate: boolean } = { translate: true }) => {
     const tl = useTL()
@@ -12,6 +11,7 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, reso
     // const scene = canvas.currentPage!.node
     const scene = canvas.scene
     const overlay = provider.props.overlay
+    const overlayTest = provider.props.overlayTest
     // 
     canvas.onChange(provider.getRouteTo())
     canvas.nextPage!.node.setParent(null)
@@ -62,24 +62,38 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, reso
         }
     }).from({
         d: DURATION / 2,
-        el: path,
-        e: 'o1',
-        svg: {
-            type: 'd',
-            start: pFrom,
-            end: pTo
-        }
+        e: 'i2',
+        update: ({ prog, progE }) => {
+            overlayTest.value.style.clipPath = `inset(0 0 ${(1 - progE) * 100}% 0 )`
+        },
     }).from({
         d: DURATION / 2,
-        el: path,
         delay: DURATION / 2,
         e: 'o1',
-        svg: {
-            type: 'd',
-            start: pTo,
-            end: pFrom
-        }
+        update: ({ prog, progE }) => {
+            overlayTest.value.style.clipPath = `inset(${progE * 100}% 0 0 0 )`
+        },
     })
+        .from({
+            d: DURATION / 2,
+            el: path,
+            e: 'o1',
+            svg: {
+                type: 'd',
+                start: pFrom,
+                end: pTo
+            }
+        }).from({
+            d: DURATION / 2,
+            el: path,
+            delay: DURATION / 2,
+            e: 'o1',
+            svg: {
+                type: 'd',
+                start: pTo,
+                end: pFrom
+            }
+        })
     tl.play()
 
 }
