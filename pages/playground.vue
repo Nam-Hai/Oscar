@@ -4,8 +4,13 @@
             playground
             (24)
         </h1>
+        <div class="placeholder__fixed-media__container">
+            <div class="placeholder__fixed-media" v-for="( { src, ratio, height, width }, index) in copy" :data-src="src"
+                :key="index" :style='{ aspectRatio: ratio, height, width }' ref="placeholderFixedRefs">
+            </div>
+        </div>
         <div class="placeholder-container" ref="placeholderContainerRef">
-            <div class="placeholder" v-for="{ src, ratio } in copy" :data-src="src" :style="{ aspectRatio: ratio }"
+            <div class="placeholder" v-for="  { src, ratio }   in   copy  " :data-src="src" :style="{ aspectRatio: ratio }"
                 ref="placeholderRefs">
             </div>
         </div>
@@ -15,7 +20,6 @@
 <script lang="ts" setup>
 import { archiveFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
 import { usePlaygroundCanvas } from '~/scene/Pages/PlaygroundCanvas';
-import { htmlRef } from '~/utils/utils';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 
 const { breakpoint } = useStoreView()
@@ -25,10 +29,13 @@ useResetLenis({ infinite: true, duration: 1 })
 
 const playgroundCanvas = usePlaygroundCanvas()
 const placeholderRefs = ref() as Ref<HTMLElement[]>
+const placeholderFixedRefs = ref() as Ref<HTMLElement[]>
 const placeholderContainerRef = ref() as Ref<HTMLElement>
 onMounted(() => {
-    for (const el of placeholderRefs.value) {
-        playgroundCanvas.addMedia(el)
+    for (let index = 0; index < placeholderRefs.value.length; index++) {
+        const el = placeholderRefs.value[index]
+        const fixed = placeholderFixedRefs.value[index]
+        playgroundCanvas.addMedia(el, fixed)
     }
 })
 
@@ -107,6 +114,29 @@ h1 {
             width: 50%;
         }
 
+    }
+}
+
+.placeholder__fixed-media__container {
+    position: fixed;
+    margin: 1.6rem;
+    height: calc(100% - 3.2rem);
+    width: calc(100% - 3.2rem);
+
+    pointer-events: none;
+}
+
+.placeholder__fixed-media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    // background-color: bisque;
+    max-height: 100%;
+    pointer-events: none;
+
+    @include breakpoint(mobile){
+        width: 100%!important;
+        height: unset!important;
     }
 }
 </style>
