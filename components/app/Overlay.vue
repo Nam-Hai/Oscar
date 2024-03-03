@@ -55,6 +55,6 @@ flowProvider.addProps("overlayTest", overlayRef)
 
     color: black;
     text-transform: uppercase;
-    font-size: 3rem;
+    font-size: 1.5rem;
 }
 </style>
