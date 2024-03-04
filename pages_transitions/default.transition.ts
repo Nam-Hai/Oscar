@@ -3,7 +3,7 @@ import type { FlowFunction } from "~/waterflow/composables/usePageFlow"
 export type defaultTransitionProps = {
     wrapperRef: Ref<HTMLElement>
 }
-export const DURATION = 1400
+export const DURATION = 2000
 export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, resolve, provider, options: { translate: boolean } = { translate: true }) => {
     const tl = useTL()
     const canvas = useCanvas()
