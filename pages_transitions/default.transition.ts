@@ -100,7 +100,7 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, reso
 
 export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef }, resolve,) => {
     N.O(wrapperRef.value, 0)
-    N.T(wrapperRef.value, 0, -20, 'rem')
+    // N.T(wrapperRef.value, 0, -20, 'rem')
     wrapperRef.value.style.willChange = 'transform'
     wrapperRef.value.style.contain = "strict"
     useTL().from({
@@ -109,7 +109,7 @@ export const defaultFlowIn: FlowFunction<defaultTransitionProps> = ({ wrapperRef
         delay: DURATION / 2,
         e: "o2",
         p: {
-            y: [-20, 0, 'rem']
+            // y: [-20, 0, 'rem']
         },
         cb: () => {
             wrapperRef.value.style.contain = "unset"

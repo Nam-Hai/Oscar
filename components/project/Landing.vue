@@ -102,7 +102,7 @@ onBeforeUnmount(() => {
 const titleWidth = ref("calc(100vw - 2.8rem)")
 let neutralGap = 1
 useRO(({ scale }) => {
-    const spans = N.getAll(".title__wrapper .overflow")
+    const spans = N.getAll(".title__wrapper .overflow", wrapperRef.value)
     if (spans.length === 2) {
         neutralGap = (spans[1].getBoundingClientRect().left - spans[0].getBoundingClientRect().right - 40) / scale
     }

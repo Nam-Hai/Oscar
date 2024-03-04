@@ -166,7 +166,7 @@ export class HomeMedia extends CanvasNode {
 		this.currentMesh = currentMesh
 		let added = false
 
-		const DURATION = 800
+		const DURATION = 1050
 		const DELAY_IN = this.onChangeImmediate ? 0 : 250
 
 		const tl = useTL()

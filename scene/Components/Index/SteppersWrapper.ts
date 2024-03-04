@@ -7,7 +7,7 @@ import { BorderImage } from './BorderImage';
 const { vh, vw, mouse, breakpoint } = useStoreView()
 const { isHold } = useCursorStore()
 // const m = toRefs(mouse)
-const { getTexture, stack, imageBounds, currentIndex, stepperIsHovered, length, idToIndex } = useStoreStepper()
+const { getTexture, stack, imageBounds, currentIndex, stepperIsHovered, tileHover, length, idToIndex } = useStoreStepper()
 const { toggleHover } = useCursorStore()
 
 export class SteppersWrapper extends CanvasNode {
@@ -57,6 +57,7 @@ export class SteppersWrapper extends CanvasNode {
 
             const { hover } = useHover(el.id)
             watch(hover, (h: boolean) => {
+                tileHover.value = h
                 toggleHover(h && (stepperIsHovered.value))
             })
         }

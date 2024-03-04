@@ -4,7 +4,7 @@
             A digital designer originally from Spain and based in Madrid, specialised in visual and interface design. Always
             willing to create meaningful pieces where creativity and excitement harmonise as the main driving engine.
             Additionally, a curious individual constantly exploring new skills and interests, including art direction,
-            branding, and motion design.<br> Also, passionate about various forms of design, such as editorial and fashion.
+            branding, and motion design. Also, passionate about various forms of design, such as editorial and fashion.
         </p>
         <p>
             Worked for different studios and agencies - Hanzo Studio, The Cocktail, Acute Brand.<br> Currently seeking new

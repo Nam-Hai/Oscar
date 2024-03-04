@@ -145,6 +145,8 @@ function endLoading() {
   width: 100%;
 
   color: $black;
+  background-color: $bg-white;
+  z-index: 200;
 
   &.hide {
 
@@ -203,6 +205,7 @@ function endLoading() {
   }
 
   .overflow-content {
+    text-transform: uppercase;
     transform: translateY(0%);
   }
 }
