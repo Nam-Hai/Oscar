@@ -107,7 +107,7 @@ onMounted(() => {
 
   const routeName = useRoute().name
   const minDuration = new Promise<void>(res => {
-    useDelay(routeName === "index" ? 0 : 800, () => {
+    useDelay(routeName === "index" ? 800 : 800, () => {
       res()
     })
   })
