@@ -39,7 +39,7 @@ import { secondScrollEase } from "~/scene/Components/Project/MainImage"
 const { id } = defineProps<{ id: string }>()
 
 const { copy, landingHeaderScale } = useStoreProject()
-const { breakpoint } = useStoreView()
+const { breakpoint, vw } = useStoreView()
 
 const fs = useCanvasMainImageProject().firstScroll
 let leave = false
@@ -54,12 +54,13 @@ const wrapperRef = ref()
 const lowerDesRef = ref() as Ref<HTMLElement>
 
 const titleWrapperRef = ref() as Ref<HTMLElement>
+let scale = 1
 useLenisScroll((e) => {
     const size = 800
     const s = N.Clamp(e.animatedScroll, 0, size);
 
     const ease = secondScrollEase(s / size)
-    const scale = N.Lerp(1, 0.6, ease)
+    scale = N.Lerp(1, 0.6, ease)
 
     if (breakpoint.value === "desktop") {
         titleWidth.value = `calc(100vw - 2.8rem - ${neutralGap * ease / 10}rem)`
@@ -101,10 +102,11 @@ onBeforeUnmount(() => {
 
 const titleWidth = ref("calc(100vw - 2.8rem)")
 let neutralGap = 1
-useRO(({ scale }) => {
+useRO(({ scale: s }) => {
     const spans = N.getAll(".title__wrapper .overflow", wrapperRef.value)
     if (spans.length === 2) {
-        neutralGap = (spans[1].getBoundingClientRect().left - spans[0].getBoundingClientRect().right - 40) / scale
+        const w = spans[1].getBoundingClientRect().width + spans[0].getBoundingClientRect().width + 40
+        neutralGap = (vw.value - 28 * s - w / scale)
     }
 })
 </script>
@@ -191,6 +193,8 @@ useRO(({ scale }) => {
         h1 {
             justify-content: space-between;
             width: 100%;
+
+            will-change: width;
 
             @include breakpoint(mobile) {
                 flex-direction: column;
