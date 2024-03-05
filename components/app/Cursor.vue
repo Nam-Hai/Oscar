@@ -1,5 +1,6 @@
 <template>
-    <div :style="{ transform: translate }" :class="{ hover: cursorState == 'hover', hold: isHolding, dark: pickerDark, hide: !firstMove }"
+    <div :style="{ transform: translate }"
+        :class="{ hover: cursorState == 'hover', hold: isHolding, dark: pickerDark, hide: !firstMove }"
         class="cursor__wrapper" ref="wrapperRef">
 
         <div class="point" :style="{ transform: `translate(calc(${diff.x}px - 50%), calc(${diff.y}px - 50%) )` }">
@@ -7,7 +8,8 @@
         </div>
         <div class="hold-border">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.1 -1.1 2.2 2.2">
-                <path d="M 0 1 A 1 1 0 0 0 0 -1 A 1 1 0 0 0 0 1" stroke="currentColor" stroke-width="0.05" fill="none" />
+                <path d="M 0 1 A 1 1 0 0 0 0 -1 A 1 1 0 0 0 0 1" stroke="currentColor" stroke-width="0.05"
+                    fill="none" />
             </svg>
         </div>
     </div>
@@ -18,7 +20,7 @@
 const { mouse, firstMove, mouseLag } = useStoreView()
 const { overhide, target, cursorState, progress, isHolding, pickerDark } = useCursorStore()
 
-watch(firstMove, ()=>{
+watch(firstMove, () => {
     trailingMouse.value = mouse.value
 })
 
@@ -31,6 +33,10 @@ const translate = computed(() => {
 
 const wrapperRef = ref() as Ref<HTMLElement>
 
+const route = useRoute()
+watch(route, () => {
+    progress.value = 0
+})
 watch(progress, prog => {
     const p = N.get('path', wrapperRef.value)! as HTMLElement
     const l = N.Svg.getLength(p) * (1 - prog)
@@ -80,11 +86,13 @@ useRaf(() => {
     position: fixed;
     z-index: 200;
     color: $white;
-    transition: color 350ms, opacity 250ms;
+    // transition: color 350ms, opacity 250ms;
+    transition: opacity 250ms;
 
     &.dark {
         color: $black;
     }
+
     &.hide {
         opacity: 0;
     }
@@ -174,4 +182,3 @@ useRaf(() => {
     }
 }
 </style>
-

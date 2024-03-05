@@ -154,7 +154,7 @@ h1 {
 
 .archive-display-f {
     position: absolute;
-    position: absolute;
+    z-index: 10;
     top: 0;
     left: 0;
     margin-top: calc(16px + 0.6rem);

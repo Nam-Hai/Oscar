@@ -1,5 +1,5 @@
 <template>
-  <div class="app__wrapper">
+  <div class="app__wrapper" :class="{ hover: stepperIsHovered && tileHover }">
     <WebGLScene />
     <Menu />
     <Cursor v-if="!isMobile" />
@@ -24,6 +24,7 @@ const flowProvider = useFlowProvider();
 
 const { lenis, scrollLenisOn } = useStoreView();
 const { isMobile } = useStore()
+const { stepperIsHovered, tileHover } = useStoreStepper()
 
 useRaf(
   (e) => {
@@ -55,5 +56,9 @@ flowProvider.registerScrollInterface({
 .over-webGL {
   position: relative;
   z-index: 12;
+}
+
+.app__wrapper.hover {
+  cursor: pointer;
 }
 </style>

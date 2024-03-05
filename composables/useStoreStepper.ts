@@ -1,7 +1,7 @@
 const homeStore = [
     {
-        title: "Viadomo©DECO",
-        titleMobile: "Viadomo ©DECO",
+        title: "Viadomo DECO",
+        titleMobile: "Viadomo DECO",
         titleHTML: '<span class="overflow-content">V</span><span class="overflow-content">i</span><span class="overflow-content">a</span><span class="overflow-content">d</span><span class="overflow-content">o</span><span class="overflow-content">m</span><span class="overflow-content">o</span><span class="overflow-content">©</span><span class="overflow-content">D</span><span class="overflow-content">E</span><span class="overflow-content">C</span><span class="overflow-content">O</span>',
         flavorMain: "A studio of crafters of original design furniture pieces.",
         flavorSub: ["Web design", "Furniture", "11.2023"],
@@ -64,5 +64,6 @@ export const useStoreStepper = createStore(() => {
 
     const hideTrail = ref(true)
 
-    return { stack, LERP, imageBounds, getTexture, currentIndex, stepperIsHovered, length, idToIndex, homeStore, hideTrail }
+    const tileHover = ref(false)
+    return { stack, LERP, imageBounds, getTexture, currentIndex, stepperIsHovered, tileHover, length, idToIndex, homeStore, hideTrail }
 })
