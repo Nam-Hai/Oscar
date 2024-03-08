@@ -1,17 +1,16 @@
 <template>
   <main class="project__wrapper" ref="wrapperRef">
-    <!-- <Teleport to=".app__wrapper" v-if="isMobile != true">
+    <Teleport to=".app__wrapper" v-if="isMobile != true">
       <div class="scroll-display-f__wrapper" :style="{ clipPath: `inset(0 0 ${clipPercentage * 100}% 0)` }">
         <div class="scroll-display-f" :class="{ dark: pickerDark, show: scrollDisplayShow }"
           :style="{ transform: translate }">
           {{ scrollPercent }}
         </div>
       </div>
-    </Teleport> -->
+    </Teleport>
 
-    <Landing :id="id" />
-    TEST
-    <!-- <component v-for="(slice, index) of COPY.slice" :is="slice.keyId" :data="slice" :key="'project-slice-' + index" /> -->
+    <!-- <Landing :id="id" /> -->
+    <component v-for="(slice, index) of COPY.slice" :is="slice.keyId" :data="slice" :key="'project-slice-' + index" />
   </main>
 </template>
 
