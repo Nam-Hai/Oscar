@@ -177,8 +177,10 @@ export class MainImage extends CanvasNode {
 		if (breakpoint.value === "mobile") {
 			this.uProgress.value = 2;
 			eS += 800;
+		} else {
+			this.computeUniform();
 		}
-		this.computeUniform();
+
 		if (this.uProgress.value === 2) {
 			this.pixelScroll = eS - 800;
 		} else {
@@ -344,11 +346,11 @@ export class MainImage extends CanvasNode {
 			if (this.uProgress.value >= 1) {
 				this.uProgress.value = 2;
 			} else {
-				this.bounds[1].y -= vh.value + (- 85.6 - 48 + 24 + 24 ) * scale.value
+				this.bounds[1].y -= vh.value + (- 85.6 - 48 + 24 + 24) * scale.value
 			}
-			this.onScroll({animatedScroll: this.pixelScroll - 800})
+			this.onScroll({ animatedScroll: this.pixelScroll - 800 })
 		} else {
-			this.onScroll({animatedScroll: this.pixelScroll - 800})
+			this.onScroll({ animatedScroll: this.pixelScroll - 800 })
 		}
 
 		this.computeUniform();
