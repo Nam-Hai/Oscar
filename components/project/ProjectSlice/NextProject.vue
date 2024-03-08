@@ -1,7 +1,8 @@
 <template>
-    <!-- <div class="debug" style="font-size: 4rem; line-height: 4rem;">
-        {{ data }}
-    </div> -->
+    <div class="debug" style="font-size: 4rem; line-height: 4rem;">
+        {{ data.flavorMain }}
+        test
+    </div>
     <Teleport to="#over-webGL" :disabled="isMobile">
         <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc"
             :style="{ backgroundImage: isMobile ? `url(${dataSrc})` : 'unset' }">
