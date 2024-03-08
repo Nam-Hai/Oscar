@@ -1,6 +1,5 @@
 <template>
     <div class="project-slice-1__wrapper">
-        1
         <div class="data-img" :data-src="data.data.src_1.src" ref="elRef1">
             <img :src="data.data.src_1.src" alt="project_image_1_1"
                 v-if="isMobile && data.data.src_1.type === 'image'" />

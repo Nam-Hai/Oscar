@@ -69,7 +69,7 @@ export const useStoreView = createStore(() => {
 			content,
 			wheelEventsTarget: target,
 			normalizeWheel: true,
-			// smoothTouch: true,
+			smoothTouch: true,
 			syncTouch: true,
 			wheelMultiplier: 0.82,
 			touchMultiplier: 0.7,
