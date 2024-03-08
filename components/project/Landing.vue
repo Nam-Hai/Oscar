@@ -12,7 +12,7 @@
                         </span>
                     </span>
                 </h1>
-                <h2 :style="{color: isMobile ? 'red' : ''}">{{ COPY.type }}</h2>
+                <h2>{{ COPY.type }}</h2>
                 <h2>{{ COPY.date }}</h2>
             </div>
             <div class="lower-container">
@@ -303,7 +303,8 @@ useRO(({ scale: s }) => {
 
             @include breakpoint(mobile) {
                 width: 100%;
-                height: 32.8rem;
+                // height: 32.8rem;
+                height: calc(var(--100vh) - 40rem);
             }
 
         }
@@ -336,6 +337,7 @@ useRO(({ scale: s }) => {
     width: 20rem;
 
     @include breakpoint(mobile) {
+        // height: calc(800px + 3 * 0.9 * 17.7rem - 4.65 * 2.4rem + 0 * 122rem - var(--100vh));
         display: none;
     }
 }

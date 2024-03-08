@@ -70,9 +70,9 @@ onSwap(async () => {
 })
 
 const { isMobile } = useStore()
-const { mouse } = useStoreView()
+const { mouseLag } = useStoreView()
 const translate = computed(() => {
-    return `translate(calc(${mouse.value.x}px - 50%), ${mouse.value.y}px)`
+    return `translate(calc(${mouseLag.value.x}px - 50%), ${mouseLag.value.y}px)`
 })
 
 onEnter({

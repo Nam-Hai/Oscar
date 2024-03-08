@@ -21,9 +21,6 @@ import { projectFlowInMap, projectFlowOutMap } from '~/pages_transitions/project
 import { useCanvasMainImageProject } from '~/scene/Components/Project/MainImage';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 
-// const { client } = usePrismic()
-// const { data: media } = await useAsyncData('media', () => client.getAllByType('mediatest'))
-
 const { pickerDark } = useCursorStore()
 const { isMobile } = useStore()
 const { mouseLag, vh } = useStoreView()
