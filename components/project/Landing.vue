@@ -135,12 +135,12 @@ useRO(({ scale: s }) => {
     justify-content: space-between;
     row-gap: 2.4rem;
 
-    transform: translateY(calc(100vh - 17.7rem * 0.8 - 2.4rem * 2));
+    transform: translateY(calc(var(--100vh) - 17.7rem * 0.8 - 2.4rem * 2));
     transition: transform 1000ms $easeInOutQuart;
 
     @include breakpoint(mobile) {
         padding: 1.6rem;
-        transform: translateY(calc(100vh - 10.7rem * 0.8 - 1.6rem * 3));
+        transform: translateY(calc(var(--100vh) - 10.7rem * 0.8 - 1.6rem * 3));
         height: calc(100% - 1.6rem);
     }
 
@@ -330,7 +330,7 @@ useRO(({ scale: s }) => {
 
 .pin-margin {
     // height: calc(800px + 3 * 0.9 * 17.7rem - 6.65 * 2.4rem + 122rem - 100vh);
-    height: calc(800px + 3 * 0.9 * 17.7rem - 4.65 * 2.4rem + 122rem - 100vh);
+    height: calc(800px + 3 * 0.9 * 17.7rem - 4.65 * 2.4rem + 122rem - var(--100vh));
     width: 20rem;
 
     @include breakpoint(mobile) {

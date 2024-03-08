@@ -118,7 +118,7 @@ main {
 
     @include breakpoint(mobile) {
         // padding: 3.6rem 1.6rem 1.6rem ;
-        padding: 3.6rem $side-margin-mobile $side-margin-mobile;
+        // padding: 3.6rem $side-margin-mobile $side-margin-mobile;
     }
 
     line-height: 100%;
