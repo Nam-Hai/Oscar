@@ -10,8 +10,9 @@
         <BufferPage />
       </Preloader>
     </div>
-    <div class="over-webGL">
-    </div>
+
+    <!-- <div class="over-webGL">
+    </div> -->
   </div>
 </template>
 
