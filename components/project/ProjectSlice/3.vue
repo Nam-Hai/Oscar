@@ -1,10 +1,37 @@
 <template>
     <div class="container-3">
         <div class="t-c">
-            <div class="data-img" :data-src="data.src_1" ref="elRef1"></div>
-            <div class="data-img" :data-src="data.src_2" ref="elRef2"></div>
+            <div class="data-img" :data-src="data.data.src_1.src" ref="elRef1">
+                <img :src="data.data.src_1.src" alt="project_image_3_1"
+                    v-if="isMobile && data.data.src_1.type === 'image'" />
+
+                <video v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline disableremoteplayback="true" muted
+                    loop autoplay>
+                    <source :src="data.data.src_1.src" :type="data.data.src_1.type">
+                </video>
+
+            </div>
+
+            <div class="data-img" :data-src="data.data.src_2.src" ref="elRef2">
+                <img :src="data.data.src_2.src" alt="project_image_3_2"
+                    v-if="isMobile && data.data.src_2.type === 'image'" />
+
+                <video v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline disableremoteplayback="true" muted
+                    loop autoplay>
+                    <source :src="data.data.src_2.src" :type="data.data.src_2.type">
+                </video>
+
+            </div>
         </div>
-        <div class="data-img" :data-src="data.src_3" ref="elRef3"></div>
+        <div class="data-img" :data-src="data.data.src_3.src" ref="elRef3">
+            <img :src="data.data.src_3.src" alt="project_image_3_3"
+                v-if="isMobile && data.data.src_3.type === 'image'" />
+
+            <video v-if="isMobile && data.data.src_3.type[0] === 'v'" playsinline disableremoteplayback="true" muted
+                loop autoplay>
+                <source :src="data.data.src_3.src" :type="data.data.src_3.type">
+            </video>
+        </div>
     </div>
 </template>
 
@@ -12,7 +39,8 @@
 
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
 import { onFlow } from '~/waterflow/composables/onFlow';
-const { data } = defineProps<{ data: { [key: string]: string } }>()
+const { data } = defineProps<{ data: ISlice }>()
+const { isMobile } = useStore()
 
 const projectCanvas = useProjectCanvas()
 
@@ -22,6 +50,7 @@ const elRef3 = ref()
 
 onFlow(async () => {
     await nextTick()
+    if(isMobile.value) return
     projectCanvas.addMedia(elRef1.value, -0.2)
     projectCanvas.addMedia(elRef2.value, 0.1)
     projectCanvas.addMedia(elRef3.value)
@@ -85,4 +114,3 @@ onFlow(async () => {
     background-color: $placeholder-grey;
 }
 </style>
-

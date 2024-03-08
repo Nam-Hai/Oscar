@@ -270,5 +270,13 @@ a {
 }
 
 .data-img {
-  opacity: 0;
+  // opacity: 0;
+  position: relative;
+  img, video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }

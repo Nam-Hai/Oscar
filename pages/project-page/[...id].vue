@@ -10,7 +10,7 @@
     </Teleport>
 
     <Landing :id="id" />
-    <component v-for="(slice, index) of COPY.slice" :is="slice.keyId" :data="slice.data"
+    <component v-for="(slice, index) of COPY.slice" :is="slice.keyId" :data="slice"
       :key="'project-slice-' + index" />
   </main>
 </template>

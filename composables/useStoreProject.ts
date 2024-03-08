@@ -8,7 +8,12 @@ import ProjectSliceNext from "~/components/project/ProjectSlice/NextProject.vue"
 
 export interface ISlice {
     keyId: any,
-    data: { [key: string]: any },
+    data: {
+        [key: string]: {
+            src: string,
+            type: "video/mp4" | "video/webm" | "image"
+        }
+    },
 }
 
 type ProjectCopyType = {
@@ -36,54 +41,105 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             {
                 keyId: ProjectSlice1,
                 data: {
-                    src_1: "/Assets/Viadomo/2.mp4",
-                    src_2: "/Assets/Viadomo/3.jpg",
+                    src_1: {
+                        src: "/Assets/Viadomo/2.mp4",
+                        type: "video/mp4"
+                    },
+                    src_2: {
+                        src: "/Assets/Viadomo/3.jpg",
+                        type: "image"
+                    }
                 },
             },
             {
                 keyId: ProjectSlice2,
                 data: {
-                    src_1: "/Assets/Viadomo/4_1.jpg",
-                    src_2: "/Assets/Viadomo/5_1.jpg",
+                    src_1: {
+                        src: "/Assets/Viadomo/4_1.jpg",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Viadomo/5_1.jpg",
+                        type: "image"
+                    }
                 },
             },
             {
                 keyId: ProjectSlice3,
                 data: {
-                    src_1: "/Assets/Viadomo/6.jpg",
-                    src_2: "/Assets/Viadomo/7.jpg",
-                    src_3: "/Assets/Viadomo/8.mp4",
+                    src_1: {
+                        src: "/Assets/Viadomo/6.jpg",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Viadomo/7.jpg",
+                        type: "image"
+                    },
+                    src_3: {
+                        src: "/Assets/Viadomo/8.mp4",
+                        type: "video/mp4"
+                    },
                 },
             },
             {
                 keyId: ProjectSlice4,
                 data: {
-                    src_1: "/Assets/Viadomo/9.jpg",
-                    src_2: "/Assets/Viadomo/10.jpg",
+                    src_1: {
+                        src: "/Assets/Viadomo/9.jpg",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Viadomo/10.jpg",
+                        type: "image"
+                    },
                     // bg_src: "/Assets/Viadomo/9-10-Bg.jpg",
-                    bg_src: "/Assets/Viadomo/9_10_Bg_2.jpg",
+                    bg_src: {
+                        src: "/Assets/Viadomo/9_10_Bg_2.jpg",
+                        type: "image"
+                    }
                 },
             },
             {
                 keyId: ProjectSlice1,
                 data: {
-                    src_1: "/Assets/Viadomo/11.jpg",
-                    src_2: "/Assets/Viadomo/12.mp4",
+                    src_1: {
+                        src: "/Assets/Viadomo/11.jpg",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Viadomo/12.mp4",
+                        type: "video/mp4"
+                    },
                 },
             },
             {
                 keyId: ProjectSlice5,
                 data: {
-                    src_1: "/Assets/Viadomo/13.jpg",
-                    src_2: "/Assets/Viadomo/14.jpg",
-                    src_3: "/Assets/Viadomo/15.jpg",
+                    src_1: {
+                        src: "/Assets/Viadomo/13.jpg",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Viadomo/14.jpg",
+                        type: "image"
+                    },
+                    src_3: {
+                        src: "/Assets/Viadomo/15.jpg",
+                        type: "image"
+                    },
                 },
             },
             {
                 keyId: ProjectSlice6,
                 data: {
-                    src_1: "/Assets/Viadomo/16.jpg",
-                    src_2: "/Assets/Viadomo/17.jpg",
+                    src_1: {
+                        src: "/Assets/Viadomo/16.jpg",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Viadomo/17.jpg",
+                        type: "image"
+                    },
                 },
             },
             {
