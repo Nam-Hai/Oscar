@@ -64,10 +64,10 @@ onMounted(() => {
 })
 
 const projectCanvas = useProjectCanvas()
-onSwap(async () => {
-    if (isMobile.value) return
-    projectCanvas.addNextPageMedia(wrapperRef.value)
-})
+// onSwap(async () => {
+//     if (isMobile.value) return
+//     projectCanvas.addNextPageMedia(wrapperRef.value)
+// })
 
 const { isMobile } = useStore()
 const { mouseLag } = useStoreView()
