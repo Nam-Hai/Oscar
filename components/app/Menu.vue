@@ -1,34 +1,43 @@
 <template>
   <div class="menu__wrapper"
-    :class="{ dark: (router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info') && !atEnd, init, hide: menuHide }"
+    :class="{ dark: (router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info') && !atEnd, init: menuInit, hide: menuHide }"
     ref="wrapperRef">
     <div class="home">
       <NuxtLink to="/" @mouseenter="hoverMenu($event, 'home')" @mouseleave="leave()" v-cursor-hover>
-        <span ref="homeRef">
-          {{ "Oscar Pico" }}
+        <span ref="homeRef" class="overflow">
+          <span class="overflow-content">
+            {{ "Oscar Pico" }}
+          </span>
         </span>
       </NuxtLink>
     </div>
     <div class="menu-grid">
       <NuxtLink to="/info" :class="{ currentRoute: router.currentRoute.value.name == 'info' }" v-cursor-hover
         @mouseenter="hoverMenu($event, 'info')" @mouseleave="leave()">
-        <span ref="infoRef">
-          {{ "info" }}
+        <span ref="infoRef" class="overflow">
+          <span class="overflow-content">
+            {{ "info" }}
+          </span>
         </span>
       </NuxtLink>
       ,
       <NuxtLink to="/"
         :class="{ currentRoute: router.currentRoute.value.name === 'index' || router.currentRoute.value.name === 'project-page-id' }"
         v-cursor-hover @mouseenter="hoverMenu($event, 'projects')" @mouseleave="leave()">
-        <span ref="projectsRef">
-          {{ "Projects" }}
+
+        <span ref="projectsRef" class="overflow">
+          <span class="overflow-content">
+            {{ "Projects" }}
+          </span>
         </span>
       </NuxtLink>
       ,
       <NuxtLink to="/playground" :class="{ currentRoute: router.currentRoute.value.name == 'playground' }"
         v-cursor-hover @mouseenter="hoverMenu($event, 'playground')" @mouseleave="leave()">
-        <span ref="playgroundRef">
-          {{ "Playground" }}
+        <span ref="playgroundRef" class="overflow">
+          <span class="overflow-content">
+            {{ "Playground" }}
+          </span>
         </span>
       </NuxtLink>
     </div>
@@ -44,7 +53,7 @@ const router = useRouter()
 const { overhide, target } = useCursorStore()
 const { atEnd } = useStoreProject()
 // const { preloaderComplete } = useStore()
-const { manifestLoaded, menuHide } = useStore();
+const { manifestLoaded, menuHide, menuInit } = useStore();
 
 const wrapperRef = ref()
 const infoRef = ref() as Ref<HTMLElement>
@@ -77,7 +86,6 @@ function leave() {
   overhide.value = false
 }
 
-const init = ref(false)
 watch(manifestLoaded, b => {
   const content = N.getAll('.overflow-content', wrapperRef.value)
   const tl = useTL()
@@ -93,7 +101,6 @@ watch(manifestLoaded, b => {
       }
     })
   }
-  useDelay(6300, () => init.value = true)
   tl.play()
 })
 
@@ -102,8 +109,14 @@ watch(manifestLoaded, b => {
 <style lang="scss" scoped>
 @use "@/styles/shared.scss" as *;
 
+.overflow {
+  height: 100%;
+}
+
 .overflow-content {
   transform: translateY(-115%);
+
+  line-height: 100%;
 }
 
 svg.overflow-content {
@@ -120,6 +133,10 @@ a {
     transform: translateY(0) !important;
   }
 
+  .overflow-content {
+    transform: translateY(-100%);
+  }
+
   position: fixed;
   top: 0;
   left: 0;
@@ -134,7 +151,12 @@ a {
   display: flex;
   justify-content: space-between;
 
-  color: $white;
+  &.init {
+    color: $white;
+  }
+
+  color: transparent;
+  // color: red;
 
   &.dark {
     color: $black;

@@ -26,8 +26,8 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, reso
     tl.from({
         d: DURATION / 2,
         e: 'i2',
-        update: ({ progE }) => {
-            overlay.value.style.transform = `translateY(${N.Lerp(-100, -19, progE)}%)`
+        update: ({ progE, prog }) => {
+            overlay.value.style.transform = `translateY(${N.Lerp(-93, -19, progE)}%)`
             canvas.currentPage.node.position.y = -progE * 300 * scale.value * canvas.size.value.height / vh.value
         },
         cb: () => {

@@ -59,7 +59,7 @@ const flowProvider = useFlowProvider()
 const wrapperRef = ref()
 const counter = ref('00')
 
-const { preloaderComplete, fromPreloader } = useStore()
+const { preloaderComplete, fromPreloader, menuHide, menuInit } = useStore()
 const killPreloader = ref(false)
 const percentageRef = ref(0)
 const route = useRoute()
@@ -78,6 +78,7 @@ watch(preloaderComplete, async () => {
   canvas.onChange(to)
   canvas.resolveOnChange()
   await nextTick()
+  menuInit.value = true
 
 
   killPreloader.value = true
@@ -145,7 +146,7 @@ function endLoading() {
   width: 100%;
 
   color: $black;
-  background-color: $bg-white;
+  // background-color: $bg-white;
   z-index: 200;
 
   &.hide {
