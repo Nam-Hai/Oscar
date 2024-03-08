@@ -29,8 +29,8 @@
                 </div>
             </div>
 
-            <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
-                :style="{ transform: translate }">Next Project</div>
+            <!-- <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
+                :style="{ transform: translate }">Next Project</div> -->
         </div>
     </Teleport>
 </template>
@@ -69,10 +69,10 @@ const words = data.title.split(" ")
 //     projectCanvas.addNextPageMedia(wrapperRef.value)
 // })
 
-const { mouseLag } = useStoreView()
-const translate = computed(() => {
-    return `translate(calc(${mouseLag.value.x}px - 50%), ${mouseLag.value.y}px)`
-})
+// const { mouseLag } = useStoreView()
+// const translate = computed(() => {
+//     return `translate(calc(${mouseLag.value.x}px - 50%), ${mouseLag.value.y}px)`
+// })
 
 // onEnter({
 //     el: wrapperRef,
