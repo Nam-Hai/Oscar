@@ -142,10 +142,10 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                     },
                 },
             },
-            {
-                keyId: ProjectSliceNext,
-                data: {},
-            }
+            // {
+            //     keyId: ProjectSliceNext,
+            //     data: {},
+            // }
         ]
     },
     "avant-garden": {
