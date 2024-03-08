@@ -202,6 +202,7 @@ h1 {
             bottom: calc(1.6rem + env(safe-area-inset-bottom));
             right: 1.6rem;
             line-height: 100%;
+            font-size: 1.2rem;
 
             overflow: hidden;
 
