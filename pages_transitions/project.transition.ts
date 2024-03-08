@@ -132,7 +132,7 @@ export const defaultProjectFlowIn: FlowFunction<defaultTransitionProps> = ({ wra
         delay: DURATION / 2 + 100,
         e: "o2",
         update: ({ progE }) => {
-            mainImage.pixelScroll = N.Lerp(200, 0, progE)
+            // mainImage.pixelScroll = N.Lerp(200, 0, progE)
         }
     }).play()
     useDelay(DURATION / 2, () => {
@@ -323,7 +323,7 @@ export const projectProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: Pro
 }
 
 export const defaultProjectFlowOut: FlowFunction<ProjectFlowProps> = (props: ProjectFlowProps, resolve, provider) => {
-    defaultFlowOut(props, resolve, provider, { translate: false })
+    defaultFlowOut(props, resolve, provider, { translate: true })
 }
 export const projectFlowOutMap = new Map([
     ['default', defaultProjectFlowOut],

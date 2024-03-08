@@ -180,6 +180,10 @@ useRO(({ scale: s }) => {
         flex-direction: column;
         align-items: flex-end;
 
+        @include breakpoint(mobile) {
+            align-items: center;
+        }
+
         h2 {
             transition: transform 1000ms 50ms $easeInOutQuart;
             transform: translateY(3rem);
@@ -198,6 +202,7 @@ useRO(({ scale: s }) => {
 
             @include breakpoint(mobile) {
                 flex-direction: column;
+                padding-bottom: calc(0rem + env(safe-area-inset-bottom));
             }
 
             >span {
@@ -239,8 +244,9 @@ useRO(({ scale: s }) => {
             top: -0.5rem;
 
             @include breakpoint(mobile) {
+                right: 0rem;
                 justify-content: center !important;
-                font-size: 6.8rem;
+                font-size: 6.2rem;
                 font-weight: 500;
                 line-height: 90%;
                 letter-spacing: -0.068rem;

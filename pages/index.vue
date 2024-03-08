@@ -100,9 +100,20 @@ watch(breakpoint, async (b) => {
 
   const spans = N.getAll(".overflow-content", title)!
 
+  const tl = titleTls[i]
+
   for (const [index, char] of spans.entries()) {
-    (char as HTMLElement).style.transform = "translateY(0)"
+    const motion = tl.arr[index];
+    motion.v.el = [char];
+    // (char as HTMLElement).style.transform = "translateY(0)"
   }
+  tl.play({
+    d: 1000,
+    p: {
+      y: { newEnd: 0 }
+    },
+    delay: 0
+  })
 })
 function titleAnimations(i: number, old: number) {
   const tl = titleTls[i]
@@ -298,4 +309,3 @@ span.overflow {
   justify-content: center;
 }
 </style>
-

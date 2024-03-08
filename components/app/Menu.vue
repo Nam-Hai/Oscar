@@ -25,8 +25,8 @@
         </span>
       </NuxtLink>
       ,
-      <NuxtLink to="/playground" :class="{ currentRoute: router.currentRoute.value.name == 'playground' }" v-cursor-hover
-        @mouseenter="hoverMenu($event, 'playground')" @mouseleave="leave()">
+      <NuxtLink to="/playground" :class="{ currentRoute: router.currentRoute.value.name == 'playground' }"
+        v-cursor-hover @mouseenter="hoverMenu($event, 'playground')" @mouseleave="leave()">
         <span ref="playgroundRef">
           {{ "Playground" }}
         </span>
@@ -149,6 +149,7 @@ a {
   }
 
   &.hide {
+    pointer-events: none;
     opacity: 0;
   }
 
@@ -173,8 +174,10 @@ a {
       transition: color 250ms;
     }
 
-    a:hover {
-      color: transparent;
+    @media (hover: hover) and (pointer: fine) {
+      a:hover {
+        color: transparent;
+      }
     }
 
     a.currentRoute {
