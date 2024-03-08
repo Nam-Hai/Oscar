@@ -17,7 +17,7 @@
             </div>
             <div class="lower-container">
                 <p ref="lowerDesRef">
-                    {{ COPY.description }}
+                    {{ COPY.description + DEBUG_SCROLL }}
                 </p>
 
                 <div class="project__main-image__next-placeholder" :data-src="COPY.main_image.src_2">
@@ -55,9 +55,12 @@ const lowerDesRef = ref() as Ref<HTMLElement>
 
 const titleWrapperRef = ref() as Ref<HTMLElement>
 let scale = 1
+
+const DEBUG_SCROLL = ref(0)
 useLenisScroll((e) => {
     const size = 800
     const s = N.Clamp(e.animatedScroll, 0, size);
+    DEBUG_SCROLL.value = e.animatedScroll
 
     const ease = secondScrollEase(s / size)
     scale = N.Lerp(1, 0.6, ease)
