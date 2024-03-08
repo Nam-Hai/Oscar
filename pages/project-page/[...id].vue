@@ -60,6 +60,7 @@ onLeave(() => {
 
 const clipPercentage = ref(0)
 useLenisScroll((e) => {
+  return 0
   const lenis = useLenis()
   const mainImage = useCanvasMainImageProject()
   if (!mainImage) return
