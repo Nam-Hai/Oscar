@@ -8,9 +8,9 @@
             :style="{ backgroundImage: isMobile ? `url(${dataSrc})` : 'unset' }">
             <div class="next-project-container">
 
-                <h1 ref="titleRef">DEBUG</h1>
 
-                <!-- <NuxtLink :to="data.link"> -->
+                <NuxtLink :to="data.link">
+                    <h1 ref="titleRef">DEBUG</h1>
                     <!-- <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false"> -->
                     <!-- {{ "words : " + words + " words[0] : " + words[0] + " data.title : " + data.title }} -->
                     <!-- <span v-for="(word, index) in words" class="overflow">
@@ -19,7 +19,7 @@
                             </span>
                         </span> -->
                     <!-- </h1> -->
-                <!-- </NuxtLink> -->
+                </NuxtLink>
 
                 <div class="flavor">
                     <div class="flavor-main overflow">
