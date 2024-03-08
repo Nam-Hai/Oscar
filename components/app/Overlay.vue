@@ -52,6 +52,7 @@ flowProvider.addProps("overlayTest", overlayRef)
     align-items: center;
     height: var(--100vh);
     width: 100vw;
+    font-weight: 500;
 
     color: black;
     text-transform: uppercase;
