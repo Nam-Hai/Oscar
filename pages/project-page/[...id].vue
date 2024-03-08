@@ -8,10 +8,10 @@
         </div>
       </div>
     </Teleport>
-    {{ clipPercentage }}
+
     <Landing :id="id" />
     TEST
-    <component v-for="(slice, index) of COPY.slice" :is="slice.keyId" :data="slice" :key="'project-slice-' + index" />
+    <!-- <component v-for="(slice, index) of COPY.slice" :is="slice.keyId" :data="slice" :key="'project-slice-' + index" /> -->
   </main>
 </template>
 
