@@ -1,5 +1,6 @@
 <template>
     <div class="container-2">
+        2
         <div class="data-img" :data-src="data.data.src_1.src" ref="elRef1">
             <img :src="data.data.src_1.src" alt="project_image_2_1"
                 v-if="isMobile && data.data.src_1.type === 'image'" />

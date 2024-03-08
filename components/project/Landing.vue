@@ -118,6 +118,7 @@ useRO(({ scale: s }) => {
     height: 100vh;
     width: 100%;
 
+    color: red;
     position: relative;
 
     @include breakpoint(mobile) {

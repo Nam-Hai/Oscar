@@ -218,5 +218,9 @@ function endLoading() {
   bottom: 4rem;
   font-size: 1.4rem;
   opacity: 0.25;
+
+  @include breakpoint(mobile) {
+    bottom: 5rem;
+  }
 }
 </style>

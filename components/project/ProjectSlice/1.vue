@@ -1,11 +1,12 @@
 <template>
     <div class="project-slice-1__wrapper">
+        1
         <div class="data-img" :data-src="data.data.src_1.src" ref="elRef1">
             <img :src="data.data.src_1.src" alt="project_image_1_1"
                 v-if="isMobile && data.data.src_1.type === 'image'" />
 
-            <video v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline disableremoteplayback="true"
-                muted loop autoplay>
+            <video v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline disableremoteplayback="true" muted
+                loop autoplay>
                 <source :src="data.data.src_1.src" :type="data.data.src_1.type">
             </video>
 
@@ -14,8 +15,8 @@
             <img :src="data.data.src_2.src" alt="project_image_1_2"
                 v-if="isMobile && data.data.src_2.type === 'image'" />
 
-            <video v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline disableremoteplayback="true"
-                muted loop autoplay>
+            <video v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline disableremoteplayback="true" muted
+                loop autoplay>
                 <source :src="data.data.src_2.src" :type="data.data.src_2.type">
             </video>
         </div>
