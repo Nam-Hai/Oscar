@@ -13,7 +13,7 @@
                     <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
                         <span v-for="(word, index) in words" class="overflow">
                             <span v-for="index in word.length" class="overflow-content">
-                                {{ index }}
+                                {{ word[index - 1] }}
                             </span>
                         </span>
                     </h1>
