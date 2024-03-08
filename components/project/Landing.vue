@@ -59,6 +59,7 @@ let scale = 1
 // DEBUG
 const DEBUG_SCROLL = ref(0)
 useLenisScroll((e) => {
+    if(breakpoint.value === "mobile") return
     const size = 800
     const s = N.Clamp(e.animatedScroll, 0, size);
     DEBUG_SCROLL.value = e.animatedScroll
