@@ -12,10 +12,9 @@
 
                     <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
                         <span v-for="(word, index) in words" class="overflow">
-                            {{ word[0] }}
-                            <!-- <span v-for="char in word" class="overflow-content">
-                                {{ char }}
-                            </span> -->
+                            <span v-for="index in word.length" class="overflow-content">
+                                {{ index }}
+                            </span>
                         </span>
                     </h1>
                 </div>
