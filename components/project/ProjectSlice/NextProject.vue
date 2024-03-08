@@ -5,7 +5,7 @@
             <div class="next-project-container">
                 <NuxtLink :to="data.link">
                     <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
-                        {{ "words : " + words + " words[0] : " + words[0] + " data.title : " + data.title }}
+                        <!-- {{ "words : " + words + " words[0] : " + words[0] + " data.title : " + data.title }} -->
                         <!-- <span v-for="(word, index) in words" class="overflow">
                             <span v-for="char in word.split('')" class="overflow-content">
                                 {{ char }}
