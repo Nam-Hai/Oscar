@@ -127,7 +127,6 @@ h1 {
         width: 25rem;
         // height: 20rem;
         // pointer-events: none;
-        // background-color: #E5E5E5;
 
         &:nth-child(2n) {
             align-self: flex-end;
@@ -218,7 +217,6 @@ h1 {
     position: absolute;
     top: 2.6rem;
     left: 0;
-    // background-color: bisque;
     max-height: 100%;
     pointer-events: none;
     opacity: 0;

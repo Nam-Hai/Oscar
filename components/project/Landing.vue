@@ -298,7 +298,6 @@ useRO(({ scale: s }) => {
         .project__main-image__next-placeholder {
             height: 100%;
             width: 54.6rem;
-            // background-color: rgba(255, 0, 0, 0.189);
             border-radius: 4px;
 
             @include breakpoint(mobile) {
@@ -324,7 +323,6 @@ useRO(({ scale: s }) => {
     // min-width: 268px;
     // max-width: 300px;
 
-    // background-color: rgba(128, 128, 128, 0.224);
     position: absolute;
     top: calc(50vh - 5rem);
     left: 50%;

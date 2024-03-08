@@ -146,7 +146,6 @@ function endLoading() {
   width: 100%;
 
   color: $black;
-  // background-color: $bg-white;
   z-index: 200;
 
   &.hide {
@@ -165,7 +164,6 @@ function endLoading() {
 
     width: 26.8rem;
     height: 24rem;
-    // background-color: $placeholder-grey;
     // border-radius: 0.4rem;
   }
 

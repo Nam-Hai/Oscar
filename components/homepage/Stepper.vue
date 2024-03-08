@@ -78,7 +78,6 @@ onLeave(() => {
       border: 1px solid $white;
       border-left-width: 0px;
       width: 0px;
-      // background-color: $white;
       transform-origin: bottom;
       transition: width 500ms $easeOutQuart, border-left-width 100ms 400ms $easeInQuart;
 

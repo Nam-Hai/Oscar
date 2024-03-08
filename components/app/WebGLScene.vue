@@ -41,7 +41,6 @@ const router = useRouter()
   }
 
   canvas {
-    // background-color: white;
     position: fixed;
     top: 0;
     left: 0;
