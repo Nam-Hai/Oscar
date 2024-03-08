@@ -59,11 +59,11 @@ export class ProjectCanvas extends CanvasPage {
 	}
 
 	mount() {
-		if (!isMobile.value) {
+		// if (!isMobile.value) {
 
-			const picker = new Picker(this.gl, { renderTargetRatio: 5 });
-			picker.add(this);
-		}
+		const picker = new Picker(this.gl, { renderTargetRatio: 5 });
+		picker.add(this);
+		// }
 
 		this.add(new MainImage(this.gl, {}));
 	}
