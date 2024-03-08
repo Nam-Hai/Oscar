@@ -71,7 +71,7 @@ useLenisScroll((e) => {
         N.T(lowerDesRef.value, 0, e.animatedScroll, 'px');
     }
     landingHeaderScale.value = scale
-    titleWrapperRef.value.style.transform = `translateY(${e.animatedScroll}px) scale(${scale}) `
+    titleWrapperRef.value.style.transform = `translate3d(0px, ${e.animatedScroll}px, 0px) scale(${scale})`
 })
 
 onFlow(async () => {
