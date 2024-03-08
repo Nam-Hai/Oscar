@@ -129,23 +129,23 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                     },
                 },
             },
-            {
-                keyId: ProjectSlice6,
-                data: {
-                    src_1: {
-                        src: "/Assets/Viadomo/16.jpg",
-                        type: "image"
-                    },
-                    src_2: {
-                        src: "/Assets/Viadomo/17.jpg",
-                        type: "image"
-                    },
-                },
-            },
-            {
-                keyId: ProjectSliceNext,
-                data: {},
-            }
+        //     {
+        //         keyId: ProjectSlice6,
+        //         data: {
+        //             src_1: {
+        //                 src: "/Assets/Viadomo/16.jpg",
+        //                 type: "image"
+        //             },
+        //             src_2: {
+        //                 src: "/Assets/Viadomo/17.jpg",
+        //                 type: "image"
+        //             },
+        //         },
+        //     },
+        //     {
+        //         keyId: ProjectSliceNext,
+        //         data: {},
+        //     }
         ]
     },
     "avant-garden": {
