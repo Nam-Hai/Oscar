@@ -9,17 +9,19 @@
             <div class="next-project-container">
 
 
-                <NuxtLink :to="data.link">
+                <!-- <NuxtLink :to="data.link"> -->
+                <div class="link" @click="navigateTo(data.link)">
                     <h1 ref="titleRef">DEBUG</h1>
-                    <!-- <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false"> -->
-                    <!-- {{ "words : " + words + " words[0] : " + words[0] + " data.title : " + data.title }} -->
-                    <!-- <span v-for="(word, index) in words" class="overflow">
+                </div>
+                <!-- <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false"> -->
+                <!-- {{ "words : " + words + " words[0] : " + words[0] + " data.title : " + data.title }} -->
+                <!-- <span v-for="(word, index) in words" class="overflow">
                             <span v-for="char in word.split('')" class="overflow-content">
                                 {{ char }}
                             </span>
                         </span> -->
-                    <!-- </h1> -->
-                </NuxtLink>
+                <!-- </h1> -->
+                <!-- </NuxtLink> -->
 
                 <div class="flavor">
                     <div class="flavor-main overflow">
@@ -219,7 +221,7 @@ onLeave(() => {
     }
 }
 
-a {
+a, .link {
     margin-top: 4rem;
 }
 
