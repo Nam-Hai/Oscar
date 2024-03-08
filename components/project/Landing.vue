@@ -56,6 +56,7 @@ const lowerDesRef = ref() as Ref<HTMLElement>
 const titleWrapperRef = ref() as Ref<HTMLElement>
 let scale = 1
 
+// DEBUG
 const DEBUG_SCROLL = ref(0)
 useLenisScroll((e) => {
     const size = 800
