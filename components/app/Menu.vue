@@ -158,7 +158,7 @@ a {
   color: transparent;
   // color: red;
 
-  &.dark {
+  &.dark.init {
     color: $black;
 
     a:before {
