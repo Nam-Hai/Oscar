@@ -72,9 +72,9 @@ export class PreloaderCanvas extends CanvasPage {
   }
 
   async preloaderAnimation() {
-    useStore().preloaderComplete.value = true;
-    this.destroy();
-    return false;
+    // useStore().preloaderComplete.value = true;
+    // this.destroy();
+    // return false;
     // DEBUG, skip preloader animation
 
     const provider = useFlowProvider()
