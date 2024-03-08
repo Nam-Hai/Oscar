@@ -11,7 +11,7 @@
       </Preloader>
     </div>
 
-    <div class="over-webGL">
+    <div id="over-webGL">
     </div>
   </div>
 </template>
@@ -54,7 +54,7 @@ flowProvider.registerScrollInterface({
 <style lang="scss" scoped>
 @use "@/styles/shared.scss" as *;
 
-.over-webGL {
+#over-webGL {
   position: relative;
   z-index: 12;
 }

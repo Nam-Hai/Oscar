@@ -1,6 +1,7 @@
 <template>
-    <Teleport to=".over-webGL">
-        <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc">
+    <Teleport to="#over-webGL" :disabled="isMobile">
+        <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc"
+            :style="{ backgroundImage: isMobile ? `url(${dataSrc})` : 'unset' }">
             <div class="next-project-container">
                 <NuxtLink :to="data.link">
                     <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
@@ -28,14 +29,15 @@
                 </div>
             </div>
 
-            <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }" :style="{ transform: translate }">Next Project</div>
+            <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
+                :style="{ transform: translate }">Next Project</div>
         </div>
     </Teleport>
 </template>
 
 <script lang="ts" setup>
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
-  import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
+import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 
 const { } = defineProps<{ data: {} }>()
@@ -63,6 +65,7 @@ onMounted(() => {
 
 const projectCanvas = useProjectCanvas()
 onSwap(async () => {
+    if (isMobile.value) return
     projectCanvas.addNextPageMedia(wrapperRef.value)
 })
 
@@ -76,6 +79,7 @@ onEnter({
     el: wrapperRef,
     eStart: 66,
     enterCb: () => {
+        console.log('enter');
         titleAnimations()
     },
     leaveCb: () => {
@@ -144,6 +148,9 @@ onLeave(() => {
     color: $white;
     clip-path: inset(0 0 0 0);
 
+    background-position: center;
+    background-size: cover;
+
     &:hover {
         .next {
             opacity: 1;
@@ -170,6 +177,9 @@ onLeave(() => {
     font-size: 1.3rem;
     padding-left: 50vw;
     width: 100%;
+
+    display: flex;
+    flex-direction: column;
 
     @include breakpoint(mobile) {
         padding-left: calc(50vw - 3rem);
@@ -270,4 +280,3 @@ h1 {
     }
 }
 </style>
-
