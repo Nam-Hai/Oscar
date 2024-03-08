@@ -237,8 +237,12 @@ main {
     }
 
     @include breakpoint(mobile) {
+      span.overflow {
+        margin-bottom: -1rem;
+      }
+
       width: 20.3rem;
-      line-height: 1.5rem;
+      line-height: 2rem;
       margin-bottom: 2.8rem;
     }
   }

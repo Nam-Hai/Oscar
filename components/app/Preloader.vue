@@ -179,7 +179,7 @@ function endLoading() {
 
     @include breakpoint(mobile) {
       left: 50%;
-      top: 2.4rem;
+      top: calc(2.4rem + env(safe-area-inset-top));
       transform: translateX(-50%);
     }
   }
@@ -200,7 +200,7 @@ function endLoading() {
       left: 50%;
       top: unset;
       right: unset;
-      bottom: 2.4rem;
+      bottom: calc(2.4rem + env(safe-area-inset-bottom));
       transform: translateX(-50%);
     }
   }
