@@ -51,6 +51,7 @@ onFlow(async () => {
     height: 48rem;
     margin: 22.4rem auto;
     // background-color: $placeholder-grey;
+    background-color: red;
 
     @include breakpoint(mobile) {
         width: 34.3rem;
