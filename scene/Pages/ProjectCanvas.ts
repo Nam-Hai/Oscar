@@ -16,6 +16,7 @@ import { StaticMedia } from "../Components/Project/StaticMedia";
 export const [provideProjectCanvas, useProjectCanvas] =
 	canvasInject<ProjectCanvas>("canvas-project-canvas");
 
+const { isMobile } = useStore()
 export class ProjectCanvas extends CanvasPage {
 	ro: ROR;
 	raf: RafR;
@@ -58,23 +59,26 @@ export class ProjectCanvas extends CanvasPage {
 	}
 
 	mount() {
-		const picker = new Picker(this.gl, { renderTargetRatio: 5 });
-		picker.add(this);
+		if (!isMobile.value) {
+
+			const picker = new Picker(this.gl, { renderTargetRatio: 5 });
+			picker.add(this);
+		}
 
 		this.add(new MainImage(this.gl, {}));
 	}
 
-  // Media with deform
+	// Media with deform
 	addMedia(el: HTMLElement, parallaxForce = 0) {
-		this.add(new Media(this.gl, { el, parallaxForce}));
+		this.add(new Media(this.gl, { el, parallaxForce }));
 	}
 
-  // Next Section
+	// Next Section
 	addNextPageMedia(el: HTMLElement) {
 		this.add(new StaticMedia(this.gl, { el }));
 	}
 
-	resize({ vh, vw, scale, breakpoint }: ResizeEvent) {}
+	resize({ vh, vw, scale, breakpoint }: ResizeEvent) { }
 
 	render(e: rafEvent) {
 		this.renderer.render({
