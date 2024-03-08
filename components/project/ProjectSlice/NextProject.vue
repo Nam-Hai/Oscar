@@ -1,8 +1,4 @@
 <template>
-    <div class="debug" style="font-size: 4rem; line-height: 4rem;">
-        {{ data.flavorMain + " ============ " + data.link }}
-        test
-    </div>
     <Teleport to="#over-webGL" :disabled="isMobile">
         <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc"
             :style="{ backgroundImage: isMobile ? `url(${dataSrc})` : 'unset' }">
@@ -11,9 +7,8 @@
 
                 <div class="link" @click="navigateTo(data.link)">
                     <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
-                        {{ "words : " + words + " words[0] : " + words[0] + " data.title : " + data.title }}
                         <span v-for="(word, index) in words" class="overflow">
-                            <span v-for="char in word.split('')" class="overflow-content">
+                            <span v-for="char in word" class="overflow-content">
                                 {{ char }}
                             </span>
                         </span>
@@ -59,7 +54,7 @@ const dataSrc = Object.keys(useManifest().textures.home)[nextIndex]
 const data = homeStore[nextIndex]
 
 const hover = ref(false)
-const words = data.title.split(" ")
+const words = data.title.split(" ").map((word) => word.split(""))
 
 const flavorMainRef = ref()
 const flavorSubRef = ref()
