@@ -6,17 +6,18 @@
 
 
                 <div class="link" @click="navigateTo(data.link)">
-                    <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
-                        test
-                    </h1>
-
                     <!-- <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
-                        <span v-for="(word, index) in words" class="overflow">
+                        test
+                    </h1> -->
+
+                    <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
+                        {{ words[0][0] }}
+                        <!-- <span v-for="(word, index) in words" class="overflow">
                             <span v-for="char in word" class="overflow-content">
                                 {{ char }}
                             </span>
-                        </span>
-                    </h1> -->
+                        </span> -->
+                    </h1>
                 </div>
 
                 <div class="flavor">
