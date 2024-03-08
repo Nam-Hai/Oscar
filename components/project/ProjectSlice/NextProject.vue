@@ -1,6 +1,6 @@
 <template>
     <div class="debug" style="font-size: 4rem; line-height: 4rem;">
-        {{ data.flavorMain }}
+        {{ data.flavorMain + " ============ " + data.link }}
         test
     </div>
     <Teleport to="#over-webGL" :disabled="isMobile">
