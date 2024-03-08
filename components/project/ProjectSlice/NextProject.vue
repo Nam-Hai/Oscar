@@ -40,7 +40,7 @@ import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
 import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 
-const { } = defineProps<{ data: {} }>()
+const { data: props } = defineProps<{ data: ISlice }>()
 const { currentIndex, length, nextPageTitleRef } = useStoreProject()
 const nextIndex = (currentIndex.value + 1) % length
 const dataSrc = Object.keys(useManifest().textures.home)[nextIndex]

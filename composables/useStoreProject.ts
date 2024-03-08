@@ -144,7 +144,12 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             },
             {
                 keyId: ProjectSliceNext,
-                data: {},
+                data: {
+                    src_1: {
+                        src: "/Assets/Home/2.jpg",
+                        type: "image"
+                    }
+                },
             }
         ]
     },

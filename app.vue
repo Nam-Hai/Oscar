@@ -43,7 +43,7 @@ if (matcher.matches) {
 
 let waitBeforeMount = ref(false)
 
-onMounted(() => {
+onBeforeMount(() => {
   useStoreView().init()
 
   const m = window.matchMedia('(pointer: coarse)').matches
