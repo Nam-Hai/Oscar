@@ -1,8 +1,10 @@
+import { onFlow } from "~/waterflow/composables/onFlow"
+
 export const useLenisScroll = (callback: (e: any) => void) => {
   const $lenis = useStoreView().lenis
 
   const onScrollSubscription = ref()
-  onMounted(() => {
+  onFlow(() => {
     onScrollSubscription.value = $lenis.value.on('scroll', callback)
   })
   onBeforeUnmount(() => {

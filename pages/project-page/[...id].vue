@@ -109,7 +109,6 @@ usePageFlow({
   width: 100vw;
   color: $black;
 
-  background: #00F;
   // overflow: hidden;
 }
 

@@ -41,7 +41,6 @@ export default class Canvas {
 		});
 		this.gl = this.renderer.gl;
 		this.gl.clearColor(0.969, 0.961, 0.949, 0);
-		this.gl.clearColor(1, 0, 0, 0);
 
 
 		this.dom = this.gl.canvas;

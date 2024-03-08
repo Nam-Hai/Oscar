@@ -64,7 +64,7 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
             )
 
             if (!mainImage) return
-            transitionNode.node.position.y = e.progE * (y - vh.value / 2) * canvas.size.value.height / vh.value
+            // transitionNode.node.position.y = e.progE * (y - vh.value / 2) * canvas.size.value.height / vh.value
         }
     }).from({
         d: 300,
