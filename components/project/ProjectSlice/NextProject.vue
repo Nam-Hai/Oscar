@@ -1,17 +1,20 @@
 <template>
+    <div class="debug" style="font-size: 4rem; line-height: 4rem;">
+        {{ data }}
+    </div>
     <Teleport to="#over-webGL" :disabled="isMobile">
         <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc"
             :style="{ backgroundImage: isMobile ? `url(${dataSrc})` : 'unset' }">
             <div class="next-project-container">
                 <NuxtLink :to="data.link">
-                    <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
-                        <!-- {{ "words : " + words + " words[0] : " + words[0] + " data.title : " + data.title }} -->
-                        <!-- <span v-for="(word, index) in words" class="overflow">
+                    <!-- <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false"> -->
+                    <!-- {{ "words : " + words + " words[0] : " + words[0] + " data.title : " + data.title }} -->
+                    <!-- <span v-for="(word, index) in words" class="overflow">
                             <span v-for="char in word.split('')" class="overflow-content">
                                 {{ char }}
                             </span>
                         </span> -->
-                    </h1>
+                    <!-- </h1> -->
                 </NuxtLink>
 
                 <div class="flavor">
