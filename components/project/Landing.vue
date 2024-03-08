@@ -159,10 +159,10 @@ useRO(({ scale: s }) => {
         }
 
         .title__wrapper {
+            position: relative;
             transform-origin: top right;
 
             @include breakpoint(mobile) {
-                // prevent pin zoom
                 transform: translate(0) !important;
             }
 
@@ -286,6 +286,7 @@ useRO(({ scale: s }) => {
             // font-weight: 400;
             line-height: 2.7rem;
             letter-spacing: -.024rem;
+            position: relative;
 
             @include breakpoint(mobile) {
                 width: 100%;
