@@ -36,8 +36,8 @@
 </template>
 
 <script lang="ts" setup>
-// import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
-// import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
+import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
+import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
 import { vCursorHover } from '~/directives/cursorActive';
 
 const { data: props } = defineProps<{ data: ISlice }>()
@@ -55,81 +55,81 @@ const data = homeStore[nextIndex]
 const hover = ref(false)
 const words = data.title.split(" ")
 
-// const flavorMainRef = ref()
-// const flavorSubRef = ref()
-// const wrapperRef = ref() as Ref<HTMLElement>
+const flavorMainRef = ref()
+const flavorSubRef = ref()
+const wrapperRef = ref() as Ref<HTMLElement>
 
-// const titleRef = ref()
-// const tl = useTL()
-// onMounted(() => {
-//     nextPageTitleRef.value = titleRef.value
-// })
+const titleRef = ref()
+const tl = useTL()
+onMounted(() => {
+    nextPageTitleRef.value = titleRef.value
+})
 
-// const projectCanvas = useProjectCanvas()
-// onSwap(async () => {
-//     if (isMobile.value) return
-//     projectCanvas.addNextPageMedia(wrapperRef.value)
-// })
+const projectCanvas = useProjectCanvas()
+onSwap(async () => {
+    if (isMobile.value) return
+    projectCanvas.addNextPageMedia(wrapperRef.value)
+})
 
 const { mouseLag } = useStoreView()
 const translate = computed(() => {
     return `translate(calc(${mouseLag.value.x}px - 50%), ${mouseLag.value.y}px)`
 })
 
-// onEnter({
-//     el: wrapperRef,
-//     eStart: 66,
-//     enterCb: () => {
-//         titleAnimations()
-//     },
-//     leaveCb: () => {
-//         for (let i = 0; i < tl.arr.length; i++) {
-//             const motion = tl.arr[i]
-//             motion.play({
-//                 d: 1000,
-//                 p: {
-//                     y: { newEnd: 100 }
-//                 },
-//                 delay: 0
-//             })
-//         }
-//     }
-// })
+onEnter({
+    el: wrapperRef,
+    eStart: 66,
+    enterCb: () => {
+        titleAnimations()
+    },
+    leaveCb: () => {
+        for (let i = 0; i < tl.arr.length; i++) {
+            const motion = tl.arr[i]
+            motion.play({
+                d: 1000,
+                p: {
+                    y: { newEnd: 100 }
+                },
+                delay: 0
+            })
+        }
+    }
+})
 
-// function titleAnimations() {
-//     tl.reset()
-//     const title = titleRef.value
+function titleAnimations() {
+    tl.reset()
+    const title = titleRef.value
 
-//     const subs = N.getAll(".overflow-content", flavorSubRef.value)!
-//     const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value, ...subs]
+    const subs = N.getAll(".overflow-content", flavorSubRef.value)!
+    const spans = [...N.getAll(".overflow-content", title)!, flavorMainRef.value, ...subs]
 
-//     for (const [index, char] of spans.entries()) {
-//         tl.from({
-//             el: char,
-//             d: 1000,
-//             delay: 30 * index,
-//             e: 'o4',
-//             p: {
-//                 y: [-100, 0]
-//             }
-//         })
-//     }
-//     tl.play()
-// }
+    for (const [index, char] of spans.entries()) {
+        tl.from({
+            el: char,
+            d: 1000,
+            delay: 30 * index,
+            e: 'o4',
+            p: {
+                y: [-100, 0]
+            }
+        })
+    }
+    tl.play()
+}
 
-// onLeave(() => {
-//     for (let i = tl.arr.length - 4; i < tl.arr.length; i++) {
-//         const motion = tl.arr[i]
-//         if (!motion) return
-//         motion.play({
-//             d: 1000,
-//             p: {
-//                 y: { newEnd: 100 }
-//             },
-//             delay: 0
-//         })
-//     }
-// })
+onLeave(() => {
+    for (let i = tl.arr.length - 4; i < tl.arr.length; i++) {
+        const motion = tl.arr[i]
+        if (!motion) return
+        motion.play({
+            d: 1000,
+            p: {
+                y: { newEnd: 100 }
+            },
+            delay: 0
+        })
+    }
+})
 </script>
 
 <style lang="scss" scoped>
