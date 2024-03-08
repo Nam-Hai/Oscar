@@ -9,7 +9,7 @@
       </div>
     </Teleport> -->
 
-    <!-- <Landing :id="id" /> -->
+    <Landing :id="id" />
     <component v-for="(slice, index) of COPY.slice" :is="slice.keyId" :data="slice" :key="'project-slice-' + index" />
   </main>
 </template>
@@ -59,7 +59,6 @@ onLeave(() => {
 
 const clipPercentage = ref(0)
 useLenisScroll((e) => {
-  // return 0
   const lenis = useLenis()
   const mainImage = useCanvasMainImageProject()
   if (!mainImage) return
