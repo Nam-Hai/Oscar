@@ -134,6 +134,8 @@ onLeave(() => {
 .next-project__wrapper {
     // teleport to .over-webGL with position: relative
     position: absolute;
+
+    position: relative;
     top: 0;
     // background-color: white;
     height: 100vh;
