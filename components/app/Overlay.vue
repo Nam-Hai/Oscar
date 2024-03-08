@@ -3,7 +3,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 7.75" ref="wrapperRef" preserveAspectRatio="none">
             <path d="M 0 0 C 6 1 8 1 14 0 L 14 7 C 8 8 6 8 0 7 L 0 0" fill="currentColor"></path>
         </svg>
-        <div class="test" ref="overlayRef">Oscar Pico</div>
+        <div class="overlay__text" ref="overlayRef">Oscar Pico</div>
     </div>
 </template>
 
@@ -43,14 +43,14 @@ flowProvider.addProps("overlayTest", overlayRef)
     }
 }
 
-.test {
+.overlay__text {
     clip-path: inset(0 0 100% 0);
     position: fixed;
     top: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: var(--100vh);
     width: 100vw;
 
     color: black;
