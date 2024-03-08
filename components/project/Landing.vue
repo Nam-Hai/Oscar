@@ -75,8 +75,8 @@ useLenisScroll((e) => {
     titleWrapperRef.value.style.transform = `translate3d(0px, ${e.animatedScroll}px, 0px) scale(${scale})`
 })
 
-onFlow(async () => {
-    await nextTick()
+onMounted(() => {
+    // await nextTick()
     const el = N.get('.project__main-image', wrapperRef.value) as HTMLElement
     const next__el = N.get('.project__main-image__next-placeholder', wrapperRef.value) as HTMLElement
     const mainImage = useCanvasMainImageProject()
