@@ -12,7 +12,7 @@
                         </span>
                     </span>
                 </h1>
-                <h2>{{ COPY.type }}</h2>
+                <h2 :style="{color: isMobile ? 'red' : ''}">{{ COPY.type }}</h2>
                 <h2>{{ COPY.date }}</h2>
             </div>
             <div class="lower-container">
@@ -39,6 +39,7 @@ import { secondScrollEase } from "~/scene/Components/Project/MainImage"
 const { id } = defineProps<{ id: string }>()
 
 const { copy, landingHeaderScale } = useStoreProject()
+const { isMobile } = useStore()
 const { breakpoint, vw } = useStoreView()
 
 const fs = useCanvasMainImageProject().firstScroll
