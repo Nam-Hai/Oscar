@@ -199,7 +199,6 @@ export class PlaygroundMedia extends CanvasNode {
             }),
         })
         this.fixedMesh.renderOrder = -5400
-
         this.fixedMesh.setParent(this.node)
 
     }

@@ -16,6 +16,7 @@ export default defineNuxtConfig({
             "~/components/app/",
             "~/components/homepage/",
             "~/components/project/",
+            "~/components/playground/",
         ],
     },
 

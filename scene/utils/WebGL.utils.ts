@@ -56,6 +56,10 @@ export class EventHandler {
     remove(id: number) {
         this.cbs.delete(id)
     }
+
+    kill(){
+        this.cbs = new Map()
+    }
 }
 
 export class EventEmitter<T> {

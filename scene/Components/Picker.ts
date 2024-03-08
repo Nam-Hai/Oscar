@@ -44,14 +44,18 @@ export class Picker extends CanvasNode {
             // this.needUpdate.hover = true
             this.needUpdate.on = true
         }
-        document.addEventListener('click', click)
+        document.addEventListener('mouseup', click)
+        // document.addEventListener('touchend', click)
 
         this.onDestroy(() => {
-            document.removeEventListener('click', click)
+            document.removeEventListener('mouseup', click)
+            // document.addEventListener('touchend', click)
         })
 
         this.clickHandler = new EventHandler()
         this.hoverHandler = new EventHandler()
+        this.onDestroy(this.hoverHandler.kill.bind(this))
+        this.onDestroy(this.clickHandler.kill.bind(this))
 
         this.onDestroy(providePicker(this))
     }
