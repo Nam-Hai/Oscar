@@ -1,7 +1,7 @@
 <template>
     <h1>
         playground
-        (24)
+        ({{ copy.length }})
     </h1>
 
     <div class="fixed-media__container">

@@ -5,7 +5,7 @@
     </div>
     <h1>
         playground
-        (24)
+        ({{ copy.length }})
     </h1>
     <div class="placeholder__fixed-media__container">
         <div class="placeholder__fixed-media" v-for="( { src, ratio, height, width }, index) in copy" :data-src="src"
