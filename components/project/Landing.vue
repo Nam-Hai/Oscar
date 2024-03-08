@@ -64,10 +64,10 @@ useLenisScroll((e) => {
 
     if (breakpoint.value === "desktop") {
         titleWidth.value = `calc(100vw - 2.8rem - ${neutralGap * ease / 10}rem)`
+        N.T(lowerDesRef.value, 0, e.animatedScroll, 'px');
     }
     landingHeaderScale.value = scale
     titleWrapperRef.value.style.transform = `translateY(${e.animatedScroll}px) scale(${scale}) `
-    N.T(lowerDesRef.value, 0, e.animatedScroll, 'px');
 })
 
 onFlow(async () => {
