@@ -2,7 +2,7 @@
     <Teleport to="#over-webGL" :disabled="isMobile">
         <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc"
             :style="{ backgroundImage: isMobile ? `url(${dataSrc})` : 'unset' }">
-            <!-- <div class="next-project-container">
+            <div class="next-project-container">
                 <NuxtLink :to="data.link">
                     <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
                         <span v-for="(word, index) in words" class="overflow">
@@ -30,7 +30,7 @@
             </div>
 
             <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
-                :style="{ transform: translate }">Next Project</div> -->
+                :style="{ transform: translate }">Next Project</div>
         </div>
     </Teleport>
 </template>
@@ -38,20 +38,20 @@
 <script lang="ts" setup>
 // import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
 // import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
-// import { vCursorHover } from '~/directives/cursorActive';
+import { vCursorHover } from '~/directives/cursorActive';
 
 const { data: props } = defineProps<{ data: ISlice }>()
 const { currentIndex, length, nextPageTitleRef } = useStoreProject()
 const nextIndex = (currentIndex.value + 1) % length
 const dataSrc = Object.keys(useManifest().textures.home)[nextIndex]
 
-// const { pickerDark } = useCursorStore()
+const { pickerDark } = useCursorStore()
 const { homeStore } = useStoreStepper()
 const { isMobile } = useStore()
 const data = homeStore[nextIndex]
 
-// const hover = ref(false)
-// const words = data.title.split(" ")
+const hover = ref(false)
+const words = data.title.split(" ")
 
 // const flavorMainRef = ref()
 // const flavorSubRef = ref()
@@ -69,10 +69,10 @@ const data = homeStore[nextIndex]
 //     projectCanvas.addNextPageMedia(wrapperRef.value)
 // })
 
-// const { mouseLag } = useStoreView()
-// const translate = computed(() => {
-//     return `translate(calc(${mouseLag.value.x}px - 50%), ${mouseLag.value.y}px)`
-// })
+const { mouseLag } = useStoreView()
+const translate = computed(() => {
+    return `translate(calc(${mouseLag.value.x}px - 50%), ${mouseLag.value.y}px)`
+})
 
 // onEnter({
 //     el: wrapperRef,
