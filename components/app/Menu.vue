@@ -144,7 +144,7 @@ a {
 
   z-index: $z-menu;
 
-  transition: color 500ms;
+  transition: color 0ms;
   font-size: 1.2rem;
   text-transform: uppercase;
 
