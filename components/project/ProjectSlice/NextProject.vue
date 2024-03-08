@@ -1,41 +1,5 @@
 <template>
-    <div class="default" v-if="!isMobile">
-        <Teleport to="#over-webGL">
-            <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc"
-                :style="{ backgroundImage: isMobile ? `url(${dataSrc})` : 'unset' }">
-                <div class="next-project-container">
-                    <NuxtLink :to="data.link">
-                        <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
-                            <span v-for="(word, index) in words" class="overflow">
-                                <span v-for="char in word.split('')" class="overflow-content">
-                                    {{ char }}
-                                </span>
-                            </span>
-                        </h1>
-                    </NuxtLink>
-
-                    <div class="flavor">
-                        <div class="flavor-main overflow">
-                            <span class="overflow-content" ref="flavorMainRef">
-                                {{ data.flavorMain }}
-                            </span>
-                        </div>
-                        <div class="flavor-sub" ref="flavorSubRef">
-                            <div v-for="text in data.flavorSub" class="overflow">
-                                <span class="overflow-content">
-                                    {{ text }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
-                    :style="{ transform: translate }">Next Project</div>
-            </div>
-        </Teleport>
-    </div>
-    <div class="mobile" v-else>
+    <Teleport to="#over-webGL" :disabled="isMobile">
         <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc"
             :style="{ backgroundImage: isMobile ? `url(${dataSrc})` : 'unset' }">
             <div class="next-project-container">
@@ -68,7 +32,7 @@
             <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
                 :style="{ transform: translate }">Next Project</div>
         </div>
-    </div>
+    </Teleport>
 </template>
 
 <script lang="ts" setup>
