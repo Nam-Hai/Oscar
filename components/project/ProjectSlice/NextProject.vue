@@ -2,7 +2,7 @@
     <Teleport to="#over-webGL" :disabled="isMobile">
         <div ref="wrapperRef" class="next-project__wrapper" :data-src="dataSrc"
             :style="{ backgroundImage: isMobile ? `url(${dataSrc})` : 'unset' }">
-            <div class="next-project-container">
+            <!-- <div class="next-project-container">
                 <NuxtLink :to="data.link">
                     <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
                         <span v-for="(word, index) in words" class="overflow">
@@ -27,10 +27,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <!-- <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
-                :style="{ transform: translate }">Next Project</div> -->
+            <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
+                :style="{ transform: translate }">Next Project</div>
         </div>
     </Teleport>
 </template>
@@ -69,10 +69,10 @@ const words = data.title.split(" ")
 //     projectCanvas.addNextPageMedia(wrapperRef.value)
 // })
 
-// const { mouseLag } = useStoreView()
-// const translate = computed(() => {
-//     return `translate(calc(${mouseLag.value.x}px - 50%), ${mouseLag.value.y}px)`
-// })
+const { mouseLag } = useStoreView()
+const translate = computed(() => {
+    return `translate(calc(${mouseLag.value.x}px - 50%), ${mouseLag.value.y}px)`
+})
 
 // onEnter({
 //     el: wrapperRef,
