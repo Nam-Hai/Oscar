@@ -118,7 +118,7 @@ h1 {
 
 .placeholder__fixed-media__container {
     position: fixed;
-    margin: 1.6rem;
+    margin: 1.6rem 1.6rem;
     height: calc(100% - 3.2rem);
     width: calc(100% - 3.2rem);
 

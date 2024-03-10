@@ -176,10 +176,10 @@ a {
     opacity: 0;
   }
 
-  padding: 2rem $side-margin;
+  padding: 1.6rem $side-margin;
 
   @include breakpoint(mobile) {
-    padding: 2rem $side-margin-mobile;
+    padding: 1.6rem $side-margin-mobile;
   }
 
   .menu-grid,

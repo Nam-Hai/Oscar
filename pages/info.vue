@@ -114,7 +114,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 4.6rem $side-margin $side-margin;
+    padding: 4rem $side-margin $side-margin;
 
     @include breakpoint(mobile) {
         // padding: 3.6rem 1.6rem 1.6rem ;
