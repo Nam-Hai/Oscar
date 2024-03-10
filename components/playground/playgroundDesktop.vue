@@ -1,8 +1,11 @@
 <template>
-    <div class="archive-display-f" :style="{ transform: translate }" v-if="isMobile != true"
-        :class="{ dark: pickerDark, show: showMore !== -1 }">
-        {{ showMore !== -1 ? showMore : '' }}
-    </div>
+    <Teleport to="#cursorTeleport">
+        <div class="archive-display-f" :style="{ transform: translate }" v-if="isMobile != true"
+            :class="{ dark: pickerDark, show: showMore !== -1 }">
+            {{ showMore !== -1 ? showMore : '' }}
+        </div>
+    </Teleport>
+
     <h1>
         playground
         ({{ copy.length }})
@@ -136,8 +139,8 @@ h1 {
 }
 
 .archive-display-f {
-    position: absolute;
-    z-index: 10;
+    position: fixed;
+    z-index: 200;
     top: 0;
     left: 0;
     margin-top: calc(16px + 0.6rem);

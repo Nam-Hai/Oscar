@@ -144,13 +144,44 @@ export class PlaygroundMedia extends CanvasNode {
         const uHover = { value: 0 }
         const uShow = { value: 0 }
 
+        let m = new Motion({ d: 150 })
         watch(hover, h => {
-            showMore.value = h ? this.index : -1
-            uHover.value = h
+            showMore.value = h ? this.id : -1
+
+            m.pause()
+            const from = uHover.value
+            const to = h
+
+            m = new Motion({
+                d: 150,
+                update({ prog, progE }) {
+                    uHover.value = N.Lerp(from, to, prog)
+                },
+            })
+            m.play()
         }, { immediate: true })
+
+
+        let motion = new Motion({
+            d: 300,
+            update: ({ progE }) => {
+
+            }
+        })
         watch(showMore, b => {
-            uShow.value = b === -1 ? 0 : 1
+            motion.pause()
+            const from = uShow.value
+            const to = b === this.id || b === -1 ? 1 : 0
+
+            motion = new Motion({
+                d: 150,
+                update({ prog, progE }) {
+                    uShow.value = N.Lerp(from, to, prog)
+                },
+            })
+            motion.play()
         }, { immediate: true })
+
 
         const program = new Program(this.gl, {
             fragment,
@@ -276,12 +307,12 @@ void main() {
     color = mix(vec4(0.886,0.886,0.886,1.), color, uLoaded);
 
     if(uBounds.y - borderWidth < vUv.y * uBounds.y || vUv.y * uBounds.y < borderWidth || uBounds.x - borderWidth < vUv.x * uBounds.x || vUv.x * uBounds.x < borderWidth){
-        color.rgb = mix(color.rgb, vec3(0.878,0.878,0.878), uShow);
+        color.rgb = mix(color.rgb, vec3(0.878,0.878,0.878), uHover);
     } else {
-        color = mix(color, vec4(0.), uShow);
+        color = mix(color, vec4(0.), uHover);
     }
 
-    // color = mix(color, vec4(0.), 1. - uShow);
+    color = mix(color, vec4(0.), 1. - uShow);
 
     FragColor[0] = vec4(color.rgba);
     FragColor[1] = uId;

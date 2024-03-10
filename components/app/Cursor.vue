@@ -13,6 +13,7 @@
             </svg>
         </div>
     </div>
+    <div id="cursorTeleport"></div>
 </template>
 
 <script lang="ts" setup>
