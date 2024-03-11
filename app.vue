@@ -1,8 +1,9 @@
 <template>
   <div id="app" v-if="waitBeforeMount">
-    <NuxtLayout>
+    <NuxtLayout v-if="!refreshPls">
       <NuxtPage></NuxtPage>
     </NuxtLayout>
+    <Refresh v-else />
 
   </div>
 </template>
@@ -43,11 +44,11 @@ if (matcher.matches) {
 
 let waitBeforeMount = ref(false)
 
+const { isMobile, firstRedirect, menuHide } = useStore()
 onBeforeMount(() => {
   useStoreView().init()
 
   const m = window.matchMedia('(pointer: coarse)').matches
-  const { isMobile, firstRedirect, menuHide } = useStore()
   isMobile.value = m
 
   waitBeforeMount.value = true
@@ -55,8 +56,13 @@ onBeforeMount(() => {
 
 useRO(() => {
   const m = window.matchMedia('(pointer: coarse)').matches
-  const { isMobile, firstRedirect, menuHide } = useStore()
   isMobile.value = m
+})
+
+
+const refreshPls = ref(false)
+watch(isMobile, () => {
+  refreshPls.value = true
 })
 
 </script>
