@@ -171,6 +171,7 @@ a {
     background-color: $white;
   }
 
+  transition: opacity 150ms;
   &.hide {
     pointer-events: none;
     opacity: 0;

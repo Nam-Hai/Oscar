@@ -6,7 +6,7 @@
         </div>
     </Teleport>
 
-    <h1>
+    <h1 :class="{ hide: menuHide }">
         playground
         ({{ copy.length }})
     </h1>
@@ -28,7 +28,7 @@ import { usePlaygroundCanvas } from '~/scene/Pages/PlaygroundCanvas';
 const { copy, containerHeight } = useStorePlayground()
 
 const { mouseLag, vh } = useStoreView()
-const { isMobile } = useStore()
+const { isMobile, menuHide } = useStore()
 const { pickerDark } = useCursorStore()
 const { showMore } = useStorePlayground()
 
@@ -70,6 +70,11 @@ h1 {
     letter-spacing: -1rem;
     line-height: 90%;
 
+    transition: opacity 150ms;
+    &.hide {
+        opacity: 0;
+    }
+
     @include breakpoint(mobile) {
         font-size: 5.79rem;
         letter-spacing: -0.1rem;
@@ -89,6 +94,7 @@ h1 {
     row-gap: 1.6rem;
     left: 50%;
     transform: translateX(-50%);
+
 
     .placeholder {
         width: 25rem;

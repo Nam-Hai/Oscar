@@ -8,6 +8,7 @@ import { Motion } from "~/plugins/core/motion";
 
 const { vh, vw, scale, breakpoint, mouse, scrollLenis } = useStoreView();
 const { containerHeight, showMore } = useStorePlayground()
+const { menuHide } = useStore();
 
 export class PlaygroundMedia extends CanvasNode {
     raf: RafR;
@@ -146,6 +147,7 @@ export class PlaygroundMedia extends CanvasNode {
 
         let m = new Motion({ d: 150 })
         watch(hover, h => {
+            menuHide.value = h
             showMore.value = h ? this.id : -1
 
             m.pause()
