@@ -1,5 +1,5 @@
 <template>
-    <h1>
+    <h1 :class="{ hide: showFixed }">
         playground
         ({{ copy.length }})
     </h1>
@@ -98,6 +98,12 @@ h1 {
     letter-spacing: -1rem;
     line-height: 90%;
 
+    opacity: 1;
+    transition: opacity 150ms;
+    &.hide {
+        opacity: 0;
+    }
+
     @include breakpoint(mobile) {
         font-size: 5.79rem;
         letter-spacing: -0.1rem;
@@ -161,6 +167,9 @@ h1 {
     .close__container {
         pointer-events: none;
         opacity: 0;
+        font-weight: 500;
+
+        transition: 150ms;
 
         &.show {
             opacity: 1;

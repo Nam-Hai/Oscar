@@ -12,7 +12,7 @@
     </h1>
     <div class="placeholder__fixed-media__container">
         <div class="placeholder__fixed-media" v-for="( { src, ratio, height, width }, index) in copy" :data-src="src"
-            :key="index" :style='{ aspectRatio: ratio, height, width }' ref="placeholderFixedRefs">
+            :key="index" :style='{ aspectRatio: ratio, width: ratio > 1 ? "80rem" : "", height: ratio < 1 ? "100%" : ""  }' ref="placeholderFixedRefs">
         </div>
     </div>
     <div class="placeholder-container" ref="placeholderContainerRef">
@@ -71,6 +71,7 @@ h1 {
     line-height: 90%;
 
     transition: opacity 150ms;
+
     &.hide {
         opacity: 0;
     }
@@ -137,6 +138,9 @@ h1 {
     left: 0;
     max-height: 100%;
     pointer-events: none;
+
+    max-width: 100%;
+    // min-height: 50%;
 
     @include breakpoint(mobile) {
         width: 100% !important;
