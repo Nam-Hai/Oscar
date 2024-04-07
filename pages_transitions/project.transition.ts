@@ -35,7 +35,6 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
     transitionNode.node.setParent(scene)
     const mainImage = useCanvasMainImageProject()
     const width = mainImage && mainImage.bounds && mainImage.bounds[0].width || 268 * scale.value
-    const y = mainImage && mainImage.bounds && mainImage.bounds[0].y || vh.value / 2 + 50 * scale.value
     const height = mainImage && mainImage.bounds && mainImage.bounds[0].height || 240 * scale.value
     const coef = 0.8
 
@@ -64,7 +63,7 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
             )
 
             if (!mainImage) return
-            // transitionNode.node.position.y = e.progE * (y - vh.value / 2) * canvas.size.value.height / vh.value
+            transitionNode.node.position.y = e.progE * 50 * scale.value * canvas.size.value.height / vh.value
         }
     }).from({
         d: 300,
