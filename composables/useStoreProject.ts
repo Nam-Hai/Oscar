@@ -34,7 +34,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         date: "03.2023",
         description: "VIADOMO©DECO boasts an innovative collection of top-tier furniture, reshaping the definition of luxury and sophistication.",
         main_image: {
-            src_1: "/Assets/Home/1.jpg",
+            src_1: "/Assets/Home/01_Home_Viadomo.webp",
             src_2: "/Assets/Viadomo/1_1.jpg",
         },
         slice: [
@@ -159,7 +159,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         date: "03.2023",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
         main_image: {
-            src_1: "/Assets/Home/2.jpg",
+            src_1: "/Assets/Home/02_Home_AvantGarden.webp",
             src_2: "/Assets/Viadomo/6.jpg",
         },
         slice: [
@@ -175,7 +175,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         date: "03.2023",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
         main_image: {
-            src_1: "/Assets/Home/3.jpg",
+            src_1: "/Assets/Home/03_Home_MuchoMatcha.webp",
             src_2: "/Assets/Viadomo/3.jpg",
         },
         slice: [
@@ -191,7 +191,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
         date: "11.2022",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
         main_image: {
-            src_1: "/Assets/Home/4.jpg",
+            src_1: "/Assets/Home/04_Home_MapfreSalud.webp",
             src_2: "/Assets/Viadomo/3.jpg",
         },
         slice: [

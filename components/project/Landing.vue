@@ -23,8 +23,6 @@
                 <div class="project__main-image__next-placeholder" :data-src="COPY.main_image.src_2">
                 </div>
             </div>
-
-
         </div>
     </div>
     <div class="pin-margin">

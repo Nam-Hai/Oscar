@@ -4,10 +4,10 @@ import { Texture } from "ogl";
 const MANIFEST = {
   home: [
     // "Asset"
-    "/Assets/Home/1.jpg",
-    "/Assets/Home/2.jpg",
-    "/Assets/Home/3.jpg",
-    "/Assets/Home/4.jpg",
+    "/Assets/Home/01_Home_Viadomo.webp",
+    "/Assets/Home/02_Home_AvantGarden.webp",
+    "/Assets/Home/03_Home_MuchoMatcha.webp",
+    "/Assets/Home/04_Home_MapfreSalud.webp",
   ],
   assets: [
 
