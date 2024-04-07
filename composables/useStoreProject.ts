@@ -138,26 +138,17 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 keyId: ProjectSliceC,
                 data: {
                     src_1: {
-                        src: "/Assets/Avant_Garden/output_1.webp",
-                        type: "image"
-                    },
-                    src_2: {
                         src: "/Assets/Avant_Garden/output_2.webp",
                         type: "image"
                     },
-                },
-            },
-            {
-                keyId: ProjectSliceF,
-                data: {
-                    src_1: {
+                    src_2: {
                         src: "/Assets/Avant_Garden/output_3.webp",
                         type: "image"
                     },
                 },
             },
             {
-                keyId: ProjectSliceD,
+                keyId: ProjectSliceF,
                 data: {
                     src_1: {
                         src: "/Assets/Avant_Garden/output_4.webp",
@@ -166,14 +157,23 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 },
             },
             {
-                keyId: ProjectSliceA,
+                keyId: ProjectSliceD,
                 data: {
                     src_1: {
                         src: "/Assets/Avant_Garden/output_5.webp",
                         type: "image"
                     },
-                    src_2: {
+                },
+            },
+            {
+                keyId: ProjectSliceA,
+                data: {
+                    src_1: {
                         src: "/Assets/Avant_Garden/output_6.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Avant_Garden/output_7.webp",
                         type: "image"
                     },
                 },
@@ -182,8 +182,8 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 keyId: ProjectSliceD,
                 data: {
                     src_1: {
-                        src: "/Assets/Avant_Garden/output_7.webp",
-                        type: "image"
+                        src: "/Assets/Avant_Garden/output_8.webm",
+                        type: "video/webm"
                     },
                 },
             },
@@ -191,12 +191,12 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 keyId: ProjectSliceE,
                 data: {
                     src_1: {
-                        src: "/Assets/Avant_Garden/output_8.webm",
-                        type: "video/webm"
+                        src: "/Assets/Avant_Garden/output_9.webp",
+                        type: "image"
                     },
                     src_2: {
-                        src: "/Assets/Avant_Garden/output_9.webp",
-                        type: "video/webm"
+                        src: "/Assets/Avant_Garden/output_10.webp",
+                        type: "image"
                     },
                 },
             },
@@ -204,7 +204,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 keyId: ProjectSliceF,
                 data: {
                     src_1: {
-                        src: "/Assets/Avant_Garden/output_10.webp",
+                        src: "/Assets/Avant_Garden/output_11.webp",
                         type: "image"
                     },
                 },
@@ -213,8 +213,8 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 keyId: ProjectSliceD,
                 data: {
                     src_1: {
-                        src: "/Assets/Avant_Garden/output_11.webp",
-                        type: "image"
+                        src: "/Assets/Avant_Garden/output_12.webm",
+                        type: "video/webm"
                     },
                 },
             },
@@ -244,33 +244,213 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
     },
     "mucho-matxa": {
         title: 'mucho matxa',
-        type: "Furniture",
-        date: "03.2023",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        // type: "Furniture",
+        type: "Nutrition",
+        date: "2023",
+        description: "Matcha tea e-commerce with origins in the lands of Japan. A tea with a meaning and high-quality.",
         main_image: {
             src_1: "/Assets/Home/03_Home_MuchoMatcha.webp",
-            src_2: "/Assets/Viadomo/3.jpg",
+            src_2: "/Assets/Mucho_Matcha/output_1.webp",
         },
         slice: [
             {
-                keyId: "ProjectSliceNextProject",
-                data: {},
+                keyId: ProjectSliceA,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mucho_Matcha/output_2.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Mucho_Matcha/output_3.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceD,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mucho_Matcha/output_4.webm",
+                        type: "video/webm"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceD,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mucho_Matcha/output_5.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceA,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mucho_Matcha/output_6.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Mucho_Matcha/output_7.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceD,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mucho_Matcha/output_8.webm",
+                        type: "video/webm"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceE,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mucho_Matcha/output_9.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Mucho_Matcha/output_10.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceF,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mucho_Matcha/output_11.webm",
+                        type: "video/webm"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceC,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mucho_Matcha/output_12.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Mucho_Matcha/output_13.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceD,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mucho_Matcha/output_14.webp",
+                        type: "image"
+                    },
+                },
+            },
+
+            {
+                keyId: ProjectSliceNext,
+                data: {
+                    src_1: {
+                        src: "/Assets/Home/04_Home_MapfreSalud.webp",
+                        type: "image"
+                    }
+                },
             }
         ]
     },
     "mapfre-salud": {
         title: 'mapfre salud',
-        type: "App design",
+        type: "Health",
         date: "11.2022",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        description: "Redesign of the official MAPFRE Health application, with online care and face-to-face services.",
         main_image: {
             src_1: "/Assets/Home/04_Home_MapfreSalud.webp",
-            src_2: "/Assets/Viadomo/3.jpg",
+            src_2: "/Assets/Mapfre_Salud/output_1.webp",
         },
         slice: [
             {
-                keyId: "ProjectSliceNextProject",
-                data: {},
+                keyId: ProjectSliceC,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mapfre_Salud/output_2.webm",
+                        type: "video/webm"
+                    },
+                    src_2: {
+                        src: "/Assets/Mapfre_Salud/output_3.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceE,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mapfre_Salud/output_4.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Mapfre_Salud/output_5.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceA,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mapfre_Salud/output_6.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Mapfre_Salud/output_7.webm",
+                        type: "video/webm"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceE,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mapfre_Salud/output_8.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Mapfre_Salud/output_9.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceF,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mapfre_Salud/output_10.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceD,
+                data: {
+                    src_1: {
+                        src: "/Assets/Mapfre_Salud/output_11.webm",
+                        type: "video/webm"
+                    },
+                },
+            },
+
+            {
+                keyId: ProjectSliceNext,
+                data: {
+                    src_1: {
+                        src: "/Assets/Home/01_Home_Viadomo.webp",
+                        type: "image"
+                    }
+                },
             }
         ]
     }

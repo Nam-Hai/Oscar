@@ -49,7 +49,11 @@ onFlow(async () => {
 
 .project-slice-A__wrapper {
     width: 100%;
-    height: 92rem;
+
+    @include breakpoint(desktop) {
+        height: 92rem;
+    }
+
     padding-left: $side-margin;
     padding-right: $side-margin;
 
@@ -61,7 +65,6 @@ onFlow(async () => {
     @include breakpoint(mobile) {
         flex-direction: column;
         margin: 4.8rem auto;
-        height: 42rem;
     }
 }
 
@@ -72,7 +75,7 @@ onFlow(async () => {
 
     @include breakpoint(mobile) {
         width: 34.3rem;
-        height: 19.4rem;
+        height: 48rem;
         margin: 4.8rem auto;
     }
 }

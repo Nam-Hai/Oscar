@@ -47,7 +47,11 @@ onFlow(async () => {
 
 .container-B {
     width: 100%;
-    height: 92rem;
+
+    @include breakpoint(mobile) {
+        height: 92rem;
+    }
+
     padding-left: $side-margin;
     padding-right: $side-margin;
 
@@ -58,7 +62,6 @@ onFlow(async () => {
 
     @include breakpoint(mobile) {
         flex-direction: column;
-        height: 42rem;
         margin: 4.8rem auto;
     }
 
@@ -69,7 +72,13 @@ onFlow(async () => {
 
         @include breakpoint(mobile) {
             width: 30rem;
-            height: 100%;
+        }
+    }
+
+    div {
+        width: 100%;
+        @include breakpoint(mobile) {
+            height: 42rem;
         }
     }
 

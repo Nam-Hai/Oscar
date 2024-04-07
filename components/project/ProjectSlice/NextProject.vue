@@ -259,6 +259,7 @@ h1 {
     top: 0;
     left: 0;
 
+    cursor: pointer;
     margin-top: calc(16px + 0.6rem);
 
     line-height: 100%;
