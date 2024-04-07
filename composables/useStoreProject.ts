@@ -1,9 +1,9 @@
-import ProjectSlice1 from "~/components/project/ProjectSlice/1.vue"
-import ProjectSlice2 from "~/components/project/ProjectSlice/2.vue"
-import ProjectSlice3 from "~/components/project/ProjectSlice/3.vue"
-import ProjectSlice4 from "~/components/project/ProjectSlice/4.vue"
-import ProjectSlice5 from "~/components/project/ProjectSlice/5.vue"
-import ProjectSlice6 from "~/components/project/ProjectSlice/6.vue"
+import ProjectSliceA from "~/components/project/ProjectSlice/A.vue"
+import ProjectSliceB from "~/components/project/ProjectSlice/B.vue"
+import ProjectSliceC from "~/components/project/ProjectSlice/C.vue"
+import ProjectSliceD from "~/components/project/ProjectSlice/D.vue"
+import ProjectSliceE from "~/components/project/ProjectSlice/E.vue"
+import ProjectSliceF from "~/components/project/ProjectSlice/F.vue"
 import ProjectSliceNext from "~/components/project/ProjectSlice/NextProject.vue"
 
 export interface ISlice {
@@ -31,113 +31,84 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
     "viadomo-deco": {
         title: 'VIADOMO DECO',
         type: "Furniture",
-        date: "03.2023",
-        description: "VIADOMO©DECO boasts an innovative collection of top-tier furniture, reshaping the definition of luxury and sophistication.",
+        date: "2023",
+        description: "An innovative collection of top-tier furniture, reshaping the definition of luxury and sophistication.",
         main_image: {
             src_1: "/Assets/Home/01_Home_Viadomo.webp",
-            src_2: "/Assets/Viadomo/1_1.jpg",
+            src_2: "/Assets/Viadomo/output_1.webp",
         },
         slice: [
             {
-                keyId: ProjectSlice1,
+                keyId: ProjectSliceC,
                 data: {
                     src_1: {
-                        src: "/Assets/Viadomo/2.mp4",
-                        type: "video/mp4"
+                        src: "/Assets/Viadomo/output_2.webm",
+                        type: "video/webm"
                     },
                     src_2: {
-                        src: "/Assets/Viadomo/3.jpg",
+                        src: "/Assets/Viadomo/output_3.webp",
                         type: "image"
                     }
                 },
             },
             {
-                keyId: ProjectSlice2,
+                keyId: ProjectSliceD,
                 data: {
                     src_1: {
-                        src: "/Assets/Viadomo/4_1.jpg",
-                        type: "image"
-                    },
-                    src_2: {
-                        src: "/Assets/Viadomo/5_1.jpg",
+                        src: "/Assets/Viadomo/output_4.webp",
                         type: "image"
                     }
                 },
             },
             {
-                keyId: ProjectSlice3,
+                keyId: ProjectSliceC,
                 data: {
                     src_1: {
-                        src: "/Assets/Viadomo/6.jpg",
-                        type: "image"
+                        src: "/Assets/Viadomo/output_5.webm",
+                        type: "video/webm"
                     },
                     src_2: {
-                        src: "/Assets/Viadomo/7.jpg",
+                        src: "/Assets/Viadomo/output_6.webp",
                         type: "image"
-                    },
-                    src_3: {
-                        src: "/Assets/Viadomo/8.mp4",
-                        type: "video/mp4"
                     },
                 },
             },
             {
-                keyId: ProjectSlice4,
+                keyId: ProjectSliceD,
                 data: {
                     src_1: {
-                        src: "/Assets/Viadomo/9.jpg",
-                        type: "image"
-                    },
-                    src_2: {
-                        src: "/Assets/Viadomo/10.jpg",
-                        type: "image"
-                    },
-                    // bg_src: "/Assets/Viadomo/9-10-Bg.jpg",
-                    bg_src: {
-                        src: "/Assets/Viadomo/9_10_Bg_2.jpg",
+                        src: "/Assets/Viadomo/output_7.webp",
                         type: "image"
                     }
                 },
             },
             {
-                keyId: ProjectSlice1,
+                keyId: ProjectSliceF,
                 data: {
                     src_1: {
-                        src: "/Assets/Viadomo/11.jpg",
-                        type: "image"
-                    },
-                    src_2: {
-                        src: "/Assets/Viadomo/12.mp4",
-                        type: "video/mp4"
-                    },
-                },
-            },
-            {
-                keyId: ProjectSlice5,
-                data: {
-                    src_1: {
-                        src: "/Assets/Viadomo/13.jpg",
-                        type: "image"
-                    },
-                    src_2: {
-                        src: "/Assets/Viadomo/14.jpg",
-                        type: "image"
-                    },
-                    src_3: {
-                        src: "/Assets/Viadomo/15.jpg",
+                        src: "/Assets/Viadomo/output_8.webp",
                         type: "image"
                     },
                 },
             },
             {
-                keyId: ProjectSlice6,
+                keyId: ProjectSliceD,
                 data: {
                     src_1: {
-                        src: "/Assets/Viadomo/16.jpg",
+                        src: "/Assets/Viadomo/output_9.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceA,
+                data: {
+                    src_1: {
+                        src: "/Assets/Viadomo/output_10.webp",
                         type: "image"
                     },
                     src_2: {
-                        src: "/Assets/Viadomo/17.jpg",
+                        src: "/Assets/Viadomo/output_11.webp",
                         type: "image"
                     },
                 },
@@ -146,7 +117,7 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
                 keyId: ProjectSliceNext,
                 data: {
                     src_1: {
-                        src: "/Assets/Home/2.jpg",
+                        src: "/Assets/Home/02_Home_AvantGarden.webp",
                         type: "image"
                     }
                 },
@@ -155,17 +126,119 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
     },
     "avant-garden": {
         title: 'Avant garden',
-        type: "Furniture",
-        date: "03.2023",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        type: "Fashion",
+        date: "2023",
+        description: "A digital and physical newsletter showcasing the last vanguard fashion and beauty news.",
         main_image: {
             src_1: "/Assets/Home/02_Home_AvantGarden.webp",
-            src_2: "/Assets/Viadomo/6.jpg",
+            src_2: "/Assets/Avant_Garden/output_1.webp",
         },
         slice: [
             {
-                keyId: "ProjectSliceNextProject",
-                data: {},
+                keyId: ProjectSliceC,
+                data: {
+                    src_1: {
+                        src: "/Assets/Avant_Garden/output_1.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Avant_Garden/output_2.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceF,
+                data: {
+                    src_1: {
+                        src: "/Assets/Avant_Garden/output_3.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceD,
+                data: {
+                    src_1: {
+                        src: "/Assets/Avant_Garden/output_4.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceA,
+                data: {
+                    src_1: {
+                        src: "/Assets/Avant_Garden/output_5.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Avant_Garden/output_6.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceD,
+                data: {
+                    src_1: {
+                        src: "/Assets/Avant_Garden/output_7.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceE,
+                data: {
+                    src_1: {
+                        src: "/Assets/Avant_Garden/output_8.webm",
+                        type: "video/webm"
+                    },
+                    src_2: {
+                        src: "/Assets/Avant_Garden/output_9.webp",
+                        type: "video/webm"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceF,
+                data: {
+                    src_1: {
+                        src: "/Assets/Avant_Garden/output_10.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceD,
+                data: {
+                    src_1: {
+                        src: "/Assets/Avant_Garden/output_11.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceB,
+                data: {
+                    src_1: {
+                        src: "/Assets/Avant_Garden/output_13.webp",
+                        type: "image"
+                    },
+                    src_2: {
+                        src: "/Assets/Avant_Garden/output_14.webp",
+                        type: "image"
+                    },
+                },
+            },
+            {
+                keyId: ProjectSliceNext,
+                data: {
+                    src_1: {
+                        src: "/Assets/Home/03_Home_MuchoMatcha.webp",
+                        type: "image"
+                    }
+                },
             }
         ]
     },

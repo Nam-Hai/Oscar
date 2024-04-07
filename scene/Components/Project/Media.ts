@@ -42,7 +42,9 @@ export class Media extends CanvasNode {
 		super(gl);
 		N.BM(this, ["update", "onResize", "destroy", "onScroll"]);
 
-		this.parallaxForce = props.parallaxForce || 0;
+		// this.parallaxForce = props.parallaxForce || 0;
+		this.parallaxForce = 0;
+
 		this.fixed = props.fixed || false;
 		this.pixelScroll = 0;
 		this.pixelPosition = new Vec2(0);
@@ -122,8 +124,8 @@ export class Media extends CanvasNode {
 	mountElement(el: HTMLElement) {
 		this.el = el;
 
-		const src_1 = N.Ga(this.el, "data-src") || "/Assets/Home3.png";
-		this.isVideo = src_1.slice(src_1.length - 3, src_1.length) === "mp4";
+		const src_1 = N.Ga(this.el, "data-src") || "/Assets/01_Home_Viadomo.webp";
+		this.isVideo = src_1.slice(src_1.length - 4, src_1.length) === "webm";
 
 		const manifest = useManifest();
 		const a = manifest.lazyTextures[src_1];

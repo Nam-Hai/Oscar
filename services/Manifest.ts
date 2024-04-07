@@ -15,23 +15,20 @@ const MANIFEST = {
 };
 const LAZY_MANIFEST = {
   assets: [
-    "/Assets/Viadomo/1_1.jpg",
-    "/Assets/Viadomo/2.mp4",
-    "/Assets/Viadomo/3.jpg",
-    "/Assets/Viadomo/4_1.jpg",
-    "/Assets/Viadomo/5_1.jpg",
-    "/Assets/Viadomo/6.jpg",
-    "/Assets/Viadomo/7.jpg",
-    "/Assets/Viadomo/8.mp4",
-    "/Assets/Viadomo/9.jpg",
-    "/Assets/Viadomo/10.jpg",
-    "/Assets/Viadomo/11.jpg",
-    "/Assets/Viadomo/12.mp4",
-    "/Assets/Viadomo/13.jpg",
-    "/Assets/Viadomo/14.jpg",
-    "/Assets/Viadomo/15.jpg",
-    "/Assets/Viadomo/16.jpg",
-    "/Assets/Viadomo/17.jpg",
+    "/Assets/Viadomo/output_1.webp",
+    "/Assets/Viadomo/output_2.webm",
+    "/Assets/Viadomo/output_3.webp",
+    "/Assets/Viadomo/output_4.webp",
+    "/Assets/Viadomo/output_5.webm",
+    "/Assets/Viadomo/output_6.webp",
+    "/Assets/Viadomo/output_7.webp",
+    "/Assets/Viadomo/output_8.webp",
+    "/Assets/Viadomo/output_9.webp",
+    "/Assets/Viadomo/output_10.webp",
+    "/Assets/Viadomo/output_11.webp",
+    "/Assets/Viadomo/output_12.webp",
+    "/Assets/Viadomo/output_13.webp",
+    "/Assets/Viadomo/output_14.webp",
   ],
   info: [
     "/Assets/info/Oscar_Pico.png"
@@ -185,7 +182,7 @@ export default class Manifest {
               this.QLoader.add(() => {
                 return new Promise<void>(res => {
 
-                  if (src.slice(src.length - 3, src.length) == 'mp4') {
+                  if (src.slice(src.length - 4, src.length) == 'webm') {
                     const video = document.createElement('video');
                     video.src = src;
                     // Disclaimer: video autoplay is a confusing, constantly-changing browser feature.
