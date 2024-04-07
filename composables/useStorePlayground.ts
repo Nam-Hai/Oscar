@@ -1,6 +1,6 @@
 const PLAYGROUND_COPY = [
     {
-        src: "/Assets/Home/1.jpg",
+        src: "/Assets/Home/01_Home_Viadomo.webp",
         ratio: 144 / 82,
         height: "78.8rem",
         width: "59.4rem"
@@ -12,31 +12,31 @@ const PLAYGROUND_COPY = [
         width: "59.4rem"
     },
     {
-        src: "/Assets/Home/1.jpg",
+        src: "/Assets/Home/01_Home_Viadomo.webp",
         ratio: 144 / 82,
         height: "78.8rem",
         width: "59.4rem"
     },
     {
-        src: "/Assets/Home/2.jpg",
+        src: "/Assets/Home/01_Home_Viadomo.webp",
         ratio: 144 / 82,
         height: "78.8rem",
         width: "59.4rem"
     },
     {
-        src: "/Assets/Home/3.jpg",
+        src: "/Assets/Home/01_Home_Viadomo.webp",
         ratio: 144 / 82,
         height: "78.8rem",
         width: "59.4rem"
     },
     {
-        src: "/Assets/Home/4.jpg",
+        src: "/Assets/Home/01_Home_Viadomo.webp",
         ratio: 144 / 82,
         height: "78.8rem",
         width: "59.4rem"
     },
     {
-        src: "/Assets/Home/1.jpg",
+        src: "/Assets/Home/01_Home_Viadomo.webp",
         ratio: 144 / 82,
         height: "78.8rem",
         width: "59.4rem"

@@ -92,50 +92,30 @@ export default defineNuxtConfig({
                   type: "font/ttf",
                   crossorigin: "anonymous",
               },
-              // {
-              //     rel: "icon",
-              //     type: "image/png",
-              //     sizes: "32x32",
-              //     href: "/favicon/favicon-32x32.png",
-              //     class: "dark",
-              // },
-              // {
-              //     rel: "icon",
-              //     type: "image/png",
-              //     sizes: "16x16x",
-              //     href: "/favicon/favicon-16x16.png",
-              //     class: "dark",
-              // },
-              // {
-              //     rel: "icon",
-              //     type: "image/png",
-              //     sizes: "32x32",
-              //     href: "/favicon/favicon-32x32_light.png",
-              //     class: "light",
-              // },
-              // {
-              //     rel: "icon",
-              //     type: "image/png",
-              //     sizes: "16x16x",
-              //     href: "/favicon/favicon-16x16_light.png",
-              //     class: "light",
-              // },
-              // {
-              //     rel: "apple-touch-icon",
-              //     sizes: "180x180",
-              //     href: "/favicon/apple-touch-icon.png"
-              // },
-              // {
-              //     rel: "mask-icon",
-              //     href: "/favicon/safari-pinned-tab.svg",
-              //     color: "#292929"
-              // }
-          ],
-          script: [
               {
-                  src: "/init.js",
+                  rel: "icon",
+                  type: "image/png",
+                  sizes: "32x32",
+                  href: "/favicon/favicon-32x32.png",
               },
-          ],
+              {
+                  rel: "icon",
+                  type: "image/png",
+                  sizes: "16x16x",
+                  href: "/favicon/favicon-16x16.png",
+              },
+              {
+                  rel: "icon",
+                  type: "image/png",
+                  sizes: "32x32",
+                  href: "/favicon/favicon-32x32.png",
+              },
+              {
+                  rel: "apple-touch-icon",
+                  sizes: "180x180",
+                  href: "/favicon/apple-touch-icon.png"
+              },
+          ]
       },
   },
 
