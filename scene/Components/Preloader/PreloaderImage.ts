@@ -144,7 +144,6 @@ export class PreloaderImage extends CanvasNode {
                 e: 'o4',
                 update: (e) => {
                     this.progress = e.progE
-                    console.log(e.progE);
                     this.uSizePixel.value.set(
                         N.Lerp(0, this.targetSize.width, e.progE),
                         N.Lerp(0, this.targetSize.height, e.progE)
