@@ -7,7 +7,7 @@ const homeStore = [
         flavorSub: ["Web design", "Furniture", "11.2023"],
         flavorTitle: ["Type", "Field", "Date"],
         link: "/project-page/viadomo-deco",
-        mini: "/Assets/Minia/1_mini.jpg"
+        mini: "/Assets/Minia/1.webp"
     },
     {
         title: "Avant garden",
@@ -16,7 +16,7 @@ const homeStore = [
         flavorSub: ["Web", "Fashion", "2023"],
         flavorTitle: ["Type", "Field", "Date"],
         link: "/project-page/avant-garden",
-        mini: "/Assets/Minia/2_mini.jpg",
+        mini: "/Assets/Minia/2.webp",
     },
     {
         title: "MUCHO MATXA",
@@ -25,7 +25,7 @@ const homeStore = [
         flavorSub: ["Web", "Nutrition", "2023"],
         flavorTitle: ["Type", "Field", "Date"],
         link: "/project-page/mucho-matxa",
-        mini: "/Assets/Minia/3_mini.jpg",
+        mini: "/Assets/Minia/3.webp",
     },
     {
         title: "MAPFRE SALUD",
@@ -34,7 +34,7 @@ const homeStore = [
         flavorSub: ["App", "Health", "2022"],
         flavorTitle: ["Type", "Field", "Date"],
         link: "/project-page/mapfre-salud",
-        mini: "/Assets/Minia/4_mini.jpg",
+        mini: "/Assets/Minia/4.webp",
     }
 ]
 

@@ -27,8 +27,6 @@ const { lenis, scrollLenisOn } = useStoreView();
 const { isMobile } = useStore()
 const { stepperIsHovered, tileHover } = useStoreStepper()
 
-console.log('test');
-
 useRaf(
   (e) => {
     // !flowProvider.flowIsHijacked.value && 
