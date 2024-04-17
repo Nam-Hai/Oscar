@@ -17,7 +17,6 @@ import Playground from './pages/playground.vue';
 
 provideFlowProvider()
 const flowProvider = useFlowProvider()
-console.log(flowProvider);
 
 flowProvider.registerPage('index', Index)
 flowProvider.registerPage('project-page-id', ProjectPage)
@@ -50,10 +49,8 @@ onBeforeMount(() => {
 
   const m = window.matchMedia('(pointer: coarse)').matches
   isMobile.value = m
-  console.log(isMobile.value);
 
   waitBeforeMount.value = true
-  console.log(waitBeforeMount.value, refreshPls.value);
 })
 
 useRO(() => {

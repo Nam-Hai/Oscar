@@ -215,6 +215,7 @@ function endLoading() {
   transform: translateX(-50%);
   bottom: 4rem;
   font-size: 1.4rem;
+  line-height: 110%;
   opacity: 0.25;
 
   @include breakpoint(mobile) {
