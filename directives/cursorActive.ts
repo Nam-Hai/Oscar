@@ -1,4 +1,4 @@
-const { toggleHover } = useCursorStore()
+const { toggleHover, homeHover } = useCursorStore()
 export const vCursorHover = {
     mounted: (el: HTMLElement) => {
         el.addEventListener("mouseenter", () => {
@@ -9,5 +9,17 @@ export const vCursorHover = {
     beforeUnmount: (el: HTMLElement) => {
         el.removeEventListener("mouseenter", () => toggleHover(true))
         el.removeEventListener("mouseleave", () => toggleHover(false))
+    }
+}
+export const vCursorHoverHome = {
+    mounted: (el: HTMLElement) => {
+        el.addEventListener("mouseenter", () => {
+            homeHover(true)
+        })
+        el.addEventListener("mouseleave", () => homeHover(false))
+    },
+    beforeUnmount: (el: HTMLElement) => {
+        el.removeEventListener("mouseenter", () => homeHover(true))
+        el.removeEventListener("mouseleave", () => homeHover(false))
     }
 }

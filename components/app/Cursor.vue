@@ -1,6 +1,6 @@
 <template>
     <div :style="{ transform: translate }"
-        :class="{ hover: cursorState == 'hover', hold: isHolding, dark: pickerDark, hide: !firstMove }"
+        :class="{ hover: cursorState == 'hover', grow: cursorState === 'home', hold: isHolding, dark: pickerDark, hide: !firstMove }"
         class="cursor__wrapper" ref="wrapperRef">
 
         <div class="point" :style="{ transform: `translate(calc(${diff.x}px - 50%), calc(${diff.y}px - 50%) )` }">
@@ -98,11 +98,23 @@ useRaf(() => {
         opacity: 0;
     }
 
+    &.grow {
+        &::after {
+            transform: translate(-50%, -50%) scale(6.25);
+        }
+    }
+
     &.hover {
+        &::after {
+            transform: translate(-50%, -50%) scale(0);
+        }
+    }
+
+    &.hover,
+    &.grow {
         // color: $yellow;
 
         &::after {
-            transform: translate(-50%, -50%) scale(0);
             opacity: 0.1;
         }
 
@@ -158,7 +170,7 @@ useRaf(() => {
         min-height: 32px;
         transform: translate(-50%, -50%);
         border-radius: 50%;
-        background-color: currentColor;
+        background-color: white;
         opacity: 0.1;
 
         transition-property: transform;

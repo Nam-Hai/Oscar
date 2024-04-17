@@ -19,12 +19,12 @@ const homeStore = [
         mini: "/Assets/Minia/2.webp",
     },
     {
-        title: "MUCHO MATXA",
-        titleMobile: "MUCHO MATXA",
-        flavorMain: "E-shop of high-quality Basque matcha tea and its accesories.",
+        title: "MUCHO MATCHA",
+        titleMobile: "MUCHO MATCHA",
+        flavorMain: "Online shop of high-quality Japanese matcha tea.",
         flavorSub: ["Web", "Nutrition", "2023"],
         flavorTitle: ["Type", "Field", "Date"],
-        link: "/project-page/mucho-matxa",
+        link: "/project-page/mucho-matcha",
         mini: "/Assets/Minia/3.webp",
     },
     {

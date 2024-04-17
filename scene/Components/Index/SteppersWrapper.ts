@@ -8,7 +8,7 @@ const { vh, vw, mouse, breakpoint } = useStoreView()
 const { isHold } = useCursorStore()
 // const m = toRefs(mouse)
 const { getTexture, stack, imageBounds, currentIndex, stepperIsHovered, tileHover, length, idToIndex } = useStoreStepper()
-const { toggleHover } = useCursorStore()
+const { toggleHover, homeHover } = useCursorStore()
 
 export class SteppersWrapper extends CanvasNode {
     raf: RafR;
@@ -58,7 +58,9 @@ export class SteppersWrapper extends CanvasNode {
             const { hover } = useHover(el.id)
             watch(hover, (h: boolean) => {
                 tileHover.value = h
-                toggleHover(h && (stepperIsHovered.value))
+                if (stepperIsHovered.value) {
+                    toggleHover(h && (stepperIsHovered.value))
+                }
             })
         }
 

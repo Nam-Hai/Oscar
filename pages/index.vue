@@ -3,8 +3,8 @@
     <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index"
       :class="{ current: currentIndex == index }">
       <NuxtLink :to="data.link">
-        <h1 v-cursor-hover ref="titleRefs" @mouseenter="hideTrail = true" @mouseleave="hideTrail = false"
-          @mousemove="headerMove($event)">
+        <h1 ref="titleRefs" @mouseenter="hideTrail = true; homeHover(true)"
+          @mouseleave="hideTrail = false; homeHover(false)" @mousemove="headerMove($event)">
           <span v-for="(word, index) in data.title.split(' ')" class="overflow" v-if="breakpoint == 'desktop'">
             <span v-for="char in word.split('')" class="overflow-content">
               {{ char }}
@@ -50,6 +50,7 @@ import { indexFlowOutMap } from '~/pages_transitions/index.transition';
 import { defaultFlowIn } from '~/pages_transitions/default.transition';
 // import { indexFlowIn} from "~/pages"
 
+const { homeHover } = useCursorStore()
 useResetLenis({
   infinite: true,
 })

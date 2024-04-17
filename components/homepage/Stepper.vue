@@ -49,7 +49,7 @@ onLeave(() => {
   justify-content: center;
   @include user-select(none);
 
-  padding: 5rem 5rem 3rem;
+  padding: 70px 10rem 3rem;
   margin: -5rem -0rem -3rem;
   transition: opacity 300ms;
 

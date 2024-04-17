@@ -20,7 +20,7 @@ const useStore = createStore(() => {
 })
 export default useStore
 
-export type CursorState = "hover" | "hold" | "default"
+export type CursorState = "hover" | "hold" | "default" | "home"
 const useCursorStore = createStore(() => {
   const cursorState: Ref<CursorState> = ref("default")
   const isHolding = ref(false)
@@ -31,6 +31,9 @@ const useCursorStore = createStore(() => {
   const target = ref({ x: 0, y: 0 })
 
   const progress = ref(0)
+  function homeHover(hover: boolean) {
+    cursorState.value = hover ? "home" : "default"
+  }
 
   function toggleHover(hover: boolean) {
     cursorState.value = hover ? "hover" : "default"
@@ -63,7 +66,7 @@ const useCursorStore = createStore(() => {
     useEventListeneer(el, 'mouseup', onMouseUp)
   }
 
-  return { target, overhide, cursorState, toggleHover, onHold, isHolding, isHold, pickerDark, progress }
+  return { target, overhide, cursorState, toggleHover, homeHover, onHold, isHolding, isHold, pickerDark, progress }
 })
 
 export { useCursorStore }

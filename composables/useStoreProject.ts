@@ -242,8 +242,8 @@ const projectCopy: { [key: string]: ProjectCopyType } = {
             }
         ]
     },
-    "mucho-matxa": {
-        title: 'mucho matxa',
+    "mucho-matcha": {
+        title: 'mucho matcha',
         // type: "Furniture",
         type: "Nutrition",
         date: "2023",
@@ -468,7 +468,7 @@ export const useStoreProject = createStore(() => {
     const idToIndex = new Map<string, number>([
         ['viadomo-deco', 0],
         ['avant-garden', 1],
-        ['mucho-matxa', 2],
+        ['mucho-matcha', 2],
         ['mapfre-salud', 3],
     ])
 
