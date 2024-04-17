@@ -64,6 +64,7 @@ onFlow(async () => {
 
     @include breakpoint(mobile) {
         flex-direction: column;
+        row-gap: 4.8rem;
         margin: 4.8rem auto;
     }
 }
@@ -76,7 +77,6 @@ onFlow(async () => {
     @include breakpoint(mobile) {
         width: 34.3rem;
         height: 48rem;
-        margin: 4.8rem auto;
     }
 }
 </style>

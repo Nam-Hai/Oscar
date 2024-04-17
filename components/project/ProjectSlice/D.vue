@@ -54,6 +54,9 @@ onFlow(async () => {
     @include breakpoint(mobile) {
         width: 34.3rem;
         height: 19.6rem;
+        img, video {
+            border-radius: 2px;
+        }
     }
 }
 </style>

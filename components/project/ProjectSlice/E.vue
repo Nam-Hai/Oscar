@@ -49,7 +49,6 @@ onFlow(async () => {
 
 .project-slice-E__wrapper {
     width: 85.4rem;
-    height: 59.6rem;
 
     display: flex;
     justify-content: space-between;
@@ -58,8 +57,9 @@ onFlow(async () => {
 
     @include breakpoint(mobile) {
         column-gap: $side-margin;
-        margin: 4.8rem auto;
+        margin: 4.8rem 1.6rem;
         height: 34.16rem;
+        width: calc(100% - 3.2rem);
     }
 }
 
@@ -67,10 +67,14 @@ onFlow(async () => {
     height: 100%;
     width: 27.7rem;
 
-
     @include breakpoint(mobile) {
+        width: unset;
         flex-grow: 1;
-        margin: 4.8rem auto;
+
+        img,
+        video {
+            border-radius: 4px;
+        }
     }
 }
 </style>

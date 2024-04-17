@@ -47,7 +47,6 @@ onFlow(async () => {
 
 .container-C {
     width: 100%;
-    height: 92rem;
     padding-left: $side-margin;
     padding-right: $side-margin;
 
@@ -58,7 +57,8 @@ onFlow(async () => {
 
     @include breakpoint(mobile) {
         flex-direction: column;
-        height: 42rem;
+        row-gap: 4.8rem;
+        align-items: center;
         margin: 4.8rem auto;
     }
 
@@ -68,19 +68,30 @@ onFlow(async () => {
         flex-grow: 1;
 
         @include breakpoint(mobile) {
-            width: 30rem;
-            height: 100%;
+            width: 34.3rem;
+            height: 42rem;
         }
     }
 
     div:nth-child(2) {
         width: 55.5rem;
         height: 100%;
+
+        @include breakpoint(mobile) {
+            width: 30rem;
+            height: 42rem;
+        }
     }
 
 }
 
 .data-img {
+
     // background-color: $placeholder-grey;
+    img,
+    video {
+        height: 100%;
+        width: 100%;
+    }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="project-slice-A__wrapper">
+    <div class="project-slice-F__wrapper">
         <div class="data-img" :data-src="data.data.src_1.src" ref="elRef1">
             <img :src="data.data.src_1.src" alt="project_image_A_1"
                 v-if="isMobile && data.data.src_1.type === 'image'" />
@@ -35,7 +35,7 @@ onFlow(async () => {
 <style lang="scss" scoped>
 @use "@/styles/shared.scss" as *;
 
-.project-slice-A__wrapper {
+.project-slice-F__wrapper {
     width: 100%;
     height: 120rem;
 
@@ -43,11 +43,15 @@ onFlow(async () => {
 
     @include breakpoint(mobile) {
         margin: 4.8rem auto;
+        height: 48rem;
     }
 }
 
 .data-img {
     height: 100%;
     width: 100%;
+    img, video {
+        object-fit: cover;
+    }
 }
 </style>
