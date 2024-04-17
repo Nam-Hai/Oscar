@@ -90,13 +90,21 @@ onMounted(() => {
 
   manifest.init()
 
+  const right = N.get(".right .overflow-content", wrapperRef.value)!
+  const left = N.get(".left .overflow-content", wrapperRef.value)!
+  const counterEl = N.get(".counter .overflow-content", wrapperRef.value)
+  N.T(right as HTMLElement, 0, 110)
+  N.T(left as HTMLElement, 0, 110)
+
   useTL().from({
-    el: N.getAll(".overflow-content", wrapperRef.value),
+    el: [right, left],
     p: {
       y: [100, 0]
     },
     e: 'io3',
-    d: 500
+    d: 500,
+    delay: 800
+
   }).play()
 
   const percentage = manifest.percentage
@@ -148,11 +156,15 @@ function endLoading() {
   color: $black;
   z-index: 200;
 
+  .overflow-content {
+    transform: translateY(115%);
+  }
+
   &.hide {
 
     .overflow-content {
       transform: translateY(115%) !important;
-      transition: transform 500ms;
+      transition: transform 1200ms $easeOutQuart;
     }
   }
 
