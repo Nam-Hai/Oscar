@@ -63,7 +63,7 @@ useLenisScroll((e) => {
   if (firstScroll) {
     scrollPercent.value = ZL(Math.min(e.animatedScroll / (e.dimensions.scrollHeight - 2 * vh.value) * 100, 100))
 
-    atEnd.value = Math.min(e.animatedScroll / (e.dimensions.scrollHeight - vh.value), 1) === 1
+    atEnd.value = Math.min(e.animatedScroll / (e.dimensions.scrollHeight - vh.value * 1.2), 1) === 1
 
     const h = e.dimensions.scrollHeight
     clipPercentage.value = N.iLerp(e.animatedScroll, h - 2 * vh.value, h - vh.value)
