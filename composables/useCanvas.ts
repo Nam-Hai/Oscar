@@ -15,7 +15,9 @@ export function canvasInject<T>(key: string, defaultValue?: T) {
     function provider(value: T) {
         canvasRecord.set(key, value)
 
-        return () => canvasRecord.delete(key)
+        return () => {
+            canvasRecord.delete(key)
+        }
     }
 
     function use(): T {

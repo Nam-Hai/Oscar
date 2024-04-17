@@ -6,13 +6,17 @@
         </div>
     </Teleport>
 
-    <h1 :class="{ hide: menuHide }">
-        playground
-        ({{ copy.length }})
+    <h1 :class="{ hide: menuHide }" ref="titleRef">
+        <span class="overflow" v-for="char in `playground&nbsp;(${copy.length})`"><span class="overflow-content">
+                {{ char }}
+            </span></span>
+        <!-- playground ({{ copy.length }}) -->
     </h1>
     <div class="placeholder__fixed-media__container">
         <div class="placeholder__fixed-media" v-for="( { src, ratio, height, width }, index) in copy" :data-src="src"
-            :key="index" :style='{ aspectRatio: ratio, width: ratio > 1 ? "80rem" : "", height: ratio < 1 ? "100%" : ratio == 1 ? "70vh" : ""  }' ref="placeholderFixedRefs">
+            :key="index"
+            :style='{ aspectRatio: ratio, width: ratio > 1 ? "80rem" : "", height: ratio < 1 ? "100%" : ratio == 1 ? "70vh" : "" }'
+            ref="placeholderFixedRefs">
         </div>
     </div>
     <div class="placeholder-container" ref="placeholderContainerRef">
@@ -24,6 +28,7 @@
 
 <script lang="ts" setup>
 import { usePlaygroundCanvas } from '~/scene/Pages/PlaygroundCanvas';
+import { onFlow } from '~/waterflow/composables/onFlow';
 
 const { copy, containerHeight } = useStorePlayground()
 
@@ -41,25 +46,51 @@ const playgroundCanvas = usePlaygroundCanvas()
 const placeholderRefs = ref() as Ref<HTMLElement[]>
 const placeholderFixedRefs = ref() as Ref<HTMLElement[]>
 const placeholderContainerRef = ref() as Ref<HTMLElement>
-onMounted(() => {
+
+const titleRef = ref()
+
+onFlow(() => {
     for (let index = 0; index < placeholderRefs.value.length; index++) {
         const el = placeholderRefs.value[index]
         const fixed = placeholderFixedRefs.value[index]
         playgroundCanvas.addMedia(el, fixed)
     }
+    const tl = useTL()
+    const spans = N.getAll(".overflow-content", titleRef.value)
+    for (const [index, char] of spans.entries()) {
+        tl.from({
+            el: char,
+            d: 1000,
+            delay: 25 * index,
+            e: 'o4',
+            p: {
+                y: [-110, 0]
+            }
+        })
+    }
+    tl.play()
 })
 
 useRO(({ scale }) => {
     containerHeight.value = placeholderContainerRef.value.getBoundingClientRect().height + 16 * scale
 })
 
-
 </script>
 
 <style lang="scss" scoped>
 @use "@/styles/shared.scss" as *;
 
+.overflow-content {
+    // transform: translate(0);
+}
+
+.overflow {
+    padding: 3.2rem;
+    margin: -3.2rem;
+}
+
 h1 {
+    width: 149rem;
     position: fixed;
     top: 50%;
     left: 50%;

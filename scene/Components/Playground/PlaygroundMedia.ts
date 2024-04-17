@@ -7,7 +7,7 @@ import { basicVer } from "~/scene/shaders/BasicVer";
 import { Motion } from "~/plugins/core/motion";
 
 const { vh, vw, scale, breakpoint, mouse, scrollLenis } = useStoreView();
-const { containerHeight, showMore } = useStorePlayground()
+const { containerHeight, showMore, index } = useStorePlayground()
 const { menuHide } = useStore();
 
 export class PlaygroundMedia extends CanvasNode {
@@ -47,14 +47,12 @@ export class PlaygroundMedia extends CanvasNode {
         this.fixed = props.fixed
 
         this.src = N.Ga(this.el, "data-src") || "/Assets/Home/01_Home_Viadomo.webp"
-        console.log(this.src);
         this.uLoaded = { value: 0 };
 
         this.raf = useRafR(this.update);
 
         this.loadTexture()
         this.mount();
-        this.init();
 
         this.onDestroy(() => this.raf.stop());
     }
@@ -98,27 +96,27 @@ export class PlaygroundMedia extends CanvasNode {
             d: 500,
 
             update: ({ progE }) => {
-                this.mesh.position.x = 0
+                // this.mesh.position.x = 0
             }
         }).from({
-            d: 1200,
+            d: 1800,
             e: 'o4',
             update: ({ progE }) => {
                 this.mesh.position.y = (this.positionEl.y + this.scrollPosition + this.offset + 400 * (1 - progE)) * this.canvasSize.height / vh.value
             }
         }).from({
-            d: 1000,
-            delay: 500,
+            d: 2000,
+            delay: 0,
             // e: 'o4',
             update: ({ progE }) => {
-                this.mesh.position.x = (this.positionEl.x * N.Ease.o3(progE)) * this.canvasSize.width / vw.value
+                this.mesh.position.x = (this.positionEl.x * N.Ease.io4(progE)) * this.canvasSize.width / vw.value
             },
             cb: () => {
                 useLenisGL(this, this.onScroll)
+                this.raf.run();
             }
         }).play()
         this.onDestroy(() => resizeUnWatch())
-        this.raf.run();
     }
 
     onScroll(e: LenisEvent) {
@@ -148,43 +146,48 @@ export class PlaygroundMedia extends CanvasNode {
         const uShow = { value: 0 }
 
         let m = new Motion({ d: 150 })
-        watch(hover, h => {
-            menuHide.value = h
-            showMore.value = h ? this.id : -1
+        useDelay(500, () => {
+            this.init();
+            watch(hover, h => {
+                menuHide.value = h
+                index.value = h ? this.id : -1
+                showMore.value = h ? this.index + 1 : -1
 
-            m.pause()
-            const from = uHover.value
-            const to = h
+                m.pause()
+                const from = uHover.value
+                const to = h
 
-            m = new Motion({
-                d: 150,
-                update({ prog, progE }) {
-                    uHover.value = N.Lerp(from, to, prog)
-                },
+                m = new Motion({
+                    d: 150,
+                    update({ prog, progE }) {
+                        uHover.value = N.Lerp(from, to, prog)
+                    },
+                })
+                m.play()
+            }, { immediate: true })
+
+
+            let motion = new Motion({
+                d: 300,
+                update: ({ progE }) => {
+
+                }
             })
-            m.play()
-        }, { immediate: true })
+            watch(index, b => {
+                motion.pause()
+                const from = uShow.value
+                const to = b === this.id || b === -1 ? 1 : 0
 
+                motion = new Motion({
+                    d: 150,
+                    update({ prog, progE }) {
+                        uShow.value = N.Lerp(from, to, prog)
+                    },
+                })
+                motion.play()
+            }, { immediate: true })
 
-        let motion = new Motion({
-            d: 300,
-            update: ({ progE }) => {
-
-            }
         })
-        watch(showMore, b => {
-            motion.pause()
-            const from = uShow.value
-            const to = b === this.id || b === -1 ? 1 : 0
-
-            motion = new Motion({
-                d: 150,
-                update({ prog, progE }) {
-                    uShow.value = N.Lerp(from, to, prog)
-                },
-            })
-            motion.play()
-        }, { immediate: true })
 
 
         const program = new Program(this.gl, {

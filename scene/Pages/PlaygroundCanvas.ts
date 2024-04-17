@@ -47,7 +47,6 @@ export class PlaygroundCanvas extends CanvasPage {
 
 
         this.medias = []
-        this.mount()
 
         this.onDestroy(() => this.raf.kill())
     }
@@ -58,6 +57,7 @@ export class PlaygroundCanvas extends CanvasPage {
 
 
         this.onDestroy(() => resizeUnWatch())
+        this.mount()
     }
 
     mount() {
@@ -70,6 +70,8 @@ export class PlaygroundCanvas extends CanvasPage {
     }
 
     addMedia(el: HTMLElement, fixed: HTMLElement) {
+
+        console.log('addmedia');
         const media = new PlaygroundMedia(this.gl, { index: this.medias.length, el, fixed })
         this.medias.push(media)
         this.add(media)

@@ -43,9 +43,9 @@ export class IndexCanvas extends CanvasPage {
 		this.onDestroy(() => this.ro.off());
 		this.onDestroy(() => this.raf.kill());
 
-		this.mount();
 	}
 	init() {
+		this.mount();
 		this.raf.run();
 		this.ro.on();
 	}
@@ -73,7 +73,7 @@ export class IndexCanvas extends CanvasPage {
 		this.add(new HomeMedia(this.gl));
 	}
 
-	resize({ vh, vw, scale, breakpoint }: ResizeEvent) {}
+	resize({ vh, vw, scale, breakpoint }: ResizeEvent) { }
 
 	render(e: rafEvent) {
 		this.renderer.render({

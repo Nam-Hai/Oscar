@@ -73,10 +73,11 @@ const PLAYGROUND_COPY = [
     },
 ]
 export const useStorePlayground = createStore(() => {
-    const copy = [...PLAYGROUND_COPY ]
+    const copy = [...PLAYGROUND_COPY]
     const containerHeight = ref(1)
 
     const showMore = ref(-1)
+    const index = ref(-1)
 
-    return { copy, containerHeight, showMore }
+    return { copy, containerHeight, showMore, index }
 })
