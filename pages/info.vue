@@ -1,13 +1,15 @@
 <template>
     <main ref="wrapperRef">
         <p>
-            A digital designer originally from Spain and based in Madrid, specialised in visual and interface design. Always
+            A digital designer originally from Spain and based in Madrid, specialised in visual and interface design.
+            Always
             willing to create meaningful pieces where creativity and excitement harmonise as the main driving engine.
             Additionally, a curious individual constantly exploring new skills and interests, including art direction,
             branding, and motion design. Also, passionate about various forms of design, such as editorial and fashion.
         </p>
         <p>
-            Worked for different studios and agencies - Hanzo Studio, The Cocktail, Acute Brand.<br> Currently seeking new
+            Worked for different studios and agencies - Hanzo Studio, The Cocktail, Acute Brand.<br> Currently seeking
+            new
             opportunities and willing to relocate.
         </p>
         <div class="menu">
@@ -28,7 +30,11 @@
             <div class="footer">
                 <span>@2024</span>
                 <div>
-                    <span>Design by Oscar Pico.</span>
+                    <span>Design by
+                        <span ref="oscarRef" @mouseenter="hoverMenu($event, 'oscar')" @mouseleave="leave()">
+                            <NuxtLink v-cursor-hover to="/">Oscar Pico.</NuxtLink>
+                        </span>
+                    </span>
                     <span>Code by
                         <span ref="namRef" @mouseenter="hoverMenu($event, 'nam')" @mouseleave="leave()">
                             <NuxtLink v-cursor-hover to="https://twitter.com/_NamHai">Nam Hai.</NuxtLink>
@@ -50,6 +56,7 @@ const emailRef = ref() as Ref<HTMLElement>
 const linkedinRef = ref()
 const twitterRef = ref()
 const instaRef = ref()
+const oscarRef = ref()
 const namRef = ref()
 const bounds = {
     email: { x: 0, y: 0, width: 0, height: 0 },
@@ -57,6 +64,7 @@ const bounds = {
     twitter: { x: 0, y: 0, width: 0, height: 0 },
     insta: { x: 0, y: 0, width: 0, height: 0 },
     nam: { x: 0, y: 0, width: 0, height: 0 },
+    oscar: { x: 0, y: 0, width: 0, height: 0 },
 }
 
 useRO(() => {
@@ -65,6 +73,7 @@ useRO(() => {
     bounds.twitter = twitterRef.value.getBoundingClientRect()
     bounds.insta = instaRef.value.getBoundingClientRect()
     bounds.nam = namRef.value.getBoundingClientRect()
+    bounds.oscar = oscarRef.value.getBoundingClientRect()
 })
 onFlow(async () => {
     await nextTick()
@@ -74,6 +83,7 @@ onFlow(async () => {
         bounds.twitter = twitterRef.value.getBoundingClientRect()
         bounds.insta = instaRef.value.getBoundingClientRect()
         bounds.nam = namRef.value.getBoundingClientRect()
+        bounds.oscar = oscarRef.value.getBoundingClientRect()
     })
 })
 
@@ -205,4 +215,3 @@ a:hover {
     color: transparent;
 }
 </style>
-
