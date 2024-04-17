@@ -71,10 +71,20 @@ const LAZY_MANIFEST = {
     "/Assets/Mapfre_Salud/output_9.webp",
     "/Assets/Mapfre_Salud/output_10.webp",
     "/Assets/Mapfre_Salud/output_11.webm",
+
+    "/Assets/Playground/playground_1.webp",
+    "/Assets/Playground/playground_2.webp",
+    "/Assets/Playground/playground_3.webp",
+    "/Assets/Playground/playground_4.webp",
+    "/Assets/Playground/playground_5.webp",
+    "/Assets/Playground/playground_6.webp",
+    "/Assets/Playground/playground_7.webp",
+    "/Assets/Playground/playground_8.webp",
+    "/Assets/Playground/playground_9.webp",
+    "/Assets/Playground/playground_10.webp",
+    "/Assets/Playground/playground_11.webp",
+    "/Assets/Playground/playground_12.webp",
   ],
-  info: [
-    "/Assets/info/Oscar_Pico.png"
-  ]
 }
 
 class QLoader {

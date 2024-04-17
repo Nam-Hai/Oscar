@@ -12,11 +12,11 @@
     </h1>
     <div class="placeholder__fixed-media__container">
         <div class="placeholder__fixed-media" v-for="( { src, ratio, height, width }, index) in copy" :data-src="src"
-            :key="index" :style='{ aspectRatio: ratio, width: ratio > 1 ? "80rem" : "", height: ratio < 1 ? "100%" : ""  }' ref="placeholderFixedRefs">
+            :key="index" :style='{ aspectRatio: ratio, width: ratio > 1 ? "80rem" : "", height: ratio < 1 ? "100%" : ratio == 1 ? "70vh" : ""  }' ref="placeholderFixedRefs">
         </div>
     </div>
     <div class="placeholder-container" ref="placeholderContainerRef">
-        <div class="placeholder" v-for="  { src, ratio }   in   copy  " :data-src="src" :style="{ aspectRatio: ratio }"
+        <div class="placeholder" v-for="{ src, ratio } in copy" :data-src="src" :style="{ aspectRatio: ratio }"
             ref="placeholderRefs">
         </div>
     </div>

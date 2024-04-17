@@ -31,6 +31,7 @@ export class PlaygroundMedia extends CanvasNode {
     mesh!: Mesh;
     fixedMesh!: Mesh;
     fixed: HTMLElement;
+    veloTarget: number = 0;
     constructor(
         gl: OGLRenderingContext,
         props: {
@@ -45,7 +46,8 @@ export class PlaygroundMedia extends CanvasNode {
         this.el = props.el
         this.fixed = props.fixed
 
-        this.src = N.Ga(this.el, "data-src") || "/Assets/Home/1.jpg"
+        this.src = N.Ga(this.el, "data-src") || "/Assets/Home/01_Home_Viadomo.webp"
+        console.log(this.src);
         this.uLoaded = { value: 0 };
 
         this.raf = useRafR(this.update);
@@ -122,7 +124,7 @@ export class PlaygroundMedia extends CanvasNode {
     onScroll(e: LenisEvent) {
         this.scrollPosition = e.animatedScroll
         const velo = Math.min(Math.abs(e.velocity), 50) / 50
-        this.uVelo.value = N.Lerp(this.uVelo.value, velo, 0.1)
+        this.veloTarget = velo
 
         if (this.scrollPosition + this.positionEl.y + this.offset > vh.value) {
             this.offset -= containerHeight.value
@@ -130,7 +132,7 @@ export class PlaygroundMedia extends CanvasNode {
             this.offset += containerHeight.value
         }
 
-        this.computeCoord()
+        // this.computeCoord()
     }
 
     mount() {
@@ -237,6 +239,8 @@ export class PlaygroundMedia extends CanvasNode {
     }
 
     update(e: rafEvent) {
+        this.uVelo.value = N.Lerp(this.uVelo.value, this.veloTarget, 0.1)
+        this.computeCoord()
     }
 
     onResize(canvasSize: { width: number; height: number }) {
@@ -286,7 +290,7 @@ export class PlaygroundMedia extends CanvasNode {
 }
 
 const fragment = /* glsl */ `#version 300 es
-#define borderWidth 2.
+#define borderWidth 1.
 precision highp float;
 
 uniform sampler2D tMap;

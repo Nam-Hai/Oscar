@@ -1,6 +1,6 @@
 const useStore = createStore(() => {
 
-  const isMobile = ref(false);
+  const isMobile: Ref<boolean | undefined>= ref(undefined);
 
   const pageLoaded = ref(false);
 

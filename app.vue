@@ -44,24 +44,28 @@ if (matcher.matches) {
 
 let waitBeforeMount = ref(false)
 
-const { isMobile, firstRedirect, menuHide } = useStore()
 onBeforeMount(() => {
   useStoreView().init()
+  const { isMobile, firstRedirect, menuHide } = useStore()
 
   const m = window.matchMedia('(pointer: coarse)').matches
   isMobile.value = m
+  console.log(isMobile.value);
 
   waitBeforeMount.value = true
+  console.log(waitBeforeMount.value, refreshPls.value);
 })
 
 useRO(() => {
   const m = window.matchMedia('(pointer: coarse)').matches
+  const { isMobile, firstRedirect, menuHide } = useStore()
   isMobile.value = m
 })
 
-
+const { isMobile } = useStore()
 const refreshPls = ref(false)
-watch(isMobile, () => {
+watch(isMobile, (newValue, oldValue) => {
+  if (oldValue === undefined) return
   refreshPls.value = true
 })
 
