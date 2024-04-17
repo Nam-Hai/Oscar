@@ -62,6 +62,10 @@ onFlow(async () => {
         margin: 4.8rem auto;
     }
 
+    @include breakpoint(desktop) {
+
+        height: 92rem;
+    }
 
     div:first-child {
         height: 100%;

@@ -198,6 +198,7 @@ useRO(({ scale: s }) => {
         h1 {
             justify-content: space-between;
             width: 100%;
+            line-height: 85%;
 
             will-change: width;
 
