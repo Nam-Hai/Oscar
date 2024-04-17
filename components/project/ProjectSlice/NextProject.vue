@@ -147,7 +147,7 @@ onLeave(() => {
     position: relative;
     top: 0;
     // background-color: white;
-    height: 100vh;
+    height: var(--100vh);
     width: 100vw;
     top: 0;
     color: $white;
