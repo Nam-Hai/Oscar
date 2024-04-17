@@ -2,6 +2,7 @@ import { Mesh, Plane, Program, Texture, Transform } from "ogl";
 import type { OGLRenderingContext } from "ogl";
 import { CanvasNode } from "../../utils/types";
 import type { RafR, Timer, rafEvent } from "~/plugins/core/raf";
+import { Timeline } from "/Users/namhai/Documents/Code/Oscar/plugins/core/motion";
 import { useCanvasReactivity } from "../../utils/WebGL.utils";
 // import { Pane } from "tweakpane";
 
@@ -33,14 +34,11 @@ export class HomeMedia extends CanvasNode {
 	uProgress: { value: number };
 	currentMesh!: Mesh;
 	textures: Texture[];
-	scroll: number[] = [0, 0];
 	onChangeImmediate: boolean;
-	scrollOn: boolean;
-	scrollTimer: Timer;
-	scrollStart = 0;
-	scrollDistance = 0;
 	waitAnimation: boolean;
-	scrollResetTL: import("/Users/namhai/Documents/Code/Oscar/plugins/core/motion").Timeline;
+	oldMesh: Mesh | undefined;
+	lastIndex: number = currentIndex.value;
+	scrollArray: { on: { value: boolean; }; distance: { value: number; }; start: { value: number; }; tl: Timeline; timer: Timer; }[];
 	constructor(gl: OGLRenderingContext, options?: null) {
 		super(gl);
 
@@ -90,23 +88,32 @@ export class HomeMedia extends CanvasNode {
 		};
 
 		this.onChangeImmediate = false;
-		this.scrollOn = false;
-		this.scrollResetTL = useTL();
-		this.scrollTimer = useTimer(() => {
-			this.scrollOn = false;
-			this.scrollResetTL.reset();
-			const distFrom = this.scrollDistance;
 
-			this.scrollResetTL
-				.from({
+		this.scrollArray = N.Arr.create(length).map(() => {
+			let on = { value: false }
+			let distance = { value: 0 }
+			let start = { value: 0 }
+
+			const tl = useTL()
+			const timer = useTimer(() => {
+				on.value = false;
+				tl.reset();
+				const distFrom = distance.value;
+
+
+				tl.from({
 					e: "io3",
 					d: 800,
 					update: ({ progE }) => {
-						this.scrollDistance = distFrom * (1 - progE);
+						distance.value = distFrom * (1 - progE);
 					},
-				})
-				.play();
-		}, 180);
+				}).play();
+			}, 180)
+			return {
+				on, distance, start, tl, timer
+			}
+		})
+
 		this.waitAnimation = false;
 
 		this.raf = useRafR(this.update);
@@ -150,18 +157,24 @@ export class HomeMedia extends CanvasNode {
 		velocity: number;
 		animatedScroll: number;
 	}) {
-		if (!this.scrollOn) {
-			this.scrollOn = true;
-			this.scrollStart = e.animatedScroll - this.scrollDistance;
-			this.scrollResetTL.reset();
-			return;
-		}
-		this.scrollDistance = e.animatedScroll - this.scrollStart;
+		for (const scrollWrapper of this.scrollArray) {
 
-		this.scrollTimer.tick();
+			if (!scrollWrapper.on.value) {
+				scrollWrapper.on.value = true;
+				scrollWrapper.start.value = e.animatedScroll - scrollWrapper.distance.value;
+				scrollWrapper.tl.reset();
+				return;
+			}
+			scrollWrapper.distance.value = e.animatedScroll - scrollWrapper.start.value;
+
+			if (Math.abs(e.velocity) > 0.1) {
+				scrollWrapper.timer.tick();
+			}
+		}
 	}
 	onChange(nextId: number) {
 		const oldMesh = this.currentMesh
+		this.oldMesh = oldMesh
 		const currentMesh = this.createPlane(nextId)
 		this.currentMesh = currentMesh
 		let added = false
@@ -180,6 +193,17 @@ export class HomeMedia extends CanvasNode {
 				cb: () => {
 				},
 			})
+		} else {
+			tl.from({
+				d: DURATION + DELAY_IN,
+				update({ prog, progE }) {
+				},
+				cb: () => {
+					if (!this.oldMesh) return
+					this.oldMesh.setParent(null)
+					this.oldMesh = undefined
+				}
+			})
 		}
 
 		tl.from({
@@ -195,12 +219,13 @@ export class HomeMedia extends CanvasNode {
 			},
 			cb: () => {
 
+				const scrollWrapper = this.scrollArray[nextId]
 				this.waitAnimation = false;
 				this.onChangeImmediate = false;
 
-				this.scrollOn = false;
-				this.scrollDistance = 0;
-				this.scrollTimer.stop();
+				scrollWrapper.on.value = false;
+				scrollWrapper.distance.value = 0;
+				scrollWrapper.timer.stop();
 				oldMesh.setParent(null)
 			}
 		}).play()
@@ -277,21 +302,44 @@ export class HomeMedia extends CanvasNode {
 	}
 
 	update(e: rafEvent) {
-		const currentMesh = this.currentMesh;
-
 		const distTrigger = 2000;
-		const f =
-			Math.min(Math.abs(this.scrollDistance), distTrigger) / distTrigger;
-		progress.value = N.Clamp(f, 0, 0.4) / 0.4
+		{
 
-		if (!this.waitAnimation) {
-			currentMesh.program.uniforms.uOutProgress.value = f;
+			const currentMesh = this.currentMesh;
+
+			const scrollWrapper = this.scrollArray[currentIndex.value]
+			const distance = scrollWrapper.distance.value
+			const f = Math.abs(distance) / distTrigger;
+			progress.value = Math.sign(distance) * N.Clamp(f, 0, 0.4) / 0.4
+
+			const dir = distance > 0 ? 1 : -1;
+
+			if (!this.waitAnimation) {
+				currentMesh.program.uniforms.uOutProgress.value = Math.sign(distance) * f;
+				if (dir < 0) {
+					currentMesh.position.z = f * 1
+				}
+			}
+			if (f >= 0.4 && !this.waitAnimation) {
+				this.waitAnimation = true
+				this.onChangeImmediate = true;
+				this.lastIndex = currentIndex.value
+				currentIndex.value = N.mod(currentIndex.value + dir, length);
+			}
 		}
-		if (f >= 0.4 && !this.waitAnimation) {
-			this.waitAnimation = true
-			this.onChangeImmediate = true;
-			const dir = this.scrollDistance > 0 ? 1 : -1;
-			currentIndex.value = N.mod(currentIndex.value + dir, length);
+		{
+			const currentMesh = this.oldMesh;
+			if (!currentMesh) return
+			const index = N.mod(this.lastIndex, length)
+			const scrollWrapper = this.scrollArray[index]
+			const distance = scrollWrapper.distance.value
+			const f = Math.abs(distance) / distTrigger;
+			const dir = distance > 0 ? 1 : -1;
+
+			currentMesh.program.uniforms.uOutProgress.value = Math.sign(distance) * f;
+			if (dir < 0) {
+				currentMesh.position.z = f * 1
+			}
 		}
 	}
 
