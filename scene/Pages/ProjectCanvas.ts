@@ -48,6 +48,7 @@ export class ProjectCanvas extends CanvasPage {
 		this.ro = useROR(this.resize);
 		this.raf = useRafR(this.render, RafPriority.LAST);
 
+		this.mount();
 
 		this.onDestroy(() => this.ro.off());
 		this.onDestroy(() => this.raf.kill());
@@ -55,7 +56,6 @@ export class ProjectCanvas extends CanvasPage {
 	init() {
 		this.raf.run();
 		this.ro.on();
-		this.mount();
 	}
 
 	mount() {

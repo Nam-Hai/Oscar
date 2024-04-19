@@ -5,7 +5,7 @@
                 <img :src="data.data.src_1.src" alt="project_image_5_1"
                     v-if="isMobile && data.data.src_1.type === 'image'" />
 
-                <video v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline disableremoteplayback="true" muted
+                <video disablePictureInPicture v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline disableremoteplayback="true" muted
                     loop autoplay>
                     <source :src="data.data.src_1.src" :type="data.data.src_1.type">
                 </video>
@@ -14,7 +14,7 @@
                 <img :src="data.data.src_2.src" alt="project_image_5_2"
                     v-if="isMobile && data.data.src_2.type === 'image'" />
 
-                <video v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline disableremoteplayback="true" muted
+                <video disablePictureInPicture v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline disableremoteplayback="true" muted
                     loop autoplay>
                     <source :src="data.data.src_2.src" :type="data.data.src_2.type">
                 </video>
@@ -23,7 +23,7 @@
                 <img :src="data.data.src_3.src" alt="project_image_5_3"
                     v-if="isMobile && data.data.src_3.type === 'image'" />
 
-                <video v-if="isMobile && data.data.src_3.type[0] === 'v'" playsinline disableremoteplayback="true" muted
+                <video disablePictureInPicture v-if="isMobile && data.data.src_3.type[0] === 'v'" playsinline disableremoteplayback="true" muted
                     loop autoplay>
                     <source :src="data.data.src_3.src" :type="data.data.src_3.type">
                 </video>

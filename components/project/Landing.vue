@@ -41,6 +41,7 @@ const { isMobile } = useStore()
 const { breakpoint, vw } = useStoreView()
 
 const fs = useCanvasMainImageProject().firstScroll
+
 let leave = false
 onLeave(() => {
     leave = true
