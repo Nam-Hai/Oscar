@@ -4,8 +4,8 @@
             <img :src="data.data.src_1.src" alt="project_image_E_1"
                 v-if="isMobile && data.data.src_1.type === 'image'" />
 
-            <video disablePictureInPicture v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline disableremoteplayback="true" muted
-                loop autoplay>
+            <video disablePictureInPicture v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline
+                disableremoteplayback="true" muted loop autoplay>
                 <source :src="data.data.src_1.src" :type="data.data.src_1.type">
             </video>
 
@@ -15,8 +15,8 @@
             <img :src="data.data.src_2.src" alt="project_image_E_2"
                 v-if="isMobile && data.data.src_2.type === 'image'" />
 
-            <video disablePictureInPicture v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline disableremoteplayback="true" muted
-                loop autoplay>
+            <video disablePictureInPicture v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline
+                disableremoteplayback="true" muted loop autoplay>
                 <source :src="data.data.src_2.src" :type="data.data.src_2.type">
             </video>
         </div>
@@ -58,18 +58,23 @@ onFlow(async () => {
     @include breakpoint(mobile) {
         column-gap: $side-margin;
         margin: 4.8rem 1.6rem;
-        height: 34.16rem;
+        // height: 34.16rem;
+        height: unset;
         width: calc(100% - 3.2rem);
     }
+
+    height: 59.6rem;
 }
 
 .data-img {
     height: 100%;
     width: 27.7rem;
 
+
     @include breakpoint(mobile) {
-        width: unset;
+        // width: 15.8rem;
         flex-grow: 1;
+        aspect-ratio: 158 / 341;
 
         img,
         video {

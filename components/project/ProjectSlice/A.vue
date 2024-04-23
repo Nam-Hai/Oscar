@@ -64,6 +64,7 @@ onFlow(async () => {
 
     @include breakpoint(mobile) {
         flex-direction: column;
+        align-items: center;
         row-gap: 4.8rem;
         margin: 4.8rem auto;
     }
@@ -75,8 +76,9 @@ onFlow(async () => {
     // background-color: $placeholder-grey;
 
     @include breakpoint(mobile) {
-        width: 34.3rem;
-        height: 48rem;
+        aspect-ratio: 343 / 420;
+        width: 100%;
+        height: unset;
     }
 }
 </style>

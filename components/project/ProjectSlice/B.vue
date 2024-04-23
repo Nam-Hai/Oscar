@@ -62,6 +62,8 @@ onFlow(async () => {
 
     @include breakpoint(mobile) {
         flex-direction: column;
+        row-gap: 4.8rem;
+        align-items: center;
         margin: 4.8rem auto;
     }
 
@@ -71,7 +73,8 @@ onFlow(async () => {
         height: 100%;
 
         @include breakpoint(mobile) {
-            width: 30rem;
+            width: calc(100% - 4.3rem);
+            aspect-ratio: 300 / 420;
         }
     }
 
@@ -85,6 +88,11 @@ onFlow(async () => {
     div:nth-child(2) {
         height: 100%;
         flex-grow: 1;
+
+        @include breakpoint(mobile) {
+            width: 100%;
+            aspect-ratio: 343 / 420;
+        }
     }
 
 }

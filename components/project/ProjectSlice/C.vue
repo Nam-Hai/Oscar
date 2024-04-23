@@ -4,8 +4,8 @@
             <img :src="data.data.src_1.src" alt="project_image_C_1"
                 v-if="isMobile && data.data.src_1.type === 'image'" />
 
-            <video disablePictureInPicture v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline disableremoteplayback="true" muted
-                loop autoplay>
+            <video disablePictureInPicture v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline
+                disableremoteplayback="true" muted loop autoplay>
                 <source :src="data.data.src_1.src" :type="data.data.src_1.type">
             </video>
 
@@ -14,8 +14,8 @@
             <img :src="data.data.src_2.src" alt="project_image_C_2"
                 v-if="isMobile && data.data.src_2.type === 'image'" />
 
-            <video disablePictureInPicture v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline disableremoteplayback="true" muted
-                loop autoplay>
+            <video disablePictureInPicture v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline
+                disableremoteplayback="true" muted loop autoplay>
                 <source :src="data.data.src_2.src" :type="data.data.src_2.type">
             </video>
 
@@ -72,8 +72,9 @@ onFlow(async () => {
         flex-grow: 1;
 
         @include breakpoint(mobile) {
-            width: 34.3rem;
-            height: 42rem;
+            aspect-ratio: 343 / 420;
+            width: 100%;
+            height: unset;
         }
     }
 
@@ -82,8 +83,9 @@ onFlow(async () => {
         height: 100%;
 
         @include breakpoint(mobile) {
-            width: 30rem;
-            height: 42rem;
+            aspect-ratio: 30 / 42;
+            width: calc(100% - $side-margin * 2);
+            height: unset;
         }
     }
 

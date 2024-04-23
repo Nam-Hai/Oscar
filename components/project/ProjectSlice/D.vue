@@ -52,8 +52,9 @@ onFlow(async () => {
     height: 47.4rem;
 
     @include breakpoint(mobile) {
-        width: 34.3rem;
-        height: 19.6rem;
+        width: calc(100% - 2 * $side-margin);
+        height: unset;
+        aspect-ratio: 343 / 196;
         img, video {
             border-radius: 2px;
         }
