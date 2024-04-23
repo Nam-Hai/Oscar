@@ -10,7 +10,8 @@
                         test
                     </h1> -->
 
-                    <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
+                    <h1 ref="titleRef" @mouseenter="hover = true; homeHover(true)"
+                        @mouseleave="hover = false; homeHover(false)">
                         <span v-for="(word, index) in words" class="overflow">
                             <span v-for="index in word.length" class="overflow-content">
                                 {{ word[index - 1] }}
@@ -51,6 +52,7 @@ const { currentIndex, length, nextPageTitleRef } = useStoreProject()
 const { pickerDark } = useCursorStore()
 const { homeStore } = useStoreStepper()
 const { isMobile } = useStore()
+const { homeHover } = useCursorStore()
 
 const nextIndex = (currentIndex.value + 1) % length
 const dataSrc = Object.keys(useManifest().textures.home)[nextIndex]

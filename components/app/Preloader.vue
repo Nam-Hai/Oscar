@@ -131,7 +131,10 @@ onMounted(() => {
 function endLoading() {
   canvas.preloader()
 
-  N.Class.add(N.get('.counter .overflow-content')!, 'hide')
+  const counter = N.get('.counter .overflow-content')
+  if (counter) {
+    N.Class.add(counter, 'hide')
+  }
 
 
   useDelay(3700, () => {
