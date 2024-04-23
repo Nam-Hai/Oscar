@@ -27,7 +27,8 @@
                         </span>
                     </div>
                     <div class="flavor-sub" ref="flavorSubRef">
-                        <div v-for="text in data.flavorSub" class="overflow">
+                        <div v-for="(text, index) in data.flavorSub" class="overflow">
+                            <span class="overflow-content">{{ data.flavorTitle[index] }}.</span>
                             <span class="overflow-content">
                                 {{ text }}
                             </span>
@@ -45,7 +46,6 @@
 <script lang="ts" setup>
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
 import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
-import { vCursorHover } from '~/directives/cursorActive';
 
 const { data: props } = defineProps<{ data: ISlice }>()
 const { currentIndex, length, nextPageTitleRef } = useStoreProject()
@@ -205,6 +205,9 @@ onLeave(() => {
     }
 
     .flavor-sub {
+
+        font-size: 1.2rem;
+        text-transform: uppercase;
         display: flex;
         flex-direction: column;
         row-gap: 0.8rem;
@@ -215,6 +218,10 @@ onLeave(() => {
             line-height: 100%;
             // height: 0.9rem;
             top: 0;
+
+            >span:first-child {
+                width: 5rem;
+            }
         }
     }
 }
