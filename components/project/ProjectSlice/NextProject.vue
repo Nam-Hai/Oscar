@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, yellow: hover }"
+            <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, hover: hover }"
                 :style="{ transform: translate }">Next Project</div>
         </div>
     </Teleport>
@@ -280,8 +280,8 @@ h1 {
         color: black
     }
 
-    &.yellow {
-        color: $yellow !important;
+    &.hover {
+        opacity: 0!important;
     }
 
     &.isTouchable {
