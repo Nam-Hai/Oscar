@@ -42,9 +42,10 @@
     </div>
 
     <div class="counter overflow">
-      <span class="overflow-content">
+      <!--<span class="overflow-content">
         {{ counter }}
       </span>
+    -->
     </div>
   </div>
   <slot v-if="preloaderComplete" />
