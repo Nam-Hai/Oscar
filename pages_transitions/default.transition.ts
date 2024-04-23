@@ -11,7 +11,6 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, reso
     // const scene = canvas.currentPage!.node
     const scene = canvas.scene
     const overlay = provider.props.overlay
-    const overlayTest = provider.props.overlayTest
     // 
     canvas.onChange(provider.getRouteTo())
     canvas.nextPage!.node.setParent(null)
@@ -62,38 +61,24 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, reso
         }
     }).from({
         d: DURATION / 2,
-        e: 'i2',
-        update: ({ prog, progE }) => {
-            overlayTest.value.style.clipPath = `inset(0 0 ${(1 - progE) * 100}% 0 )`
-        },
+        el: path,
+        e: 'o1',
+        svg: {
+            type: 'd',
+            start: pFrom,
+            end: pTo
+        }
     }).from({
         d: DURATION / 2,
+        el: path,
         delay: DURATION / 2,
         e: 'o1',
-        update: ({ prog, progE }) => {
-            overlayTest.value.style.clipPath = `inset(${progE * 100}% 0 0 0 )`
-        },
+        svg: {
+            type: 'd',
+            start: pTo,
+            end: pFrom
+        }
     })
-        .from({
-            d: DURATION / 2,
-            el: path,
-            e: 'o1',
-            svg: {
-                type: 'd',
-                start: pFrom,
-                end: pTo
-            }
-        }).from({
-            d: DURATION / 2,
-            el: path,
-            delay: DURATION / 2,
-            e: 'o1',
-            svg: {
-                type: 'd',
-                start: pTo,
-                end: pFrom
-            }
-        })
     tl.play()
 
 }
