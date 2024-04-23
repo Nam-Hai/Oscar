@@ -87,6 +87,13 @@ const titleTls = homeStore.map(() => {
 
 onFlow(() => {
   titleAnimations(currentIndex.value, (currentIndex.value + 1) % homeStore.length)
+
+  useDelay(70, () => {
+    const shadows = N.getAll(".shadow", mainRef.value)
+    for (const el of shadows) {
+      N.Class.add(el, "show")
+    }
+  })
 })
 
 watch(currentIndex, (i, old) => {
@@ -203,8 +210,9 @@ main {
   &.current {
     pointer-events: auto;
 
-    .shadow {
+    .shadow.show {
       opacity: 1;
+      background-color: #0000004c;
     }
   }
 
@@ -284,11 +292,11 @@ a {
   content: "";
   position: absolute;
   inset: 0rem -2rem -1rem -2rem;
-  background-color: #00000088;
+  background-color: #00000000;
   filter: blur(30px);
   z-index: -1;
   opacity: 0;
-  transition: opacity 500ms;
+  transition: opacity 1000ms, background-color 1000ms;
 }
 
 h1 {
