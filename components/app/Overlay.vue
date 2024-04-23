@@ -31,7 +31,7 @@ flowProvider.addProps("overlayTest", overlayRef)
     z-index: 200000;
     pointer-events: none;
     // opacity: 0;
-    color: $placeholder-grey;
+    color: #EFEEEE;
 
     svg {
         transform: translateY(-100%);

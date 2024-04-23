@@ -87,6 +87,11 @@ useRO(({ scale }) => {
 .overflow {
     padding: 3.2rem;
     margin: -3.2rem;
+
+    @include breakpoint(mobile) {
+        margin: -1rem;
+        padding: 1rem;
+    }
 }
 
 h1 {
@@ -159,7 +164,6 @@ h1 {
     margin: 1.6rem 1.6rem;
     height: calc(100% - 3.2rem);
     width: calc(100% - 3.2rem);
-
     pointer-events: none;
 }
 
