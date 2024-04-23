@@ -79,7 +79,7 @@ export default defineNuxtConfig({
                 {
                     key: "twitter:card",
                     name: "twitter:card",
-                    content: "summary_large_image",
+                    content: "summary",
                 }
             ],
             title: "Oscar Pico — Digital Designer",
