@@ -101,6 +101,8 @@ useRaf(() => {
     &.grow {
         &::after {
             transform: translate(-50%, -50%) scale(6.25);
+
+            background-color: white;
         }
     }
 
@@ -170,7 +172,7 @@ useRaf(() => {
         min-height: 32px;
         transform: translate(-50%, -50%);
         border-radius: 50%;
-        background-color: white;
+        background-color: currentColor;
         opacity: 0.1;
 
         transition-property: transform;

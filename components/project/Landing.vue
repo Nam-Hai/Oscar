@@ -274,6 +274,7 @@ useRO(({ scale: s }) => {
             justify-content: unset;
             row-gap: 3.2rem;
             height: unset;
+            text-align: center;
         }
 
         p {
@@ -287,6 +288,8 @@ useRO(({ scale: s }) => {
             @include breakpoint(mobile) {
                 width: 100%;
                 // prevent pin
+                font-size: 2.2rem;
+                line-height: 115%;
                 transform: translate3d(0) !important;
             }
 

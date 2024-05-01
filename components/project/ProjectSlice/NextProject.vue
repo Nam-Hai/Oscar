@@ -6,10 +6,6 @@
 
 
                 <div class="link" @click="navigateTo(data.link)">
-                    <!-- <h1 v-cursor-hover ref="titleRef" @mouseenter="hover = true" @mouseleave="hover = false">
-                        test
-                    </h1> -->
-
                     <h1 ref="titleRef" @mouseenter="hover = true; homeHover(true)"
                         @mouseleave="hover = false; homeHover(false)">
                         <span v-for="(word, index) in words" class="overflow">
@@ -235,6 +231,7 @@ a,
 }
 
 h1 {
+    cursor: pointer;
     text-transform: uppercase;
     text-align: center;
     font-weight: 500;

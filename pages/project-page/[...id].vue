@@ -51,7 +51,7 @@ onFlow(() => {
   scrollDisplayShow.value = true
 })
 onLeave(() => {
-  atEnd.value = false
+  useDelay(1000, () => atEnd.value = false)
 })
 
 const clipPercentage = ref(0)

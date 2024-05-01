@@ -1,6 +1,6 @@
 <template>
   <div class="menu__wrapper"
-    :class="{ dark: (router.currentRoute.value.name !== 'index' && router.currentRoute.value.name !== 'info') && !atEnd, init: menuInit, hide: menuHide }"
+    :class="{ dark: (route !== 'index' && route !== 'info') && !atEnd, init: menuInit, hide: menuHide }"
     ref="wrapperRef">
     <div class="home">
       <NuxtLink to="/" @mouseenter="hoverMenu($event, 'home')" @mouseleave="leave()" v-cursor-hover>
@@ -12,7 +12,7 @@
       </NuxtLink>
     </div>
     <div class="menu-grid">
-      <NuxtLink to="/info" :class="{ currentRoute: router.currentRoute.value.name == 'info' }" v-cursor-hover
+      <NuxtLink to="/info" :class="{ currentRoute: route == 'info' }" v-cursor-hover
         @mouseenter="hoverMenu($event, 'info')" @mouseleave="leave()">
         <span ref="infoRef" class="overflow">
           <span class="overflow-content">
@@ -21,9 +21,8 @@
         </span>
       </NuxtLink>
       ,
-      <NuxtLink to="/"
-        :class="{ currentRoute: router.currentRoute.value.name === 'index' || router.currentRoute.value.name === 'project-page-id' }"
-        v-cursor-hover @mouseenter="hoverMenu($event, 'projects')" @mouseleave="leave()">
+      <NuxtLink to="/" :class="{ currentRoute: route === 'index' || route === 'project-page-id' }" v-cursor-hover
+        @mouseenter="hoverMenu($event, 'projects')" @mouseleave="leave()">
 
         <span ref="projectsRef" class="overflow">
           <span class="overflow-content">
@@ -32,8 +31,8 @@
         </span>
       </NuxtLink>
       ,
-      <NuxtLink to="/playground" :class="{ currentRoute: router.currentRoute.value.name == 'playground' }"
-        v-cursor-hover @mouseenter="hoverMenu($event, 'playground')" @mouseleave="leave()">
+      <NuxtLink to="/playground" :class="{ currentRoute: route == 'playground' }" v-cursor-hover
+        @mouseenter="hoverMenu($event, 'playground')" @mouseleave="leave()">
         <span ref="playgroundRef" class="overflow">
           <span class="overflow-content">
             {{ "Playground" }}
@@ -49,6 +48,13 @@
 import { vCursorHover } from '~/directives/cursorActive';
 import { onFlow } from '~/waterflow/composables/onFlow';
 const router = useRouter()
+const route = ref(router.currentRoute.value.name)
+watch(router.currentRoute, (r) => {
+  useDelay(500, () => {
+    route.value = (r as any).name as string
+  })
+})
+
 // const { isHover: archiveHover } = useStoreArchive()
 const { overhide, target } = useCursorStore()
 const { atEnd } = useStoreProject()
