@@ -367,7 +367,8 @@ uniform float uHover;
 
 void main() {
     vec4 color = texture(tMap, vUv);
-    color = mix(vec4(0.886,0.886,0.886,1.), color, uLoaded);
+    // color = mix(vec4(0.886,0.886,0.886,1.), color, uLoaded);
+    color = mix(vec4(0,0.,1.,1.), color, uLoaded);
     color = mix(color, vec4(0.), 1. - uHover);
     FragColor[0] = vec4(color.rgba);
     FragColor[1] = uId;

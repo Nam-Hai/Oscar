@@ -100,7 +100,7 @@ useRaf(() => {
 
     &.grow {
         &::after {
-            transform: translate(-50%, -50%) scale(6.25);
+            transform: translate(-50%, -50%) scale(5);
 
             background-color: white;
         }

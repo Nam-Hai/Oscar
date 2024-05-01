@@ -50,9 +50,7 @@ import { onFlow } from '~/waterflow/composables/onFlow';
 const router = useRouter()
 const route = ref(router.currentRoute.value.name)
 watch(router.currentRoute, (r) => {
-  useDelay(500, () => {
-    route.value = (r as any).name as string
-  })
+  route.value = (r as any).name as string
 })
 
 // const { isHover: archiveHover } = useStoreArchive()
@@ -224,6 +222,19 @@ a {
 
   100% {
     transform: translateY(0);
+  }
+}
+
+.currentRoute {
+  &::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 1.5rem;
+    background-color: currentColor;
   }
 }
 </style>
