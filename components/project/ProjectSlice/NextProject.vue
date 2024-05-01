@@ -33,7 +33,8 @@
                 </div>
             </div>
 
-            <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, hover: hover }"
+            <div class="next"
+                :class="{ isTouchable: isMobile, dark: pickerDark, hover: hover, show: cursorState !== 'hover' }"
                 :style="{ transform: translate }" @click="navigateTo(data.link)">Next Project</div>
         </div>
     </Teleport>
@@ -43,6 +44,7 @@
 import { useProjectCanvas } from '~/scene/Pages/ProjectCanvas';
 import { onLeave, onSwap } from '~/waterflow/composables/onFlow';
 
+const { cursorState } = useCursorStore()
 const { data: props } = defineProps<{ data: ISlice }>()
 const { currentIndex, length, nextPageTitleRef } = useStoreProject()
 const { pickerDark } = useCursorStore()
@@ -281,6 +283,12 @@ h1 {
 
     &.dark {
         color: black
+    }
+
+    opacity: 0;
+
+    &.show {
+        opacity: 1;
     }
 
     color: $yellow !important;

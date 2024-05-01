@@ -1,8 +1,8 @@
 <template>
   <main class="project__wrapper" ref="wrapperRef">
     <Teleport to=".app__wrapper" v-if="isMobile != true">
-      <div class="scroll-display-f__wrapper" :style="{ clipPath: `inset(0 0 ${clipPercentage * 100}% 0)` }">
-        <div class="scroll-display-f" :class="{ dark: pickerDark, show: scrollDisplayShow }"
+      <div class="scroll-display-f__wrapper" :style="{ clipPath: `inset(0 0 ${clipPercentage * 0}% 0)` }">
+        <div class="scroll-display-f" :class="{ dark: pickerDark, show: scrollDisplayShow && cursorState !== 'hover' }"
           :style="{ transform: translate }">
           {{ scrollPercent }}
         </div>
@@ -21,7 +21,7 @@ import { projectFlowInMap, projectFlowOutMap } from '~/pages_transitions/project
 import { useCanvasMainImageProject } from '~/scene/Components/Project/MainImage';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 
-const { pickerDark } = useCursorStore()
+const { pickerDark, cursorState } = useCursorStore()
 const { isMobile } = useStore()
 const { mouseLag, vh } = useStoreView()
 const translate = computed(() => {
@@ -55,9 +55,9 @@ onLeave(() => {
 })
 
 const clipPercentage = ref(0)
+const mainImage = useCanvasMainImageProject()
 useLenisScroll((e) => {
   const lenis = useLenis()
-  const mainImage = useCanvasMainImageProject()
   if (!mainImage) return
   const firstScroll = mainImage.firstScroll
   if (firstScroll) {
