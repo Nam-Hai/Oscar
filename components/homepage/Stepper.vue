@@ -1,19 +1,19 @@
 <template>
-    <div ref="wrapperRef" class="stepper__wrapper hide" @mouseenter="stepperIsHovered = true"
-        @mouseleave="stepperIsHovered = false"
-        :style="{ width: stepperIsHovered ? (imageBounds.w + 8) * (length) + 'px' : 'unset' }">
-        <div class="left d">
-            {{ N.ZL(currentIndex + 1) }}
-        </div>
-        <div class="step__wrapper">
-            <div class="step" :class="{ active: i - 1 == currentIndex }" :key="i" v-for="i in length">
-            </div>
-        </div>
-        <div class="right d">
-            {{ N.ZL(length) }}
-        </div>
-
+  <div ref="wrapperRef" class="stepper__wrapper " @mouseenter="stepperIsHovered = true"
+    @mouseleave="stepperIsHovered = false"
+    :style="{ width: stepperIsHovered ? (imageBounds.w + 8) * (length) + 'px' : 'unset' }">
+    <div class="left d">
+      {{ N.ZL(currentIndex + 1) }}
     </div>
+    <div class="step__wrapper">
+      <div class="step" :class="{ active: i - 1 == currentIndex }" :key="i" v-for="i in length">
+      </div>
+    </div>
+    <div class="right d">
+      {{ N.ZL(length) }}
+    </div>
+
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -26,7 +26,25 @@ const wrapperRef = ref() as Ref<HTMLElement>
 
 let on = true
 onFlow(() => {
-    N.Class.remove(wrapperRef.value, 'hide')
+  // N.Class.remove(wrapperRef.value, 'hide')
+  N.O(wrapperRef.value, 0)
+  useTL().from({
+    el: wrapperRef.value,
+    p: {
+      y: [7, 0, 'rem'],
+      x: [-50, -50],
+    },
+    e: 'o2',
+    d: 1000,
+    delay: 200
+  }).from({
+    el: wrapperRef.value,
+    p: {
+      o: [0, 1]
+    },
+    d: 500,
+    delay: 200
+  }).play()
 })
 
 onLeave(() => {
@@ -42,6 +60,7 @@ onLeave(() => {
   bottom: min(5.2rem, 52px);
   left: 50%;
   transform: translateX(-50%);
+  transform: translate(-50%, 7rem);
 
   display: flex;
   column-gap: 16px;

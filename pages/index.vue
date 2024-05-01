@@ -76,6 +76,7 @@ function mainMove(e: MouseEvent) {
 const mainRef = ref()
 const { breakpoint } = useStoreView()
 const { homeStore, currentIndex, hideTrail } = useStoreStepper()
+currentIndex.value = 0
 hideTrail.value = true
 const { isMobile } = useStore()
 const flavorMainRef = ref()

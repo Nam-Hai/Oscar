@@ -86,23 +86,23 @@ function leave() {
   overhide.value = false
 }
 
-watch(manifestLoaded, b => {
-  const content = N.getAll('.overflow-content', wrapperRef.value)
-  const tl = useTL()
-  for (let index = 0; index < content.length; index++) {
-    const el = content[index]
-    tl.from({
-      el,
-      d: 1000,
-      e: 'o4',
-      delay: 5000 + 100 * index,
-      p: {
-        y: [-115, 0]
-      }
-    })
-  }
-  tl.play()
-})
+// watch(manifestLoaded, b => {
+//   const content = N.getAll('.overflow-content', wrapperRef.value)
+//   const tl = useTL()
+//   for (let index = 0; index < content.length; index++) {
+//     const el = content[index]
+//     tl.from({
+//       el,
+//       d: 1000,
+//       e: 'o4',
+//       delay: 5000 + 100 * index,
+//       p: {
+//         y: [-115, 0]
+//       }
+//     })
+//   }
+//   tl.play()
+// })
 
 </script>
 
@@ -172,6 +172,7 @@ a {
   }
 
   transition: opacity 150ms;
+
   &.hide {
     pointer-events: none;
     opacity: 0;
@@ -203,6 +204,20 @@ a {
         color: transparent;
       }
     }
+  }
+}
+
+// .overflow-content {
+//   animation: 1s ease-out 0s 1 slideInFromLeft;
+// }
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(0);
   }
 }
 </style>
