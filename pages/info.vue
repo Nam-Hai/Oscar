@@ -1,13 +1,13 @@
 <template>
     <main ref="wrapperRef">
-        <p>
+        <p v-text-split>
             A digital designer originally from Spain and based in Madrid, specialised in visual and interface design.
             Always
             willing to create meaningful pieces where creativity and excitement harmonise as the main driving engine.
             Additionally, a curious individual constantly exploring new skills and interests, including art direction,
             branding, and motion design. Also, passionate about various forms of design, such as editorial and fashion.
         </p>
-        <p>
+        <p v-text-split>
             Worked for different studios and agencies - Hanzo Studio, The Cocktail, Acute Brand.<br> Currently seeking
             new
             opportunities and willing to relocate.
@@ -15,30 +15,32 @@
         <div class="menu">
             <div class="link__container">
                 <span ref="emailRef" @mouseenter="hoverMenu($event, 'email')" @mouseleave="leave()">
-                    <NuxtLink to="" v-cursor-hover>EMAIL</NuxtLink>
+                    <NuxtLink to="" v-cursor-hover v-text-split>EMAIL</NuxtLink>
                 </span>
                 <span ref="linkedinRef" @mouseenter="hoverMenu($event, 'linkedin')" @mouseleave="leave()">
-                    <NuxtLink to="" v-cursor-hover>Linkedin</NuxtLink>
+                    <NuxtLink to="" v-cursor-hover v-text-split>Linkedin</NuxtLink>
                 </span>
                 <span ref="twitterRef" @mouseenter="hoverMenu($event, 'twitter')" @mouseleave="leave()">
-                    <NuxtLink to="" v-cursor-hover>Twitter</NuxtLink>
+                    <NuxtLink to="" v-cursor-hover v-text-split>Twitter</NuxtLink>
                 </span>
                 <span ref="instaRef" @mouseenter="hoverMenu($event, 'insta')" @mouseleave="leave()">
-                    <NuxtLink to="" v-cursor-hover>Instagram</NuxtLink>
+                    <NuxtLink to="" v-cursor-hover v-text-split>Instagram</NuxtLink>
                 </span>
             </div>
             <div class="footer">
-                <span>@2024</span>
+                <span class="margin" v-text-split>@2024</span>
                 <div>
-                    <span>Design by
-                        <span ref="oscarRef" @mouseenter="hoverMenu($event, 'oscar')" @mouseleave="leave()">
-                            <NuxtLink v-cursor-hover to="/">Oscar Pico.</NuxtLink>
-                        </span>
+                    <span v-text-split>Design by
                     </span>
-                    <span>Code by
-                        <span ref="namRef" @mouseenter="hoverMenu($event, 'nam')" @mouseleave="leave()">
-                            <NuxtLink v-cursor-hover to="https://twitter.com/_NamHai">Nam Hai.</NuxtLink>
-                        </span>
+                    <span ref="oscarRef" class="margin" @mouseenter="hoverMenu($event, 'oscar')" @mouseleave="leave()">
+                        <NuxtLink v-cursor-hover to="/" v-text-split>Oscar Pico.</NuxtLink>
+                    </span>
+                    <!-- </span> -->
+                    <span v-text-split>
+                        Code by
+                    </span>
+                    <span ref="namRef" @mouseenter="hoverMenu($event, 'nam')" @mouseleave="leave()">
+                        <NuxtLink v-cursor-hover to="https://twitter.com/_NamHai" v-text-split>Nam Hai.</NuxtLink>
                     </span>
                 </div>
             </div>
@@ -51,6 +53,9 @@ import { vCursorHover } from '~/directives/cursorActive';
 import { defaultFlowIn, defaultFlowOut } from '~/pages_transitions/default.transition';
 import { onFlow } from '~/waterflow/composables/onFlow';
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
+import { vTextSplit } from '~/directives/textSplit';
+const { index, reset } = useStoreTextSplit()
+reset()
 
 const emailRef = ref() as Ref<HTMLElement>
 const linkedinRef = ref()
@@ -138,7 +143,7 @@ main {
     line-height: 1.8rem;
 
     p:first-child {
-        width: 112rem;
+        width: 112.9rem;
 
         @include breakpoint(mobile) {
             width: 100%;
@@ -190,7 +195,7 @@ main {
                 }
             }
 
-            span:first-child {
+            .margin {
                 margin-right: 24rem;
 
                 @include breakpoint(mobile) {
@@ -200,7 +205,7 @@ main {
 
             span:nth-child(2) {
                 @include breakpoint(desktop) {
-                    margin-right: 3.4rem;
+                    margin-right: 4.2rem;
                 }
             }
         }
