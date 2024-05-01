@@ -234,7 +234,7 @@ useRO(({ scale: s }) => {
             display: flex;
             text-align: justify;
             font-size: 17.7rem;
-            line-height: 90%;
+            line-height: 85%;
             letter-spacing: -.177rem;
             font-weight: 500;
             text-transform: uppercase;

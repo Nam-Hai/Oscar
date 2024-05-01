@@ -125,7 +125,10 @@ function titleAnimations() {
 }
 
 onLeave(() => {
-    for (let i = tl.arr.length - 4; i < tl.arr.length; i++) {
+
+    const span = N.getAll(".overflow-content", titleRef.value)
+
+    for (let i = span.length; i < tl.arr.length; i++) {
         const motion = tl.arr[i]
         if (!motion) return
         motion.play({
@@ -276,12 +279,16 @@ h1 {
     // opacity: 0;
     transition: opacity 300ms, color 350ms;
 
+    text-transform: uppercase;
+
     &.dark {
         color: black
     }
 
+    color: $yellow !important;
+
     &.hover {
-        opacity: 0!important;
+        opacity: 0 !important;
     }
 
     &.isTouchable {
