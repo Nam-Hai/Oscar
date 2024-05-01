@@ -4,8 +4,8 @@
             <img :src="data.data.src_1.src" alt="project_image_A_1"
                 v-if="isMobile && data.data.src_1.type === 'image'" />
 
-            <video disablePictureInPicture v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline disableremoteplayback="true" muted
-                loop autoplay>
+            <video disablePictureInPicture v-if="isMobile && data.data.src_1.type[0] === 'v'" playsinline
+                disableremoteplayback="true" muted loop autoplay>
                 <source :src="data.data.src_1.src" :type="data.data.src_1.type">
             </video>
 
@@ -15,8 +15,8 @@
             <img :src="data.data.src_2.src" alt="project_image_A_2"
                 v-if="isMobile && data.data.src_2.type === 'image'" />
 
-            <video disablePictureInPicture v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline disableremoteplayback="true" muted
-                loop autoplay>
+            <video disablePictureInPicture v-if="isMobile && data.data.src_2.type[0] === 'v'" playsinline
+                disableremoteplayback="true" muted loop autoplay>
                 <source :src="data.data.src_2.src" :type="data.data.src_2.type">
             </video>
         </div>
@@ -79,6 +79,11 @@ onFlow(async () => {
         aspect-ratio: 343 / 420;
         width: 100%;
         height: unset;
+
+        img,
+        video {
+            border-radius: 4px;
+        }
     }
 }
 </style>

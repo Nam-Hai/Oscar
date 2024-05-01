@@ -99,5 +99,8 @@ onFlow(async () => {
 
 .data-img {
     // background-color: $placeholder-grey;
+    img,video {
+        border-radius: 4px;
+    }
 }
 </style>

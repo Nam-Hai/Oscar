@@ -38,7 +38,7 @@
             </div>
 
             <div class="next" :class="{ isTouchable: isMobile, dark: pickerDark, hover: hover }"
-                :style="{ transform: translate }">Next Project</div>
+                :style="{ transform: translate }" @click="navigateTo(data.link)">Next Project</div>
         </div>
     </Teleport>
 </template>
@@ -271,6 +271,7 @@ h1 {
     top: 0;
     left: 0;
 
+    pointer-events: none;
     cursor: pointer;
     margin-top: calc(16px + 0.6rem);
 
@@ -300,6 +301,7 @@ h1 {
         font-weight: 500;
         left: 50%;
         transform: translateX(-50%) !important;
+        pointer-events: all;
     }
 }
 </style>

@@ -56,7 +56,7 @@ onFlow(async () => {
         height: unset;
         aspect-ratio: 343 / 196;
         img, video {
-            border-radius: 2px;
+            border-radius: 4px;
         }
     }
 }
