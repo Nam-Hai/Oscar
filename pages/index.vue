@@ -53,6 +53,9 @@ import { defaultFlowIn } from '~/pages_transitions/default.transition';
 // import { indexFlowIn} from "~/pages"
 
 const { homeHover } = useCursorStore()
+
+const { fromPreloader } = useStore()
+const _fromPreloader = fromPreloader.value
 useResetLenis({
   infinite: true,
 })
@@ -69,7 +72,9 @@ function mainMove(e: MouseEvent) {
   if (!first) {
     first = true
     e.stopPropagation()
-    hideTrail.value = false
+    useDelay(_fromPreloader ? 0 : 1000, () => {
+      hideTrail.value = false
+    })
   }
 }
 
@@ -77,7 +82,10 @@ const mainRef = ref()
 const { breakpoint } = useStoreView()
 const { homeStore, currentIndex, hideTrail } = useStoreStepper()
 currentIndex.value = 0
-hideTrail.value = true
+onMounted(() => {
+  first = false
+  hideTrail.value = true
+})
 const { isMobile } = useStore()
 const flavorMainRef = ref()
 const flavorSubRef = ref()

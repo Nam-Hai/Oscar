@@ -46,12 +46,12 @@ setBounds(placeholderRef)
 // is set to True in preloader at the end of its animation
 watch(preloaderComplete, async () => {
 
-  fromPreloader.value = false
 
   const to = flowProvider.getRouteTo()
   canvas.onChange(to)
   canvas.resolveOnChange()
   await nextTick()
+  fromPreloader.value = false
   menuInit.value = true
 
 

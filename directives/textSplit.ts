@@ -3,7 +3,6 @@ export const vTextSplit = {
     mounted: (el: HTMLElement, binding: {}) => {
         const { index: indexSplit } = useStoreTextSplit()
         const _index = indexSplit.value
-        console.log(_index);
         const initialText = el.innerText
         const words = initialText.split(" ")
         el.innerText = ""
@@ -24,7 +23,7 @@ export const vTextSplit = {
                     o: [0, 1]
                 },
                 d: 500,
-                delay: 300 + (index + _index) * 10
+                delay: 300 + (index + _index) * 18
             })
         }
         tl.play()

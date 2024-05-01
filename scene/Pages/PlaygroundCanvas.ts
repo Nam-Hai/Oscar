@@ -70,8 +70,6 @@ export class PlaygroundCanvas extends CanvasPage {
     }
 
     addMedia(el: HTMLElement, fixed: HTMLElement) {
-
-        console.log('addmedia');
         const media = new PlaygroundMedia(this.gl, { index: this.medias.length, el, fixed })
         this.medias.push(media)
         this.add(media)

@@ -15,16 +15,16 @@
         <div class="menu">
             <div class="link__container">
                 <span ref="emailRef" @mouseenter="hoverMenu($event, 'email')" @mouseleave="leave()">
-                    <NuxtLink to="" v-cursor-hover v-text-split>EMAIL</NuxtLink>
+                    <NuxtLink to="mailto:garospico@gmail.com" v-cursor-hover v-text-split>EMAIL</NuxtLink>
                 </span>
                 <span ref="linkedinRef" @mouseenter="hoverMenu($event, 'linkedin')" @mouseleave="leave()">
-                    <NuxtLink to="" v-cursor-hover v-text-split>Linkedin</NuxtLink>
+                    <NuxtLink to="https://twitter.com/garospico" v-cursor-hover v-text-split>Linkedin</NuxtLink>
                 </span>
                 <span ref="twitterRef" @mouseenter="hoverMenu($event, 'twitter')" @mouseleave="leave()">
-                    <NuxtLink to="" v-cursor-hover v-text-split>Twitter</NuxtLink>
+                    <NuxtLink to="https://www.linkedin.com/in/oscarpico/" v-cursor-hover v-text-split>Twitter</NuxtLink>
                 </span>
                 <span ref="instaRef" @mouseenter="hoverMenu($event, 'insta')" @mouseleave="leave()">
-                    <NuxtLink to="" v-cursor-hover v-text-split>Instagram</NuxtLink>
+                    <NuxtLink to="https://instagram.com/garospico/" v-cursor-hover v-text-split>Instagram</NuxtLink>
                 </span>
             </div>
             <div class="footer">

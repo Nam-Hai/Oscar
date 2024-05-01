@@ -124,6 +124,7 @@ export class BorderImage extends CanvasNode {
 
 
         const tl = useTL()
+
         watch(hideTrail, (b: boolean) => {
             const from = this.uHide.value
             const to = +b;

@@ -37,7 +37,6 @@ export const defaultFlowOut: FlowFunction<defaultTransitionProps> = (props, reso
     })
 
     if (options.translate) {
-        console.error('transalte');
         tl.from({
             d: DURATION / 2,
             e: 'i2',
