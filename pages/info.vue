@@ -18,10 +18,10 @@
                     <NuxtLink to="mailto:garospico@gmail.com" v-cursor-hover v-text-split>EMAIL</NuxtLink>
                 </span>
                 <span ref="linkedinRef" @mouseenter="hoverMenu($event, 'linkedin')" @mouseleave="leave()">
-                    <NuxtLink to="https://twitter.com/garospico" v-cursor-hover v-text-split>Linkedin</NuxtLink>
+                    <NuxtLink to="https://www.linkedin.com/in/oscarpico/" v-cursor-hover v-text-split>Linkedin</NuxtLink>
                 </span>
                 <span ref="twitterRef" @mouseenter="hoverMenu($event, 'twitter')" @mouseleave="leave()">
-                    <NuxtLink to="https://www.linkedin.com/in/oscarpico/" v-cursor-hover v-text-split>Twitter</NuxtLink>
+                    <NuxtLink to="https://twitter.com/garospico" v-cursor-hover v-text-split>Twitter</NuxtLink>
                 </span>
                 <span ref="instaRef" @mouseenter="hoverMenu($event, 'insta')" @mouseleave="leave()">
                     <NuxtLink to="https://instagram.com/garospico/" v-cursor-hover v-text-split>Instagram</NuxtLink>
