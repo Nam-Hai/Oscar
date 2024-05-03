@@ -221,7 +221,7 @@ main {
 
     .shadow.show {
       opacity: 1;
-      background-color: #0000004c;
+      background-color: hsla(0, 0%, 0%, 0.298);
     }
   }
 

@@ -64,7 +64,8 @@ useLenisScroll((e) => {
     scale = N.Lerp(1, 0.6, ease)
 
     if (breakpoint.value === "desktop") {
-        titleWidth.value = `calc(100vw - 2.8rem - ${neutralGap * ease / 10}rem)`
+        titleWidth.value = `calc(100vw - 2.8rem - ${neutralGap * ease}px)`
+
         N.T(lowerDesRef.value, 0, e.animatedScroll, 'px');
     }
     landingHeaderScale.value = scale
@@ -105,10 +106,20 @@ onBeforeUnmount(() => {
 const titleWidth = ref("calc(100vw - 2.8rem)")
 let neutralGap = 1
 useRO(({ scale: s }) => {
+    const { scrollLenis } = useStoreView()
+    const size = 800
+    const ease = secondScrollEase(N.Clamp(scrollLenis.value, 0, size) / size);
+    const scale = N.Lerp(1, 0.6, ease)
     const spans = N.getAll(".title__wrapper .overflow", wrapperRef.value)
     if (spans.length === 2) {
-        const w = spans[1].getBoundingClientRect().width + spans[0].getBoundingClientRect().width + 40
-        neutralGap = (vw.value - 28 * s - w / scale)
+        const w = (spans[1].getBoundingClientRect().width + spans[0].getBoundingClientRect().width + 40) / scale
+        neutralGap = (vw.value - 28 - w)
+
+        if (breakpoint.value === "desktop") {
+            titleWidth.value = `calc(100vw - 2.8rem - ${neutralGap * ease}px)`
+
+            N.T(lowerDesRef.value, 0, scrollLenis.value, 'px');
+        }
     }
 })
 </script>
