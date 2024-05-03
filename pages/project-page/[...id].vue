@@ -1,7 +1,7 @@
 <template>
   <main class="project__wrapper" ref="wrapperRef">
     <Teleport to=".app__wrapper" v-if="isMobile != true">
-      <div class="scroll-display-f__wrapper" :style="{ clipPath: `inset(0 0 ${clipPercentage * 0}% 0)` }">
+      <div class="scroll-display-f__wrapper" :style="{ clipPath: `inset(0 0 ${clipPercentage * 100}% 0)` }">
         <div class="scroll-display-f" :class="{ dark: pickerDark, show: scrollDisplayShow && cursorState !== 'hover' }"
           :style="{ transform: translate }">
           {{ scrollPercent }}
@@ -54,7 +54,7 @@ onLeave(() => {
   useDelay(1000, () => atEnd.value = false)
 })
 
-const clipPercentage = ref(0)
+const clipPercentage = ref(-10)
 const mainImage = useCanvasMainImageProject()
 useLenisScroll((e) => {
   const lenis = useLenis()
@@ -66,7 +66,8 @@ useLenisScroll((e) => {
     atEnd.value = Math.min(e.animatedScroll / (e.dimensions.scrollHeight - vh.value * 1.1), 1) === 1
 
     const h = e.dimensions.scrollHeight
-    clipPercentage.value = N.iLerp(e.animatedScroll, h - 2 * vh.value, h - vh.value)
+    clipPercentage.value = e.animatedScroll < 100 ? 0 : N.iLerp(e.animatedScroll, h - 2 * vh.value, h - vh.value)
+    console.log(clipPercentage.value, e.animatedScroll < 100);
   }
   if (!firstScroll.value && e.velocity > 0) {
     lenis.stop()

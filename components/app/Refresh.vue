@@ -24,5 +24,8 @@ const wrapperRef = ref() as Ref<HTMLElement>
     line-height: 100%;
     text-transform: uppercase;
     padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
