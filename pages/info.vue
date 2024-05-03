@@ -18,7 +18,8 @@
                     <NuxtLink to="mailto:garospico@gmail.com" v-cursor-hover v-text-split>EMAIL</NuxtLink>
                 </span>
                 <span ref="linkedinRef" @mouseenter="hoverMenu($event, 'linkedin')" @mouseleave="leave()">
-                    <NuxtLink to="https://www.linkedin.com/in/oscarpico/" v-cursor-hover v-text-split>Linkedin</NuxtLink>
+                    <NuxtLink to="https://www.linkedin.com/in/oscarpico/" v-cursor-hover v-text-split>Linkedin
+                    </NuxtLink>
                 </span>
                 <span ref="twitterRef" @mouseenter="hoverMenu($event, 'twitter')" @mouseleave="leave()">
                     <NuxtLink to="https://twitter.com/garospico" v-cursor-hover v-text-split>Twitter</NuxtLink>
@@ -29,7 +30,7 @@
             </div>
             <div class="footer">
                 <span class="margin" v-text-split>@2024</span>
-                <div>
+                <div class="footer-right">
                     <span v-text-split>Design by
                     </span>
                     <span ref="oscarRef" class="margin" @mouseenter="hoverMenu($event, 'oscar')" @mouseleave="leave()">
@@ -200,6 +201,13 @@ main {
 
                 @include breakpoint(mobile) {
                     margin: unset;
+                }
+            }
+
+            .footer-right {
+                @include breakpoint(mobile) {
+                    width: 15rem;
+                    display: unset;
                 }
             }
 
