@@ -1,6 +1,7 @@
 <template>
     <div ref="wrapperRef" class="refresh">
-        Refresh the page
+        <h1>404.</h1>
+        <h2>Please refresh</h2>
     </div>
 </template>
 
