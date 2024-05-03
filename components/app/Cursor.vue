@@ -87,8 +87,8 @@ useRaf(() => {
     position: fixed;
     z-index: 200;
     color: $white;
-    // transition: color 350ms, opacity 250ms;
-    transition: opacity 250ms;
+    transition: color 350ms, opacity 250ms;
+    // transition: opacity 250ms;
 
     &.dark {
         color: $black;
@@ -102,7 +102,7 @@ useRaf(() => {
         &::after {
             transform: translate(-50%, -50%) scale(5);
 
-            background-color: white;
+            background-color: currentColor;
         }
     }
 
