@@ -33,7 +33,7 @@
                     <span v-text-split>Design by
                     </span>
                     <span ref="oscarRef" class="margin" @mouseenter="hoverMenu($event, 'oscar')" @mouseleave="leave()">
-                        <NuxtLink v-cursor-hover to="/" v-text-split>Oscar Pico.</NuxtLink>
+                        <NuxtLink v-cursor-hover to="mailto:garospico@gmail.com" v-text-split>Oscar Pico.</NuxtLink>
                     </span>
                     <!-- </span> -->
                     <span v-text-split>
