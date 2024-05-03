@@ -1,7 +1,7 @@
 <template>
     <div ref="wrapperRef" class="refresh">
         <h1>404.</h1>
-        <h2>Please refresh</h2>
+        <h2>Something broke</h2>
     </div>
 </template>
 
@@ -27,5 +27,16 @@ const wrapperRef = ref() as Ref<HTMLElement>
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    text-transform: unset;
+    // text-transform: capitalize;
+
+    h1,
+    h2 {
+        font-weight: 100;
+    }
 }
 </style>
