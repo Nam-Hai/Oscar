@@ -67,7 +67,6 @@ useLenisScroll((e) => {
 
     const h = e.dimensions.scrollHeight
     clipPercentage.value = e.animatedScroll < 100 ? 0 : N.iLerp(e.animatedScroll, h - 2 * vh.value, h - vh.value)
-    console.log(clipPercentage.value, e.animatedScroll < 100);
   }
   if (!firstScroll.value && e.velocity > 0) {
     lenis.stop()
