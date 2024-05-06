@@ -158,7 +158,7 @@ export class HomeMedia extends CanvasNode {
 		velocity: number;
 		animatedScroll: number;
 	}) {
-		if(isMobile) return
+		if(isMobile.value) return
 
 		for (const scrollWrapper of this.scrollArray) {
 
