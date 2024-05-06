@@ -69,7 +69,7 @@ onFlow(() => {
 
         position: relative;
 
-        &:first-child::after {
+        &:nth-child(4)::after {
             content: "";
             display: block;
             position: absolute;
@@ -85,21 +85,26 @@ onFlow(() => {
         }
     }
 
+    &[data-current="0"] {
+        .project-display__wrapper:nth-child(4)::after {
+            transform: translateX(calc(-300% - 3 * 1.2rem));
+        }
+    }
+
     &[data-current="1"] {
-        .project-display__wrapper:first-child::after {
-            transform: translateX(calc(100% + 1.2rem));
+        .project-display__wrapper:nth-child(4)::after {
+            transform: translateX(calc(-200% - 2 * 1.2rem));
         }
     }
 
     &[data-current="2"] {
-        .project-display__wrapper:first-child::after {
-            transform: translateX(calc(200% + 2 * 1.2rem));
+        .project-display__wrapper:nth-child(4)::after {
+            transform: translateX(calc(-100% - 1 * 1.2rem));
         }
     }
-
     &[data-current="3"] {
-        .project-display__wrapper:first-child::after {
-            transform: translateX(calc(300% + 3 * 1.2rem));
+        .project-display__wrapper:nth-child(4)::after {
+            transform: translateX(0);
         }
     }
 }
