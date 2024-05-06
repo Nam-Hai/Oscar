@@ -8,6 +8,7 @@ import { useCanvasReactivity } from "../../utils/WebGL.utils";
 
 const { currentIndex, length } = useStoreStepper();
 const { progress } = useCursorStore()
+const { isMobile } = useStore()
 
 const uReach = { value: 2 };
 const uForce = { value: 0.6 };
@@ -157,6 +158,8 @@ export class HomeMedia extends CanvasNode {
 		velocity: number;
 		animatedScroll: number;
 	}) {
+		if(isMobile) return
+
 		for (const scrollWrapper of this.scrollArray) {
 
 			if (!scrollWrapper.on.value) {
