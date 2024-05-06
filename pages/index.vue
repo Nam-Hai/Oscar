@@ -3,8 +3,6 @@
     <div class="index-container" v-for="(data, index) in homeStore" :key="data.title + '_' + index"
       :class="{ current: currentIndex == index }">
       <NuxtLink :to="data.link">
-        <div class="shadow">
-        </div>
         <h1 ref="titleRefs" @mouseenter="hideTrail = true; homeHover(true)"
           @mouseleave="hideTrail = false; homeHover(false)" @mousemove="headerMove($event)">
           <span v-for="(word, index) in data.title.split(' ')" class="overflow" v-if="breakpoint == 'desktop'">
@@ -219,10 +217,6 @@ main {
   &.current {
     pointer-events: auto;
 
-    .shadow.show {
-      opacity: 1;
-      background-color: hsla(0, 0%, 0%, 0.298);
-    }
   }
 
   clip-path: inset(0 0 17rem 0);
@@ -295,17 +289,6 @@ main {
 
 a {
   margin-top: 3rem;
-}
-
-.shadow {
-  content: "";
-  position: absolute;
-  inset: 0rem -2rem -1rem -2rem;
-  background-color: #00000000;
-  filter: blur(30px);
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 1000ms, background-color 1000ms;
 }
 
 h1 {

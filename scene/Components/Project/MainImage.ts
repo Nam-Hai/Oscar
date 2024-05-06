@@ -545,11 +545,16 @@ float p = 2.0 * t * t;
 return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
 }
 
+float iLerp(float x, float xi,float xf) {
+    return (x - xi) / (xf - xi);
+}
+
 void main() {
 // object-fix: cover
 vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
 
 color = mix(vec4(0.886,0.886,0.886,1.), color, uLoaded);
+
 
 
 vec4 c = vec4(0.);

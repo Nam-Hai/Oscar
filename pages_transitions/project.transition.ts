@@ -101,6 +101,14 @@ export const indexProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Projec
             }
         })
         .from({
+            d: 800,
+            e: "o2",
+            delay: 400 + DELAY,
+            update({ prog, progE }) {
+                transitionNode.uDarken.value = progE
+            },
+        })
+        .from({
             d: 400,
             e: "o2",
             delay: 800 + DELAY,

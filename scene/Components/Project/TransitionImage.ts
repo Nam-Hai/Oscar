@@ -16,6 +16,7 @@ export class TransitionImage extends CanvasNode {
 
     uProgress: { value: number; };
     uIntrinsecRatio: number;
+    uDarken = { value: 0 };
 
     constructor(gl: any, props: { texture: Texture }) {
         super(gl)
@@ -85,6 +86,7 @@ export class TransitionImage extends CanvasNode {
                 uSizePixel: this.uSizePixel,
                 uBorderRadius: this.uBorderRadius,
                 uScaleOffset: this.uScaleOffset,
+                uDarken: this.uDarken,
                 uTranslateOffset: this.uTranslateOffset,
                 uProgress: this.uProgress,
                 uId: this.uId
@@ -179,10 +181,12 @@ uniform vec4 uId;
 in vec2 vUv;
 out vec4 FragColor[2];
 
+uniform float uDarken;
 
 void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
+    color = mix(color, vec4(0., 0., 0., 1.), mix(0.25, 0., uDarken));
 
     vec2 cornerTopRight = vec2((vUv.x - 1.) * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
     cornerTopRight += uBorderRadius;

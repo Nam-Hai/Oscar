@@ -9,10 +9,6 @@ export type IndexProps = defaultTransitionProps & {
 
 export const indexProjectFlowOut: FlowFunction<IndexProps> = (props: IndexProps, resolve, provider) => {
 
-    const shadows = N.getAll(".shadow", props.wrapperRef.value)
-    for (const el of shadows) {
-        N.O(el as HTMLElement, 0) 
-    }
     const { breakpoint } = useStoreView()
     if (breakpoint.value == 'mobile') {
         defaultFlowOut(props, resolve, provider)

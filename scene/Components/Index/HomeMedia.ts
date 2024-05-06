@@ -397,6 +397,7 @@ void main() {
     vec2 offset = vP.xy * a * f;
 
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset - offset);
+	color = mix(color, vec4(0., 0., 0., 1.), 0.25);
 
     FragColor[0] = color;
     // FragColor[1] = color;

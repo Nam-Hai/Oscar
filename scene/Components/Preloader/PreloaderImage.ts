@@ -21,6 +21,7 @@ export class PreloaderImage extends CanvasNode {
     zRatio: number;
     uDeform: { value: number; };
     progress: number;
+    uDarken = { value: 0 }
 
     constructor(gl: any, props: { texture: Texture }) {
         super(gl)
@@ -100,8 +101,8 @@ export class PreloaderImage extends CanvasNode {
                 uTranslateOffset: this.uTranslateOffset,
                 uZoom: this.uZoom,
                 uId: this.uId,
-
                 uDeform: this.uDeform,
+                uDarken: this.uDarken,
 
                 uMorph: { value: 1 }
             }
@@ -184,6 +185,7 @@ export class PreloaderImage extends CanvasNode {
                     // this.mesh.position.set(0, 0, .5)
                     this.zRatio = e.progE
                     this.computeUniforms(N.Lerp(0.8, 1, N.Ease.o2(e.prog)))
+                    this.uDarken.value = e.progE
                 },
             }).from({
                 d: 150,
@@ -311,10 +313,13 @@ float i4(float x){
     return x == 0. ? 0. : pow(2., 10. * x - 10.);
 }
 
+uniform float uDarken;
+
 void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
 
+	color = mix(color, vec4(0., 0., 0., 1.), mix(0., 0.25, uDarken));
     FragColor[0] = color;
     FragColor[1] = uId;
 
