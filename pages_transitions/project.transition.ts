@@ -257,6 +257,14 @@ export const projectProjectFlowIn: FlowFunction<ProjectFlowProps> = (props: Proj
 
             }
         })
+        .from({
+            d: 800,
+            e: "o2",
+            delay: 400 + DELAY,
+            update({ prog, progE }) {
+                transitionNode.uDarken.value = progE
+            },
+        })
     useDelay(400 + 800, () => {
         lenis.value.scrollTo(0, { immediate: true, force: true })
         resolve()

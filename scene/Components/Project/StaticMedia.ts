@@ -210,6 +210,7 @@ out vec4 FragColor[2];
 void main() {
     // object-fix: cover
     vec4 color = texture(tMap, vUv * uScaleOffset + uTranslateOffset);
+    color = mix(color, vec4(0., 0., 0., 1.), 0.25);
 
     vec2 cornerTopRight = vec2((vUv.x - 1.) * uSizePixel.x, (vUv.y - 1.) * uSizePixel.y);
     cornerTopRight += uBorderRadius;
