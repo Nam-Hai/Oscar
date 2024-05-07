@@ -41,10 +41,13 @@ export class FlowProvider {
   swapWrapper!: () => void;
   flowIsHijacked = ref(false)
 
+  routeRef: Ref<string>
   constructor() {
     const route = useRoute()
     this.routeTo = route
     this.routeFrom = route
+    this.routeRef = ref(route.name?.toString()!)
+
 
     this.routerMap = new Map()
   }
@@ -91,6 +94,7 @@ export class FlowProvider {
   public onChangeRoute(routeTo: RouteLocationNormalized) {
     this.routeFrom = this.routeTo
     this.routeTo = routeTo
+    this.routeRef.value = routeTo.name?.toString()!
 
     this.bufferPageRef.value = this.routerMap.get(this.routeTo.name!.toString())
   }

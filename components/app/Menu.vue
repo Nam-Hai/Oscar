@@ -46,11 +46,18 @@
 
 <script lang="ts" setup>
 import { vCursorHover } from '~/directives/cursorActive';
-import { onFlow } from '~/waterflow/composables/onFlow';
-const router = useRouter()
-const route = ref(router.currentRoute.value.name)
-watch(router.currentRoute, (r) => {
-  route.value = (r as any).name as string
+import { useFlowProvider } from '~/waterflow/FlowProvider';
+const { routeRef } = useFlowProvider()
+const route = ref(routeRef.value)
+watch(routeRef, (r, old) => {
+  console.log(r);
+  if (old === "index") {
+    useDelay(1000, () => {
+      route.value = r
+    })
+  } else {
+    route.value = r
+  }
 })
 
 // const { isHover: archiveHover } = useStoreArchive()
@@ -89,24 +96,6 @@ function hoverMenu(e: MouseEvent, to: keyof typeof bounds) {
 function leave() {
   overhide.value = false
 }
-
-// watch(manifestLoaded, b => {
-//   const content = N.getAll('.overflow-content', wrapperRef.value)
-//   const tl = useTL()
-//   for (let index = 0; index < content.length; index++) {
-//     const el = content[index]
-//     tl.from({
-//       el,
-//       d: 1000,
-//       e: 'o4',
-//       delay: 5000 + 100 * index,
-//       p: {
-//         y: [-115, 0]
-//       }
-//     })
-//   }
-//   tl.play()
-// })
 
 </script>
 
