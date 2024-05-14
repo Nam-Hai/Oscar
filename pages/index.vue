@@ -45,7 +45,6 @@
 <script lang="ts" setup>
 import { usePageFlow } from '~/waterflow/composables/usePageFlow';
 import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
-import { vCursorHover } from '~/directives/cursorActive';
 import { indexFlowOutMap } from '~/pages_transitions/index.transition';
 import { defaultFlowIn } from '~/pages_transitions/default.transition';
 // import { indexFlowIn} from "~/pages"

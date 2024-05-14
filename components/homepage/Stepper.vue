@@ -60,7 +60,7 @@ onLeave(() => {
   bottom: min(5.2rem, 52px);
   left: 50%;
   transform: translateX(-50%);
-  transform: translate(-50%, 7rem);
+  transform: translate3d(-50%, 7rem, 0);
 
   display: flex;
   column-gap: 16px;
@@ -73,12 +73,13 @@ onLeave(() => {
   transition: opacity 300ms;
 
   &.hide {
-    transition: opacity 500ms;
-    opacity: 0;
+    transition: opacity 200ms, transform 300ms;
+    opacity: 0!important;
+    transform: translate3d(-50%, 7rem, 0)!important;
   }
 
   &:hover {
-    opacity: 0!important;
+    opacity: 0 !important;
   }
 
   .d {
