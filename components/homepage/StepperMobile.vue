@@ -1,15 +1,15 @@
 <template>
     <div ref="wrapperRef" class="stepper-mobile__wrapper" :data-current="currentIndex">
 
-        <div class="project-display__wrapper" v-for="(data, index) in homeStore" :class="{ current: currentIndex == index }"
-            ref="stepperRef">
+        <div class="project-display__wrapper" v-for="(data, index) in homeStore"
+            :class="{ current: currentIndex == index }" ref="stepperRef">
             <img :src="data.mini" :alt="`home_mini-${data.title}`" @click="currentIndex = index">
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { onFlow } from '~/waterflow/composables/onFlow';
+import { onFlow, onLeave } from '~/waterflow/composables/onFlow';
 
 const { homeStore, currentIndex } = useStoreStepper()
 
@@ -31,6 +31,10 @@ onFlow(() => {
     }
     tl.play()
 })
+
+onLeave(() => {
+    N.Class.add(wrapperRef.value, "hide")
+})
 </script>
 
 <style lang="scss" scoped>
@@ -45,9 +49,16 @@ onFlow(() => {
     left: 1.6rem;
     width: calc(100% - 3.2rem);
 
+    &.hide {
+        transition: opacity 200ms, transform 500ms;
+        opacity: 0 !important;
+        transform: translate3d(0, 7rem, 0) !important;
+    }
+
     .project-display__wrapper {
 
         transform: translateY(200%);
+
         &.current {
             img {
                 opacity: 0;
@@ -102,6 +113,7 @@ onFlow(() => {
             transform: translateX(calc(-100% - 1 * 1.2rem));
         }
     }
+
     &[data-current="3"] {
         .project-display__wrapper:nth-child(4)::after {
             transform: translateX(0);

@@ -73,7 +73,7 @@ onLeave(() => {
   transition: opacity 300ms;
 
   &.hide {
-    transition: opacity 200ms, transform 300ms;
+    transition: opacity 200ms, transform 500ms;
     opacity: 0!important;
     transform: translate3d(-50%, 7rem, 0)!important;
   }
