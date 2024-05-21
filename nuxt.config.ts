@@ -115,6 +115,13 @@ export default defineNuxtConfig({
                     sizes: "180x180",
                     href: "/favicon/apple-touch-icon.png"
                 },
+            ],
+            script: [
+                {
+                    src: 'https://static.cloudflareinsights.com/beacon.min.js',
+                    defer: true,
+                    "data-cf-beacon": '{"token": "9e2b52d49f8e4143b624d36aae094f29"}',
+                }
             ]
         },
     },

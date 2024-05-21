@@ -161,6 +161,7 @@ export class BorderImage extends CanvasNode {
                 uTranslateOffset: this.uTranslateOffset,
                 uTransparency: this.uTransparency,
                 uFake: { value: this.fake ? 1 : 0 },
+                uCaca: {value: 0},
                 uHide: this.uHide,
                 uId: this.uId
             }
